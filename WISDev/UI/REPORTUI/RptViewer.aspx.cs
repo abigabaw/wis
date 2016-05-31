@@ -86,9 +86,14 @@ namespace WIS
                         LoadBatchPrintout();
                         break;
 
+                    case "PAYRQHIST":
+                        LoadBatchingHistory();
+                        break;
+
                     case "Legacy":
                         LoadLegacyReports();
                         break;
+
 
                 }
                 //Edwin: End
