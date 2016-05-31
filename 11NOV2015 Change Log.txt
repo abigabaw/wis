@@ -1,0 +1,25 @@
+.LOG
+
+Changes Made to This Version:
+--------------------------------------------------------------------------------
+
+- Batch Approval Screen Collapse (Removed)
+
+- Package Review Status Link Added to Package Documents Screen
+  - Added PKREV Status, and Participants Stored Procedures to DB
+  - Added PKREV Status (with Participants) Report to the System
+  
+- Batch Status, Batch Comments links added to batch payment screen
+  - Added PAYRQ STATUS, and PARTICIPANTS Stored Procedures to DB
+  - Added PAYRQ Status (with participants) Report to the System
+  
+- Payment Status Link added to Funds Processing Screen
+  - Added PAYVR Status, and Participants Stored Procedures to DB
+  - Added PAYVR Status (with participants) Report to the System
+  
+- Legacy Reports Screen Improved
+  - Made Report Drop Down Dynamic
+  - Added MST_LEGACY_REPORT table to store Legacy Report Details
+  - Added Register Snapshot Report to the System
+  - Added Payments Processed Report to the System
+  - Added Packages Processed Report to they System

@@ -1,0 +1,423 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="WIS.SiteMaster" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head runat="server">
+    <title>Wayleaves Information System</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript">
+        function SiteMasterBody_OnLoad() {
+            document.getElementById('dvMenuContainer').style.visibility = 'visible';
+
+            if (document.getElementById('dvSubMenuContainer'))
+                document.getElementById('dvSubMenuContainer').style.visibility = 'visible';
+        }
+    </script>
+    <link href="~/Styles/Site.css" rel="Stylesheet" type="text/css" />
+    <link href="~/Styles/Roylecss.css" rel="stylesheet" type="text/css" />
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body onload="SiteMasterBody_OnLoad()">
+    <form runat="server">
+    <div class="page">
+        <div class="header">
+            <div class="title">
+                <table>
+                    <tr>
+                        <td>
+                            <asp:Image ID="imgLogo" ImageUrl="~/Image/UTCL_Logo.png" runat="server" />
+                        </td>
+                        <td class="appHeader">
+                            Wayleaves Information System
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="float: right">
+                <table border="0" width="370px">
+                    <tr>
+                        <td align="right">
+                            <asp:Label ID="userNameLabel" runat="server" CssClass="welcomeText" />
+                        </td>
+                        <td align="center">
+                            |
+                        </td>
+                        <td align="left" style="padding-bottom: 2px" width="70px">
+                            <asp:LinkButton ID="lnkLogout" runat="server" CssClass="logoutLink" OnClick="lnkLogout_Click">Logout</asp:LinkButton>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="dvMenuContainer" class="clear hideSkiplink" style="visibility: hidden">
+                <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false"
+                    IncludeStyleBlock="true" Orientation="Horizontal">
+                    <Items>
+                        <asp:MenuItem NavigateUrl="~/Default.aspx" Text="&nbsp; Home &nbsp;" Value="HOME" />
+                         
+                        <asp:MenuItem Selectable="false" NavigateUrl="#" Text="&nbsp; Master &nbsp;" Value="MASTER">
+                            <asp:MenuItem Selectable="false" NavigateUrl="#" Text="User" Value="USER">
+                                <asp:MenuItem NavigateUrl="~/UI/Master/User_Creation.aspx" Text="User Creation" Value="USER_CREATION" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/Role.aspx" Text="Role" Value="ROLE" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/RolePrivileges.aspx" Text="Role Privileges"
+                                    Value="ROLE_PRIVILEGES" />
+                            </asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/UI/Master/Bank.aspx" Text="Bank" Value="BANK" />                             
+                            <asp:MenuItem Selectable="false" NavigateUrl="#" Text="Education &nbsp;&nbsp;" Value="EDUCATION">
+                                <asp:MenuItem NavigateUrl="~/UI/Master/CurrentSchoolStatus.aspx" Text="Current School Status"
+                                    Value="CURR_SCHOOL_STATUS" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/SchoolDropReason.aspx" Text="School Drop Reason"
+                                    Value="SCHOOL_DROP_REASON" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/FormNeverAttendedSchool.aspx" Text="Never Attended School"
+                                    Value="NEVER_ATT_SCHOOL" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/Literacy_Status.aspx" Text="Literacy Status"
+                                    Value="LITERACY_STATUS" />
+                            </asp:MenuItem>
+                            <asp:MenuItem Selectable="false" NavigateUrl="#" Text="Social" Value="SOCIAL">
+                                <asp:MenuItem NavigateUrl="~/UI/Master/Concern.aspx" Text="Concern" Value="CONCERN" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/CopingMechanism.aspx" Text="Coping Mechanism"
+                                    Value="COPING_MECHANISM" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/SocialDisease.aspx" Text="Disease" Value="DISEASE" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/Dwelling.aspx" Text="Dwelling" Value="DWELLING" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/Livelihood.aspx" Text="Livelihood" Value="LIVELIHOOD" />
+                                <asp:MenuItem NavigateUrl="~/UI/MASTER/Position.aspx" Text="Position" Value="POSITION" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/OccupationMaster.aspx" Text="Occupation" Value="OCCUPATION" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/Relationship.aspx" Text="Relationship" Value="RELATIONSHIP" />
+                                <asp:MenuItem NavigateUrl="~/UI/MASTER/Representation.aspx" Text="Representation"
+                                    Value="REPRESENTATION" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/ShocksExperienced.aspx" Text="Shocks Experienced"
+                                    Value="SHOCKS_EXPERIENCED" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/SocialSupport.aspx" Text="Support" Value="SUPPORT" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/Tribe.aspx" Text="Tribe" Value="TRIBE" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/Vulnerabilty.aspx" Text="Vulnerabilities" Value="VULNERABILITIES" />
+                                <%--<asp:MenuItem Selectable="false" NavigateUrl="#" Text="Option Group" Value="OPTION_GROUP" />--%> 
+                                <asp:MenuItem Selectable="false" NavigateUrl="#" Text="Option Group" Value="OPTION_GROUP">
+                                    <asp:MenuItem NavigateUrl="~/UI/MASTER/OptionGroup.aspx" Text="Option Group" Value="OPTION_GROUP1" />
+                                    <asp:MenuItem NavigateUrl="~/UI/MASTER/OptionAvailable.aspx" Text="Option Available" Value="OPTION_GROUP2" />
+                                    <asp:MenuItem NavigateUrl="~/UI/MASTER/Parameters.aspx" Text="Parameters" Value="OPTION_GROUP3" />
+                                    <asp:MenuItem NavigateUrl="~/UI/MASTER/Description.aspx" Text="Description" Value="OPTION_GROUP4" />
+                                    <asp:MenuItem NavigateUrl="~/UI/MASTER/OptionParameterMapping.aspx" Text="Option Parameter Mapping" Value="OPTION_GROUP5" />
+                                    
+                                </asp:MenuItem>
+                                <asp:MenuItem NavigateUrl="~/UI/Master/WelfareIndicator.aspx" Text="Welfare Indicator"
+                                    Value="WELFARE_INDICATOR" />                                
+                                 <asp:MenuItem NavigateUrl="~/UI/MASTER/HIVContracted.aspx" Text="HIV Contracted"
+                                Value="HIV_CONTRACTED" />
+                                <asp:MenuItem NavigateUrl="~/UI/MASTER/CardType.aspx" Text="Card Type" Value="CardType" />
+                            </asp:MenuItem>
+                            <asp:MenuItem Selectable="false" NavigateUrl="#" Text="Structure" Value="STRUCTURE">
+                                <asp:MenuItem NavigateUrl="~/UI/Master/StructureType.aspx" Text="Types" Value="TYPES" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/StructureCategory.aspx" Text="Categories"
+                                    Value="CATEGORIES" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/Units.aspx" Text="Units" Value="UNITS" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/StructureCondition.aspx" Text="Condition"
+                                    Value="CONDITION" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/FloorType.aspx" Text="Floor" Value="FLOOR" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/RoofType.aspx" Text="Roof" Value="ROOF" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/WallType.aspx" Text="Wall" Value="WALL" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/WndowType.aspx" Text="Window" Value="WINDOW" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/FenceDescription.aspx" Text="Fence Description"
+                                    Value="FENCE_DESCRIPTION" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/GraveFinish.aspx" Text="Grave Finish" Value="GRAVE_FINISH" />
+                            </asp:MenuItem>
+                            <asp:MenuItem Selectable="false" NavigateUrl="#" Text="Tenure" Value="TENURE">
+                                <asp:MenuItem NavigateUrl="~/UI/Master/TenureStructure.aspx" Text="Structure Tenure"
+                                    Value="STRUCTURE_TENURE" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/TenureLand.aspx" Text="Land Tenure" Value="LAND_TENURE" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/Loan.aspx" Text="Purpose of Encumbrance" Value="PURPOSE_OF_ENCUMBRANCE" />
+                            </asp:MenuItem>
+                            <asp:MenuItem Selectable="false" NavigateUrl="#" Text="Crop" Value="CROP">
+                                <asp:MenuItem NavigateUrl="~/UI/Master/CropName.aspx" Text="Crop Name" Value="CROP_NAME" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/CropDescription.aspx" Text="Crop Description"
+                                    Value="CROP_DESCRIPTION" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/CropAgeMaster.aspx" Text="Crop Age" Value="CROP_AGE" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/CropDiameter.aspx" Text="Crop Diameter" Value="CROP_DIAMETER" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/CropType.aspx" Text="Crop Type" Value="CROP_TYPE" />
+                            </asp:MenuItem>
+                            <asp:MenuItem Selectable="false" NavigateUrl="#" Text="Finance" Value="FINANCE">
+                                <asp:MenuItem NavigateUrl="~/UI/MASTER/ReasonforFinancing.aspx" Text="Reason For Financing"
+                                    Value="REASON_FOR_FINANCING" />
+                                <asp:MenuItem NavigateUrl="~/UI/MASTER/NatureofFinancing.aspx" Text="Nature of Financing"
+                                    Value="NATURE_OF_FINANCING" />
+                                <asp:MenuItem NavigateUrl="~/UI/MASTER/ConditionsforFinancing.aspx" Text="Conditions for Financing"
+                                    Value="CONDITIONS_FOR_FINANCING" />
+                            </asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/UI/MASTER/ModeofPayment.aspx" Text="Mode of Payment"
+                                Value="MODE_OF_PAYMENT" />
+                            <asp:MenuItem NavigateUrl="~/UI/MASTER/LandReceivedMST.aspx" Text="Land Received"
+                                Value="LAND_RECEIVED_FROM" />
+                            <asp:MenuItem Selectable="false" NavigateUrl="#" Text="Project" Value="MST_PROJECT">
+                                <asp:MenuItem NavigateUrl="~/UI/MASTER/ConsultantType.aspx" Text="Consultant Type"
+                                    Value="CONSULTANT_TYPE" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/PAP_Status.aspx" Text="PAP Status" Value="PAP_STATUS" />
+                                <asp:MenuItem NavigateUrl="~/UI/Master/TypeOfLine.aspx" Text="Type of Line" Value="TYPE_OF_LINE" />
+                                <asp:MenuItem Selectable="false" NavigateUrl="#" Text="Location" Value="Location">
+                                  <asp:MenuItem NavigateUrl="~/UI/MASTER/District.aspx" Text="District"
+                                Value="District" />
+                                <asp:MenuItem NavigateUrl="~/UI/MASTER/County.aspx" Text="County"
+                                Value="County" />
+                                  <asp:MenuItem NavigateUrl="~/UI/MASTER/SubCounty.aspx" Text="Sub County"
+                                Value="Sub_County" />
+                                   <asp:MenuItem NavigateUrl="~/UI/MASTER/Parish.aspx" Text="Parish"
+                                Value="Parish" />
+                                  <asp:MenuItem NavigateUrl="~/UI/MASTER/Village.aspx" Text="Village"
+                                Value="Village" />                                  
+                                <asp:MenuItem NavigateUrl="~/UI/MASTER/LocationClassification.aspx" Text="Location Classification"
+                                Value="LocationClassification" /> 
+                                </asp:MenuItem>
+                            </asp:MenuItem>
+                            <asp:MenuItem Selectable="false" NavigateUrl="#" Text="M &amp; E" Value="MST_MNE_GOAL">
+                                <asp:MenuItem NavigateUrl="~/UI/MASTER/MNEGoalName.aspx" Text="Goal Name" Value="MST_MNE_GOAL_NAME" />
+                                <asp:MenuItem NavigateUrl="~/UI/MASTER/MNEGoalElements.aspx" Text="Goal Elements"
+                                    Value="MST_MNE_GOAL_ELEM" />
+                            </asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/UI/MASTER/HealthCenter.aspx" Text="Health Center" Value="HEALTH_CENTER" />
+                            <asp:MenuItem NavigateUrl="~/UI/MASTER/BudgetEstCategory.aspx" Text="Budget Estimation Category"
+                                Value="BUDGET_EST_CATEGORY" />
+                            <asp:MenuItem NavigateUrl="~/UI/MASTER/CDAPBudgetItem.aspx" Text="CDAP Category"
+                                Value="CDAP_MST_CATEGORY" /> 
+                            <asp:MenuItem Selectable="false" NavigateUrl="#" Text="Livelihood" Value="LIVELIHOD_MST">                                
+                                 <asp:MenuItem NavigateUrl="~/UI/MASTER/LivBudgCategory.aspx" Text="Liv Budget Category"
+                                Value="LivBudgCategory" />
+                                 <asp:MenuItem NavigateUrl="~/UI/MASTER/LivPlanItem.aspx" Text="Liv Plan Item"
+                                Value="LivPlanItemMst" />
+                            </asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/UI/MASTER/GOUAllowance.aspx" Text="GOU Allowance"
+                                Value="GOUAllowance" />
+                            <asp:MenuItem NavigateUrl="~/UI/MASTER/GrievancesMaster.aspx" Text="Grievances Category"
+                                Value="Grievances_Category" />   
+                            <asp:MenuItem NavigateUrl="~/UI/MASTER/CulturPropertiesMaster.aspx" Text="Culture Property Type"
+                                Value="Cul_Property_Type" />
+                            <asp:MenuItem NavigateUrl="~/UI/MASTER/FixedCostCentre.aspx" Text="FixedCostCentre"
+                                Value="FixedCostCentre" />                                                            
+                        </asp:MenuItem>
+                        <asp:MenuItem Selectable="false" NavigateUrl="#" Text="&nbsp; Project &nbsp;" Value="PROJECT">
+                            <asp:MenuItem NavigateUrl="~/UI/PROJECT/ProjectDetails.aspx?mode=new" Text="Create Project"
+                                Value="CREATE_PROJECT" />
+                            <asp:MenuItem NavigateUrl="~/UI/PROJECT/ViewProjects.aspx" Text="View Projects" Value="VIEW_PROJECT" />
+                            <asp:MenuItem NavigateUrl="~/UI/PROJECT/ProjectCompare.aspx" Text="Compare Project"
+                                Value="COMPARE_PROJECT" />
+                            <asp:MenuItem NavigateUrl="~/UI/Compensation/GlobalPAP.aspx" Text="Global PAP" Value="GLOBALPAP">
+                            </asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/UI/PROJECT/MNEGoalEvaluation.aspx" Text="M &amp; E Goal Evaluation"
+                                Value="MNE_GOAL_EVAL" />
+                            <asp:MenuItem NavigateUrl="~/UI/PROJECT/ImportPapCoordinates.aspx" Text="Import Pap Coordinates"
+                                Value="IMP_PAP_COORDINATES" />
+                        </asp:MenuItem>
+                        <asp:MenuItem Selectable="false" NavigateUrl="#" Text="&nbsp; Compensation &nbsp;"
+                            Value="COMPENSATION">
+                            <asp:MenuItem NavigateUrl="~/UI/Compensation/PAPList.aspx" Text="PAP List" Value="PAPLIST">
+                            </asp:MenuItem>                               
+                            <asp:MenuItem NavigateUrl="~/UI/Compensation/SocioEconomic/Household.aspx" Text="Socio-Economic"
+                                Value="SOCIO_ECONOMIC"></asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/UI/COMPENSATION/SURVEY/LandInfo.aspx" Text="Survey"
+                                Value="SURVEY"></asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/UI/COMPENSATION/VALUATION/PermanenetBuilding.aspx" Text="Valuation"
+                                Value="VALUATION"></asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/UI/COMPENSATION/CompensationFinancial.aspx" Text="Compensation Financials"
+                                Value="COMPENSATION_FINANCIALS"></asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/UI/COMPENSATION/CompensationPackages.aspx" Text="Package Documents"
+                                Value="PACKAGE_DOCUMENTS"></asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/UI/COMPENSATION/PackagePaymentRequest.aspx" Text="Package Fund Request"
+                                Value="PACKAGE_PAYMENT_REQ"></asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/UI/COMPENSATION/BatchPayment.aspx" Text="Batch Payment"
+                                Value="BATCH_PAYMENT"></asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/UI/COMPENSATION/PaymentProcessing.aspx" Text="Fund Processing Info"
+                                Value="PAYMENT_PROCESSING_INFO"></asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/UI/COMPENSATION/PackageClosingInfo.aspx" Text="Package Closing Info"
+                                Value="PACKAGE_CLOSING_INFO"></asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/UI/COMPENSATION/GRIEVANCES/Grievances.aspx" Text="Grievances"
+                                Value="GRIEVANCES"></asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/UI/COMPENSATION/PublicConsultationandDisclosure .aspx"
+                                Text="Public Consultation & Disclosure" Value="PCDD"></asp:MenuItem>
+                            <asp:MenuItem Selectable="false" NavigateUrl="#" Text="Livelihood Restoration" Value="LIVELIHOOD_RESTORATION">
+                                <asp:MenuItem NavigateUrl="~/UI/COMPENSATION/LivelihoodRestorationPlan.aspx" Text="Plan"
+                                    Value="LRP_PLAN" />
+                                <asp:MenuItem NavigateUrl="~/UI/COMPENSATION/LRP_Budget.aspx" Text="Budget" Value="LRP_BUDGET" />
+                                <asp:MenuItem NavigateUrl="~/UI/COMPENSATION/SOCIOECONOMIC/PAPliveliwoodAfter.aspx" Text="Livelihood Restoration Assessment" Value="LRA_AFTER" />
+                            </asp:MenuItem>
+                            <asp:MenuItem Selectable="false" NavigateUrl="#" Text="Community Development" Value="COMMUNITY_DEVELOPMENT">
+                                <asp:MenuItem NavigateUrl="~/UI/COMPENSATION/CDAPImplementation.aspx" Text="Plan"
+                                    Value="CDAP_PLAN" />
+                                <asp:MenuItem NavigateUrl="~/UI/COMPENSATION/CDAP-Budget.aspx" Text="Budget" Value="CDAP_BUDGET" />
+                            </asp:MenuItem>
+                        </asp:MenuItem>
+                        <asp:MenuItem Selectable="false" NavigateUrl="#" Text="&nbsp; Document &nbsp;" Value="DOCUMENT">
+                            <asp:MenuItem NavigateUrl="~/UI/DOCUMENT/UploadDocument.aspx" Text="Upload Document"
+                                Value="UPLOAD_DOCUMENT" />
+                            <asp:MenuItem NavigateUrl="~/UI/MYACTIVITIES/Questionaries.aspx" Text="Questionnaire" Value="QUESTIONNAIRE">
+                            </asp:MenuItem>
+                        </asp:MenuItem>
+                        <asp:MenuItem Selectable="false" NavigateUrl="#" Text="&nbsp; Expense &nbsp;" Value="EXPENSE">
+                            <asp:MenuItem NavigateUrl="~/UI/ExpenseAccount.aspx" Text="Consolidated Expense" Value="CONS_PROJECT_DET_EXPENSES" />
+                            <asp:MenuItem NavigateUrl="~/UI/Expense.aspx" Text="Consolidated Detail Expense" Value="CONS_PROJECT_EXPENSES" />
+                            <asp:MenuItem NavigateUrl="~/UI/REPORTUI/ReportForProjectExpense.aspx" Text="Expense For Project Report"
+                                Value="PROJECT_EXPENSE_RPT" />
+                        </asp:MenuItem>
+                        <asp:MenuItem Selectable="false" NavigateUrl="#" Text="&nbsp; Reports &nbsp;" Value="REPORTS">
+                            <asp:MenuItem Selectable="false" NavigateUrl="#" Text="Project" Value="PROJECT_REPORTS" Enabled="False">
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/ProjectReport.aspx" Text="Project List"
+                                    Value="PROJECT_LIST" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/AuditTrail.aspx" Text="Audit Trails" Value="AUDIT_TRAIL" Enabled="False" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/Approvals.aspx" Text="Approval" Value="APPROVAL" Enabled="False" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/ApprovalsDue.aspx" Text="Approvals Due" Value="APPROVAL_DUE" Enabled="False" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/DailyProjectsStatus.aspx" Text="Daily project status"
+                                    Value="DAILY_PROJ_STATUS" Enabled="False" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/PAPStatus_Chart.aspx" Text="PAP Status Chart"
+                                    Value="PAP_STATUS_CHART" Enabled="False" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/ProjectStatus_PieChart.aspx" Text="Project Status PieChart"
+                                    Value="PROJECT_STATUS_PIECHART" Enabled="False" />
+                            </asp:MenuItem>
+                            <asp:MenuItem Selectable="false" NavigateUrl="#" Text="Compensation" Value="COMPENSATION_REPORTS">
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/PublicConsultation.aspx" Text="Public consultation progress"
+                                    Value="PUBLIC_CONSULTATION_PROGRESS" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/Valuation.aspx" Text="Valuation" Value="RPT_VALUATION" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/Survey.aspx" Text="Survey" Value="RPT_SURVEY" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/Compensation.aspx" Text="Compensation" Value="RPT_COMPENSATION" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/ProCompensation.aspx" Text="Propotionated Compensation" Value="RPT_PROCOMPENSATION" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/Statistics.aspx" Text="Statistics" Value="STATISTICS" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/ACCEPTANCECOUNT.aspx" Text="Package Acceptance"
+                                    Value="Package_Acceptance" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/FundProgress.aspx" Text="Fund Progress Request"
+                                    Value="FUND" />
+                                     <asp:MenuItem NavigateUrl="~/UI/REPORTUI/FundRequestChange.aspx" Text="Fund Request Change"
+                                    Value="FUNDREQCHNG" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/GeneralPapCategory.aspx" Text="General PAP Category"
+                                    Value="PAP_CATEGORY" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/CompensationBeneficiary.aspx" Text="Compensation Beneficiary"
+                                    Value="COMPENSATION_BENEFICIARY" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/CulturalProperty.aspx" Text="Cultural Property Management"
+                                    Value="CULTURAL_PROP_MGMT" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/ComparisionDataReports.aspx" Text="Change Reports"
+                                    Value="CHANGE_REPORTS" />
+                            </asp:MenuItem>
+                            <asp:MenuItem Selectable="false" NavigateUrl="#" Text="Expense" Value="EXPENSE_REPORTS">
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/BudgtEstimation.aspx" Text="Budget v/s Expenditure"
+                                    Value="BUDGET_EXPENDITURE" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/MonthlyProjectExpenditure.aspx" Text="Monthly Project Expenditure"
+                                    Value="MONTHLY_PROJ_EXP" />
+                            </asp:MenuItem>
+                            <asp:MenuItem Selectable="false" NavigateUrl="#" Text="Grievance" Value="GRIEVANCE_REPORTS">
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/LegalCaseTracking.aspx" Text="Legal Case Tracking"
+                                    Value="LEGAL_CASE_TRACKING" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/DisputeRsolutionTracking.aspx" Text="Dispute Resolution Tracking"
+                                    Value="DISPUTE_RES_TRACKING" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/Grievancerpt.aspx" Text="Grievance"
+                                    Value="GRIEVANCE_RPT" />
+                            </asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/UI/REPORTUI/LivelihoodSupport.aspx" Text="Community Development<br/>and Livelihood Support"
+                                Value="CDAP_LIV_SUPPORT" />
+                            <asp:MenuItem NavigateUrl="~/UI/REPORTUI/MonitoringResultEvaluation.aspx" Text="M & E"
+                                Value="M_E" />
+                                 <asp:MenuItem NavigateUrl="~/UI/REPORTUI/PAPChildCount.aspx" Text="PAP Child Count"
+                                Value="PAP_Child_dCount" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/PersonalIdentification.aspx" Text="Personal Identification"
+                                Value="Personal_Identification" />
+                            <asp:MenuItem NavigateUrl="~/UI/REPORTUI/OptionSummary.aspx" Text="Legacy Reports"
+                                Value="OPTION_SUMMARY" />
+                            <asp:MenuItem NavigateUrl="~/UI/REPORTUI/LiveliHoodAfter.aspx" Text="Livelihood Restoration Assessment" Value="LRA_AFTERRPT" />
+                        </asp:MenuItem>
+                        <asp:MenuItem Selectable="false" NavigateUrl="#" Text="&nbsp; My Activities &nbsp;"
+                            Value="MY_ACTIVITIES">
+                            <asp:MenuItem NavigateUrl="~/UI/MYACTIVITIES/MyTasks_Approval.aspx" Text="Approvals"
+                                Value="APPROVALS" />
+                            <asp:MenuItem NavigateUrl="~/UI/MYACTIVITIES/SharedApprovals.aspx" Text="Shared Approvals"
+                                Value="SHARED_APPROVALS" />
+                            <asp:MenuItem NavigateUrl="~/UI/MYACTIVITIES/TemporaryAuthorization.aspx" Text="Temp. Authorization"
+                                Value="TEMP_AUTHORIZATION" />
+                            <asp:MenuItem NavigateUrl="~/UI/MYACTIVITIES/SharedAuthorization.aspx" Text="Shared Authorization"
+                                Value="SHARED_AUTHORIZATION" />
+                            <asp:MenuItem NavigateUrl="~/UI/MYACTIVITIES/PapListExport.aspx" Text="GIS Export"
+                                Value="PAP_LIST_EXPORT" />
+                            <asp:MenuItem NavigateUrl="~/UI/MYACTIVITIES/PaymentExport.aspx" Text="Payment Export"
+                                Value="PAP_PAYMENT_EXPORT" />
+                        </asp:MenuItem>                       
+                         <asp:MenuItem Selectable="false" NavigateUrl="#" Text="&nbsp; Help &nbsp;" Value="Help">
+                             <asp:MenuItem  NavigateUrl="~/About us.aspx" Text="About Us" Value="AboutUs"/>
+                             <asp:MenuItem  NavigateUrl="~/IMAGE/HelpDocuments/WIS-online-HELp.chm" Text="Online Help" Value="onlinehelp"/>
+                         </asp:MenuItem>
+                    </Items>
+                </asp:Menu>
+            </div>
+        </div>
+        <div style="clear: both">
+        </div>
+        <div class="main">
+            <fieldset class="icePnl" style="background-color: #eee;">
+                <table border="0" class="frmTable">
+                    <tr class="frmMenu">
+                        <td class="textboldform">
+                            &nbsp;<asp:Label ID="lblPageHeader" runat="server"></asp:Label>
+                        </td>
+                    </tr>
+                </table>
+                <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+            </fieldset>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+    <div class="footer">
+        <font color="#FFFFFF">Copyright &copy; 2013 <a href="http://www.uetcl.com" style="text-decoration: none"
+            target="_top"><font color="#FFFFFF">Uganda Electricity Transmission Company Ltd<sup>&reg;</sup></font></a></font>
+    </div>
+    </form>
+    <script type="text/javascript">
+        function Check(event) {
+            if (typeof LOGIN_BUTTON_ID != 'undefined') {
+                var bt = document.getElementById(LOGIN_BUTTON_ID);
+                if (bt) {
+                    if (event.keyCode == 13) {
+                        bt.click();
+                        return;
+                    }
+                }
+            }
+        }
+        if (document.layers) {
+            document.captureEvents(Event.KEYDOWN);
+        }
+
+        document.onkeydown = function (evt) {
+            var keyCode = evt ? (evt.which ? evt.which : evt.keyCode) : event.keyCode;
+            if (keyCode == 13) {
+                if (typeof LOGIN_BUTTON_ID != 'undefined') {
+                    var bt = document.getElementById(LOGIN_BUTTON_ID);
+                    var focused = document.activeElement;
+                    if (focused.type == 'textarea') {
+                        return true;
+                    }
+                    else {
+                        if (bt) {
+                            if (event.keyCode == 13) {
+                                bt.click();
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+
+        function Checkabcdfg(event) {
+            if (typeof LOGIN_BUTTON_ID != 'undefined') {
+                var bt = document.getElementById(LOGIN_BUTTON_ID);
+                var focused = document.activeElement;
+                if (focused.type == 'textarea') {
+                    return true;
+                }
+                else {
+                    if (bt) {
+                        if (event.keyCode == 13) {
+                            bt.click();
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>

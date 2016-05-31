@@ -1,0 +1,512 @@
+﻿/* ** Created By Ramu.S @ wed 10 03 13 for the other form Css  ** */
+.iceMainpagemenu
+{
+    padding: 1em; /* Fliedset Boarder Space with 1mm space for legend field */
+    font: Arial, Verdana, Helvetica, sans-serif; /* Fliedset Boarder Font family */
+    border: 1px solid #4591A1; /* Fliedset Boarder width, colour and Display type */
+    margin-left: -10px;
+    width: 100%;
+    background-color: #D9D9FF;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#FDFDFF", endColorstr="#c7c0fF");
+}
+.frmMainTable
+{
+    width: 100%;
+    margin-top: -16px;
+    margin-left: -10px;
+    margin-bottom: 3px;
+}
+/* Css for outter Fieldset css */
+.icePnl
+{
+    padding: 1em; /* Fliedset Boarder Space with 1mm space for legend field */
+    font: Arial, Verdana, Helvetica, sans-serif; /* Fliedset Boarder Font family */
+    border: 1px solid #4591A1; /* Fliedset Boarder width, colour and Display type */
+    margin-left: -10px;
+    width: 99%;
+    background-color: #D9D9FF;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#FDFDFF", endColorstr="#c7c0fF");
+}
+/* End outter Fieldset css */
+/* **Css for form Table** */
+.frmTable
+{
+    width: 102.6%;
+    margin-top: -16px;
+    margin-left: -16px;
+    margin-bottom: 3px;
+}
+
+
+.frmTablePopUpw
+{
+    width: 103.6%;
+    margin-top: -16px;
+    margin-left: -16px;
+    margin-bottom: 3px;
+}
+/* ** Form Menu ** */
+.frmMenu
+{
+    background-color: #2A75A9; /*#18BEE7 #BDEDFF*/
+    height: 3px;
+    color: White;
+    font-family: Arial;
+    font-size: 16px;
+    text-align: left;
+    font-weight: bold;
+}
+/* ** For the menu Label** */
+.textboldform
+{
+    border: 1px solid #4591A1;
+    font-family: Arial;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: bold;
+    color: White;
+    text-align: left;
+}
+/* ** for Hr tag(to draw line after menu name)** */
+.icehrtag
+{
+    border: 0;
+    color: #000000;
+    background-color: #666666;
+    height: 2px;
+    width: 103%;
+    float: left;
+    margin-left: -16px;
+    margin-top: -1.5px;
+}
+/* for Inner(2nd) Fieldset css */
+.icePnlinner
+{
+    /* Fliedset Boarder Font family */
+    border-style: solid;
+    border-width: 1px;
+    border-color: #2A75A9 #3A5F7A #3A5F7A #3A5F7A;
+    padding: 0 1em 1em 1em;
+    /*font: Arial,Verdana;
+    font-weight: normal; /* Fliedset Boarder width, colour and Display type */
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-bottom: 10px;
+    color: #3A5F7A;
+}
+/* **css for Label other than master page** */
+.iceLable
+{
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1em;
+    color: #000000;
+    font-size: 12px;
+    font-weight: bold;
+    text-decoration: none;
+    width: auto; /*white-space:nowrap; 	margin-left:5px; 	margin-right:5px;*/
+}
+
+
+
+/* for Textbox css */
+.iceTextBox
+{
+    background-color: #fefefe; /* back ground color for the Testbox */ /*width: 180px; 	float: left;*/
+    padding: 2px;
+    border: 1px solid #CCC; /* textbox boader color with height */
+    color: #333333; /* color TextBox Lable */
+    -moz-border-radius: 5px;
+    font-family: Arial; /* select the langauage package(Note : Need to instal to your System) */
+    direction: ltr; /* Type the value from Left to Right */ /*margin-top: 8px;*/
+}
+.iceTextBoxPlotRef
+{
+    background-color: #ffffff; /* back ground color for the Testbox */ /*width: 180px; 	float: left;*/
+    padding: 2px;
+    border: 1px solid #CCC; /* textbox boader color with height */
+    color: #000000; /* color TextBox Lable */
+    -moz-border-radius: 5px;
+    font-family: Tahoma,Verdana; /* select the langauage package(Note : Need to instal to your System) */
+    direction: ltr; /* Type the value from Left to Right */ /*margin-top: 8px;*/
+}
+.labelPlotRef
+{
+    font-family: Tahoma,Arial;
+    line-height: 1em;
+    color: #000000;
+    font-size: 12px;
+    font-weight: normal;
+    width: auto;
+}
+/* for Textbox css */
+.iceTextBoxLarge
+{
+    background-color: #fefefe; /* back ground color for the Testbox */
+    width: 300px; /*float: left;*/
+    padding: 2px;
+    border: 1px solid #CCC; /* textbox boader color with height */
+    color: #333333; /* color TextBox Lable */
+    -moz-border-radius: 5px;
+    font-family: Arial; /* select the langauage package(Note : Need to instal to your System) */
+    direction: ltr; /* Type the value from Left to Right */
+    margin-top: 8px;
+}
+/* *** dropdown  *** */
+.iceDropDown
+{
+    background-color: #fefefe; /*width: 180px; */
+    padding: 2px;
+    padding-top: 0px;
+    float: left;
+    border: 1px solid #dedede;
+    color: #333333;
+    -moz-border-radius: 5px;
+    font-family: Arial; /*margin-top:6px;*/
+}
+.iceDropDownlarge
+{
+    background-color: #fefefe;
+    width: 300px;
+    padding: 2px;
+    padding-top: 0px;
+    float: left;
+    border: 1px solid #dedede;
+    color: #333333;
+    -moz-border-radius: 5px;
+    margin-top: 6px;
+    font-family: Arial;
+}
+/* ** Csws for TextAera ** */
+.iceTextAera
+{
+    background-color: #fefefe;
+    width: 250px;
+    padding: 2px;
+    padding-top: 0px;
+    float: left;
+    border: 1px solid #dedede;
+    color: #333333;
+    -moz-border-radius: 5px;
+    font-family: Arial; /*margin-top:-3px;*/
+}
+.iceTextAeralarge
+{
+    background-color: #fefefe;
+    width: 550px;
+    padding: 2px;
+    padding-top: 0px;
+    float: left;
+    border: 1px solid #dedede;
+    color: #333333;
+    -moz-border-radius: 5px;
+    font-family: Arial; /*margin-top:-3px;*/
+}
+
+.icebutton
+{
+    background-color: #2A75A9; /*#5D95BA;*/ /* Background color for the Button */
+    width: 100px; /* Width of the Button(Take only no. of text pluse 2px, Space(Max charater 12)) */ /* Marigin form the end of the form(Design last textbox or Lable) */
+    padding: 2px; /* Give space of 5mm pix. for button(it include top, left,right,bottom)*/ /*float: left;*/
+    padding: 3px;
+    color: White; /* Color for the font which is writen on the Button */
+    border: 1px solid #dedede; /* Boarder width, colour and Display type */
+    -moz-border-radius: 10px; /* not work for IE, used to create */
+    margin-left: 0;
+    margin-right: 5;
+    margin-top: 5;
+}
+
+.gridStyle
+{
+    background-color: #d0d0d0;
+}
+
+.gridHeaderStyle
+{
+    background-color: #3A5F7A;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 12px;
+}
+
+.gridRowStyle
+{
+    background-color: #ffffff;
+    color: #000000;
+    font-family: Arial;
+    font-size: 12px;
+}
+
+.gridFooterStyle
+{
+    background-color: #507CD1;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.gridPagerStyle
+{
+    background-color: #3A5F7A;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 12px;
+    font-weight: bold;
+}
+.gridAlternateRow
+{
+    background-color: #CCFFCC; /*LightGrey*/
+    color: #000;
+    font-family: Arial;
+    font-size: 12px;
+}
+.mandatory
+{
+    color: Red;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.tftable
+{
+    font-family: Arial;
+    font-size: 12px;
+    font-weight: bold;
+    color: #333333;
+   /*border-width: 2px;
+    border-color: #CCCCCC;
+    border-collapse: collapse;*/
+}
+.tftable th
+{
+    border-width: 2px;
+    padding: 8px;
+    /*border-style: solid;
+    border-color: #CCCCCC;*/
+}
+.tftable tr
+{
+    border-width: 2px;
+    padding: 8px;
+    /*border-style: solid;
+    border-color: #CCCCCC;
+    background-color: #FFFFFF;*/
+}
+.tftable td
+{
+    padding: 8px;
+    /*border-width: 2px;
+    border-style: solid;
+    border-color: #CCCCCC;*/
+}
+
+.iceLinkButton
+{
+    background-color: #2A75A9; /* Background color for the Button */
+    width: 100px; /* Width of the Button(Take only no. of text pluse 2px, Space(Max charater 12)) */ /* Marigin form the end of the form(Design last textbox or Lable) */
+    padding: 5px; /* Give space of 5mm pix. for button(it include top, left,right,bottom)*/
+    float: left;
+    padding: 2px;
+    padding-bottom: 2px;
+    color: White; /* Color for the font which is writen on the Button */
+    border: 1px solid #dedede; /* Boarder width, colour and Display type */
+    -moz-border-radius: 10px; /* not work for IE, used to create */
+    margin-left: 0px;
+    margin-right: 5px;
+    margin-top: 5px;
+}
+/* *** Created Css By Ramu.S For Popup on 29/04/2013 *** */
+
+/* for Pop up loging page */
+.black_overlay
+{
+    display: none;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%; /*Width for popup window*/
+    height: 100%; /*Height for popup window*/
+    background-color: White; /*color for popup window*/
+    z-index: 1088;
+    -moz-opacity: 1.8; /* Transparent for popup window*/
+    opacity: .90; /* Transparent for popup window Color*/
+    filter: alpha(opacity=90); /* Transparent for popup window color*/
+}
+
+.white_content
+{
+    display: none;
+    position: fixed; /* position for popup window*/
+    width: 80%; /*Width for popup window*/
+    height: 100%; /*Height for popup window*/
+    top: 33px; /* position for top popup window*/ /*left: 35%;*/
+    right: 120px; /* position for Left popup window*/
+    padding: 0px;
+    border: 0px solid #fff; /* Boarder width, colour and Display type */
+    background-color: transparent; /* Back ground color for the popup page */
+    z-index: 1320;
+    overflow: auto;
+    margin-top: 10px;
+}
+
+.frmpopTable
+{
+    width: 110%;
+    margin-top: -16px;
+    margin-left: -15px;
+    margin-bottom: 3px;
+}
+
+.icepophrtag
+{
+    border: 0;
+    color: #000000;
+    background-color: #666666;
+    height: 2px;
+    width: 110%;
+    margin-left: -16px;
+    margin-top: -5px;
+}
+
+.iceSectionHeader
+{
+    font: 12px Arial;
+    font-weight: bold;
+    background-color: #e0e0e0;
+    color: #000;
+    text-align: left;
+}
+
+.labelSuffix
+{
+    font-family: Arial, Calibri, sans-serif;
+    color: #000000;
+    font-size: 12px;
+    font-weight: normal;
+}
+/* * ** Css For Popup Page ** * */
+
+/*Textbox Watermark*/
+.watermarked
+{
+    height: 18px;
+    border: 1px solid #BEBEBE;
+    background-color: #C1E0FF;
+    color: #000000;
+}
+/*End Textbox Watermark*/
+
+/*Hover menu*/
+.hovermenu
+{
+    background-color: #eeeeee;
+    color: #000000;
+    padding: 5px;
+    font-family: Arial 8px;
+    border: 1px solid #a9a9a9;
+}
+
+.hoverContent
+{
+    background-color: #FFFFE8;
+    color: #000000;
+    padding: 5px;
+    font-family: Arial 8px;
+    border: 1px solid #C0C0C0;
+}
+/*Hover menu*/
+
+/* Calendar Style */
+
+.WISCalendarStyle .ajax__calendar_container   {
+  background-color:#fff; 
+  border:solid 1px #000 !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#FDFDFF", endColorstr="#c7c0fF");
+}
+
+
+.WISCalendarStyle .ajax__calendar_header  {
+background-color: #ffffff;
+margin-bottom: 4px;
+margin-top:-5px;
+}
+
+
+.WISCalendarStyle .ajax__calendar_title, .WISCalendarStyle .ajax__calendar_next, .WISCalendarStyle .ajax__calendar_prev
+{
+    color: #FFFFFF;
+    padding-top: 0px;
+    padding-bottom:2px;
+    background-color: #336699;
+    margin-top:-2px;
+    margin-left:-4px;
+    margin-right:-4px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    vertical-align:text-top;
+}
+
+
+.WISCalendarStyle .ajax__calendar_body    {
+ background-color : #FFFFFF;
+ border : solid 0px #77D5F7;
+ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#FDFDFF", endColorstr="#c7c0fF");
+}
+
+
+.WISCalendarStyle .ajax__calendar_dayname {
+text-align:center;
+font-weight:bold;
+font-family:Tahoma;
+font-size:12px;
+margin-bottom: 0px;
+margin-top: 2px;
+color: Black;
+text-decoration:underline;
+
+}
+
+
+.WISCalendarStyle .ajax__calendar_day {
+color: Black;
+text-align:center;
+}
+
+
+.WISCalendarStyle .ajax__calendar_hover .ajax__calendar_day,
+.WISCalendarStyle .ajax__calendar_hover .ajax__calendar_month,
+.WISCalendarStyle .ajax__calendar_hover .ajax__calendar_year,
+.WISCalendarStyle .ajax__calendar_active  {
+color: #004080;
+font-weight: bold;
+background-color: #DEF1F4;
+}
+
+
+.WISCalendarStyle .ajax__calendar_today   {
+font-weight:bold;
+font-family:Tahoma;
+font-size:12px;
+color:Blue;
+}
+
+
+.WISCalendarStyle .ajax__calendar_other,
+.WISCalendarStyle .ajax__calendar_hover .ajax__calendar_today,
+.WISCalendarStyle .ajax__calendar_hover .ajax__calendar_title {
+color:Black;
+}
+/* End Calendar Style */
+
+/*Start Message Display Colour Style*/
+.StatusApproved
+{
+    color:Green;
+}
+.StatusPending
+{
+    color:Red;
+}
+/*End Message Display Colour Style*/

@@ -1,0 +1,440 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B2C6410E-675D-4221-8D88-5E3452E507F5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WIS_BusinessObjects</RootNamespace>
+    <AssemblyName>WIS_BusinessObjects</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\WIS_BIN\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\WIS_BIN\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AcreagePercentBO.cs" />
+    <Compile Include="ActivityBO.cs" />
+    <Compile Include="AddPAPBO.cs" />
+    <Compile Include="AffectedAcreageValuationBO.cs" />
+    <Compile Include="AffectedLandUserBO.cs" />
+    <Compile Include="ApprovalscoredtlBO.cs" />
+    <Compile Include="BacthBO.cs" />
+    <Compile Include="BankBO.cs" />
+    <Compile Include="BranchBO.cs" />
+    <Compile Include="BudgetEstimationBO.cs" />
+    <Compile Include="CardTypeBO.cs" />
+    <Compile Include="CategoryBO.cs" />
+    <Compile Include="CDAPBudgetDescrMasterBO.cs" />
+    <Compile Include="CDAPBudgetMasterBO.cs" />
+    <Compile Include="Collections\AffectedAcreageValuationList.cs" />
+    <Compile Include="Collections\CardTypeList.cs" />
+    <Compile Include="Collections\CategoryList.cs" />
+    <Compile Include="CDAPBudgetBO.cs" />
+    <Compile Include="CDAPImplementationBO.cs" />
+    <Compile Include="ClansBO.cs" />
+    <Compile Include="Collections\ActivityList.cs" />
+    <Compile Include="Collections\AddPAPList.cs" />
+    <Compile Include="Collections\ApprovalscoredtlList.cs" />
+    <Compile Include="Collections\BankList.cs" />
+    <Compile Include="Collections\BatchList.cs" />
+    <Compile Include="Collections\BudgetEstimationList.cs" />
+    <Compile Include="Collections\CDAPBudgetList.cs" />
+    <Compile Include="Collections\CDAPImplementationList.cs" />
+    <Compile Include="Collections\ClansList.cs" />
+    <Compile Include="Collections\Compare_projectList.cs" />
+    <Compile Include="Collections\CompensationFinancialList.cs" />
+    <Compile Include="Collections\CompensationPackagesList.cs" />
+    <Compile Include="Collections\ConcernList.cs" />
+    <Compile Include="Collections\ConsultantList.cs" />
+    <Compile Include="Collections\ConsultantTypeList.cs" />
+    <Compile Include="Collections\CopMechanismList.cs" />
+    <Compile Include="Collections\BankBranchList.cs" />
+    <Compile Include="Collections\ConversationLogList.cs" />
+    <Compile Include="Collections\DescriptionList.cs" />
+    <Compile Include="Collections\MaxCapList.cs" />
+    <Compile Include="Collections\OptionAvailableList.cs" />
+    <Compile Include="Collections\OptionGrpParamList.cs" />
+    <Compile Include="Collections\ParameterList.cs" />
+    <Compile Include="Collections\SharedAuthorizationList.cs" />
+    <Compile Include="Collections\CulturePropTypeList.cs" />
+    <Compile Include="Collections\EmailTemplateList.cs" />
+    <Compile Include="Collections\FixedCostCentreList.cs" />
+    <Compile Include="Collections\FixtureTypeList.cs" />
+    <Compile Include="Collections\GOUAllowanceList.cs" />
+    <Compile Include="Collections\GrievancesMasterList.cs" />
+    <Compile Include="Collections\HealthCenterList.cs" />
+    <Compile Include="Collections\HIVContractedList.cs" />
+    <Compile Include="Collections\LivPlanItemList.cs" />
+    <Compile Include="Collections\LocationClassificationList.cs" />
+    <Compile Include="Collections\MNEGoalElementList.cs" />
+    <Compile Include="Collections\MNEGoalEvalElementsList.cs" />
+    <Compile Include="Collections\MNEGoalEvaluationList.cs" />
+    <Compile Include="Collections\MNEGoalList.cs" />
+    <Compile Include="Collections\OtherFenceList.cs" />
+    <Compile Include="Collections\PAPliveliwoodAfterList.cs" />
+    <Compile Include="Collections\PaymentExportList.cs" />
+    <Compile Include="Collections\RepresentationList.cs" />
+    <Compile Include="Collections\TrackerDetailList.cs" />
+    <Compile Include="Collections\UploadPAPCoordinatesList.cs" />
+    <Compile Include="Collections\WIS_ConfigList.cs" />
+    <Compile Include="Collections\CurrencyList.cs" />
+    <Compile Include="Collections\DSH_PAPStatusList.cs" />
+    <Compile Include="Collections\DSH_RecentPAPSList.cs" />
+    <Compile Include="Collections\FinalValuationList.cs" />
+    <Compile Include="Collections\DisabilityList.cs" />
+    <Compile Include="Collections\LandReceivedMSTList.cs" />
+    <Compile Include="Collections\LiveRestBudVillagesList.cs" />
+    <Compile Include="Collections\ModeofPaymentList.cs" />
+    <Compile Include="Collections\MyTasks_ApprovalList.cs" />
+    <Compile Include="Collections\PAP_GroupOwnershipList.cs" />
+    <Compile Include="Collections\PAP_InstitutionList.cs" />
+    <Compile Include="Collections\ParishList.cs" />
+    <Compile Include="Collections\LivelihoodRestReceivedList.cs" />
+    <Compile Include="Collections\LivelihoodRestoreItemsList.cs" />
+    <Compile Include="Collections\LivelihoodRestorationList.cs" />
+    <Compile Include="Collections\LivelihoodRestLocationList.cs" />
+    <Compile Include="Collections\LivelihoodRestBudVillagesList.cs" />
+    <Compile Include="Collections\LivelihoodRestBudgetList.cs" />
+    <Compile Include="Collections\LivelihoodBudgetItemsList.cs" />
+    <Compile Include="Collections\LivelihoodBudgetCategoryList.cs" />
+    <Compile Include="Collections\CountyList.cs" />
+    <Compile Include="Collections\CropAgeList.cs" />
+    <Compile Include="Collections\CropDescriptionList.cs" />
+    <Compile Include="Collections\CropDiameterList.cs" />
+    <Compile Include="Collections\CropNameList.cs" />
+    <Compile Include="Collections\CropRateList.cs" />
+    <Compile Include="Collections\CropsList.cs" />
+    <Compile Include="Collections\CropTypeList.cs" />
+    <Compile Include="Collections\CulturePropertiesList.cs" />
+    <Compile Include="Collections\DamagedCropsList.cs" />
+    <Compile Include="Collections\TemporaryAuthorizationList.cs" />
+    <Compile Include="Collections\WelfareIndicatorList.cs" />
+    <Compile Include="ConversationLogBO.cs" />
+    <Compile Include="DescriptionBO.cs" />
+    <Compile Include="MaxCapBO.cs" />
+    <Compile Include="OptionAvailableBO.cs" />
+    <Compile Include="OptionGroupParametersBO.cs" />
+    <Compile Include="OptionParameterBO.cs" />
+    <Compile Include="OptionParameterMappingBO.cs" />
+    <Compile Include="ParameterBO.cs" />
+    <Compile Include="SharedAuthorizationBO.cs" />
+    <Compile Include="CulturePropertiesMasterBO.cs" />
+    <Compile Include="EmailTemplateBO.cs" />
+    <Compile Include="FixedCostCentreBO.cs" />
+    <Compile Include="FixtureTypeBO.cs" />
+    <Compile Include="GoalBO.cs" />
+    <Compile Include="GOUAllowanceBO.cs" />
+    <Compile Include="GrievancesMasterBO.cs" />
+    <Compile Include="HealthCenterBO.cs" />
+    <Compile Include="HIVContractedBO.cs" />
+    <Compile Include="LivBudgCategoryBO.cs" />
+    <Compile Include="LivBudgCategoryList.cs" />
+    <Compile Include="LivBudgItemBO.cs" />
+    <Compile Include="LivBudgItemList.cs" />
+    <Compile Include="LivPlanItemBO.cs" />
+    <Compile Include="LocationClassificationBO.cs" />
+    <Compile Include="MNEGoalElementBOL.cs" />
+    <Compile Include="MNEGoalEvalElementsBO.cs" />
+    <Compile Include="MNEGoalEvaluationBO.cs" />
+    <Compile Include="NotificationBO.cs" />
+    <Compile Include="OtherFenceBO.cs" />
+    <Compile Include="PAPLiveliwoodAfter.cs" />
+    <Compile Include="Parish_List.cs" />
+    <Compile Include="PaymentExportBO.cs" />
+    <Compile Include="RepresentationBO.cs" />
+    <Compile Include="SubCategoryBO.cs" />
+    <Compile Include="SubCategoryList.cs" />
+    <Compile Include="TrackerDetailBO.cs" />
+    <Compile Include="UploadPAPCoordinatesBO.cs" />
+    <Compile Include="WIS_ConfigBO.cs" />
+    <Compile Include="CurrencyBO.cs" />
+    <Compile Include="DSH_PAPStatusBO.cs" />
+    <Compile Include="DSH_RecentPAPSBO.cs" />
+    <Compile Include="ExpenseBO.cs" />
+    <Compile Include="ExpenseList.cs" />
+    <Compile Include="LandReceivedMSTBO.cs" />
+    <Compile Include="MonthlyProjectExpenditureBO.cs" />
+    <Compile Include="PAP_DisabilityBO.cs" />
+    <Compile Include="Collections\DiseaseList.cs" />
+    <Compile Include="Collections\DistrictList.cs" />
+    <Compile Include="Collections\DwellingList.cs" />
+    <Compile Include="Collections\FenceDescriptionList.cs" />
+    <Compile Include="Collections\FenceList.cs" />
+    <Compile Include="Collections\FloorTypeList.cs" />
+    <Compile Include="Collections\GeneralWelfareList.cs" />
+    <Compile Include="Collections\GeneralWelfareMasterList.cs" />
+    <Compile Include="Collections\GraveFinishList.cs" />
+    <Compile Include="Collections\GraveList.cs" />
+    <Compile Include="Collections\GrievancesList.cs" />
+    <Compile Include="Collections\HolderTypeList.cs" />
+    <Compile Include="Collections\ItemList.cs" />
+    <Compile Include="Collections\LandInfoList.cs" />
+    <Compile Include="Collections\LandInfoPrivateList.cs" />
+    <Compile Include="Collections\LandInfoRespondentsList.cs" />
+    <Compile Include="Collections\LandLivingOffList.cs" />
+    <Compile Include="Collections\LandUseList.cs" />
+    <Compile Include="Collections\LiteracylevelList.cs" />
+    <Compile Include="Collections\LiteracyStatusList.cs" />
+    <Compile Include="Collections\LivelihoodList.cs" />
+    <Compile Include="Collections\LoanList.cs" />
+    <Compile Include="Collections\LoginList.cs" />
+    <Compile Include="Collections\major_shockList.cs" />
+    <Compile Include="Collections\MeetingList.cs" />
+    <Compile Include="Collections\MemberClaimsList.cs" />
+    <Compile Include="Collections\NegoList.cs" />
+    <Compile Include="Collections\NeighbourList.cs" />
+    <Compile Include="Collections\NeverAttendedSchoolList.cs" />
+    <Compile Include="Collections\NewLocationList.cs" />
+    <Compile Include="Collections\Non_perm_structureList.cs" />
+    <Compile Include="Collections\OccStatusList.cs" />
+    <Compile Include="Collections\OccupationList.cs" />
+    <Compile Include="Collections\OptionGroupList.cs" />
+    <Compile Include="Collections\PAPServiceMasterList.cs" />
+    <Compile Include="Collections\PAPServicesList.cs" />
+    <Compile Include="Collections\PAP_AffectedLandUserList.cs" />
+    <Compile Include="Collections\PAP_DisabilityList.cs" />
+    <Compile Include="Collections\PAP_LivelihoodList.cs" />
+    <Compile Include="Collections\PAP_RelationList.cs" />
+    <Compile Include="Collections\PaymentList.cs" />
+    <Compile Include="Collections\PermanentStructureList.cs" />
+    <Compile Include="Collections\PositionList.cs" />
+    <Compile Include="Collections\ProjectList.cs" />
+    <Compile Include="Collections\ProjectPersonalList.cs" />
+    <Compile Include="Collections\ProjectRouteBLL.cs" />
+    <Compile Include="Collections\ProprietorList.cs" />
+    <Compile Include="Collections\PstatusList.cs" />
+    <Compile Include="Collections\PublicConsultationList.cs" />
+    <Compile Include="Collections\RELATIONSHIPLIST.cs" />
+    <Compile Include="Collections\ReligionList.cs" />
+    <Compile Include="Collections\RoleList.cs" />
+    <Compile Include="Collections\RolePrivilegesList.cs" />
+    <Compile Include="Collections\RoofTypeList.cs" />
+    <Compile Include="Collections\RouteCoordinatesList.cs" />
+    <Compile Include="Collections\SchoolDropReasonList.cs" />
+    <Compile Include="Collections\SchoolStatusList.cs" />
+    <Compile Include="Collections\ShocksExperiencedList.cs" />
+    <Compile Include="Collections\SocialSupportList.cs" />
+    <Compile Include="Collections\SocioConcernList.cs" />
+    <Compile Include="Collections\StructureCategoryList.cs" />
+    <Compile Include="Collections\StructureConditionList.cs" />
+    <Compile Include="Collections\StructureTypeList.cs" />
+    <Compile Include="Collections\SubCountyList.cs" />
+    <Compile Include="Collections\TenureLandList.cs" />
+    <Compile Include="Collections\TenureStructureList.cs" />
+    <Compile Include="Collections\TrackerHeaderList.cs" />
+    <Compile Include="Collections\TribeClanList.cs" />
+    <Compile Include="Collections\TribeList.cs" />
+    <Compile Include="Collections\Trn_Pap_HouseHoldList.cs" />
+    <Compile Include="Collections\TypeList.cs" />
+    <Compile Include="Collections\TypeOfLineLists.cs" />
+    <Compile Include="Collections\UnitList.cs" />
+    <Compile Include="Collections\UploadDocumentList.cs" />
+    <Compile Include="Collections\UploadPhotoList.cs" />
+    <Compile Include="Collections\UserList.cs" />
+    <Compile Include="Collections\VaccinationList.cs" />
+    <Compile Include="Collections\VillageList.cs" />
+    <Compile Include="Collections\VulnerabilityList.cs" />
+    <Compile Include="Collections\WallTypeList.cs" />
+    <Compile Include="Collections\WindowTypeList.cs" />
+    <Compile Include="Collections\WorkFlowList.cs" />
+    <Compile Include="Compare_projectBO.cs" />
+    <Compile Include="CompensationFinancialBO.cs" />
+    <Compile Include="CompensationPackagesBO.cs" />
+    <Compile Include="ConcernBO.cs" />
+    <Compile Include="ConsultantBO.cs" />
+    <Compile Include="ConsultantTypeBO.cs" />
+    <Compile Include="CopMechanismBO.cs" />
+    <Compile Include="DisabilityBO.cs" />
+    <Compile Include="LiveRestBudVillagesBO.cs" />
+    <Compile Include="FinanceConditionBO.cs" />
+    <Compile Include="Collections\FinanceConditionList.cs" />
+    <Compile Include="ModeofPaymentBO.cs" />
+    <Compile Include="NatureofFinancingBO.cs" />
+    <Compile Include="Collections\NatureofFinancingList.cs" />
+    <Compile Include="PAP_GroupOwnershipBO.cs" />
+    <Compile Include="PAP_InstitutionBO.cs" />
+    <Compile Include="ParishBO.cs" />
+    <Compile Include="LivelihoodRestBudVillagesBO.cs" />
+    <Compile Include="LivelihoodRestBudgetBO.cs" />
+    <Compile Include="LivelihoodRestReceivedBO.cs" />
+    <Compile Include="LivelihoodRestLocationBO.cs" />
+    <Compile Include="LivelihoodRestoreItemsBO.cs" />
+    <Compile Include="LivelihoodBudgetItemsBO.cs" />
+    <Compile Include="LivelihoodBudgetCategoryBO.cs" />
+    <Compile Include="LivelihoodRestorationBO.cs" />
+    <Compile Include="CountyBO.cs" />
+    <Compile Include="CropAgeBO.cs" />
+    <Compile Include="CropDescriptionBO.cs" />
+    <Compile Include="CropDiameterBO.cs" />
+    <Compile Include="CropNameBO.cs" />
+    <Compile Include="CropRateBO.cs" />
+    <Compile Include="CropsBO.cs" />
+    <Compile Include="CropTypeBO.cs" />
+    <Compile Include="CulturPropertiesBO.cs" />
+    <Compile Include="CurrentSchoolStatusBO.cs" />
+    <Compile Include="DamagedCropsBO.cs" />
+    <Compile Include="DiseaseBO.cs" />
+    <Compile Include="DistrictBO.cs" />
+    <Compile Include="DwellingBO.cs" />
+    <Compile Include="FenceBO.cs" />
+    <Compile Include="FenceDescriptionBO.cs" />
+    <Compile Include="FinalValuationBO.cs" />
+    <Compile Include="FinancierBO.cs" />
+    <Compile Include="FloorTypeBO.cs" />
+    <Compile Include="GeneralWelfareBO.cs" />
+    <Compile Include="GeneralWelfareMasterBO.cs" />
+    <Compile Include="GeographyBO.cs" />
+    <Compile Include="GraveBO.cs" />
+    <Compile Include="GraveFinishBO.cs" />
+    <Compile Include="GrievancesBO.cs" />
+    <Compile Include="HolderTypeBO.cs" />
+    <Compile Include="ITEMBO.cs" />
+    <Compile Include="LandInfoRespondentsBO.cs" />
+    <Compile Include="LandLivingOffBO.cs" />
+    <Compile Include="LandLivingOnBO.cs" />
+    <Compile Include="LandUseBO.cs" />
+    <Compile Include="LiteracyStatusBO.cs" />
+    <Compile Include="LivelihoodBO.cs" />
+    <Compile Include="LoanBO.cs" />
+    <Compile Include="LoginBO.cs" />
+    <Compile Include="MajorshockBO.cs" />
+    <Compile Include="MeetingBO.cs" />
+    <Compile Include="MemberClaimsBO.Cs" />
+    <Compile Include="MyTasks_Approval.cs" />
+    <Compile Include="NegoBO.cs" />
+    <Compile Include="NeighbourBO.cs" />
+    <Compile Include="NeverAttendedSchoolBO.cs" />
+    <Compile Include="NewLocationBO.cs" />
+    <Compile Include="NonPermanentStructureBO.cs" />
+    <Compile Include="OccStatusBO.cs" />
+    <Compile Include="OccupationBO.cs" />
+    <Compile Include="OptionGroupBO.cs" />
+    <Compile Include="PAPServiceBO.cs" />
+    <Compile Include="PAPServiceMasterBO.cs" />
+    <Compile Include="PAP_BankBO.cs" />
+    <Compile Include="PAP_HealthBO.cs" />
+    <Compile Include="PAP_HouseholdBO.cs" />
+    <Compile Include="PAP_LivelihoodBO.cs" />
+    <Compile Include="PAP_RelationBO.cs" />
+    <Compile Include="PAP_StakeholderBO.cs" />
+    <Compile Include="PaymentBO.cs" />
+    <Compile Include="PermanentStructureBO.cs" />
+    <Compile Include="PositionBO.cs" />
+    <Compile Include="PrivateLandInfoBO.cs" />
+    <Compile Include="ProjectBO.cs" />
+    <Compile Include="ProjectPersonalBO.cs" />
+    <Compile Include="ProjectRouteBO.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProprietorBO.cs" />
+    <Compile Include="PstatusBO.cs" />
+    <Compile Include="PublicConsultationBO.cs" />
+    <Compile Include="PublicLandInfoBO.cs" />
+    <Compile Include="ReasonforFinancingBO.cs" />
+    <Compile Include="Collections\ReasonforFinancingList.cs" />
+    <Compile Include="RelationshipBO.cs" />
+    <Compile Include="ReligionBO.cs" />
+    <Compile Include="RoleBO.cs" />
+    <Compile Include="RolePrivilegesBO.cs" />
+    <Compile Include="RoofTypeBO.cs" />
+    <Compile Include="RouteBO.cs" />
+    <Compile Include="RouteCoordinatesBO.cs" />
+    <Compile Include="RouteCriteriaScoreBO.cs" />
+    <Compile Include="RouteScoreBO.cs" />
+    <Compile Include="RouteSelectionCriteriaBO.cs" />
+    <Compile Include="RouteSelectionFactorsBO.cs" />
+    <Compile Include="SchoolDropReasonBO.cs" />
+    <Compile Include="SegmentBO.cs" />
+    <Compile Include="ShocksExperiencedBO.cs" />
+    <Compile Include="SocialSupportBO.cs" />
+    <Compile Include="SocioConcernBO.cs" />
+    <Compile Include="StructureCategoryBO.cs" />
+    <Compile Include="StructureConditionBO.cs" />
+    <Compile Include="StructureTypeBO.cs" />
+    <Compile Include="SubCountyBO.cs" />
+    <Compile Include="TemporaryAuthorizationBO.cs" />
+    <Compile Include="TenureLandBO.cs" />
+    <Compile Include="TenureStructureBO.cs" />
+    <Compile Include="TrackerHeaderBO.cs" />
+    <Compile Include="TribeBO.cs" />
+    <Compile Include="TribeClanBO.cs" />
+    <Compile Include="Trn_Pap_HouseHoldBO.cs" />
+    <Compile Include="TypeBO.cs" />
+    <Compile Include="TypeOfLineBO.cs" />
+    <Compile Include="UnitBO.cs" />
+    <Compile Include="UploadDocumentBO.cs" />
+    <Compile Include="UploadPhotoBO.cs" />
+    <Compile Include="UserBO.cs" />
+    <Compile Include="UtilBO.cs" />
+    <Compile Include="VaccinationBO.cs" />
+    <Compile Include="VillageBO.cs" />
+    <Compile Include="VulnerabilityBO.cs" />
+    <Compile Include="WallTypeBO.cs" />
+    <Compile Include="WelfareIndicatorBO.cs" />
+    <Compile Include="WelfareVoluntaryBO.cs" />
+    <Compile Include="WindowTypeBO.cs" />
+    <Compile Include="WorkflowApprovalBO.cs" />
+    <Compile Include="WorkFlowBO.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

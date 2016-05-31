@@ -1,0 +1,454 @@
+﻿/* DEFAULTS
+----------------------------------------------------------*/
+
+body
+{
+    background-image: url('../Image/bg.png'); /* For the Background image*/
+    background-repeat:repeat-y repeat-x;
+    font-size: .80em;
+    font-family: "Helvetica Neue" , "Lucida Grande" , "Segoe UI" , Arial, Helvetica, Verdana, sans-serif;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+
+a:link, a:visited
+{
+    color: #034af3;
+}
+
+a:hover
+{
+    color: #1d60ff;
+    text-decoration: none;
+}
+
+a:active
+{
+    color: #034af3;
+}
+
+p
+{
+    margin-bottom: 10px;
+    line-height: 1.6em;
+}
+
+
+/* HEADINGS   
+----------------------------------------------------------*/
+
+h1, h2, h3, h4, h5, h6
+{
+    font-size: 1.5em;
+    color: #666666;
+    font-variant: small-caps;
+    text-transform: none;
+    font-weight: 200;
+    margin-bottom: 0px;
+}
+
+h1
+{
+    text-shadow: 0 1px 0 rgba(255, 255, 255, .7), 0px 2px 0 rgba(0, 0, 0, .5);
+    text-transform: uppercase;
+    text-align: center;
+    color: #666;
+    margin: 0 0 20px 0;
+    letter-spacing: 4px;
+    font: bold 14px Verdana, Helvetica;
+    position: relative;
+}
+
+h2
+{
+    font-size: 1.5em;
+    font-weight: 600;
+}
+
+h3
+{
+    font-size: 1.2em;
+}
+
+h4
+{
+    font-size: 1.1em;
+}
+
+h5, h6
+{
+    font-size: 1em;
+}
+
+/* this rule styles <h1> and <h2> tags that are the 
+first child of the left and right table columns */
+.rightColumn > h1, .rightColumn > h2, .leftColumn > h1, .leftColumn > h2
+{
+    margin-top: 0px;
+}
+
+
+/* PRIMARY LAYOUT ELEMENTS   
+----------------------------------------------------------*/
+
+.page
+{
+    width: 97%;
+    background-color: #fff;
+    margin: 0px auto 0px auto;
+    border: 1px solid #496077;
+    margin-top: -0px;
+}
+
+.header
+{
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    background: #fff;
+    width: 100%;
+}
+
+.header h1
+{
+    font-weight: 700;
+    margin: 0px;
+    padding: 0px 0px 0px 20px;
+    color: #f9f9f9;
+    border: none;
+    line-height: 2em;
+    font-size: 2em;
+}
+
+.main
+{   
+    padding: 0px 12px;
+    margin: 5px 8px 8px 8px; /* 12px 8px 8px 8px */
+    min-height: 490px; /* Modified By Ramu defulat vaule is min-height: 430px;*/
+}
+
+.leftCol
+{
+    padding: 6px 0px;
+    margin: 12px 8px 8px 8px;
+    width: 200px;
+    min-height: 200px;
+}
+
+.footer
+{
+    color: #FFF;
+    padding: 2px 0px 0px 0px;
+    margin: 0px auto;
+    text-align: center;
+    line-height: normal;
+}
+
+
+/* TAB MENU   
+----------------------------------------------------------*/
+
+div.hideSkiplink
+{
+    background-color: #FFF;
+    width: 100%;
+}
+
+div.menu
+{
+    padding: 5px 0px 4px 8px;
+    margin-top: -13px; /* Change made By Ramu -- to move Menu Top(next to logo / Below to titile) */
+    margin-left: 265px; /* Change made By Ramu -- to move Menu Top(next to logo / Below to titile) */
+    margin-bottom:-18px;
+ }
+
+div.menu ul
+{
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    width: auto;
+    z-index: 1000;
+    -moz-opacity: 1.8;
+}
+
+div.menu ul li a, div.menu ul li a:visited
+{
+    background-color: #3A5F7A;
+    border: 0.1em #3A5F7A solid;
+    color: #FFF;
+    display: block;
+    line-height: 1.40em;
+    border-color: #FFF;
+    padding:5px 10px;
+    margin-left:-1px;
+    margin-bottom:-1px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+/* change BY ramu.S on 03/05/13 */
+div.menu ul li a:hover
+{
+    background-color: #5d95ba;
+    color: #FFF;
+    text-decoration: none;
+}
+
+div.menu ul li a:active
+{
+    background-color: #465c71;
+    color: #cfdbe6;
+    text-decoration: none;
+}
+
+div.menuSub
+{
+    padding: 5px 0px 4px 4px;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-bottom: 5px;
+ }
+
+div.menuSub ul
+{
+    list-style: none;
+    width: auto;
+    z-index: 888;
+    -moz-opacity: 1.8;
+}
+
+div.menuSub ul li a, div.menuSub ul li a:visited
+{
+    /*
+background-color: #3A5F7A;
+    border: 1px #3A5F7A solid;
+    color: #FFF;
+    display: block;
+    line-height: 1.35em;
+    padding: 4px 20px;
+    text-decoration: none;
+    white-space: nowrap;
+*/
+background-color: #3A5F7A;
+    border: 0.1em #3A5F7A solid;
+    color: #FFF;
+    display: block;
+    line-height: 1.10em;
+    border-color: #FFF;
+    font-family: Corbel, Arial;
+    font-size: 12px;
+    padding:5px 10px;
+    margin-left:-1px;
+    margin-bottom:-1px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+div.menuSub ul li a:hover
+{
+    background-color: #5d95ba;
+    color: #FFF;
+    text-decoration: none;
+}
+
+div.menuSub ul li a:active
+{
+    background-color: #465c71;
+    color: #fff;
+    text-decoration: none;
+}
+
+.menuSubSelected
+{
+    background-color: #ffffff;
+    color: #000000;
+    text-decoration: none;
+}
+/* MISC  
+----------------------------------------------------------*/
+
+.clear
+{
+    clear: both;
+}
+
+.title
+{
+    display: block;
+    float: left;
+    text-align: left;
+    width: auto;
+    margin-bottom:-22px;
+}
+
+
+/******** User Defined Css ****************/
+/* created By Ramu.s ***************/
+/******** Used for display Project Name In first Page(Used in Site Master)**********/
+.appHeader
+{
+    float: left;
+    text-align: center;
+    color: #0166A2;
+    font-family: tahoma;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 06px;
+    margin-left: 05px;
+}
+/******** End of Used for display Project Name In first Page(Used in Site Master)**********/
+/* ** Table for outer Login page ** */
+.curvedEdges
+{
+    border: 10px solid RoyalBlue;
+    -webkit-border-radius: 13px;
+    -moz-border-radius: 13px;
+    -ms-border-radius: 13px;
+    -o-border-radius: 13px;
+    border-radius: 13px;
+}
+.curvedEdges td, .curvedEdges th
+{
+    border-bottom: 0px none black;
+    padding: 5px;
+}
+/* ** End Table for outer Login page ** */
+/* **  Label css only for Login page ** */
+.iceLablelogin{
+	font-family: Arial, Helvetica, sans-serif;
+	line-height: 1em;
+	color: #000000;
+	font-size: 12px;
+	font-weight:bold;
+	text-decoration:none;
+	/*width:auto;
+	white-space:nowrap;*/
+	margin-left:5px;
+	margin-right:5px;
+	margin-top: 8px;
+}
+/* ** End Label css only for Login page ** */
+/* ** Textbox css only for Login page(User / Email Id ) ** */
+.loginuser {
+	  background: #f1f1f1 url(../Image/ImageLoginpage/User.png) no-repeat ;
+    padding: 4px 4px 8px 30px;
+    margin: 0 0 5px 0;
+    width: 200px; /* 353 + 2 + 45 = 400 */
+    border: 1px solid #ccc;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -moz-box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+    -webkit-box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+    box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+}
+/* ** Textbox css only for Login page(Password) ** */
+.loginpassword {
+	  background: #f1f1f1 url(../Image/ImageLoginpage/password.png) no-repeat 4px;
+    padding: 4px 4px 8px 30px;
+    margin: 0 0 5px 0;
+    width: 200px; /* 353 + 2 + 45 = 400 */
+    border: 1px solid #ccc;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -moz-box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+    -webkit-box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+    box-shadow: 0 2px 2px #ccc inset, 0 1px 0 #fff;
+}
+/* ** Textbox css only for Login page(user Name / Email Id Image in the textbox) ** */
+#username
+{
+    background-position: 0px -2px !important;
+}
+/* ** Textbox css only for Login page(Password in the textbox) ** */
+#password
+{
+    background-position: 0px -2px !important;
+}
+.Logincheckbox {
+	width: 20px;
+	height: 25px;
+	padding: 2px 5px 2px 0px;
+	background: url(../Images/checkbox.png) no-repeat;
+	display: block;
+	clear: left;
+	float: left;
+	margin-top: -2px;
+}
+.Loginfont
+{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    font-weight:bold;
+    padding-left: 0px;
+    padding-right: 2px;
+    padding-top: 2px;
+    color:#0066FF;
+    padding-bottom: 1px;
+}
+/* ** greeting label in site Master ** */
+.welcomeText 
+{
+    float:right;      
+    font-family: Arial;
+    font-weight:bold;
+    font-size:14px;
+    vertical-align: bottom;
+}
+
+/* *** used for Site Master Fieldset  *** */
+
+.icePnlMaster
+{
+    padding: 1em; /* Fliedset Boarder Space with 1mm space for legend field */
+    font: Arial, Verdana, Helvetica, sans-serif; /* Fliedset Boarder Font family */
+    border: 1px solid #4591A1; /* Fliedset Boarder width, colour and Display type */
+    margin-left: -0px;
+    margin-right:-20px;
+    width: 97.5%;
+    margin-bottom:-2px;
+    background-color: #D9D9FF;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#FDFDFF", endColorstr="#c7c0fF");
+}
+/* *** used for SiteMaster Fieldset of Login frame *** */
+
+.icePnlogin
+{
+    padding: 1em; /* Fliedset Boarder Space with 1mm space for legend field */
+    font: Arial, Verdana, Helvetica, sans-serif; /* Fliedset Boarder Font family */
+    border: 1px solid #4591A1; /* Fliedset Boarder width, colour and Display type */
+    margin-left: -10px;
+    margin-right:3px;
+    margin-bottom:0px;
+    margin-top:-3px;
+     background-color: #D9D9FF;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#FDFDFF", endColorstr="#c7c0fF");
+}
+/* *** used for SiteMaster Fieldset of Login Button*** */
+.iceLoginbutton
+{
+    background-color: #2A75A9; /*#5D95BA;*/ /* Background color for the Button */
+                width: 100px; /* Width of the Button(Take only no. of text pluse 2px, Space(Max charater 12)) */
+                margin: 5 5 5 0; /* Marigin form the end of the form(Design last textbox or Lable) */
+                padding: 2px; /* Give space of 5mm pix. for button(it include top, left,right,bottom)*/
+                /*float: left;*/
+                margin: 5 5 5 0;
+                padding: 3px;
+                color: White; /* Color for the font which is writen on the Button */
+                border: 1px solid #dedede; /* Boarder width, colour and Display type */
+                -moz-border-radius: 10px; /* not work for IE, used to create */
+                margin-bottom:-3px;
+}
+
+.logoutLink
+{
+    font-family: Arial;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    vertical-align: bottom;
+}
+
+

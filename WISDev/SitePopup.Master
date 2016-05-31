@@ -1,0 +1,50 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="SitePopup.Master.cs" Inherits="WIS.SitePopupMaster" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head runat="server">
+    <title>Wayleaves Information System</title>
+    <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Styles/Roylecss.css" rel="stylesheet" type="text/css" />
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form runat="server">
+    <div class="page">
+        <div class="header">
+            <div class="title">
+                <table>
+                    <tr>
+                        <td>
+                            <asp:Image ID="imgLogo" ImageUrl="~/Image/UTCL_Logo.png" runat="server" />
+                        </td>
+                        <td class="appHeader">
+                            Wayleaves Information System
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div style="clear: both"></div>
+        <br />
+        <div class="main">
+            <fieldset class="icePnl" style="background-color: #eee;">
+                <table border="0" class="frmTable" style="width:104.6%;">
+                    <tr class="frmMenu">
+                        <td class="textboldform">
+                            &nbsp;<asp:Label ID="lblPageHeader" runat="server"></asp:Label>
+                        </td>
+                    </tr>
+                </table>
+                <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+            </fieldset>
+        </div>
+    </div>
+    <div class="footer">
+        <font color="#FFFFFF">CopyRight &copy; 2013 <a href="http://www.uetcl.com" style="text-decoration:none" target="_top">
+            <font color="#FFFFFF">Uganda Electricity Transmission Company Ltd<sup>&reg;</sup></font></a></font>
+    </div>
+    </form>
+</body>
+</html>

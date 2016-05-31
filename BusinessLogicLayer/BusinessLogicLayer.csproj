@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FEC0CA45-B5CD-4354-AB43-CA118445572A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WIS_BusinessLogic</RootNamespace>
+    <AssemblyName>WIS_BusinessLogic</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\WIS_BIN\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\WIS_BIN\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActivityBLL.cs" />
+    <Compile Include="AddPAPBLL.cs" />
+    <Compile Include="BankBLL.cs" />
+    <Compile Include="BatchBLL.cs" />
+    <Compile Include="BranchBLL.cs" />
+    <Compile Include="BudgetEstimationBLL.cs" />
+    <Compile Include="CardTypeBLL.cs" />
+    <Compile Include="CategoryBLL.cs" />
+    <Compile Include="CDAPBudgetBLL.cs" />
+    <Compile Include="CDAPImplementationBLL.cs" />
+    <Compile Include="ClansBLL.cs" />
+    <Compile Include="Compare_ProjectBLL.cs" />
+    <Compile Include="CompensationFinancialBLL.cs" />
+    <Compile Include="CompensationPackagesBLL.cs" />
+    <Compile Include="ConcernBLL.cs" />
+    <Compile Include="ConsultantBLL.cs" />
+    <Compile Include="ConsultantTypeBLL.cs" />
+    <Compile Include="CopMechanismBLL.cs" />
+    <Compile Include="ConversationLogBLL.cs" />
+    <Compile Include="DescriptionBLL.cs" />
+    <Compile Include="MaxCapBLL.cs" />
+    <Compile Include="OptionAvailableBLL.cs" />
+    <Compile Include="OptionGroupParametersBLL.cs" />
+    <Compile Include="OptionParameterMappingBLL.cs" />
+    <Compile Include="ParameterBLL.cs" />
+    <Compile Include="SharedAuthorizationBLL.cs" />
+    <Compile Include="CulturePropertiesMasterBLL.cs" />
+    <Compile Include="EmailTemplateBLL.cs" />
+    <Compile Include="FixedCostCentreBLL.cs" />
+    <Compile Include="FixtureTypeBLL.cs" />
+    <Compile Include="GOUAllowanceBLL.cs" />
+    <Compile Include="GrievancesMasterBLL.cs" />
+    <Compile Include="HealthCenterBLL.cs" />
+    <Compile Include="HIVContractedBLL.cs" />
+    <Compile Include="LivBudgCategoryBLL.cs" />
+    <Compile Include="LivPlanItemBLL.cs" />
+    <Compile Include="LocationClassificationBLL.cs" />
+    <Compile Include="MNEGoalBLL.cs" />
+    <Compile Include="MNEGoalElementBLL.cs" />
+    <Compile Include="MNEGoalEvalElementsBLL.cs" />
+    <Compile Include="MNEGoalEvaluationBLL.cs" />
+    <Compile Include="NotificationBLL.cs" />
+    <Compile Include="OtherFixturesBLL.cs" />
+    <Compile Include="PAPliveliwoodAfterBLL.cs" />
+    <Compile Include="ParishBLL.cs" />
+    <Compile Include="RepresentationBLL.cs" />
+    <Compile Include="SharedApprovalsBLL.cs" />
+    <Compile Include="SubCategoryBLL.cs" />
+    <Compile Include="TrackerDetailBLL.cs" />
+    <Compile Include="UploadPAPCoordinatesBLL.cs" />
+    <Compile Include="WIS_ConfigBLL.cs" />
+    <Compile Include="CropTypeBLL.cs" />
+    <Compile Include="DashboardBLL.cs" />
+    <Compile Include="DisabilityBLL.cs" />
+    <Compile Include="ExpenseBLL.cs" />
+    <Compile Include="LandReceivedMSTBLL.cs" />
+    <Compile Include="LivelihoodRestLocationBLL.cs" />
+    <Compile Include="LiveRestBudVillagesBLL.cs" />
+    <Compile Include="FinanceConditionBLL.cs" />
+    <Compile Include="LivelihoodRestBudgetBLL.cs" />
+    <Compile Include="LivelihoodBudgetCategorysBLL.cs" />
+    <Compile Include="LivelihoodBudgetItemsBLL.cs" />
+    <Compile Include="LivelihoodRestorationPlanBLL.cs" />
+    <Compile Include="LivelihoodRestoreItemsBLL.cs" />
+    <Compile Include="CountyBLL.cs" />
+    <Compile Include="CropAgeBLL.cs" />
+    <Compile Include="CropDescriptionBLL.cs" />
+    <Compile Include="CropDiameterBLL.cs" />
+    <Compile Include="CropNameBLL.cs" />
+    <Compile Include="CropRateBLL.cs" />
+    <Compile Include="CropsBLL.cs" />
+    <Compile Include="CulturePropertiesBLL.cs" />
+    <Compile Include="CurrentSchoolStatusBLL.cs" />
+    <Compile Include="DamagedCropsBLL.cs" />
+    <Compile Include="DiseaseBLL.cs" />
+    <Compile Include="DistrictBLL.cs" />
+    <Compile Include="DwellingBLL.cs" />
+    <Compile Include="FenceBLL.cs" />
+    <Compile Include="FenceDescriptionBLL.cs" />
+    <Compile Include="FinalValuationBLL.cs" />
+    <Compile Include="FloorTypeBLL.cs" />
+    <Compile Include="GraveBLL.cs" />
+    <Compile Include="GraveFinishBLL.cs" />
+    <Compile Include="GrievancesBLL.cs" />
+    <Compile Include="ITEMBLL.cs" />
+    <Compile Include="LandInfoBLL.cs" />
+    <Compile Include="LandInfoPrivateBLL.cs" />
+    <Compile Include="LandInfoRespondentsBLL.cs" />
+    <Compile Include="LandUseBLL.cs" />
+    <Compile Include="LiteracyStatusBLL.cs" />
+    <Compile Include="LivelihoodBLL.cs" />
+    <Compile Include="LoanBLL.cs" />
+    <Compile Include="LoginBLL.cs" />
+    <Compile Include="MajorshockBLL.cs" />
+    <Compile Include="MasterBLL.cs" />
+    <Compile Include="MeetingBLL.cs" />
+    <Compile Include="MemberClaimsBLL.cs" />
+    <Compile Include="ModeofPaymentBLL.cs" />
+    <Compile Include="MonthlyProjectExpenditure.cs" />
+    <Compile Include="MyTasks_ApprovalBLL.cs" />
+    <Compile Include="NatureofFinancingBLL.cs" />
+    <Compile Include="NegoBLL.cs" />
+    <Compile Include="neighbourBLL.cs" />
+    <Compile Include="NeverAttendedSchoolBLL.cs" />
+    <Compile Include="NewLocationBLL.cs" />
+    <Compile Include="Non_perm_structureBLL.cs" />
+    <Compile Include="OccStatusBLL.cs" />
+    <Compile Include="OccupationBLL.cs" />
+    <Compile Include="OptionGroupBLL.cs" />
+    <Compile Include="PAP_BankBLL.cs" />
+    <Compile Include="PAP_GroupOwnershipBLL.cs" />
+    <Compile Include="PAP_HealthBLL.cs" />
+    <Compile Include="PAP_HouseholdBLL.cs" />
+    <Compile Include="PAP_InstitutionBLL.cs" />
+    <Compile Include="PAP_LivelihoodBLL.cs" />
+    <Compile Include="PAP_RelationBLL.cs" />
+    <Compile Include="PAP_StakeholderBLL.cs" />
+    <Compile Include="PaymentBLL.cs" />
+    <Compile Include="PermanentStructureBLL.cs" />
+    <Compile Include="PositionBLL.cs" />
+    <Compile Include="ProjectBLL.cs" />
+    <Compile Include="ProjectPersonalBLL.cs" />
+    <Compile Include="ProjectRouteBLL.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PstatusBLL.cs" />
+    <Compile Include="PublicConsultationBLL.cs" />
+    <Compile Include="ReasonforFinancingBLL.cs" />
+    <Compile Include="RelationshipBLL.cs" />
+    <Compile Include="Reports\DisputeRsolutionTrackingRptBLL.cs" />
+    <Compile Include="Reports\LCTRptBLL.cs" />
+    <Compile Include="Reports\PublicConsultationRptBLL.cs" />
+    <Compile Include="Reports\StatisticsRptBLL.cs" />
+    <Compile Include="Reports\SurveyRptBLL.cs" />
+    <Compile Include="Reports\ValuationRptBLL.cs" />
+    <Compile Include="RoleBLL.cs" />
+    <Compile Include="RolePrivilegesBLL.cs" />
+    <Compile Include="RoofTypeBLL.cs" />
+    <Compile Include="RouteCoordinatesBLL.cs" />
+    <Compile Include="SchoolDropBLL.cs" />
+    <Compile Include="ShocksExperiencedBLL.cs" />
+    <Compile Include="SocialSupportBLL.cs" />
+    <Compile Include="SocioConcernBLL.cs" />
+    <Compile Include="SocioEconomyBLL.cs" />
+    <Compile Include="StructureCategoryBLL.cs" />
+    <Compile Include="StructureConditionBLL.cs" />
+    <Compile Include="StructureTypeBLL.cs" />
+    <Compile Include="SubCountyBLL.cs" />
+    <Compile Include="SurveyBLL.cs" />
+    <Compile Include="TemporaryAuthorizationBLL.cs" />
+    <Compile Include="TenureLandBLL.cs" />
+    <Compile Include="TenureStructureBLL.cs" />
+    <Compile Include="TribeBLL.cs" />
+    <Compile Include="TribeClanBLL.cs" />
+    <Compile Include="TypeBLL.cs" />
+    <Compile Include="TypeOfLineBLL.cs" />
+    <Compile Include="UnitBLL.cs" />
+    <Compile Include="UploadDocumentBLL.cs" />
+    <Compile Include="UploadPhotoBLL.cs" />
+    <Compile Include="UserBLL.cs" />
+    <Compile Include="VaccinationBLL.cs" />
+    <Compile Include="VillageBLL.cs" />
+    <Compile Include="VulnerabilityBLL.cs" />
+    <Compile Include="WallTypeBLL.cs" />
+    <Compile Include="WelfareIndicatorBLL.cs" />
+    <Compile Include="WindowTypeBLL.cs" />
+    <Compile Include="WorkFlowBLL.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessObjects\BusinessObjects.csproj">
+      <Project>{B2C6410E-675D-4221-8D88-5E3452E507F5}</Project>
+      <Name>BusinessObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj">
+      <Project>{3AEE5A7D-7850-45D0-A577-B66CA45F4848}</Project>
+      <Name>DataAccess</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3AEE5A7D-7850-45D0-A577-B66CA45F4848}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WIS_DataAccess</RootNamespace>
+    <AssemblyName>WIS_DataAccess</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\WIS_BIN\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\WIS_BIN\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Oracle.DataAccess, Version=4.112.3.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\WIS_BIN\Oracle.DataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="SMSClassLibrary, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\WIS_BIN\SMSClassLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AcreagePercentDAL.cs" />
+    <Compile Include="ActivityDAL.cs" />
+    <Compile Include="AddPAPDAL.cs" />
+    <Compile Include="AppConfiguration.cs" />
+    <Compile Include="BankDAL.cs" />
+    <Compile Include="BatchDAL.cs" />
+    <Compile Include="BranchDAL.cs" />
+    <Compile Include="BudgetEstimationDAL.cs" />
+    <Compile Include="CardTypeDAL.cs" />
+    <Compile Include="CategoryDAL.cs" />
+    <Compile Include="CDAPBudgetDAL.cs" />
+    <Compile Include="CDAPImplementationDAL.cs" />
+    <Compile Include="ClansDAL.cs" />
+    <Compile Include="Compare_ProjectDAL.cs" />
+    <Compile Include="CompensationFinancialDAL.cs" />
+    <Compile Include="CompensationPackagesDAL.cs" />
+    <Compile Include="ConcerDAL.cs" />
+    <Compile Include="ConsultantDAL.cs" />
+    <Compile Include="ConsultantTypeDAL.cs" />
+    <Compile Include="CopMechanismDAL.cs" />
+    <Compile Include="ConversationLogDAL.cs" />
+    <Compile Include="DescriptionDAL.cs" />
+    <Compile Include="MaxCapDAL.cs" />
+    <Compile Include="OptionAvailableDAL.cs" />
+    <Compile Include="OptionGroupParametersDAL.cs" />
+    <Compile Include="OptionParameterMappingDAL.cs" />
+    <Compile Include="ParameterDAL.cs" />
+    <Compile Include="SharedAuthorizationDAL.cs" />
+    <Compile Include="CulturePropertiesMasterDAL.cs" />
+    <Compile Include="EmailTemplateDAL.cs" />
+    <Compile Include="FixedCostCentreDAL.cs" />
+    <Compile Include="FixtureTypeDAL.cs" />
+    <Compile Include="GOUAllowanceDAL.cs" />
+    <Compile Include="GrievancesMasterDAL.cs" />
+    <Compile Include="HealthCenterDAL.cs" />
+    <Compile Include="HIVContractedDAL.cs" />
+    <Compile Include="LivBudgCategoryDAL.cs" />
+    <Compile Include="LivPlanItemDAL.cs" />
+    <Compile Include="LocationClassificationDAL.cs" />
+    <Compile Include="MNEGoalElementDAL.cs" />
+    <Compile Include="MNEGoalEvalElementsDAL.cs" />
+    <Compile Include="MNEGoalEvaluationDAL.cs" />
+    <Compile Include="MNEGoalNameDAL.cs" />
+    <Compile Include="NotificationDAL.cs" />
+    <Compile Include="OtherFenceDAL.cs" />
+    <Compile Include="PAPliveliwoodAfterDAL.cs" />
+    <Compile Include="ParishDAL.cs" />
+    <Compile Include="RepresentationDAL.cs" />
+    <Compile Include="SharedApprovalsDAL.cs" />
+    <Compile Include="SubCategoryDAL.cs" />
+    <Compile Include="UploadPAPCoordinatesDAL.cs" />
+    <Compile Include="WIS_ConfigDAL.cs" />
+    <Compile Include="CropTypeDAL.cs" />
+    <Compile Include="DashboardDAL.cs" />
+    <Compile Include="DisabilityDAL.cs" />
+    <Compile Include="ExpenseDAL.cs" />
+    <Compile Include="LandReceivedMSTDAL.cs" />
+    <Compile Include="LivelihoodRestLocationDAL.cs" />
+    <Compile Include="LiveRestBudVillagesDAL.cs" />
+    <Compile Include="FinanceConditionDAL.cs" />
+    <Compile Include="LivelihoodRestBudgetDAL.cs" />
+    <Compile Include="LivelihoodBudgetCategoryDAL.cs" />
+    <Compile Include="LivelihoodBudgetItemsDAL.cs" />
+    <Compile Include="LivelihoodRestorationPlanDAL.cs" />
+    <Compile Include="LivelihoodRestoreItemsDAL.cs" />
+    <Compile Include="CountyDAL.cs" />
+    <Compile Include="CropAgeDAL.cs" />
+    <Compile Include="CropDescriptionDAL.cs" />
+    <Compile Include="CropDiameterDAL.cs" />
+    <Compile Include="CropNameDAL.cs" />
+    <Compile Include="CropRateDAL.cs" />
+    <Compile Include="CropsDAL.cs" />
+    <Compile Include="CulturePropertiesDAL.cs" />
+    <Compile Include="CurrentSchoolStatusDAL.cs" />
+    <Compile Include="DamagedCropsDAL.cs" />
+    <Compile Include="DiseaseDAL.cs" />
+    <Compile Include="DistrictDAL.cs" />
+    <Compile Include="DwellingDAL.cs" />
+    <Compile Include="FenceDAL.cs" />
+    <Compile Include="FenceDescriptionDAL.cs" />
+    <Compile Include="FinalValuationDAL.cs" />
+    <Compile Include="FloorTypeDAL.cs" />
+    <Compile Include="GraveDAL.cs" />
+    <Compile Include="GraveFinishDAL.cs" />
+    <Compile Include="GrievancesDAL.cs" />
+    <Compile Include="ITEMDAL.cs" />
+    <Compile Include="LandInfoDAL.cs" />
+    <Compile Include="LandInfoPrivateDAL.cs" />
+    <Compile Include="LandInfoRespondentsDAL.cs" />
+    <Compile Include="LandUseDAL.cs" />
+    <Compile Include="LiteracyStatusDAL.cs" />
+    <Compile Include="LivelihoodDAL.cs" />
+    <Compile Include="LoanDAL.cs" />
+    <Compile Include="LoginDAL.cs" />
+    <Compile Include="MajorshockDAL.cs" />
+    <Compile Include="MasterDAL.cs" />
+    <Compile Include="MeetingDAL.cs" />
+    <Compile Include="MemberClaimsDAL.cs" />
+    <Compile Include="ModeofPaymentDAL.cs" />
+    <Compile Include="MonthlyProjectExpenditureDAL.cs" />
+    <Compile Include="MyTasks_ApprovalDAL.cs" />
+    <Compile Include="NatureofFinancingDAL.cs" />
+    <Compile Include="NegoDAL.cs" />
+    <Compile Include="NeighbourDAL.cs" />
+    <Compile Include="NeverAttendedSchoolDAL.cs" />
+    <Compile Include="NewLocationDAL.cs" />
+    <Compile Include="Non_perm_structureDAL.cs" />
+    <Compile Include="OccStatusDAL.cs" />
+    <Compile Include="OccupationDAL.cs" />
+    <Compile Include="OptionGroupDAL.cs" />
+    <Compile Include="PAP_BankDAL.cs" />
+    <Compile Include="PAP_GroupOwnershipDAL.cs" />
+    <Compile Include="PAP_HealthDAL.cs" />
+    <Compile Include="PAP_HouseholdDAL.cs" />
+    <Compile Include="PAP_InstitutionDAL.cs" />
+    <Compile Include="PAP_LivelihoodDAL.cs" />
+    <Compile Include="PAP_RelationDAL.cs" />
+    <Compile Include="PAP_StakeholderDAL.cs" />
+    <Compile Include="PaymentDAL.cs" />
+    <Compile Include="PermanentStructureDAL.cs" />
+    <Compile Include="PositionDAL.cs" />
+    <Compile Include="ProjectDAL.cs" />
+    <Compile Include="ProjectpersonalDAL.cs" />
+    <Compile Include="ProjectRouteDAL.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PstatusDAL.cs" />
+    <Compile Include="PublicConsultationDAL.cs" />
+    <Compile Include="ReasonforFinancingDAL.cs" />
+    <Compile Include="RelationshipDAL.cs" />
+    <Compile Include="Reports\DisputeRsolutionTrackingRptDAL.cs" />
+    <Compile Include="Reports\LCTRptDAL.cs" />
+    <Compile Include="Reports\PublicConsultationRptDAL.cs" />
+    <Compile Include="Reports\StatisticsRptDAL.cs" />
+    <Compile Include="Reports\SurveyRptDAL.cs" />
+    <Compile Include="Reports\ValuationRptDAL.cs" />
+    <Compile Include="RoleDAL.cs" />
+    <Compile Include="RolePrivilegesDAL.cs" />
+    <Compile Include="RoofTypeDAL.cs" />
+    <Compile Include="RouteCoordinatesDAL.cs" />
+    <Compile Include="SchoolDropReasonDAL.cs" />
+    <Compile Include="ShocksExperiencedDAL.cs" />
+    <Compile Include="SocialSupportDAL.cs" />
+    <Compile Include="SocioConcernDAL.cs" />
+    <Compile Include="SocioEconomyDAL.cs" />
+    <Compile Include="StructureCategoryDAL.cs" />
+    <Compile Include="StructureConditionDAL.cs" />
+    <Compile Include="StructureTypeDAL.cs" />
+    <Compile Include="SubCountyDAL.cs" />
+    <Compile Include="SurveyDAL.cs" />
+    <Compile Include="TemporaryAuthorizationDAL.cs" />
+    <Compile Include="TenureLandDAL.cs" />
+    <Compile Include="TenureStructureDAL.cs" />
+    <Compile Include="TribeClanDAL.cs" />
+    <Compile Include="TribeDAL.cs" />
+    <Compile Include="TypeDAL.cs" />
+    <Compile Include="TypeOfLineDAL.cs" />
+    <Compile Include="UnitDAL.cs" />
+    <Compile Include="UploadDocumentDAL.cs" />
+    <Compile Include="UploadPhotoDAL.cs" />
+    <Compile Include="UserDAL.cs" />
+    <Compile Include="VaccinationDAL.cs" />
+    <Compile Include="VillageDAL.cs" />
+    <Compile Include="VulnerabilityDAL.cs" />
+    <Compile Include="WallTypeDAL.cs" />
+    <Compile Include="WelfareIndicatorDAL.cs" />
+    <Compile Include="WindowDAL.cs" />
+    <Compile Include="WorkflowDAL.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessObjects\BusinessObjects.csproj">
+      <Project>{B2C6410E-675D-4221-8D88-5E3452E507F5}</Project>
+      <Name>BusinessObjects</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
