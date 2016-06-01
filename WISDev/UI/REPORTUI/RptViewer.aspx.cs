@@ -86,9 +86,14 @@ namespace WIS
                         LoadBatchPrintout();
                         break;
 
+                    case "PAYRQHIST":
+                        LoadBatchingHistory();
+                        break;
+
                     case "Legacy":
                         LoadLegacyReports();
                         break;
+
 
                 }
                 //Edwin: End
@@ -330,6 +335,57 @@ namespace WIS
 
                 }
             }
+        }
+
+        private void LoadBatchingHistory()
+        {
+            string ProjectID = Request.QueryString["ProjectID"];
+            string HHID = Request.QueryString["HHID"];
+
+            if (CheckAuthorization.HasUpdatePrivilege(UtilBO.PrivilegeCode.PRIV_OPTION_SUMMARY) == false)
+            {
+                CrystalReportViewer1.HasExportButton = false;
+                CrystalReportViewer1.HasPrintButton = false;
+            }
+
+            myRpt = new ReportDocument();
+
+            myRpt.Load(RPT_SOURCE + "RPT_BATCH_HISTORY.rpt");
+
+            myRpt.SetDatabaseLogon(ConnInfo.UserID, ConnInfo.Password, ConnInfo.ServerName, ConnInfo.DatabaseName);
+
+            foreach (CrystalDecisions.CrystalReports.Engine.Table myTable in myRpt.Database.Tables)
+            {
+                TableLogOnInfo logInfo = myTable.LogOnInfo;
+                logInfo.ConnectionInfo = ConnInfo;
+                myTable.ApplyLogOnInfo(logInfo);
+            }
+
+            CrystalReportViewer1.ReportSource = myRpt;
+
+            CrystalReportViewer1.ParameterFieldInfo.Clear();
+
+            ParameterFields ParamFields = CrystalReportViewer1.ParameterFieldInfo;
+
+            ParameterField paramHHID = new ParameterField();
+            ParameterField paramProjectID = new ParameterField();
+
+            paramHHID.Name = "HHID_";
+            paramProjectID.Name = "PROJECTID_";
+
+            ParameterDiscreteValue paramHHIDVal = new ParameterDiscreteValue();
+            ParameterDiscreteValue paramProjectIDVal = new ParameterDiscreteValue();
+
+            paramHHIDVal.Value = Convert.ToInt32(HHID);
+            paramProjectIDVal.Value = Convert.ToInt32(ProjectID);
+
+            paramHHID.CurrentValues.Add(paramHHIDVal);
+            paramProjectID.CurrentValues.Add(paramProjectIDVal);
+
+            ParamFields.Add(paramHHID);
+            ParamFields.Add(paramProjectID);
+
+            CrystalReportViewer1.RefreshReport();
         }
 
         private void LoadBatchPrintout()
