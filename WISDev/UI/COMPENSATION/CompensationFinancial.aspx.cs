@@ -446,6 +446,7 @@ namespace WIS
             //    oCompensationFinancial.ResDepreciatedValue = Convert.ToDecimal(txtRSDepreciatedValue.Text.Trim());
             #endregion
             string message = oCompensationFinancialBLL.AddCompensationFinancial(oCompensationFinancial);
+
             if (message == "null" || message == null || message == "")
             {
                 CompensationFinancialBO objCompensationFinancialBO = new CompensationFinancialBO();
@@ -472,6 +473,7 @@ namespace WIS
 
                 oCompensationFinancialBLL.AddPackageDeliveryInfo(objCompensationFinancialBO);
             }
+
             return message;
         }
         /// <summary>
