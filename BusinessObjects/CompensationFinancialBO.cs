@@ -78,41 +78,21 @@ namespace WIS_BusinessObjects
         #region Package Delivery Info
         public int Cmp_DeliveryId { get; set; }
         public DateTime DeliveryDate { get; set; }
+
+        // Edwin: 30JUN2016 - Fix wrong delivery date issue
+        public DateTime DeliveryCreatedDate { get; set; }
+
         public int DeliveredBy { get; set; }
         public string PAPAction { get; set; }
         public string DeliveryComments { get; set; }
         #endregion Package Delivery Info
 
         #region Common Section
-        public string IsDeleted
-        {
-            get;
-            set;
-        }
-
-        public string CreatedDate
-        {
-            get;
-            set;
-        }
-
-        public int CreatedBy
-        {
-            get;
-            set;
-        }
-
-        public string UpdatedDate
-        {
-            get;
-            set;
-        }
-
-        public int UpdatedBy
-        {
-            get;
-            set;
-        }
+        public string IsDeleted { get; set; }
+        public string CreatedDate { get; set; }
+        public int CreatedBy { get; set; }
+        public string UpdatedDate { get; set; }
+        public int UpdatedBy { get; set; }
         #endregion      
 
         public string Land_Approval_Status { get; set; }

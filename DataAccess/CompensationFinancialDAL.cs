@@ -567,8 +567,9 @@ namespace WIS_DataAccess
                     if (!dr.IsDBNull(dr.GetOrdinal("DeliveryComments")))
                         objCompensationFinancial.DeliveryComments = dr.GetString(dr.GetOrdinal("DeliveryComments"));
 
+                    // Edwin: 30JUN2016 - Fix wrong delivery date issue
                     if (!dr.IsDBNull(dr.GetOrdinal("CreatedDate")))
-                        objCompensationFinancial.DeliveryDate = Convert.ToDateTime(dr.GetValue(dr.GetOrdinal("CreatedDate")));
+                        objCompensationFinancial.DeliveryCreatedDate = Convert.ToDateTime(dr.GetValue(dr.GetOrdinal("CreatedDate")));
                 }
 
                 dr.Close();
