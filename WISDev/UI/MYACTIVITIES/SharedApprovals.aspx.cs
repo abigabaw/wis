@@ -439,7 +439,7 @@ namespace WIS
                 {
                     int UserID = Convert.ToInt32(Session["USER_ID"]);
                     lnkSendClarify.Style.Remove("display");
-                    string OpenClarify = string.Format("OpenClarify({0},{1});", UserID, ViewState["HHID"], "Readonly");
+                    string OpenClarify = string.Format("OpenClarify({0},{1},{2});", UserID, ViewState["HHID"],ViewState["TrackHdrId"] "Readonly");
                     lnkSendClarify.Attributes.Add("onclick", OpenClarify);
                 }
 

@@ -64,13 +64,7 @@
     <table width="100%">
         <tr>
             <td>
-                <asp:Panel ID="pnlgrid" runat="server" Width="720px" Height="100%" ScrollBars="Horizontal">
-                </asp:Panel>
-                <script language="javascript" type="text/javascript">
-                    function DeleteRecord() {
-                        return confirm('Are you sure you want to delete this record?');
-                    }
-                </script>
+                
             </td>
         </tr>
     </table>

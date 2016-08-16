@@ -56,6 +56,7 @@ namespace WIS_DataAccess
                 cnn.Dispose();
             }
         }
+
         /// <summary>
         /// To fetch details
         /// </summary>
@@ -99,6 +100,7 @@ namespace WIS_DataAccess
 
             return Listobj;
         }
+
         /// <summary>
         /// To fetch details
         /// </summary>
@@ -157,6 +159,7 @@ namespace WIS_DataAccess
 
             return Cropsobj;
         }
+
         /// <summary>
         /// To update data to database
         /// </summary>
@@ -206,6 +209,7 @@ namespace WIS_DataAccess
                 cnn.Dispose();
             }
         }
+
         /// <summary>
         /// Todelete data from database
         /// </summary>
@@ -227,7 +231,6 @@ namespace WIS_DataAccess
 
             return result;
         }
-
 
         /// <summary>
         ///  to get Image File for DataBase

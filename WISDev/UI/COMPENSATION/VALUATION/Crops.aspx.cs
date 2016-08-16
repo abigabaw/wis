@@ -304,6 +304,7 @@ namespace WIS
             ddlCropDescription.DataValueField = "CropDesID";
             ddlCropDescription.DataBind();
         }
+
         /// <summary>
         /// To assign values to dropdownlist
         /// </summary>
@@ -316,6 +317,7 @@ namespace WIS
             ddlCropType.DataValueField = "CROPTYPEID";
             ddlCropType.DataBind();
         }
+
         /// <summary>
         /// To assign values to dropdownlist
         /// </summary>
@@ -328,6 +330,7 @@ namespace WIS
             ddlCropName.DataValueField = "CROPID";
             ddlCropName.DataBind();
         }
+
         /// <summary>
         /// Set Grid Data source
         /// </summary>
@@ -339,6 +342,7 @@ namespace WIS
             grdCrops.DataSource = CropsBLLobj.GetCrops(Convert.ToInt32(Session["HH_ID"]));
             grdCrops.DataBind();
         }
+
         /// <summary>
         /// save details to database
         /// </summary>
@@ -455,6 +459,7 @@ namespace WIS
             ChangeRequestStatusValuationCrop();
             projectFrozen();
         }
+
         /// <summary>
         /// to change text of thebutton based on condition
         /// </summary>
@@ -472,6 +477,7 @@ namespace WIS
                 ViewState["PAP_CROPID"] = "0";
             }
         }
+
         /// <summary>
         /// Clear the search Fiels and Set Data to Grid Data souce
         /// </summary>
@@ -491,6 +497,7 @@ namespace WIS
             //lnkViewPhoto.Visible = false;
             lblUnitMeasure.Text = "";
         }
+
         /// <summary>
         /// calls cleardata method
         /// </summary>
@@ -505,6 +512,7 @@ namespace WIS
                // lnkViewPhoto.Visible = false;
             }
         }
+
         /// <summary>
         /// Set edit mode for edit comand
         /// Delete data from the database for delete comand
@@ -572,6 +580,7 @@ namespace WIS
 
             //lnkViewPhoto.Attributes.Add("onclick", paramPhotoView);
         }
+
         /// <summary>
         /// to delete data
         /// </summary>
@@ -584,6 +593,7 @@ namespace WIS
             if (cropid != null)
                 Result = CropsBLLobj.DeleteData(cropid);
         }
+
         /// <summary>
         /// to fetch data and assign to textbox
         /// </summary>
@@ -624,6 +634,7 @@ namespace WIS
 
             CommentsTextBox.Text = BOobj.COMMENTS;
         }
+
         /// <summary>
         /// to set controls in grid
         /// </summary>
@@ -680,6 +691,7 @@ namespace WIS
 
             }
         }
+
         /// <summary>
         /// to change page in grid
         /// </summary>

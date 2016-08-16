@@ -758,7 +758,7 @@
             open('../COMPENSATION/ConversationLog.aspx?ProjectID=' + ProjectID + '&WorkFlowCode=' + WorkFlowCode + '&pageCode=' + pageCode + '&TrackHdrId=' + TrackHdrId + '&BatchNo=' + BatchNo, 'ChangeRequest', 'width=850px,height=350px,scrollbars=1,top=' + top + ', left=' + left);
         }
 
-        function OpenClarify(UserID, HHID) {
+        function OpenClarify(UserID, HHID, TrackerHeader) {
             var left = (screen.width - 850) / 2;
             var top = (screen.height - 350) / 4;
             open('../ClarificationPop.aspx?UserID=' + UserID + '&HHID=' + HHID, 'BatchComments', 'width=850px,height=350px,scrollbars=1,top=' + top + ', left=' + left);
