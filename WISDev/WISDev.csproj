@@ -2642,6 +2642,7 @@
     <Content Include="UI\REPORTUI\Survey.aspx" />
     <Content Include="UI\MYACTIVITIES\Questionaries.aspx" />
     <Content Include="UI\RouteCoordinatesPopup.aspx" />
+    <Content Include="UI\ClarificationPop.aspx" />
     <Content Include="UI\UploadDocPop.aspx" />
     <Content Include="UI\UploadDocumentList.aspx" />
     <Content Include="UI\UploadPhotoDocument.aspx" />
@@ -4213,6 +4214,13 @@
     </Compile>
     <Compile Include="UI\RouteCoordinatesPopup.aspx.designer.cs">
       <DependentUpon>RouteCoordinatesPopup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ClarificationPop.aspx.cs">
+      <DependentUpon>ClarificationPop.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\ClarificationPop.aspx.designer.cs">
+      <DependentUpon>ClarificationPop.aspx</DependentUpon>
     </Compile>
     <Compile Include="UI\UploadDocPop.aspx.cs">
       <DependentUpon>UploadDocPop.aspx</DependentUpon>

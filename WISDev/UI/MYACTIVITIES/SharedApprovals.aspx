@@ -8,10 +8,11 @@
     <ajaxToolkit:ToolkitScriptManager ID="tsManager" runat="server" EnablePageMethods="true">
     </ajaxToolkit:ToolkitScriptManager>
     <script type="text/javascript" src="../../Scripts/CommonFunctions.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="../../Scripts/jquery-impromptu.js"></script>
     <script type="text/javascript" src="../../Scripts/jquery-1.4.1.js"></script>
     <script type="text/javascript" src="../../Scripts/jquery-1.4.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../Styles/page_specific.css" />
     <div id="divAll">
         <asp:Panel ID="pnlMytaskApprovel" runat="server">
             <fieldset class="icePnlinner">
@@ -326,17 +327,18 @@
                 <fieldset class="icePnlinner">
                     <legend id="ViewCR" runat="server"></legend>
                     <div style="float: right" class="iceLable">
-                        <asp:Label ID="LblHhidBatch" runat="server" Text="" CssClass="iceLable"></asp:Label>&nbsp;
-                    <a id="lnkPageSource" href="#" runat="server"><b>View Details</b></a>&nbsp;|&nbsp;
+                        <asp:Label ID="LblHhidBatch" CssClass="iceStatusLinks" Style="float: left; width: 100px; border-right: 1px solid;" runat="server" Text=""></asp:Label>&nbsp;
+                    <a id="lnkPageSource" href="#" class="iceStatusLinks" style="float: left; width: 100px; border-right: 1px solid;" runat="server"><b>Details</b></a>&nbsp;&nbsp;
                     <span style="display: none;" runat="server" id="spanPackage">
-                        <a id="lnkPackageDocument"
-                            href="#" runat="server"><b>View Package Document</b></a>&nbsp;|&nbsp; <a id="lnkPapPhoto"
-                                href="#" runat="server"><b>View PAP Photo</b></a>&nbsp;|&nbsp; <a id="lnkUPloadDoclistSup"
-                                    href="#" runat="server"><b>View Supporting Documents</b></a>&nbsp;|&nbsp;</span>
+                        <a id="lnkPackageDocument" href="#" class="iceStatusLinks" style="float: left; width: 100px; border-right: 1px solid;" runat="server"><b>Package</b></a>&nbsp;&nbsp; 
+                        <a id="lnkPapPhoto" href="#" class="iceStatusLinks" style="float: left; width: 100px; border-right: 1px solid;" runat="server"><b>View Photo</b></a>&nbsp;&nbsp;
+                        <a id="lnkUPloadDoclistSup" href="#" class="iceStatusLinks" style="float: left; width: 100px; border-right: 1px solid;" runat="server"><b>Attachments</b></a>&nbsp;&nbsp;</span>
                         <span style="display: none;" runat="server" id="spanReviewCom">
-                            <a id="lnkAppReviewCom" href="#" runat="server"><b>Review Comments</b></a>&nbsp;|&nbsp;
+                            <a id="lnkAppReviewCom" href="#" class="iceStatusLinks" style="float: left; width: 150px; border-right: 1px solid;" runat="server"><b>Review Comments</b></a>&nbsp;&nbsp;
                         </span>
-                        <a id="lnkUPloadDoclist" href="#" runat="server"><b>View Document</b></a>
+                        <a id="lnkUPloadDoclist" href="#" class="iceStatusLinks" style="float: left; width: 100px; border-right: 1px solid;" runat="server"><b>Attachments</b></a>
+                        <a id="lnkSendClarify" href="#" class="iceStatusLinks" style="display: none; float: left; width: 100px; border-right: 1px solid;" runat="server"><b>Clarification</b></a>
+                        <a id="lnkClarifyResponse" href="#" class="iceStatusLinks" style="display: none; float: left; width: 100px; border-right: 1px solid;" runat="server"><b>Responses</b></a>
                     </div>
                     <br />
                     <table border="0" cellpadding="2" cellspacing="5" width="100%">
@@ -754,6 +756,12 @@
             var left = (screen.width - 850) / 2;
             var top = (screen.height - 350) / 4;
             open('../COMPENSATION/ConversationLog.aspx?ProjectID=' + ProjectID + '&WorkFlowCode=' + WorkFlowCode + '&pageCode=' + pageCode + '&TrackHdrId=' + TrackHdrId + '&BatchNo=' + BatchNo, 'ChangeRequest', 'width=850px,height=350px,scrollbars=1,top=' + top + ', left=' + left);
+        }
+
+        function OpenClarify(UserID, HHID) {
+            var left = (screen.width - 850) / 2;
+            var top = (screen.height - 350) / 4;
+            open('../ClarificationPop.aspx?UserID=' + UserID + '&HHID=' + HHID, 'BatchComments', 'width=850px,height=350px,scrollbars=1,top=' + top + ', left=' + left);
         }
 
         function OpenBatchComments(BatchNo, HHID) {

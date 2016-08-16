@@ -14,7 +14,14 @@
 
             var left = (screen.width - 960) / 2;
             var top = (screen.height - 650) / 4;
-            open('/UI/REPORTUI/RptViewer.aspx?WorkflowCode=PAYRQ&ProjectID=' + ProjectID + '&BatchNo=' + BatchNo, 'Package Status', 'width=960px,height=650px,resizable=1,scrollbars=1,top=' + top + ', left=' + left);
+            // open('/UI/REPORTUI/RptViewer.aspx?WorkflowCode=PAYRQ&ProjectID=' + ProjectID + '&BatchNo=' + BatchNo, 'Package Status', 'width=960px,height=650px,resizable=0,scrollbars=no,top=' + top + ', left=' + left);
+            // function modalWin() {
+                if (window.showModalDialog) {
+                    window.showModalDialog('/UI/REPORTUI/RptViewer.aspx?WorkflowCode=PAYRQ&ProjectID=' + ProjectID + '&BatchNo=' + BatchNo, 'Package Status', "name", "dialogWidth:255px;dialogHeight:250px");
+                } else {
+                    window.open('/UI/REPORTUI/RptViewer.aspx?WorkflowCode=PAYRQ&ProjectID=' + ProjectID + '&BatchNo=' + BatchNo, 'Package Status', 'name', 'height=255,width=250,toolbar=no,directories=no,status=no,continued from previous linemenubar=no,scrollbars=no,resizable=no ,modal=yes');
+                }
+            //} 
         }
 
         function OpenBatchPrint() {

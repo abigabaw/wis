@@ -310,6 +310,24 @@ namespace WIS {
         protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkUPloadDoclist;
         
         /// <summary>
+        /// lnkSendClarify control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkSendClarify;
+        
+        /// <summary>
+        /// lnkClarifyResponse control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkClarifyResponse;
+        
+        /// <summary>
         /// ProjectCodeLabel control.
         /// </summary>
         /// <remarks>

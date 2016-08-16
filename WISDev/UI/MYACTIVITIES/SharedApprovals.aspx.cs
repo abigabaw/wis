@@ -403,7 +403,9 @@ namespace WIS
                     }
                 }
             }
+
             LblHhidBatch.Text = "";
+            // LblHhidBatch.Text = MyActiveStatusHHID;
             spanPackage.Style.Add("display", "none");
             string WorkFlowCode;
             ApprovalMultiView.Visible = true;
@@ -432,6 +434,14 @@ namespace WIS
                 ViewState["HHID"] = lblHHId.Text;
                 ViewState["PageCode"] = litPageCode.Text;
                 ViewState["TrackHdrId"] = TrackHdrId.Text.ToString();
+
+                if(e.CommandArgument.ToString() == UtilBO.PaymentVerificationCode) // Payment Verification
+                {
+                    int UserID = Convert.ToInt32(Session["USER_ID"]);
+                    lnkSendClarify.Style.Remove("display");
+                    string OpenClarify = string.Format("OpenClarify({0},{1});", UserID, ViewState["HHID"], "Readonly");
+                    lnkSendClarify.Attributes.Add("onclick", OpenClarify);
+                }
 
                 int myActiveHHID = 0;
                 if (row.FindControl("lblHHId") is Label)
@@ -761,6 +771,8 @@ namespace WIS
                     string paramView = string.Format("OpenDocumnetlist({0},{1},{2},'{3}','{4}');", ProjectId, HHID, userID, ProjectCode, "Readonly");
                     lnkUPloadDoclist.Attributes.Add("onclick", paramView);
                     lnkUPloadDoclist.Visible = true;
+                    // Edwin: 09AUG2016
+                    // LblHhidBatch.Visible = true;
                 }
 
                 if (ViewState["PageCode"].ToString() == "CPREV")
@@ -3316,9 +3328,10 @@ namespace WIS
                     {
                         ApprovalLevel = Convert.ToInt32(ViewState["ApproverLevel"]);
                     }
-                    LblHhidBatch.Text = "For HHID: " + HHID.ToString();
+                    LblHhidBatch.Text = "HHID: " + HHID.ToString();
                     string paramPhotoView = string.Format("OpenViewPhoto({0},{1},{2},'{3}','{4}');", ProjectId, HHID, userID, ProjectCode, PhotoModule);
                     lnkPapPhoto.Attributes.Add("onclick", paramPhotoView);
+
                     string paramSource = string.Format("OpenSourcePage({0},{1},{2},'{3}','{4}','{5}',{6});", ProjectId, HHID, userID, ProjectCode, "Readonly", "CPREV", ApprovalLevel);
                     lnkPackageDocument.Attributes.Add("onclick", paramSource);
                     string paramView = string.Format("OpenDocumnetlist({0},{1},{2},'{3}','{4}');", ProjectId, HHID, userID, ProjectCode, "Readonly");
@@ -3332,7 +3345,7 @@ namespace WIS
 
                     string paramViewSource = string.Format("OpenSourcePage({0},{1},{2},'{3}','{4}','{5}',{6});", ProjectId, HHID, userID, ProjectCode, "Readonly", ViewState["PageCode"].ToString(), ApprovalLevel);
                     if (ViewState["PageCode"].ToString() == "PAYRQ")
-                        lnkPageSource.InnerText = "View Payment Request Details";
+                        // lnkPageSource.InnerText = "View Details";
 
                     lnkPageSource.Attributes.Add("onclick", paramViewSource);
                     lnkPageSource.Visible = true;
