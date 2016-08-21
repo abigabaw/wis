@@ -111,6 +111,7 @@ namespace WIS
                 grdGrave.Columns[grdGrave.Columns.Count - 4].Visible = false;
             }
         }
+
         /// <summary>
         /// set the Default button and retuns the script.
         /// </summary>
@@ -129,6 +130,7 @@ namespace WIS
 
             return stb.ToString();
         }
+
         #region Frozen / Approval / Decline / Pending
         /// <summary>
         ///  checks whether project is Frozen
@@ -165,7 +167,7 @@ namespace WIS
             WorkFlowBO objWorkFlowBO = new WorkFlowBO();
             WorkFlowBLL objWorkFlowBLL = new WorkFlowBLL();
 
-            string ChangeRequestCode = UtilBO.WorkflowChangeRequestApprovalHH;
+            string ChangeRequestCode = UtilBO.WorkflowChangeRequestHH;
 
             objWorkFlowBO = objWorkFlowBLL.getWOrkFlowApprovalID(Convert.ToInt32(Session["PROJECT_ID"]), ChangeRequestCode);
 
@@ -200,7 +202,7 @@ namespace WIS
             int householdID = Convert.ToInt32(Session["HH_ID"]);
             objHouseHold.HhId = householdID;
             objHouseHold.PageCode = "HV-GR";
-            objHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestApprovalHH;
+            objHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestHH;
 
             Count = objHouseHoldBLL.ChangeRequestStatus(objHouseHold);
         }
@@ -215,7 +217,7 @@ namespace WIS
             int householdID = Convert.ToInt32(Session["HH_ID"]);
             objHouseHold.HhId = householdID;
             objHouseHold.PageCode = "HV-GR";
-            objHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestApprovalHH;
+            objHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestHH;
 
             objHouseHold = objHouseHoldBLL.ApprovalChangerequestStatus(objHouseHold);
 
@@ -257,6 +259,7 @@ namespace WIS
             }
         }
         #endregion
+
         /// <summary>
         /// Set Grid Data source
         /// </summary>
@@ -268,6 +271,7 @@ namespace WIS
             grdGrave.DataSource = gravesaveBLLobj.GetGravedata(Convert.ToInt32(Session["HH_ID"]));
             grdGrave.DataBind();
         }
+
         /// <summary>
         /// fetch values and assign to dropdownlist
         /// </summary>
@@ -281,6 +285,7 @@ namespace WIS
             gravefinishDropDownList.DataBind();
             gravefinishDropDownList.Items.Insert(0, "--Select--");
         }
+
         /// <summary>
         /// Set edit mode for edit comand
         /// Delete data from the database for delete comand
@@ -354,6 +359,7 @@ namespace WIS
 
             //lnkViewPhoto.Attributes.Add("onclick", paramPhotoView);
         }
+
         /// <summary>
         /// to fetch details and assign to textbox
         /// </summary>
@@ -379,6 +385,7 @@ namespace WIS
             otherfinishTextBox.Text = GraveBOobj.Othergravefinish.ToString();
 
         }
+
         /// <summary>
         /// to save data to database
         /// </summary>
@@ -537,6 +544,7 @@ namespace WIS
             projectFrozen();
           
         }
+
         /// <summary>
         /// calls clearfields method
         /// </summary>
@@ -551,6 +559,7 @@ namespace WIS
                 //lnkViewPhoto.Visible = false;
             }
         }
+
         /// <summary>
         /// to change text of thebutton based on condition
         /// </summary>
@@ -568,6 +577,7 @@ namespace WIS
                 ViewState["ITEMID"] = "0";
             }
         }
+
         /// <summary>
         /// Clear the search Fiels and Set Data to Grid Data souce
         /// </summary>
@@ -585,6 +595,7 @@ namespace WIS
             surfaceareaTextBox.Text = string.Empty;
             //lnkViewPhoto.Visible = false;
         }
+
         /// <summary>
         /// To display pageno in grid
         /// </summary>
@@ -595,6 +606,7 @@ namespace WIS
             grdGrave.PageIndex = e.NewPageIndex;
             BindGrid();
         }
+
         /// <summary>
         /// to set controls in grid
         /// </summary>

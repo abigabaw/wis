@@ -161,7 +161,7 @@ namespace WIS
 
             Session["HH_ID_Disp"] = householdID;
             PAP_HouseholdBLL objHouseholdLogic = new PAP_HouseholdBLL();
-            PAP_HouseholdBO objHousehold = objHouseholdLogic.GetHousaeHoldData(Convert.ToInt32(householdID));
+            PAP_HouseholdBO objHousehold = objHouseholdLogic.GetHouseHoldData(Convert.ToInt32(householdID));
             
             if (objHousehold != null)
             {

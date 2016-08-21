@@ -21,22 +21,48 @@ namespace WIS
         UploadDocumentBLL objUploadDocumentBLL;
         #endregion
 
-        #region page load
-        /// <summary>
-        /// Check User permitions
-        /// Set Page Header
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
-            Page.Response.Cache.SetNoStore();            
+            Page.Response.Cache.SetNoStore();
 
             if (!IsPostBack)
             {
                 Master.PageHeader = "Clarification and Responses";
-               // btnShowUpload.Attributes.Add("onclick", "SetVisible(0);");
-              //  btnShowSearch.Attributes.Add("onclick", "SetVisible(1);");
+                // btnShowUpload.Attributes.Add("onclick", "SetVisible(0);");
+                //  btnShowSearch.Attributes.Add("onclick", "SetVisible(1);");
+
+                /* CheckSystemAccount();
+                CheckPendingTasks();
+                CheckClarifications(); */
+
+                grdClarifications.Visible = true;
+                
+                
+                
+
+                string Mode = Request.QueryString["Mode"];
+
+                if (Mode == "Clarify"){
+                    ResponseFields.Visible = false;
+                    RequesterDetails.Visible = false;
+                    BindPersonnel();
+                    GetRelevantDetails();
+                    BindClarifications(false, false);
+                }
+                else
+                {
+                    ResponseFields.Visible = true;
+                    RequesterDetails.Visible = false;
+                    RespondentSelect.Visible = false;
+                    ClarificationDetail.Visible = false;
+                    PapDetails.Visible = false;
+                    ProjectDetails.Visible = false;
+                    MyClarifications(false, false);
+                    SaveButton.Text = "Send Response";
+                    //this.MasterPageFile = "~/Site.Master"; 
+                }
+                
+
                 int DocserviceID = 0;
                 int ProjectID = 0;
                 int userID = 0;
@@ -51,89 +77,103 @@ namespace WIS
                     userID = Convert.ToInt32(Request.QueryString["userID"]);
                 }
 
-                int HHID = Convert.ToInt32(Request.QueryString["HHID"]);
                 
-                // string ProjectCode = Request.QueryString["ProjectCode"].ToString();
-                // string DocumentCode = Request.QueryString["DOCUMENT_CODE"].ToString();
-                ViewState["PAPDOCUMENTID"] = 0;
-                if (Request.QueryString["DOCSERVICEID"] != null)
-                {
-                    DocserviceID = Convert.ToInt32(Request.QueryString["DOCSERVICEID"]);
-                }
-                else
-                {
-                    DocserviceID = 0;
-                }
 
-                if (userID == 0)
-                {
-                    Response.Redirect("~/Login.aspx");
-                }
-                else
-                {
-                    
-                }
-                if (ProjectID == 0)
-                {
-                    ProjectID = 0;
-                    //upProjectIDTextBox.Text = "0";
-                   // ProjectCodeTextBox.Text = ProjectCode;
-                   // upProjectIDTextBox.Visible = false;
-                }
-                else
-                {
-                    //upHHIDTextBox.Text = HHID.ToString();
-                    PAP_HouseholdBLL objHouseholdLogic = new PAP_HouseholdBLL();
-                    PAP_HouseholdBO objHousehold = objHouseholdLogic.GetHousaeHoldData(HHID);
-                    if (objHousehold != null)
-                    {
-                     //   upHHIDTextBoxDisp.Text = objHousehold.HhId.ToString();
-                    }
-                    //ProjectCodeTextBox.Text = ProjectCode;
-                }
-                if (HHID == 0)
-                {
-                    HHID = 0;
 
-                    //upProjectIDTextBox.Text = ProjectID.ToString();
-                    // ProjectCodeTextBox.Text = ProjectCode;
-                    //DocTypeDropDownList.Visible = false;
-                    //upProjectIDTextBox.Visible = false;
-                    //upHHIDTextBox.Visible = false;
-                    //upHHIDTextBoxDisp.Visible = false;
-                }
-                else
-                {
-                    //upProjectIDTextBox.Text = ProjectID.ToString();
-                    //ProjectCodeTextBox.Text = ProjectCode;
-                    //upProjectIDTextBox.Visible = false;
-                }
-                if (DocserviceID > 0)
-                {
-                    //txtDocserviceID.Text = DocserviceID.ToString();
-                }
-                // BindGrid(false, false);
-                //screenIntilation();
-
-                if (CheckAuthorization.HasUpdatePrivilege(UtilBO.PrivilegeCode.PRIV_PACKAGE_CLOSING_INFO) == false)
-                {
-                   // SaveButton.Visible = false;
-                   // ClearButton.Visible = false;
-                }
             }
-            //this.contentPanel1.Attributes["src"] = null;
-            if (!Page.ClientScript.IsClientScriptBlockRegistered(this.GetType(), "MasterJS"))
-            {
-                Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "MasterJS",CreateCStartupScript());
-            }
-            // Response.Write(ProjectID);
         }
-        #endregion
 
-        /// <summary>
-        /// Set Default Button using Java script
-        /// </summary>
-        /// <returns></returns>
+        private void CheckClarifications()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CheckPendingTasks()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CheckSystemAccount()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void BindPersonnel()//These are Project Users
+        {
+            ListItem firstListItem = new ListItem(ddlProjectPersonnel.Items[0].Text, ddlProjectPersonnel.Items[0].Value);
+            ProjectPersonalBLL objProjPersonalLogic = new ProjectPersonalBLL();
+
+            int ProjectID = Convert.ToInt32(Request.QueryString["ProjectID"]);
+            
+                //Edwin: 30MAY2016 - 
+            ProjectPersonalList ProjectPersonnels = objProjPersonalLogic.GetProjectPersonnel(ProjectID);
+                ddlProjectPersonnel.ClearSelection();
+                ddlProjectPersonnel.Items.Clear();
+                if (ProjectPersonnels != null)
+                {
+                    ddlProjectPersonnel.DataSource = ProjectPersonnels;
+                    ddlProjectPersonnel.DataTextField = "Username";
+                    ddlProjectPersonnel.DataValueField = "UserID";
+                    ddlProjectPersonnel.DataBind();
+                }
+                ddlProjectPersonnel.Items.Insert(0, firstListItem);
+            
+        }
+
+        private void GetRelevantDetails()
+        {
+            int ProjectID = Convert.ToInt32(Request.QueryString["ProjectID"]);
+            int HHID = Convert.ToInt32(Request.QueryString["HHID"]);
+
+            ProjectBLL ProjectBLL = new ProjectBLL();
+            PAP_HouseholdBLL PAP_HouseholdBLL = new PAP_HouseholdBLL();
+
+            ProjectBO ProjectBO = new ProjectBO();
+            PAP_HouseholdBO PAP_HouseholdBO = new PAP_HouseholdBO();
+
+            ProjectBO = ProjectBLL.GetProjectByProjectID(ProjectID);
+            PAP_HouseholdBO = PAP_HouseholdBLL.GetHouseHoldData(HHID);
+
+            txtHHID.Text = PAP_HouseholdBO.HhId.ToString();
+            txtPapName.Text = PAP_HouseholdBO.PapName.ToString();
+            txtProjectName.Text = ProjectBO.ProjectName.ToString();
+
+        }
+
+        private void BindClarifications(bool addRow, bool deleteRow)
+        {
+            int HHID = Convert.ToInt32(Request.QueryString["HHID"]);
+            int UserID = Convert.ToInt32(Request.QueryString["UserID"]);
+            ClarifyBLL ClarifyBLL = new ClarifyBLL();
+            grdClarifications.DataSource = ClarifyBLL.GetClarifications(HHID,UserID);
+            grdClarifications.DataBind();
+        }
+
+        private void MyClarifications(bool addRow, bool deleteRow)
+        {
+
+            //int HHID = Convert.ToInt32(Request.QueryString["HHID"]);
+            int UserID = Convert.ToInt32(Request.QueryString["UserID"]);
+            ClarifyBLL ClarifyBLL = new ClarifyBLL();
+            grdClarifications.DataSource = ClarifyBLL.GetMyClarifications(UserID);
+            grdClarifications.DataBind();
+        }
+
+        protected void grdClarifications_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            string Mode = Request.QueryString["Mode"];
+            // if (Mode.Equals("Clarify", StringComparison.Ordinal))
+            if (Mode == "Clarify")
+            {
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    grdClarifications.Columns[10].Visible = false;
+                }
+
+            }
+
+        }
+
         private string CreateCStartupScript()
         {
             StringBuilder stb = new StringBuilder();
@@ -150,6 +190,102 @@ namespace WIS
             stb.Append("-->\n</script>\n");
 
             return stb.ToString();
+        }
+
+        
+        protected void SaveButton_Click(object sender, EventArgs e)
+        {
+            string statusMessage = string.Empty;
+
+            try
+            {
+                string UserID = Request.QueryString["UserID"];
+                string ReqID = Request.QueryString["ReqID"];
+
+                int HHID = Convert.ToInt32(Request.QueryString["HHID"]);
+                ClarifyBO ClarifyBO = new ClarifyBO();
+
+                
+                ClarifyBO.TrackHeader = Convert.ToInt32(ReqID);
+                ClarifyBO.RequestDetails = txtClarifyDetails.Text.ToString();
+                ClarifyBO.UserID = Convert.ToInt32(UserID);
+                ClarifyBO.RespondentID = Convert.ToInt32(ddlProjectPersonnel.SelectedValue);
+
+                ClarifyBLL ClarifyBLL = new ClarifyBLL();
+                 statusMessage = ClarifyBLL.InsertClarify(ClarifyBO);
+
+                if (statusMessage == "Failed")
+                {
+                    ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "Alert", "<script>alert('Pending Clarifications Already Exist');</script>", false);
+                    /* Alert that displays custom variable
+                    ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "Alert", "<script>alert(\"You have selected " + ClarifyID + "\");</script>", false); */
+                    
+                } else{
+                    ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "Alert", "<script>alert('Your Clarification has been Sent');</script>", false);
+                    ddlProjectPersonnel.ClearSelection();
+                    txtClarifyDetails.Text = string.Empty;
+                    BindClarifications(false, false);
+                }
+                
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            
+        }
+
+        protected void ClearButton_Click(object sender, EventArgs e)
+        {
+            string Mode = Request.QueryString["Mode"];
+
+            if (Mode == "Clarify")
+            {
+                ddlProjectPersonnel.ClearSelection();
+                txtClarifyDetails.Text = string.Empty;
+            }
+            else
+            {
+                PapDetails.Visible = false;
+                RequesterDetails.Visible = false;
+                ClarificationDetail.Visible = false;
+            }
+        }
+
+        protected void grdClarifications_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            /* if (e.CommandName == "RespondToClarify")
+            {
+                ViewState["ID"] = e.CommandArgument;
+                string ClarifyID = ViewState["ID"].ToString
+            } */
+
+            ViewState["ID"] = e.CommandArgument;
+            int ClarifyID = Convert.ToInt32( ViewState["ID"]);
+
+            ClarifyBLL ClarifyBLL = new ClarifyBLL();
+            ClarifyBO ClarifyBO = new ClarifyBO();
+            ClarifyBO = ClarifyBLL.SelectClarification(ClarifyID);
+
+            if (ClarifyBO.Status == "Pending")
+            {
+                PapDetails.Visible = true;
+                RequesterDetails.Visible = true;
+                txtClarifyDetails.Enabled = false;
+                ClarificationDetail.Visible = true;
+                txtHHID.Text = ClarifyBO.HHID.ToString();
+                txtPapName.Text = ClarifyBO.PapName;
+                txtRequester.Text = ClarifyBO.Requester;
+                txtClarifyDetails.Text = ClarifyBO.RequestDetails;
+            }else{
+                ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "Alert", "<script>alert('You have already responded to this query');</script>", false);
+            }
+
+            
+
+            
         }
 
 

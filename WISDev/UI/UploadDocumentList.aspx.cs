@@ -40,7 +40,7 @@ namespace WIS.UI
                 ProjectCodeTextBox.Text = ProjectCode;
                 HHIDTextBox.Text = HHID.ToString();
                 PAP_HouseholdBLL objHouseholdLogic = new PAP_HouseholdBLL();
-                PAP_HouseholdBO objHousehold = objHouseholdLogic.GetHousaeHoldData(HHID);
+                PAP_HouseholdBO objHousehold = objHouseholdLogic.GetHouseHoldData(HHID);
                 if (objHousehold != null)
                 {
                     HHIDTextBoxDISP.Text = objHousehold.HhId.ToString();

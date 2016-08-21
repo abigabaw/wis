@@ -5,6 +5,16 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+    <%-- Edwin:21AUG2016 Imported from SharedApprovals  --%>
+    <ajaxToolkit:ToolkitScriptManager ID="tsManager" runat="server" EnablePageMethods="true">
+    </ajaxToolkit:ToolkitScriptManager>
+    <script type="text/javascript" src="../../Scripts/CommonFunctions.js"></script>
+    <script type="text/javascript" src="../../Scripts/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/jquery-impromptu.js"></script>
+    <script type="text/javascript" src="../../Scripts/jquery-1.4.1.js"></script>
+    <script type="text/javascript" src="../../Scripts/jquery-1.4.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../Styles/page_specific.css" />
+
     <asp:Panel ID="pnlMytaskApprovel" runat="server">
         <fieldset class="icePnlinner">
             <legend>Approval </legend>
@@ -33,8 +43,7 @@
                             <asp:Literal ID="ltrProjectName" runat="server" Text='<%#Eval("ProjectName") %>'></asp:Literal>
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:BoundField HeaderText="Module" HeaderStyle-HorizontalAlign="Center" DataField="ModuleName">
-                    </asp:BoundField>
+                    <asp:BoundField HeaderText="Module" HeaderStyle-HorizontalAlign="Center" DataField="ModuleName"></asp:BoundField>
                     <asp:TemplateField HeaderText="Pending" HeaderStyle-HorizontalAlign="Center">
                         <ItemStyle HorizontalAlign="Center" Width="7%" />
                         <ItemTemplate>
@@ -105,8 +114,7 @@
                             <asp:Literal ID="litWORKFLOWCODE" Text='<%#Eval("WORKFLOWCODE") %>' Visible="false" runat="server" />
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:BoundField HeaderText="Description" HeaderStyle-HorizontalAlign="Center" DataField="DESCRIPTION">
-                    </asp:BoundField>
+                    <asp:BoundField HeaderText="Description" HeaderStyle-HorizontalAlign="Center" DataField="DESCRIPTION"></asp:BoundField>
                     <asp:BoundField HeaderText="TRACKERHEADERID" HeaderStyle-HorizontalAlign="Center"
                         DataField="TRACKERHEADERID" Visible="false"></asp:BoundField>
                     <%--   <asp:BoundField HeaderText="Date Sent" HeaderStyle-HorizontalAlign="Center" DataField="UpdatedDate"></asp:BoundField>--%>
@@ -152,8 +160,8 @@
         </fieldset>
     </asp:Panel>
 
-        <!-- Interim grid to show the list of Payment Batches -->
-  <!--  <asp:Panel ID="pnlPaymentBatches" runat="server" Visible="false">
+    <!-- Interim grid to show the list of Payment Batches -->
+    <!--  <asp:Panel ID="pnlPaymentBatches" runat="server" Visible="false">
         <fieldset class="icePnlinner">
             <legend>Payment Batches</legend>
             <asp:GridView ID="grdPaymentBatches" runat="server" AllowSorting="True" CellPadding="4" CellSpacing="1" GridLines="None" AutoGenerateColumns="false" Width="100%">
@@ -223,65 +231,65 @@
                 <fieldset class="icePnlinner">
                     <legend>
                         <asp:Label ID="lblFinalProjectDetl" runat="server" Visible="True"></asp:Label></legend>
-                        
-            <asp:Panel ID="p1Grid" runat="server" ScrollBars="Horizontal" Height="100%">
-                    <asp:GridView ID="grdFinalProjectDtl" runat="server" CssClass="gridStyle" CellPadding="4"
-                        CellSpacing="1" GridLines="None" AutoGenerateColumns="False" Width="100%" AllowPaging="True"
-                        EmptyDataRowStyle-BackColor="Silver" EmptyDataText="No Records Found" EmptyDataRowStyle-HorizontalAlign="Center"
-                        OnRowDataBound="grdFinalProjectDtl_RowDataBound">
-                        <RowStyle CssClass="gridRowStyle" />
-                        <AlternatingRowStyle CssClass="gridAlternateRow" />
-                        <PagerStyle CssClass="gridPagerStyle" HorizontalAlign="Center" Font-Bold="true" ForeColor="White" />
-                        <HeaderStyle CssClass="gridHeaderStyle" />
-                        <Columns>
-                            <asp:TemplateField HeaderText="Sl No.">
-                                <ItemStyle HorizontalAlign="Center" Width="7%" />
-                                <ItemTemplate>
-                                    <%#Container.DataItemIndex + 1 %>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Select" HeaderStyle-HorizontalAlign="Center">
-                                <HeaderStyle HorizontalAlign="Center" />
-                                <ItemStyle HorizontalAlign="Center" Width="10%" />
-                                <ItemTemplate>
-                                    <asp:CheckBox ID="chkSelectRoute" runat="server" CommandName="ClickWorkflow" onclick="valCheckBoxes(this);" />
-                                    <asp:Literal ID="ltlIsFinal" runat="server" Text='<%#Eval("ISFINAL") %>' Visible="false"></asp:Literal>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:BoundField HeaderText="Route No" HeaderStyle-HorizontalAlign="Center" DataField="ROUTENAME">
-                                <HeaderStyle HorizontalAlign="Center" />
-                            </asp:BoundField>
-                            <asp:BoundField HeaderText="Description" HeaderStyle-HorizontalAlign="Center" DataField="ROUTEDETAILS">
-                                <HeaderStyle HorizontalAlign="Center" />
-                            </asp:BoundField>
-                            <asp:TemplateField HeaderText="Score" HeaderStyle-HorizontalAlign="Center">
-                                <HeaderStyle HorizontalAlign="Center" />
-                                <ItemStyle HorizontalAlign="Center" Width="5%" />
-                                <ItemTemplate>
-                                    <asp:LinkButton ID="lblScore" runat="server" Text='<%#Eval("TOTALROUTESCORE") %>'
-                                        OnClick="lblScore_Click1">
-                                    </asp:LinkButton>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Map" HeaderStyle-HorizontalAlign="Center">
-                                <HeaderStyle HorizontalAlign="Center" />
-                                <ItemStyle HorizontalAlign="Center" Width="10%" />
-                                <ItemTemplate>
-                                    <asp:LinkButton ID="lblMap" runat="server" Text="View Map"
-                                        OnClick="lblViewMap_Click1">
-                                    </asp:LinkButton>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="RouteID" Visible="False" HeaderStyle-HorizontalAlign="Center">
-                                <HeaderStyle HorizontalAlign="Center" />
-                                <ItemStyle HorizontalAlign="Center" Width="5%" />
-                                <ItemTemplate>
-                                    <asp:Label ID="lblRouteID" runat="server" Text='<%#Eval("ROUTEID") %>'></asp:Label>
-                                    <asp:Label ID="lblHHId" runat="server" Text='<%#Eval("HHID") %>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                    </asp:GridView>
+
+                    <asp:Panel ID="p1Grid" runat="server" ScrollBars="Horizontal" Height="100%">
+                        <asp:GridView ID="grdFinalProjectDtl" runat="server" CssClass="gridStyle" CellPadding="4"
+                            CellSpacing="1" GridLines="None" AutoGenerateColumns="False" Width="100%" AllowPaging="True"
+                            EmptyDataRowStyle-BackColor="Silver" EmptyDataText="No Records Found" EmptyDataRowStyle-HorizontalAlign="Center"
+                            OnRowDataBound="grdFinalProjectDtl_RowDataBound">
+                            <RowStyle CssClass="gridRowStyle" />
+                            <AlternatingRowStyle CssClass="gridAlternateRow" />
+                            <PagerStyle CssClass="gridPagerStyle" HorizontalAlign="Center" Font-Bold="true" ForeColor="White" />
+                            <HeaderStyle CssClass="gridHeaderStyle" />
+                            <Columns>
+                                <asp:TemplateField HeaderText="Sl No.">
+                                    <ItemStyle HorizontalAlign="Center" Width="7%" />
+                                    <ItemTemplate>
+                                        <%#Container.DataItemIndex + 1 %>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Select" HeaderStyle-HorizontalAlign="Center">
+                                    <HeaderStyle HorizontalAlign="Center" />
+                                    <ItemStyle HorizontalAlign="Center" Width="10%" />
+                                    <ItemTemplate>
+                                        <asp:CheckBox ID="chkSelectRoute" runat="server" CommandName="ClickWorkflow" onclick="valCheckBoxes(this);" />
+                                        <asp:Literal ID="ltlIsFinal" runat="server" Text='<%#Eval("ISFINAL") %>' Visible="false"></asp:Literal>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:BoundField HeaderText="Route No" HeaderStyle-HorizontalAlign="Center" DataField="ROUTENAME">
+                                    <HeaderStyle HorizontalAlign="Center" />
+                                </asp:BoundField>
+                                <asp:BoundField HeaderText="Description" HeaderStyle-HorizontalAlign="Center" DataField="ROUTEDETAILS">
+                                    <HeaderStyle HorizontalAlign="Center" />
+                                </asp:BoundField>
+                                <asp:TemplateField HeaderText="Score" HeaderStyle-HorizontalAlign="Center">
+                                    <HeaderStyle HorizontalAlign="Center" />
+                                    <ItemStyle HorizontalAlign="Center" Width="5%" />
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="lblScore" runat="server" Text='<%#Eval("TOTALROUTESCORE") %>'
+                                            OnClick="lblScore_Click1">
+                                        </asp:LinkButton>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Map" HeaderStyle-HorizontalAlign="Center">
+                                    <HeaderStyle HorizontalAlign="Center" />
+                                    <ItemStyle HorizontalAlign="Center" Width="10%" />
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="lblMap" runat="server" Text="View Map"
+                                            OnClick="lblViewMap_Click1">
+                                        </asp:LinkButton>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="RouteID" Visible="False" HeaderStyle-HorizontalAlign="Center">
+                                    <HeaderStyle HorizontalAlign="Center" />
+                                    <ItemStyle HorizontalAlign="Center" Width="5%" />
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblRouteID" runat="server" Text='<%#Eval("ROUTEID") %>'></asp:Label>
+                                        <asp:Label ID="lblHHId" runat="server" Text='<%#Eval("HHID") %>'></asp:Label>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                            </Columns>
+                        </asp:GridView>
                     </asp:Panel>
                     <%-- </fieldset>
                 <fieldset class="icePnl1">--%>
@@ -292,22 +300,38 @@
             <fieldset class="icePnlinner">
                 <legend id="ViewCR" runat="server"></legend>
                 <div style="float: right" class="iceLable">
-                <asp:Label id="LblHhidBatch" runat="server" Text="" CssClass="iceLable"></asp:Label>&nbsp;
-                    <a id="lnkPageSource" href="#" runat="server"><b>View Details</b></a>&nbsp;|&nbsp;
-                    <span style="display: none;" runat="server" id="spanPackage">                    
-                    <a id="lnkPackageDocument"
-                        href="#" runat="server"><b>View Package Document</b></a>&nbsp;|&nbsp; <a id="lnkPapPhoto"
-                            href="#" runat="server"><b>View PAP Photo</b></a>&nbsp;|&nbsp; <a id="lnkUPloadDoclistSup"
-                                href="#" runat="server"><b>View Supporting Documents</b></a>&nbsp;|&nbsp;</span>
+                    <asp:Label ID="LblHhidBatch" runat="server" Text="" class="iceStatusLinks" style="padding-right:20px; text-align:right; float: left; width: 500px; border-right: 1px solid;"></asp:Label>&nbsp;
+                    <a id="lnkPageSource" href="#" runat="server" class="iceStatusLinks" style="float: left; width: 150px; border-right: 1px solid;"><b>View Details</b></a>&nbsp;&nbsp;
+                    <span style="display: none;" runat="server" id="spanPackage">
+                        <a id="lnkPackageDocument" href="#" runat="server" class="iceStatusLinks" style="float: left; width: 150px; border-right: 1px solid;"><b>Package Document</b></a>&nbsp;&nbsp;
+                        <a id="lnkPapPhoto" href="#" runat="server" class="iceStatusLinks" style="float: left; width: 150px; border-right: 1px solid;"><b>PAP Photo</b></a>&nbsp;&nbsp;
+                        <a id="lnkUPloadDoclistSup" href="#" runat="server" class="iceStatusLinks" style="float: left; width: 150px; border-right: 1px solid;"><b>Attachments</b></a>&nbsp;&nbsp;</span>
                     <span style="display: none;" runat="server" id="spanPkgForGri">
-                    <a id="lnkPackageDocumentGri" href="#" runat="server"><b>View Package Document</b></a>&nbsp;|&nbsp;
+                        <a id="lnkPackageDocumentGri" href="#" runat="server" class="iceStatusLinks" style="float: left; width: 150px; border-right: 1px solid;"><b>Package Document</b></a>&nbsp;&nbsp;
                     </span>
                     <span style="display: none;" runat="server" id="spanReviewCom">
-                    <a id="lnkAppReviewCom" href="#" runat="server"><b>Review Comments</b></a>&nbsp;|&nbsp;
+                        <a id="lnkAppReviewCom" href="#" runat="server" class="iceStatusLinks" style="float: left; width: 150px; border-right: 1px solid;"><b>Review Comments</b></a>&nbsp;&nbsp;
                     </span>
-                    <a id="lnkUPloadDoclist" href="#" runat="server"><b>View Document</b></a></div>
+                    <a id="lnkUPloadDoclist" href="#" runat="server" class="iceStatusLinks" style="float: left; width: 150px; border-right: 1px solid;"><b>Attachments</b></a>
+                </div>
+
+                <%--<div style="float: right" class="iceLable">
+                        <asp:Label ID="LblHhidBatch" CssClass="iceStatusLinks" Style="padding-right:20px; text-align:right; display: none; float: left; width: 500px; border-right: 1px solid;" runat="server" Text=""></asp:Label>&nbsp;
+                    <a id="lnkPageSource" href="#" class="iceStatusLinks" style="display:none; float: left; width: 100px; border-right: 1px solid;" runat="server"><b>Details</b></a>&nbsp;&nbsp;
+                    <span style="display: none;" runat="server" id="spanPackage">
+                        <a id="lnkPackageDocument" href="#" class="iceStatusLinks" style="float: left; width: 100px; border-right: 1px solid;" runat="server"><b>Package</b></a>&nbsp;&nbsp; 
+                        <a id="lnkPapPhoto" href="#" class="iceStatusLinks" style="float: left; width: 100px; border-right: 1px solid;" runat="server"><b>View Photo</b></a>&nbsp;&nbsp;
+                        <a id="lnkUPloadDoclistSup" href="#" class="iceStatusLinks" style=" float: left; width: 100px; border-right: 1px solid;" runat="server"><b>Attachments</b></a>&nbsp;&nbsp;</span>
+                        <span style="display: none;" runat="server" id="spanReviewCom">
+                            <a id="lnkAppReviewCom" href="#" class="iceStatusLinks" style="float: left; width: 150px; border-right: 1px solid;" runat="server"><b>Review Comments</b></a>&nbsp;&nbsp;
+                        </span>
+                        <a id="lnkUPloadDoclist" href="#" class="iceStatusLinks" style="display:none; float: left; width: 100px; border-right: 1px solid;" runat="server"><b>Attachments</b></a>
+                        <a id="lnkSendClarify" href="#" class="iceStatusLinks" style="display: none; float: left; width: 100px; border-right: 1px solid;" runat="server"><b>Clarification</b></a>
+                        <a id="lnkClarifyResponse" href="#" class="iceStatusLinks" style="display: none; float: left; width: 100px; border-right: 1px solid;" runat="server"><b>Responses</b></a>
+                    </div>--%>
+
                 <br />
-                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <table border="0" cellpadding="2" cellspacing="5" width="100%">
                     <tr>
                         <td style="width: 15%">
                             <asp:Label ID="ProjectCodeLabel" runat="server" CssClass="iceLable" Text="Project Code" />
@@ -345,8 +369,8 @@
                             <asp:Panel ID="pnlPaymentRequestBatch" runat="server" Width="100%">
                                 <asp:GridView ID="grdPaymentRequestBatch" runat="server" AllowSorting="True" CellPadding="4"
                                     CellSpacing="1" GridLines="None" AutoGenerateColumns="false" Width="100%" OnRowDataBound="grdPaymentRequestBatch_RowDataBound"
-                                  OnRowCommand="grdPaymentRequestBatch_RowCommand">
-                                <%-- OnRowDataBound="grdPaymentRequestBatch_RowDataBound">--%>
+                                    OnRowCommand="grdPaymentRequestBatch_RowCommand">
+                                    <%-- OnRowDataBound="grdPaymentRequestBatch_RowDataBound">--%>
                                     <HeaderStyle CssClass="gridHeaderStyle" />
                                     <PagerStyle CssClass="gridPagerStyle" HorizontalAlign="Center" ForeColor="White" />
                                     <FooterStyle CssClass="gridFooterStyle" />
@@ -374,14 +398,14 @@
                                                 <asp:Label ID="lbl_CMP_BatchNo" Text='<%#Eval("CMP_BatchNo")%>' runat="server"></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="HHID" HeaderStyle-HorizontalAlign="Left">
-                                                <ItemStyle HorizontalAlign="Left" />
-                                                <ItemTemplate>
-                                                    <asp:LinkButton ID="imgEdit" ImageAlign="AbsMiddle" ImageUrl="~/Image/edit.gif" CommandName="EditRow"
-                                                        CommandArgument='<%#Eval("HHID") %>' runat="server">
+                                        <asp:TemplateField HeaderText="HHID" HeaderStyle-HorizontalAlign="Left">
+                                            <ItemStyle HorizontalAlign="Left" />
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="imgEdit" ImageAlign="AbsMiddle" ImageUrl="~/Image/edit.gif" CommandName="EditRow"
+                                                    CommandArgument='<%#Eval("HHID") %>' runat="server">
                                                         <%#Eval("HHID_DISP")%></asp:LinkButton>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
 
                                         <asp:TemplateField HeaderText="HHID" HeaderStyle-HorizontalAlign="Center" Visible="false">
                                             <ItemStyle HorizontalAlign="Center" Width="20%" />
@@ -395,7 +419,7 @@
                                             ItemStyle-HorizontalAlign="Left" />
                                         <asp:BoundField DataField="Payt_Description" HeaderText="Request For" HeaderStyle-HorizontalAlign="Center" />
                                         <asp:BoundField DataField="Amt_Requested" HeaderText="Amount" ItemStyle-HorizontalAlign="Right"
-                                        DataFormatString="{0:N0}" HeaderStyle-HorizontalAlign="Center" />
+                                            DataFormatString="{0:N0}" HeaderStyle-HorizontalAlign="Center" />
                                         <asp:TemplateField HeaderText="Status" HeaderStyle-HorizontalAlign="Center">
                                             <ItemStyle HorizontalAlign="Center" Width="20%" />
                                             <ItemTemplate>
@@ -413,7 +437,7 @@
                                                     CommandName="DeleteRow" CommandArgument='<%#Eval("PAYT_REQUESTID") %>' runat="server" />
                                                 <asp:Label ID="lblPaymentRequestId" Text='<%#Eval("PAYT_REQUESTID")%>' Visible="false"
                                                     runat="server"></asp:Label>
-                                                      <asp:Label ID="LblStausLevel" Text='<%#Eval("StausLevel")%>' Visible="false"
+                                                <asp:Label ID="LblStausLevel" Text='<%#Eval("StausLevel")%>' Visible="false"
                                                     runat="server"></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
@@ -459,11 +483,11 @@
     </asp:MultiView>
     <asp:Panel ID="pnlAprovalFooter" runat="server" Visible="true" Width="100%">
         <div align="right">
-            <a id="lnkAppComments" href="#" runat="server" visible="True"><b>View Comments</b></a></div>
+            <a id="lnkAppComments" class="iceStatusLinks" style="padding-right:20px; float: right; width: 100px; border-right: 1px solid;" href="#" runat="server" visible="True"><b>View Comments</b></a>
+        </div>
         <table width="100%">
             <tr>
-                <td colspan="2" align="center">
-                    Approver Comments
+                <td colspan="2" align="center">Approver Comments
                 </td>
             </tr>
             <tr>
@@ -474,8 +498,7 @@
                 </td>
             </tr>
             <tr>
-                <td>
-                    &nbsp;
+                <td>&nbsp;
                 </td>
             </tr>
             <tr>
@@ -673,7 +696,7 @@
             else if (PageCode == 'CRFND') {
                 open('../COMPENSATION/PaymentProcessing.aspx?ProjectID=' + ProjectID + '&HHID=' + HHID + '&UserID=' + userID + '&ProjectCode=' + ProjectCode + '&Mode=' + Mode, 'ViewPagedetailsRead', 'width=960px,height=650px,resizable=1,scrollbars=1,top=' + top + ', left=' + left);
             }
-            else if ( PageCode == 'CREND') {
+            else if (PageCode == 'CREND') {
                 open('../COMPENSATION/PackageClosingInfo.aspx?ProjectID=' + ProjectID + '&HHID=' + HHID + '&UserID=' + userID + '&ProjectCode=' + ProjectCode + '&Mode=' + Mode, 'ViewPagedetailsRead', 'width=960px,height=650px,resizable=1,scrollbars=1,top=' + top + ', left=' + left);
             }
             else if (PageCode == 'NEG' || PageCode == 'NEGC' || PageCode == 'NEGL' || PageCode == 'NEGF' || PageCode == 'NEGR'

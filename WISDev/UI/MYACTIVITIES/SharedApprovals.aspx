@@ -21,21 +21,23 @@
                 <asp:Panel ID="pnlSelection" runat="server" Width="100%">
                     <table style="width: 100%">
                         <tr>
-                            <td class="iceLable" align="right">View Approvals Of : 
+                            <td class="iceLable" align="right">View Approvals Of &nbsp;&nbsp;
                             </td>
-                            <td style="width: 200px">
+                            <td>
+
                                 <asp:DropDownList ID="ddlAssignFrom" runat="server" CssClass="iceDropDown" Style="width: 190px"
                                     AppendDataBoundItems="True">
                                     <asp:ListItem Value="0">-- Select --</asp:ListItem>
-                                </asp:DropDownList>
+                                </asp:DropDownList>&nbsp;&nbsp;
+                                <asp:Button ID="btnView" CssClass="icebutton" Style="width: 100px;" Text="View" runat="server" OnClick="btnView_Click"
+                                    ValidationGroup="vgShared" />
                                 <asp:RequiredFieldValidator ID="reqddlAssignTo" runat="server" ErrorMessage="Select User to view Approvals"
                                     InitialValue="0" ControlToValidate="ddlAssignFrom" Display="None" ValidationGroup="vgShared"></asp:RequiredFieldValidator>
                             </td>
                             <td align="left">
                                 <asp:ValidationSummary ID="valsumTempAuth" DisplayMode="BulletList" HeaderText="Please enter/correct the following:"
                                     ShowMessageBox="true" ShowSummary="false" ValidationGroup="vgShared" runat="server" />
-                                <asp:Button ID="btnView" CssClass="icebutton" Text="View" runat="server" OnClick="btnView_Click"
-                                    ValidationGroup="vgShared" />
+
                             </td>
                         </tr>
                     </table>
@@ -327,8 +329,8 @@
                 <fieldset class="icePnlinner">
                     <legend id="ViewCR" runat="server"></legend>
                     <div style="float: right" class="iceLable">
-                        <asp:Label ID="LblHhidBatch" CssClass="iceStatusLinks" Style="float: left; width: 100px; border-right: 1px solid;" runat="server" Text=""></asp:Label>&nbsp;
-                    <a id="lnkPageSource" href="#" class="iceStatusLinks" style="float: left; width: 100px; border-right: 1px solid;" runat="server"><b>Details</b></a>&nbsp;&nbsp;
+                        <asp:Label ID="LblHhidBatch" CssClass="iceStatusLinks" Style="padding-right: 20px; text-align: right; display: none; float: left; width: 500px; border-right: 1px solid;" runat="server" Text=""></asp:Label>&nbsp;
+                    <a id="lnkPageSource" href="#" class="iceStatusLinks" style="display: none; float: left; width: 100px; border-right: 1px solid;" runat="server"><b>Details</b></a>&nbsp;&nbsp;
                     <span style="display: none;" runat="server" id="spanPackage">
                         <a id="lnkPackageDocument" href="#" class="iceStatusLinks" style="float: left; width: 100px; border-right: 1px solid;" runat="server"><b>Package</b></a>&nbsp;&nbsp; 
                         <a id="lnkPapPhoto" href="#" class="iceStatusLinks" style="float: left; width: 100px; border-right: 1px solid;" runat="server"><b>View Photo</b></a>&nbsp;&nbsp;
@@ -336,7 +338,7 @@
                         <span style="display: none;" runat="server" id="spanReviewCom">
                             <a id="lnkAppReviewCom" href="#" class="iceStatusLinks" style="float: left; width: 150px; border-right: 1px solid;" runat="server"><b>Review Comments</b></a>&nbsp;&nbsp;
                         </span>
-                        <a id="lnkUPloadDoclist" href="#" class="iceStatusLinks" style="float: left; width: 100px; border-right: 1px solid;" runat="server"><b>Attachments</b></a>
+                        <a id="lnkUPloadDoclist" href="#" class="iceStatusLinks" style="display: none; float: left; width: 100px; border-right: 1px solid;" runat="server"><b>Attachments</b></a>
                         <a id="lnkSendClarify" href="#" class="iceStatusLinks" style="display: none; float: left; width: 100px; border-right: 1px solid;" runat="server"><b>Clarification</b></a>
                         <a id="lnkClarifyResponse" href="#" class="iceStatusLinks" style="display: none; float: left; width: 100px; border-right: 1px solid;" runat="server"><b>Responses</b></a>
                     </div>
@@ -493,7 +495,7 @@
         </asp:MultiView>
         <asp:Panel ID="pnlAprovalFooter" runat="server" Visible="true" Width="100%">
             <div align="right">
-                <a id="lnkAppComments" href="#" runat="server" visible="True"><b>View Comments</b></a>
+                <a id="lnkAppComments" class="iceStatusLinks" style="padding-right: 20px; float: right; width: 100px; border-right: 1px solid;" href="#" runat="server" visible="True"><b>View Comments</b></a>
             </div>
             <table width="100%">
                 <tr>
@@ -758,10 +760,10 @@
             open('../COMPENSATION/ConversationLog.aspx?ProjectID=' + ProjectID + '&WorkFlowCode=' + WorkFlowCode + '&pageCode=' + pageCode + '&TrackHdrId=' + TrackHdrId + '&BatchNo=' + BatchNo, 'ChangeRequest', 'width=850px,height=350px,scrollbars=1,top=' + top + ', left=' + left);
         }
 
-        function OpenClarify(UserID, HHID, TrackerHeader) {
-            var left = (screen.width - 850) / 2;
-            var top = (screen.height - 350) / 4;
-            open('../ClarificationPop.aspx?UserID=' + UserID + '&HHID=' + HHID, 'BatchComments', 'width=850px,height=350px,scrollbars=1,top=' + top + ', left=' + left);
+        function OpenClarify(UserID, HHID, TrackerHeader, ProjectID) {
+            var left = (screen.width - 1200) / 2;
+            var top = (screen.height - 500) / 4;
+            open('../ClarificationPop.aspx?Mode=Clarify&UserID=' + UserID + '&HHID=' + HHID + '&ReqID=' + TrackerHeader + '&ProjectID=' + ProjectID, 'BatchComments', 'width=1200px,height=500px,scrollbars=1,top=' + top + ', left=' + left);
         }
 
         function OpenBatchComments(BatchNo, HHID) {

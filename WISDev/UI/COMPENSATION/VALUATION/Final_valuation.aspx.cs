@@ -222,7 +222,7 @@ namespace WIS
             WorkFlowBO objWorkFlowBO = new WorkFlowBO();
             WorkFlowBLL objWorkFlowBLL = new WorkFlowBLL();
 
-            string ChangeRequestCode = UtilBO.WorkflowChangeRequestApprovalHH;
+            string ChangeRequestCode = UtilBO.WorkflowChangeRequestHH;
 
             objWorkFlowBO = objWorkFlowBLL.getWOrkFlowApprovalID(Convert.ToInt32(Session["PROJECT_ID"]), ChangeRequestCode);
 
@@ -256,7 +256,7 @@ namespace WIS
             int householdID = Convert.ToInt32(Session["HH_ID"]);
             objHouseHold.HhId = householdID;
             objHouseHold.PageCode = pageCode;
-            objHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestApprovalHH;
+            objHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestHH;
 
             Count = objHouseHoldBLL.ChangeRequestStatus(objHouseHold);
             getApprrequtStatusFinalValuation();
@@ -274,7 +274,7 @@ namespace WIS
             int householdID = Convert.ToInt32(Session["HH_ID"]);
             objHouseHold.HhId = householdID;
             objHouseHold.PageCode = pageCode;
-            objHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestApprovalHH;
+            objHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestHH;
 
             objHouseHold = objHouseHoldBLL.ApprovalChangerequestStatus(objHouseHold);
 
@@ -571,7 +571,7 @@ namespace WIS
             int householdID = Convert.ToInt32(Session["HH_ID"]);
             objFinalValuationBO.HhId = householdID;
             objFinalValuationBO.PageCode = "NEG";
-            objFinalValuationBO.Workflowcode = UtilBO.WorkflowNegotatedCodeApproval;
+            objFinalValuationBO.Workflowcode = UtilBO.WorkflowNegotatedAmount;
 
             objFinalValuationBO = objFinalValuationBLL.ApprovalChangerequestStatus(objFinalValuationBO);
             if (objFinalValuationBO != null && objFinalValuationBO.IsFinal == "Y")
@@ -753,44 +753,44 @@ namespace WIS
             if (btn.ID.ToString() == "CropsrequestButton")
             {
                 NegInd = txtCropsNegAmount.Text.ToString();
-                result = checkApprovalExitOrNotIndividual(NegInd, UtilBO.WorkflowNegotatedCodeApprovalCrops);
+                result = checkApprovalExitOrNotIndividual(NegInd, UtilBO.WorkflowNegotiatedAmountCrops);
                 if (result == 0)
-                    count = IndividualNogotiatedAmountSave(NegInd, UtilBO.WorkflowNegotatedCodeApprovalCrops);
+                    count = IndividualNogotiatedAmountSave(NegInd, UtilBO.WorkflowNegotiatedAmountCrops);
             }
             else if (btn.ID.ToString() == "LandrequestButton")
             {
                 NegInd = txtLandNegAmount.Text.ToString();
-                result = checkApprovalExitOrNotIndividual(NegInd, UtilBO.WorkflowNegotatedCodeApprovalLand);
+                result = checkApprovalExitOrNotIndividual(NegInd, UtilBO.WorkflowNegotiatedAmountLand);
                 if (result == 0)
-                    count = IndividualNogotiatedAmountSave(NegInd, UtilBO.WorkflowNegotatedCodeApprovalLand);
+                    count = IndividualNogotiatedAmountSave(NegInd, UtilBO.WorkflowNegotiatedAmountLand);
             }
             else if (btn.ID.ToString() == "FixturesrequestButton")
             {
                 NegInd = txtFixturesNegAmount.Text.ToString();
-                result = checkApprovalExitOrNotIndividual(NegInd, UtilBO.WorkflowNegotatedCodeApprovalFixtures);
+                result = checkApprovalExitOrNotIndividual(NegInd, UtilBO.WorkflowNegotiatedAmountFixtures);
                 if (result == 0)
-                    count = IndividualNogotiatedAmountSave(NegInd, UtilBO.WorkflowNegotatedCodeApprovalFixtures);
+                    count = IndividualNogotiatedAmountSave(NegInd, UtilBO.WorkflowNegotiatedAmountFixtures);
             }
             else if (btn.ID.ToString() == "ReplacementrequestButton")
             {
                 NegInd = txtReplacementNegAmount.Text.ToString();
-                result = checkApprovalExitOrNotIndividual(NegInd, UtilBO.WorkflowNegotatedCodeApprovalRep);
+                result = checkApprovalExitOrNotIndividual(NegInd, UtilBO.WorkflowNegotiatedAmountStructures);
                 if (result == 0)
-                    count = IndividualNogotiatedAmountSave(NegInd, UtilBO.WorkflowNegotatedCodeApprovalRep);
+                    count = IndividualNogotiatedAmountSave(NegInd, UtilBO.WorkflowNegotiatedAmountStructures);
             }
             else if (btn.ID.ToString() == "DamagedrequestButton")
             {
                 NegInd = txtDamagedNegAmount.Text.ToString();
-                result = checkApprovalExitOrNotIndividual(NegInd, UtilBO.WorkflowNegotatedCodeApprovalDamCrops);
+                result = checkApprovalExitOrNotIndividual(NegInd, UtilBO.WorkflowNegotiatedAmountDamagedCrops);
                 if (result == 0)
-                    count = IndividualNogotiatedAmountSave(NegInd, UtilBO.WorkflowNegotatedCodeApprovalDamCrops);
+                    count = IndividualNogotiatedAmountSave(NegInd, UtilBO.WorkflowNegotiatedAmountDamagedCrops);
             }
             else if (btn.ID.ToString() == "CulturalrequestButton")
             {
                 NegInd = txtCulturalNegAmount.Text.ToString();
-                result = checkApprovalExitOrNotIndividual(NegInd, UtilBO.WorkflowNegotatedCodeApprovalCulPro);
+                result = checkApprovalExitOrNotIndividual(NegInd, UtilBO.WorkflowNegotiatedAmountCulture);
                 if (result == 0)
-                    count = IndividualNogotiatedAmountSave(NegInd, UtilBO.WorkflowNegotatedCodeApprovalCulPro);
+                    count = IndividualNogotiatedAmountSave(NegInd, UtilBO.WorkflowNegotiatedAmountCulture);
             }
 
 
@@ -845,7 +845,7 @@ namespace WIS
             WorkFlowBO objWorkFlowBO = new WorkFlowBO();
             WorkFlowBLL objWorkFlowBLL = new WorkFlowBLL();
 
-            string ChangeRequestCode = UtilBO.WorkflowNegotatedCodeApproval;
+            string ChangeRequestCode = UtilBO.WorkflowNegotatedAmount;
 
             objWorkFlowBO = objWorkFlowBLL.getWOrkFlowApprovalID(Convert.ToInt32(Session["PROJECT_ID"]), ChangeRequestCode);
             decimal NAmount = 0;
@@ -1029,7 +1029,7 @@ namespace WIS
             int householdID = Convert.ToInt32(Session["HH_ID"]);
             objFinalValuationBO.HhId = householdID;
             objFinalValuationBO.PageCode = "NEG";
-            objFinalValuationBO.Workflowcode = UtilBO.WorkflowNegotatedCodeApproval;
+            objFinalValuationBO.Workflowcode = UtilBO.WorkflowNegotatedAmount;
 
             objFinalValuationBO = objFinalValuationBLL.ApprovalChangerequestStatus(objFinalValuationBO);
 
@@ -1092,7 +1092,7 @@ namespace WIS
                     WorkFlowBO objWorkFlowBO = new WorkFlowBO();
                     WorkFlowBLL objWorkFlowBLL = new WorkFlowBLL();
 
-                    string ChangeRequestCode = UtilBO.WorkflowNegotatedCodeApproval;
+                    string ChangeRequestCode = UtilBO.WorkflowNegotatedAmount;
 
                     objWorkFlowBO = objWorkFlowBLL.getWOrkFlowApprovalID(Convert.ToInt32(Session["PROJECT_ID"]), ChangeRequestCode);
 
@@ -1125,7 +1125,7 @@ namespace WIS
             WorkFlowBO objPrintApprovalWF = null;
             WorkFlowList objWorkFlowList_ = null;
 
-            objProjectRoute.WorkFlowApprover = UtilBO.WorkflowNegotatedCodeApproval;
+            objProjectRoute.WorkFlowApprover = UtilBO.WorkflowNegotatedAmount;
             objProjectRoute.Project_Id = Convert.ToInt32(Session["PROJECT_ID"]);
 
             objWorkFlowList = objProjectRouteBLL.getTotalcountapproval(objProjectRoute);
@@ -1145,7 +1145,7 @@ namespace WIS
                     }
                     //objProjectRoute.HHID = householdID;
                     objProjectRoute.PageCode = "NEG";  // objHouseHold.PageCode = "DATAV";
-                    objProjectRoute.WorkflowCode = UtilBO.WorkflowNegotatedCodeApproval;
+                    objProjectRoute.WorkflowCode = UtilBO.WorkflowNegotatedAmount;
                     objProjectRoute.LEVEL = objWorkFlowList[i].CountApproval;
 
                     objPrintApprovalWF = objProjectRouteBLL.ApprovalStatuscheck(objProjectRoute);
@@ -1258,7 +1258,7 @@ namespace WIS
             WorkFlowBO objPrintApprovalWF = null;
             WorkFlowList objWorkFlowList_ = null;
 
-            string ChangeRequestCode = UtilBO.WorkflowNegotatedCodeApproval;
+            string ChangeRequestCode = UtilBO.WorkflowNegotatedAmount;
 
             objProjectRoute.WorkFlowApprover = ChangeRequestCode;
             objProjectRoute.Project_Id = Convert.ToInt32(Session["PROJECT_ID"].ToString());
@@ -1272,8 +1272,8 @@ namespace WIS
                 {
                     int householdID = Convert.ToInt32(Session["HH_ID"].ToString());
                     objProjectRoute.HHID = householdID;
-                    objProjectRoute.PageCode = UtilBO.WorkflowNegotatedCodeApproval;//Alias DocumentCode;
-                    objProjectRoute.WorkflowCode = UtilBO.WorkflowNegotatedCodeApproval;
+                    objProjectRoute.PageCode = UtilBO.WorkflowNegotatedAmount;//Alias DocumentCode;
+                    objProjectRoute.WorkflowCode = UtilBO.WorkflowNegotatedAmount;
                     objProjectRoute.LEVEL = objWorkFlowList[i].CountApproval;
 
                     objPrintApprovalWF = objProjectRouteBLL.ApprovalStatuscheck(objProjectRoute);
@@ -1350,7 +1350,7 @@ namespace WIS
             PAP_HouseholdBLL oHouseHoldBLL = new PAP_HouseholdBLL();
             PAP_HouseholdBO oHouseHold = new PAP_HouseholdBO();
 
-            string ChangeRequestCode = UtilBO.WorkflowChangeRequestApprovalFL;
+            string ChangeRequestCode = UtilBO.WorkflowChangeRequestFL;
 
             oWorkFlowBO = oWorkFlowBLL.getWOrkFlowApprovalID(Convert.ToInt32(Session["PROJECT_ID"]), ChangeRequestCode);
 
@@ -1361,11 +1361,11 @@ namespace WIS
                 int HHID = Convert.ToInt32(Session["HH_ID"]);
                 oHouseHold.HhId = HHID;
                 oHouseHold.PageCode = "CREND";
-                oHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestApprovalFL;
+                oHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestFL;
 
                 oHouseHold = oHouseHoldBLL.ApprovalChangerequestStatus(oHouseHold);//get Status of Request
 
-                int ApproverStatus = CheckAllApproverLevels("CREND", UtilBO.WorkflowChangeRequestApprovalFL);
+                int ApproverStatus = CheckAllApproverLevels("CREND", UtilBO.WorkflowChangeRequestFL);
                 //                #region When Package is NOT Closed
 
 

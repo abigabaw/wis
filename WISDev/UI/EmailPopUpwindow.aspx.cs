@@ -200,7 +200,7 @@ namespace WIS
                         ViewState["BatchNo"] = Request.QueryString["BatchNo"];
                     }
                 }
-                else if (Request.QueryString["ChangeRequestCode"] == UtilBO.GrievancesCode)
+                else if (Request.QueryString["ChangeRequestCode"] == UtilBO.WorkflowGrievances)
                 {
                     if (Request.QueryString["GrievanceID"] != null)
                     {

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace WIS_BusinessObjects.Collections
+namespace WIS_BusinessObjects
 {
-    class ClarifyList
+    public class ClarifyList : List<ClarifyBO>
+
     {
+        public ClarifyList() { }
     }
 }

@@ -187,7 +187,7 @@ namespace WIS
                 int householdID = Convert.ToInt32(Session["HH_ID"]);
                 objHouseHold.HhId = householdID;
                 objHouseHold.PageCode = "CPREV";
-                objHouseHold.Workflowcode = UtilBO.PackagePaymentRequestCode;
+                objHouseHold.Workflowcode = UtilBO.WorkflowPackageReview;
 
                 objHouseHold = objHouseHoldBLL.ApprovalChangerequestStatus(objHouseHold);
 
@@ -290,7 +290,7 @@ namespace WIS
                         int HHID = Convert.ToInt32(Session["HH_ID"]);
                         oHouseHold.HhId = householdID;
                         oHouseHold.PageCode = "CPREV";
-                        oHouseHold.Workflowcode = UtilBO.PackagePaymentRequestCode;
+                        oHouseHold.Workflowcode = UtilBO.WorkflowPackageReview;
 
                         oHouseHold = oHouseHoldBLL.ApprovalChangerequestStatus(oHouseHold);
 
@@ -369,7 +369,7 @@ namespace WIS
             WorkFlowBO objWorkFlowBO = new WorkFlowBO();
             WorkFlowBLL objWorkFlowBLL = new WorkFlowBLL();
 
-            string ChangeRequestCode = UtilBO.PackagePaymentRequestCode;
+            string ChangeRequestCode = UtilBO.WorkflowPackageReview;
 
             objWorkFlowBO = objWorkFlowBLL.getWOrkFlowApprovalID(Convert.ToInt32(Session["PROJECT_ID"]), ChangeRequestCode);
 
@@ -410,7 +410,7 @@ namespace WIS
             int householdID = Convert.ToInt32(Session["HH_ID"]);
             objHouseHold.HhId = householdID;
             objHouseHold.PageCode = "CPREV";
-            objHouseHold.Workflowcode = UtilBO.PackagePaymentRequestCode;
+            objHouseHold.Workflowcode = UtilBO.WorkflowPackageReview;
 
             objHouseHold = objHouseHoldBLL.ApprovalChangerequestStatus(objHouseHold);
 

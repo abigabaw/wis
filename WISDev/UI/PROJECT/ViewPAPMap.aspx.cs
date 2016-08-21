@@ -94,7 +94,7 @@ namespace WIS.UI.PROJECT
             if (HHID > 0)
             {
                 PAP_HouseholdBLL objHouseHoldBLL = new PAP_HouseholdBLL();
-                PAP_HouseholdBO objHousehold = objHouseHoldBLL.GetHousaeHoldData(HHID);
+                PAP_HouseholdBO objHousehold = objHouseHoldBLL.GetHouseHoldData(HHID);
                 if (objHousehold != null)
                 {
                     ProjectBLL objProjectBLL = new ProjectBLL();

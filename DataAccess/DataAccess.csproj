@@ -88,6 +88,7 @@
     <Compile Include="CDAPBudgetDAL.cs" />
     <Compile Include="CDAPImplementationDAL.cs" />
     <Compile Include="ClansDAL.cs" />
+    <Compile Include="ClarifyDAL.cs" />
     <Compile Include="Compare_ProjectDAL.cs" />
     <Compile Include="CompensationFinancialDAL.cs" />
     <Compile Include="CompensationPackagesDAL.cs" />
@@ -124,6 +125,7 @@
     <Compile Include="ParishDAL.cs" />
     <Compile Include="RepresentationDAL.cs" />
     <Compile Include="SharedApprovalsDAL.cs" />
+    <Compile Include="StatusCountDAL.cs" />
     <Compile Include="SubCategoryDAL.cs" />
     <Compile Include="UploadPAPCoordinatesDAL.cs" />
     <Compile Include="WIS_ConfigDAL.cs" />

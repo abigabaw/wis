@@ -485,7 +485,7 @@ namespace WIS
             if (Session["HH_ID"] != null)
             {
                 int HHID = Convert.ToInt32(Session["HH_ID"]);
-                PAP_HouseholdBO oHouseHold = objHouseHoldBLL.GetHousaeHoldData(HHID);
+                PAP_HouseholdBO oHouseHold = objHouseHoldBLL.GetHouseHoldData(HHID);
                 if (oHouseHold != null)
                 {
                     dvDistrict.Text = oHouseHold.District;

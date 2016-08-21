@@ -671,7 +671,7 @@ namespace WIS
             int householdID = Convert.ToInt32(Session["HH_ID"]);
             objHouseHold.HhId = householdID;
             objHouseHold.PageCode = "CPREV";
-            objHouseHold.Workflowcode = UtilBO.PackagePaymentRequestCode;
+            objHouseHold.Workflowcode = UtilBO.WorkflowPackageReview;
 
             objHouseHold = objHouseHoldBLL.ApprovalChangerequestStatus(objHouseHold);
 
