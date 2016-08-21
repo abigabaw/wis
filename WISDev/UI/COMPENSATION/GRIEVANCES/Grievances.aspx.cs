@@ -145,7 +145,7 @@ namespace WIS
             WorkFlowBO objWorkFlowBO = new WorkFlowBO();
             WorkFlowBLL objWorkFlowBLL = new WorkFlowBLL();
 
-            string ChangeRequestCode = UtilBO.WorkflowChangeRequestApprovalHH;
+            string ChangeRequestCode = UtilBO.WorkflowChangeRequestHH;
 
             objWorkFlowBO = objWorkFlowBLL.getWOrkFlowApprovalID(Convert.ToInt32(Session["PROJECT_ID"]), ChangeRequestCode);
 
@@ -194,7 +194,7 @@ namespace WIS
             int householdID = Convert.ToInt32(Session["HH_ID"]);
             objHouseHold.HhId = householdID;
             objHouseHold.PageCode = "Griev";
-            objHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestApprovalHH;
+            objHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestHH;
 
             Count = objHouseHoldBLL.ChangeRequestStatus(objHouseHold);
         }
@@ -207,7 +207,7 @@ namespace WIS
             int householdID = Convert.ToInt32(Session["HH_ID"]);
             objHouseHold.HhId = householdID;
             objHouseHold.PageCode = "Griev";
-            objHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestApprovalHH;
+            objHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestHH;
 
             objHouseHold = objHouseHoldBLL.ApprovalChangerequestStatus(objHouseHold);
 
@@ -415,7 +415,7 @@ namespace WIS
             ProjectRouteBLL objProjectRouteBLL = new ProjectRouteBLL();
             ProjectRouteList objProjectRouteList = new ProjectRouteList();
 
-            objProjectRoute.WorkFlowApprover = UtilBO.GrievancesCode;
+            objProjectRoute.WorkFlowApprover = UtilBO.WorkflowGrievances;
             objProjectRoute.Project_Id = Convert.ToInt32(Session["PROJECT_ID"]);
 
             objProjectRoute = objProjectRouteBLL.getWOrkFlowApprovalID(objProjectRoute);
@@ -521,11 +521,11 @@ namespace WIS
                             ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Updated", "ShowUpdateMessage('" + message + "');", true);
 
                             string scriptContent = string.Format("SendApprovalEmail('{0}',{1},{2},{3},'{4}',{5});",
-                                UtilBO.GrievancesCode,
+                                UtilBO.WorkflowGrievances,
                                 Convert.ToInt32(Session["PROJECT_ID"]),
                                 Convert.ToInt32(Session["USER_ID"]),
                                 Convert.ToInt32(Session["HH_ID"]),
-                                UtilBO.GrievancesCode,
+                                UtilBO.WorkflowGrievances,
                                 Convert.ToInt32(ViewState["GRIEVANCEID"])
                                 );
                             ScriptManager.RegisterStartupScript(this, this.GetType(), "Updated2", scriptContent, true);
@@ -656,14 +656,14 @@ namespace WIS
             ProjectRouteBLL objProjectRouteBLL = new ProjectRouteBLL();
             ProjectRouteList objProjectRouteList = new ProjectRouteList();
 
-            objProjectRoute.WorkFlowApprover = UtilBO.GrievancesCode;
+            objProjectRoute.WorkFlowApprover = UtilBO.WorkflowGrievances;
             objProjectRoute.Project_Id = Convert.ToInt32(Session["PROJECT_ID"]);
 
             objProjectRoute = objProjectRouteBLL.getWOrkFlowApprovalID(objProjectRoute);
 
             if (objProjectRoute != null)
             {
-                //(new NotificationBLL()).SendEmail(Convert.ToInt32(Session["PROJECT_ID"]), UtilBO.GrievancesCode);
+                //(new NotificationBLL()).SendEmail(Convert.ToInt32(Session["PROJECT_ID"]), UtilBO.WorkflowGrievances);
 
                 ////NotificationObj.SendEmail(objProjectRoute.EmailID, objProjectRoute.EmailSubject, objProjectRoute.EmailBody, objProjectRoute.ProjectCode, objProjectRoute.ProjectName);
                 ////ResultValue = NotificationObj.SendSMS(objProjectRoute.CellNumber, objProjectRoute.SmsText, objProjectRoute.ProjectCode, objProjectRoute.ProjectName);
@@ -690,7 +690,7 @@ namespace WIS
                 //objApprovalHeaderSave.WorkFlowApproverID = objProjectRoute.WorkFlowApproverID;
                 //objApprovalHeaderSave.StatusID = objProjectRoute.StatusID;
                 //objApprovalHeaderSave.CreatedBy = Convert.ToInt32(Session["USER_ID"]);
-                //objApprovalHeaderSave.PageCode = UtilBO.GrievancesCode;
+                //objApprovalHeaderSave.PageCode = UtilBO.WorkflowGrievances;
                 //objApprovalHeaderSave.HHID = Convert.ToInt32(Session["HH_ID"].ToString());
                 //objApprovalHeaderSave.ElementID = Convert.ToInt32(ViewState["GRIEVANCEID"]); //sending Grivanceid
                 //objApprovalHeaderSave.ApproverUserID = objProjectRoute.ApproverUserID;

@@ -39,7 +39,7 @@ namespace WIS
                 {
                     Session["HH_ID"] = Convert.ToInt32(Request.QueryString["HHID"]);
                     PAP_HouseholdBLL objHouseholdLogic = new PAP_HouseholdBLL();
-                    PAP_HouseholdBO objHousehold = objHouseholdLogic.GetHousaeHoldData(Convert.ToInt32(Request.QueryString["HHID"]));
+                    PAP_HouseholdBO objHousehold = objHouseholdLogic.GetHouseHoldData(Convert.ToInt32(Request.QueryString["HHID"]));
 
                     if (objHousehold != null)
                     {

@@ -325,7 +325,7 @@ namespace WIS
         {
             string ResultValue = string.Empty;
             string message = string.Empty;
-            string WorkFlowCode = UtilBO.WorkflowCodeRouteApproval;
+            string WorkFlowCode = UtilBO.WorkflowRouteApproval;
             string emailSubject = string.Empty;
             string emailBody = string.Empty;
 
@@ -333,14 +333,14 @@ namespace WIS
             ProjectRouteBLL objProjectRouteBLL = new ProjectRouteBLL();
             ProjectRouteList objProjectRouteList = new ProjectRouteList();
 
-            objProjectRoute.WorkFlowApprover = UtilBO.WorkflowCodeRouteApproval;
+            objProjectRoute.WorkFlowApprover = UtilBO.WorkflowRouteApproval;
             objProjectRoute.Project_Id = Convert.ToInt32(Session["PROJECT_ID"]);
 
             objProjectRoute = objProjectRouteBLL.getWOrkFlowApprovalID(objProjectRoute);
 
             if ((objProjectRoute) != null)
             {
-                (new NotificationBLL()).SendEmail(Convert.ToInt32(Session["PROJECT_ID"]), UtilBO.WorkflowCodeRouteApproval);
+                (new NotificationBLL()).SendEmail(Convert.ToInt32(Session["PROJECT_ID"]), UtilBO.WorkflowRouteApproval);
                 #region for sending SMS
                 WIS_ConfigBO WIS_ConfigBO = new WIS_ConfigBO();
                 WIS_ConfigBLL WIS_ConfigBLL = new WIS_ConfigBLL();

@@ -431,15 +431,13 @@ div.menuSub ul li a:active
 {
     background-color: #2A75A9; /*#5D95BA;*/ /* Background color for the Button */
                 width: 100px; /* Width of the Button(Take only no. of text pluse 2px, Space(Max charater 12)) */
-                margin: 5 5 5 0; /* Marigin form the end of the form(Design last textbox or Lable) */
+                margin: 5px; /* Marigin form the end of the form(Design last textbox or Lable) */
                 padding: 2px; /* Give space of 5mm pix. for button(it include top, left,right,bottom)*/
                 /*float: left;*/
-                margin: 5 5 5 0;
-                padding: 3px;
+                padding: 5px;
                 color: White; /* Color for the font which is writen on the Button */
-                border: 1px solid #dedede; /* Boarder width, colour and Display type */
+                border: 1px solid #2A75A9; /* Boarder width, colour and Display type */
                 -moz-border-radius: 10px; /* not work for IE, used to create */
-                margin-bottom:-3px;
 }
 
 .logoutLink

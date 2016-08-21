@@ -299,9 +299,9 @@ namespace WIS
                 //}
 
 
-                string pageCode = UtilBO.PaymentRequestCode;
+                string pageCode = UtilBO.WorkflowPaymentRequest;
 
-                string BatchRequest = string.Format("OpenChangeRequest('{0}',{1},{2},{3},'{4}',{5})", UtilBO.PaymentRequestCode, ProjectID, userID, HHID, pageCode, BatchNo);
+                string BatchRequest = string.Format("OpenChangeRequest('{0}',{1},{2},{3},'{4}',{5})", UtilBO.WorkflowPaymentRequest, ProjectID, userID, HHID, pageCode, BatchNo);
 
                 ClientScript.RegisterStartupScript(this.GetType(), "BATCHPAYMENT", BatchRequest, true);
 
@@ -328,7 +328,7 @@ namespace WIS
             WorkFlowBLL objWorkFlowBLL = new WorkFlowBLL();
             bool approverExists = false;
 
-            string ChangeRequestCode = UtilBO.PaymentRequestCode;
+            string ChangeRequestCode = UtilBO.WorkflowPaymentRequest;
 
             objWorkFlowBO = objWorkFlowBLL.getWOrkFlowApprovalID(Convert.ToInt32(Session["PROJECT_ID"]), ChangeRequestCode);
 
@@ -465,7 +465,7 @@ namespace WIS
             WorkFlowBO objPrintApprovalWF = null;
             WorkFlowList objWorkFlowList_ = null;
 
-            string ChangeRequestCode = UtilBO.PaymentRequestCode;
+            string ChangeRequestCode = UtilBO.WorkflowPaymentRequest;
 
             objProjectRoute.WorkFlowApprover = ChangeRequestCode;
             objProjectRoute.Project_Id = ProjectId;
@@ -486,8 +486,8 @@ namespace WIS
                         objProjectRoute.HHID = 0;
                     }
                     //objProjectRoute.HHID = householdID;
-                    objProjectRoute.PageCode = UtilBO.PaymentRequestCode; // objHouseHold.PageCode = "DATAV";
-                    objProjectRoute.WorkflowCode = UtilBO.PaymentRequestCode;
+                    objProjectRoute.PageCode = UtilBO.WorkflowPaymentRequest; // objHouseHold.PageCode = "DATAV";
+                    objProjectRoute.WorkflowCode = UtilBO.WorkflowPaymentRequest;
                     objProjectRoute.LEVEL = objWorkFlowList[i].CountApproval;
 
                     objPrintApprovalWF = objProjectRouteBLL.ApprovalStatuscheck(objProjectRoute);

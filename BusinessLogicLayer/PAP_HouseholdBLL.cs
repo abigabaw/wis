@@ -11,10 +11,10 @@ namespace WIS_BusinessLogic
         /// <param name="ID"></param>
         /// <returns></returns>
      
-        public PAP_HouseholdBO GetHousaeHoldData(int ID)
+        public PAP_HouseholdBO GetHouseHoldData(int ID)
         {
             PAP_HouseholdDAL objHouseHOldDAL = new PAP_HouseholdDAL();
-            return objHouseHOldDAL.GetHousaeHoldData(ID);
+            return objHouseHOldDAL.GetHouseHoldData(ID);
         }
         public PAP_HouseholdBO getCommentsData(int id)
         {
@@ -179,7 +179,7 @@ namespace WIS_BusinessLogic
         {
             bool resident = false;
 
-            PAP_HouseholdBO objHouseholdBO = (new PAP_HouseholdDAL()).GetHousaeHoldData(householdID);
+            PAP_HouseholdBO objHouseholdBO = (new PAP_HouseholdDAL()).GetHouseHoldData(householdID);
 
             if (objHouseholdBO != null)
             {

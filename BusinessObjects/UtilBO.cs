@@ -22,28 +22,28 @@ namespace WIS_BusinessObjects
         }
 
         #region for Workflow Code 
-        private static string workflowCodeRouteApproval = "RTA";
-        private static string workflowChangeRequestApprovalHH = "CR-HH";
-        private static string workflowChangeRequestApprovalFL = "CR-FL";
+        private static string RouteApprovalCode = "RTA";
+        private static string ChangeRequestCodeHH = "CR-HH";
+        private static string ChangeRequestCodeFL = "CR-FL";
         private static string compensationPrintRequest = "RFPRI";
-        private static string workflowNegotatedCodeApproval = "NEG";
-        private static string paymentRrequestCode = "PAYRQ";
-        private static string grievancesCode = "CRGRA";
-        private static string packagePaymentRequestCode = "PKREV";
+        private static string NegotiatedAmountCode = "NEG";
+        private static string PaymentRrequestCode = "PAYRQ";
+        private static string GrievanceCode = "CRGRA";
+        private static string PackageReviewCode = "PKREV";
         private static string cdapBudgetCode = "CDAPB";
         private static string paymentVerificationCode = "PAYVR";
         private static string dataVerificationCode = "DATAV";
 
         // new Codes For Negotated For Individuals
-        private static string workflowNegotatedCodeApprovalCrops = "NEGC";
-        private static string workflowNegotatedCodeApprovalLand = "NEGL";
-        private static string workflowNegotatedCodeApprovalFixtures = "NEGF";
-        private static string workflowNegotatedCodeApprovalRep = "NEGR";
-        private static string workflowNegotatedCodeApprovalDamCrops = "NEGD";
-        private static string workflowNegotatedCodeApprovalCulPro = "NEGCU";
+        private static string NegotatedAmountCropsCode = "NEGC";
+        private static string NegotatedAmountLandCode = "NEGL";
+        private static string NegotatedAmountFixturesCode = "NEGF";
+        private static string NegotatedAmountStructuresCode = "NEGR";
+        private static string NegotatedAmountDamagedCropsCode = "NEGD";
+        private static string NegotatedAmountCultureCode = "NEGCU";
         #endregion
 
-        private static string datchPaymentStatus = "1";
+        private static string batchPaymentStatus = "1";
 
         private static string dateFormat = "dd-MMM-yyyy";   // Format for displaying the date in UI.
         private static string dateFormatFull = "dd-MMM-yyyy hh:mm tt";   // Format for displaying the date in UI.
@@ -56,26 +56,26 @@ namespace WIS_BusinessObjects
         public static string DateFormatFull { get { return dateFormatFull; } }
         public static string DateFormatDB { get { return dateFormatDB; } }
         public static string DateFormatDBFull { get { return dateFormatDBFull; } }
-        public static string WorkflowCodeRouteApproval { get { return UtilBO.workflowCodeRouteApproval; } }
-        public static string WorkflowChangeRequestApprovalHH { get { return UtilBO.workflowChangeRequestApprovalHH; } }
-        public static string WorkflowChangeRequestApprovalFL { get { return UtilBO.workflowChangeRequestApprovalFL; } }
-        public static string WorkflowNegotatedCodeApproval { get { return UtilBO.workflowNegotatedCodeApproval; } }
-        public static string PaymentRequestCode { get { return UtilBO.paymentRrequestCode; } }
+        public static string WorkflowRouteApproval { get { return UtilBO.RouteApprovalCode; } }
+        public static string WorkflowChangeRequestHH { get { return UtilBO.ChangeRequestCodeHH; } }
+        public static string WorkflowChangeRequestFL { get { return UtilBO.ChangeRequestCodeFL; } }
+        public static string WorkflowNegotatedAmount { get { return UtilBO.NegotiatedAmountCode; } }
+        public static string WorkflowPaymentRequest { get { return UtilBO.PaymentRrequestCode; } }
         public static string CompensationPrintRequest { get { return UtilBO.compensationPrintRequest; } }
-        public static string GrievancesCode { get { return UtilBO.grievancesCode; } }
-        public static string PackagePaymentRequestCode { get { return UtilBO.packagePaymentRequestCode; } }
-        public static string CdapBudgetCode { get { return UtilBO.cdapBudgetCode; } }
-        public static string PaymentVerificationCode { get { return UtilBO.paymentVerificationCode; } }
-        public static string DataVerificationCode { get { return UtilBO.dataVerificationCode; } }
-        public static string BatchPaymentStatus { get { return UtilBO.datchPaymentStatus; } }
+        public static string WorkflowGrievances { get { return UtilBO.GrievanceCode; } }
+        public static string WorkflowPackageReview { get { return UtilBO.PackageReviewCode; } }
+        public static string WorkflowCdapBudget { get { return UtilBO.cdapBudgetCode; } }
+        public static string WorkflowPaymentVerification { get { return UtilBO.paymentVerificationCode; } }
+        public static string WorkflowDataVerification { get { return UtilBO.dataVerificationCode; } }
+        public static string BatchPaymentStatus { get { return UtilBO.batchPaymentStatus; } }
 
         //New Codes
-        public static string WorkflowNegotatedCodeApprovalCrops { get { return UtilBO.workflowNegotatedCodeApprovalCrops; } }
-        public static string WorkflowNegotatedCodeApprovalLand { get { return UtilBO.workflowNegotatedCodeApprovalLand; } }
-        public static string WorkflowNegotatedCodeApprovalFixtures { get { return UtilBO.workflowNegotatedCodeApprovalFixtures; } }
-        public static string WorkflowNegotatedCodeApprovalRep { get { return UtilBO.workflowNegotatedCodeApprovalRep; } }
-        public static string WorkflowNegotatedCodeApprovalDamCrops { get { return UtilBO.workflowNegotatedCodeApprovalDamCrops; } }
-        public static string WorkflowNegotatedCodeApprovalCulPro { get { return UtilBO.workflowNegotatedCodeApprovalCulPro; } }
+        public static string WorkflowNegotiatedAmountCrops { get { return UtilBO.NegotatedAmountCropsCode; } }
+        public static string WorkflowNegotiatedAmountLand { get { return UtilBO.NegotatedAmountLandCode; } }
+        public static string WorkflowNegotiatedAmountFixtures { get { return UtilBO.NegotatedAmountFixturesCode; } }
+        public static string WorkflowNegotiatedAmountStructures { get { return UtilBO.NegotatedAmountStructuresCode; } }
+        public static string WorkflowNegotiatedAmountDamagedCrops { get { return UtilBO.NegotatedAmountDamagedCropsCode; } }
+        public static string WorkflowNegotiatedAmountCulture { get { return UtilBO.NegotatedAmountCultureCode; } }
 
         public static class PrivilegeCode
         {

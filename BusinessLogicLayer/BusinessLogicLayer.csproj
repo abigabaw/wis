@@ -77,6 +77,7 @@
     <Compile Include="CDAPBudgetBLL.cs" />
     <Compile Include="CDAPImplementationBLL.cs" />
     <Compile Include="ClansBLL.cs" />
+    <Compile Include="ClarifyBLL.cs" />
     <Compile Include="Compare_ProjectBLL.cs" />
     <Compile Include="CompensationFinancialBLL.cs" />
     <Compile Include="CompensationPackagesBLL.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="ParishBLL.cs" />
     <Compile Include="RepresentationBLL.cs" />
     <Compile Include="SharedApprovalsBLL.cs" />
+    <Compile Include="StatusCountBLL.cs" />
     <Compile Include="SubCategoryBLL.cs" />
     <Compile Include="TrackerDetailBLL.cs" />
     <Compile Include="UploadPAPCoordinatesBLL.cs" />

@@ -833,7 +833,7 @@ namespace WIS
                     pnlAddPAP.Visible = true;
                     pnlSearchPAP.Visible = false;
                     PAP_HouseholdBLL objHouseholdBLL = new PAP_HouseholdBLL();
-                    PAP_HouseholdBO objHousehold = objHouseholdBLL.GetHousaeHoldData(Convert.ToInt32(ViewState["PAPHHID_ID"]));
+                    PAP_HouseholdBO objHousehold = objHouseholdBLL.GetHouseHoldData(Convert.ToInt32(ViewState["PAPHHID_ID"]));
                     txtSurname.Text = Convert.ToString(objHousehold.Surname);
                     txtfirstname.Text = Convert.ToString(objHousehold.Firstname);
                     txtOthername.Text = Convert.ToString(objHousehold.Othername);

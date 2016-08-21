@@ -56,7 +56,7 @@ namespace WIS
                 int HH_ID = 0;
                 if (Session["PROJECT_ID"] != null)
                 {
-                    BindDerivedBy();
+                    BindDeliveredBy();
                 }
                 if (Session["HH_ID"] != null)
                 {
@@ -712,7 +712,7 @@ namespace WIS
         /// <summary>
         /// Bind values to Drop down ddlDeliveredBy
         /// </summary>
-        private void BindDerivedBy()//These are Project Users
+        private void BindDeliveredBy()//These are Project Users
         {
             ListItem firstListItem = new ListItem(ddlDeliveredBy.Items[0].Text, ddlDeliveredBy.Items[0].Value);
             ProjectPersonalBLL objProjPersonalLogic = new ProjectPersonalBLL();

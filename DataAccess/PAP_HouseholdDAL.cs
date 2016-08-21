@@ -12,7 +12,7 @@ namespace WIS_DataAccess
         /// </summary>
         /// <param name="ID"></param>
         /// <returns></returns>
-        public PAP_HouseholdBO GetHousaeHoldData(int ID)
+        public PAP_HouseholdBO GetHouseHoldData(int ID)
         {
             OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
             OracleCommand cmd;

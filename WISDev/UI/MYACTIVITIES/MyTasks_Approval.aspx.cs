@@ -296,7 +296,21 @@ namespace WIS
                     myActiveHHID = Convert.ToInt32(lblHHId.Text);
                 MyActiveStatusHHID = myActiveHHID;
 
-                if (e.CommandArgument.ToString() == UtilBO.WorkflowCodeRouteApproval)//"RTA")
+                if (e.CommandArgument.ToString() == UtilBO.WorkflowPaymentVerification) // Payment Verification
+                {
+                    PrepareActionLinks();
+                    LblHhidBatch.Style.Remove("display");
+
+
+                }
+
+                if (e.CommandArgument.ToString() == UtilBO.WorkflowPackageReview) // Payment Verification
+                {
+                    PrepareActionLinks();
+                    LblHhidBatch.Style.Remove("display");
+                }
+
+                if (e.CommandArgument.ToString() == UtilBO.WorkflowRouteApproval)//"RTA")
                 {
                     if (row != null)
                     {
@@ -355,8 +369,22 @@ namespace WIS
                     ApprovalMultiView.SetActiveView(ViewRTA);
                     pnlAprovalFooter.Visible = true;
                 }
-                else if (e.CommandArgument.ToString() == UtilBO.WorkflowChangeRequestApprovalHH || e.CommandArgument.ToString() == UtilBO.WorkflowNegotatedCodeApproval || e.CommandArgument.ToString() == UtilBO.PaymentRequestCode || e.CommandArgument.ToString() == UtilBO.CompensationPrintRequest || e.CommandArgument.ToString() == UtilBO.GrievancesCode || e.CommandArgument.ToString() == UtilBO.WorkflowChangeRequestApprovalFL || e.CommandArgument.ToString() == UtilBO.PackagePaymentRequestCode || e.CommandArgument.ToString() == UtilBO.CdapBudgetCode || e.CommandArgument.ToString() == UtilBO.PaymentVerificationCode || e.CommandArgument.ToString() == UtilBO.DataVerificationCode
-                    || e.CommandArgument.ToString() == UtilBO.WorkflowNegotatedCodeApprovalCrops || e.CommandArgument.ToString() == UtilBO.WorkflowNegotatedCodeApprovalLand || e.CommandArgument.ToString() == UtilBO.WorkflowNegotatedCodeApprovalFixtures || e.CommandArgument.ToString() == UtilBO.WorkflowNegotatedCodeApprovalRep || e.CommandArgument.ToString() == UtilBO.WorkflowNegotatedCodeApprovalDamCrops || e.CommandArgument.ToString() == UtilBO.WorkflowNegotatedCodeApprovalCulPro)
+                else if (e.CommandArgument.ToString() == UtilBO.WorkflowChangeRequestHH || 
+                    e.CommandArgument.ToString() == UtilBO.WorkflowNegotatedAmount || 
+                    e.CommandArgument.ToString() == UtilBO.WorkflowPaymentRequest || 
+                    e.CommandArgument.ToString() == UtilBO.CompensationPrintRequest || 
+                    e.CommandArgument.ToString() == UtilBO.WorkflowGrievances || 
+                    e.CommandArgument.ToString() == UtilBO.WorkflowChangeRequestFL || 
+                    e.CommandArgument.ToString() == UtilBO.WorkflowPackageReview || 
+                    e.CommandArgument.ToString() == UtilBO.WorkflowCdapBudget || 
+                    e.CommandArgument.ToString() == UtilBO.WorkflowPaymentVerification || 
+                    e.CommandArgument.ToString() == UtilBO.WorkflowDataVerification
+                    || e.CommandArgument.ToString() == UtilBO.WorkflowNegotiatedAmountCrops || 
+                    e.CommandArgument.ToString() == UtilBO.WorkflowNegotiatedAmountLand || 
+                    e.CommandArgument.ToString() == UtilBO.WorkflowNegotiatedAmountFixtures || 
+                    e.CommandArgument.ToString() == UtilBO.WorkflowNegotiatedAmountStructures || 
+                    e.CommandArgument.ToString() == UtilBO.WorkflowNegotiatedAmountDamagedCrops || 
+                    e.CommandArgument.ToString() == UtilBO.WorkflowNegotiatedAmountCulture)
                 {
                     if (row != null)
                     {
@@ -414,7 +442,7 @@ namespace WIS
                     }
                     if (ViewState["WorkFlowCode"] != null)
                     {
-                        if (ViewState["WorkFlowCode"].ToString().ToUpper() == UtilBO.PaymentRequestCode.ToUpper())
+                        if (ViewState["WorkFlowCode"].ToString().ToUpper() == UtilBO.WorkflowPaymentRequest.ToUpper())
                         {
                             grdPaymentRequestBatch.Visible = true;
                             BindPAP(myActiveHHID);
@@ -425,7 +453,7 @@ namespace WIS
                         }
                         #region for CDAP-BUDGET Approved / Declined
                         //IF its CDAP-BUDGET Approved
-                        if (ViewState["WorkFlowCode"].ToString().ToUpper() == UtilBO.CdapBudgetCode.ToUpper() && Convert.ToString(ViewState["Status"]) == "APPROVED")
+                        if (ViewState["WorkFlowCode"].ToString().ToUpper() == UtilBO.WorkflowCdapBudget.ToUpper() && Convert.ToString(ViewState["Status"]) == "APPROVED")
                         {
                             grdCDAPBudget.Visible = true;
                             int ProjectID = Convert.ToInt32(ViewState["ProjectId"]);
@@ -437,7 +465,7 @@ namespace WIS
                             grdCDAPBudget.Visible = false;
                         }
                         //IF its CDAP-BUDGET Declined
-                        if (ViewState["WorkFlowCode"].ToString().ToUpper() == UtilBO.CdapBudgetCode.ToUpper() && Convert.ToString(ViewState["Status"]) == "DECLINED")
+                        if (ViewState["WorkFlowCode"].ToString().ToUpper() == UtilBO.WorkflowCdapBudget.ToUpper() && Convert.ToString(ViewState["Status"]) == "DECLINED")
                         {
                             grdCDAPBudget.Visible = true;
                             int ProjectID = Convert.ToInt32(ViewState["ProjectId"]);
@@ -450,7 +478,7 @@ namespace WIS
                         }
                         #endregion
                         #region for CDAP PENDING
-                        if (ViewState["WorkFlowCode"].ToString().ToUpper() == UtilBO.CdapBudgetCode.ToUpper() && Convert.ToString(ViewState["Status"]) == "PENDING")
+                        if (ViewState["WorkFlowCode"].ToString().ToUpper() == UtilBO.WorkflowCdapBudget.ToUpper() && Convert.ToString(ViewState["Status"]) == "PENDING")
                         {
                             grdCDAPBudget.Visible = true;
                             int ProjectID = Convert.ToInt32(ViewState["ProjectId"]);
@@ -2500,7 +2528,7 @@ namespace WIS
                             {
                                 UPdateFinalRoute();
                             }
-                            if (count == 0 && ChangeRequest == UtilBO.PaymentRequestCode)
+                            if (count == 0 && ChangeRequest == UtilBO.WorkflowPaymentRequest)
                             {
                                 int act = 0;
                                 foreach (GridViewRow gvw in grdPaymentRequestBatch.Rows)
@@ -2542,7 +2570,7 @@ namespace WIS
                                 string updateStatus = "D";
                                 UpdateCDAPBUGStatus(updateStatus);
                             }
-                            if (count == -1 && ChangeRequest == UtilBO.PaymentRequestCode)
+                            if (count == -1 && ChangeRequest == UtilBO.WorkflowPaymentRequest)
                             {
                                 UpdatePaymentStatus(BatchBLL.RequestStatus_Declined, "D");
                                 pnlFinalPojectdEtail.Visible = false;
@@ -2558,7 +2586,7 @@ namespace WIS
                                     Close_Batch(HHID_, USER_ID);
                                 }
                             }
-                            if (count == 1 && ChangeRequest == UtilBO.PaymentRequestCode)
+                            if (count == 1 && ChangeRequest == UtilBO.WorkflowPaymentRequest)
                             {
                                 UpdatePaymentStatus(BatchBLL.RequestStatus_Declined, "D");
                                 pnlFinalPojectdEtail.Visible = false;
@@ -2574,7 +2602,7 @@ namespace WIS
                                     Close_Batch(HHID_, USER_ID);
                                 }
                             }
-                            if (count == 2 && ChangeRequest == UtilBO.PaymentRequestCode)
+                            if (count == 2 && ChangeRequest == UtilBO.WorkflowPaymentRequest)
                             {
                                 UpdatePaymentStatus(BatchBLL.RequestStatus_Declined, "D");
                                 pnlFinalPojectdEtail.Visible = false;
@@ -2985,8 +3013,14 @@ namespace WIS
                 LblHhidBatch.Text = "";
                 if (ViewState["PageCode"].ToString() == "PAYRQ")
                 {
+                    PrepareActionLinks();
+                    LblHhidBatch.Style.Remove("display");
+
                     spanPackage.Style.Add("display", "");
-                    string PhotoModule = "PAP";
+                    lnkUPloadDoclist.Visible = false;
+                    lnkPageSource.Visible = true;
+                    
+                    /* string PhotoModule = "PAP";
                     if (ViewState["ApproverLevel"] != null)
                     {
                         ApprovalLevel = Convert.ToInt32(ViewState["ApproverLevel"]);
@@ -3007,14 +3041,14 @@ namespace WIS
 
                     string paramViewSource = string.Format("OpenSourcePage({0},{1},{2},'{3}','{4}','{5}',{6});", ProjectId, HHID, userID, ProjectCode, "Readonly", ViewState["PageCode"].ToString(), ApprovalLevel);
                     if (ViewState["PageCode"].ToString() == "PAYRQ")
-                        lnkPageSource.InnerText = "View Payment Request Details";
+                        lnkPageSource.InnerText = "View Details";
 
                     lnkPageSource.Attributes.Add("onclick", paramViewSource);
                     lnkPageSource.Visible = true;
 
 
                     string param = string.Format("OpenBatchComments({0},{1} );", Convert.ToInt32(ViewState["ElementID"].ToString()), HHID);
-                    lnkAppComments.Attributes.Add("onclick", param);
+                    lnkAppComments.Attributes.Add("onclick", param); */
                 }
                 else
                     spanPackage.Style.Add("display", "none");
@@ -3096,6 +3130,51 @@ namespace WIS
             grdCDAPBudget.DataBind();
         }
         #endregion
+
+        public void PrepareActionLinks()
+        {
+            int HHID = Convert.ToInt32(ViewState["HHID"]);
+            int UserID = Convert.ToInt32(Session["USER_ID"]);
+            PAP_HouseholdBLL PAP_HouseholdBLL = new PAP_HouseholdBLL();
+            PAP_HouseholdBO PAP_HouseholdBO = new PAP_HouseholdBO();
+            PAP_HouseholdBO = PAP_HouseholdBLL.GetHouseHoldData(HHID);
+            string PapName = PAP_HouseholdBO.PapName.ToString();
+
+            int ProjectID = Convert.ToInt32(ViewState["ProjectId"]);
+            string PageCode = Convert.ToString(ViewState["PageCode"]);
+            string ProjectCode = Convert.ToString(ViewState["ProjectCode"]);
+            int ApprovalLevel = Convert.ToInt32(ViewState["ApproverLevel"]);
+            string PhotoModule = "PAP";
+            int TrackHdrID = Convert.ToInt32(ViewState["TrackHdrId"]);
+            int ElementID = Convert.ToInt32(ViewState["ElementID"]);
+
+            LblHhidBatch.Style.Remove("display");
+            LblHhidBatch.Text = HHID + ":  " + PapName + " ";
+
+            string paramPhotoView = string.Format("OpenViewPhoto({0},{1},{2},'{3}','{4}');", ProjectID, HHID, UserID, ProjectCode, PhotoModule);
+            lnkPapPhoto.Attributes.Add("onclick", paramPhotoView);
+
+            string paramSource = string.Format("OpenSourcePage({0},{1},{2},'{3}','{4}','{5}',{6});", ProjectID, HHID, UserID, ProjectCode, "Readonly", "CPREV", ApprovalLevel);
+            lnkPackageDocument.Attributes.Add("onclick", paramSource);
+
+            string paramViewAttachments = string.Format("OpenDocumnetlist({0},{1},{2},'{3}','{4}');", ProjectID, HHID, UserID, ProjectCode, "Readonly");
+            lnkUPloadDoclistSup.Attributes.Add("onclick", paramViewAttachments);
+
+            string paramViewDocument = string.Format("OpenUploadDocumnetlist({0},{1},{2},'{3}');", ProjectID, HHID, UserID, ProjectCode, "Readonly");
+            lnkUPloadDoclist.Attributes.Add("onclick", paramViewDocument);
+
+            string paramViewSource = string.Format("OpenSourcePage({0},{1},{2},'{3}','{4}','{5}',{6});", ProjectID, HHID, UserID, ProjectCode, "Readonly", PageCode, ApprovalLevel);
+            lnkPageSource.Attributes.Add("onclick", paramViewSource);
+
+            string paramBatchComments = string.Format("OpenBatchComments({0},{1} );", ElementID, HHID);
+            lnkAppComments.Attributes.Add("onclick", paramBatchComments);
+
+            /* string OpenClarify = string.Format("OpenClarify({0},{1},{2},{3});", UserID, HHID, TrackHdrID, ProjectID, "Readonly");
+            lnkSendClarify.Attributes.Add("onclick", OpenClarify); */
+
+            string paramReView = string.Format("OpenReviewCom({0},{1});", ProjectID, HHID);
+            lnkAppReviewCom.Attributes.Add("onclick", paramReView);
+        }
     }
         // #endregion
 }

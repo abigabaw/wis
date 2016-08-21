@@ -15,12 +15,7 @@ namespace WIS
 {
     public partial class Crops : System.Web.UI.Page
     {
-        /// <summary>
-        /// Set Page header,Call BindGrid() method
-        /// Check User Permitions
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         protected void Page_Load(object sender, EventArgs e)
         {
             string Mode = string.Empty;
@@ -116,10 +111,7 @@ namespace WIS
                 grdCrops.Columns[grdCrops.Columns.Count - 4].Visible = false;
             }
         }
-        /// <summary>
-        /// set the Default button and retuns the script.
-        /// </summary>
-        /// <returns></returns>
+       
 
         private string CreateStartupScript()
         {
@@ -171,7 +163,7 @@ namespace WIS
             WorkFlowBO objWorkFlowBO = new WorkFlowBO();
             WorkFlowBLL objWorkFlowBLL = new WorkFlowBLL();
 
-            string ChangeRequestCode = UtilBO.WorkflowChangeRequestApprovalHH;
+            string ChangeRequestCode = UtilBO.WorkflowChangeRequestHH;
 
             objWorkFlowBO = objWorkFlowBLL.getWOrkFlowApprovalID(Convert.ToInt32(Session["PROJECT_ID"]), ChangeRequestCode);
 
@@ -206,7 +198,7 @@ namespace WIS
             int householdID = Convert.ToInt32(Session["HH_ID"]);
             objHouseHold.HhId = householdID;
             objHouseHold.PageCode = "HV-CO";
-            objHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestApprovalHH;
+            objHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestHH;
 
             Count = objHouseHoldBLL.ChangeRequestStatus(objHouseHold);
         }
@@ -221,7 +213,7 @@ namespace WIS
             int householdID = Convert.ToInt32(Session["HH_ID"]);
             objHouseHold.HhId = householdID;
             objHouseHold.PageCode = "HV-CO";
-            objHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestApprovalHH;
+            objHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestHH;
 
             objHouseHold = objHouseHoldBLL.ApprovalChangerequestStatus(objHouseHold);
 
@@ -292,9 +284,7 @@ namespace WIS
             return arrCrop;
         }
         #endregion WebService
-        /// <summary>
-        /// To assign values to dropdownlist
-        /// </summary>
+       
         private void GetCropDescription()
         {
             CropDescriptionBLL BLLobj = new CropDescriptionBLL();
@@ -304,9 +294,7 @@ namespace WIS
             ddlCropDescription.DataValueField = "CropDesID";
             ddlCropDescription.DataBind();
         }
-        /// <summary>
-        /// To assign values to dropdownlist
-        /// </summary>
+
         private void GetCropType()
         {
             CropTypeBLL BLLobj = new CropTypeBLL();
@@ -316,9 +304,7 @@ namespace WIS
             ddlCropType.DataValueField = "CROPTYPEID";
             ddlCropType.DataBind();
         }
-        /// <summary>
-        /// To assign values to dropdownlist
-        /// </summary>
+
         private void GetCropName()
         {
             CropNameBLL BLLobj = new CropNameBLL();
@@ -328,22 +314,14 @@ namespace WIS
             ddlCropName.DataValueField = "CROPID";
             ddlCropName.DataBind();
         }
-        /// <summary>
-        /// Set Grid Data source
-        /// </summary>
-        /// <param name="addRow"></param>
-        /// <param name="deleteRow"></param>e
+
         private void BindGrid(bool addRow, bool deleteRow)
         {
             CropsBLL CropsBLLobj = new CropsBLL();
             grdCrops.DataSource = CropsBLLobj.GetCrops(Convert.ToInt32(Session["HH_ID"]));
             grdCrops.DataBind();
         }
-        /// <summary>
-        /// save details to database
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+
         protected void btnSave_Click(object sender, EventArgs e)
         {
             int count = 0;
@@ -455,9 +433,7 @@ namespace WIS
             ChangeRequestStatusValuationCrop();
             projectFrozen();
         }
-        /// <summary>
-        /// to change text of thebutton based on condition
-        /// </summary>
+
         private void SetUpdateMode(bool updateMode)
         {
             if (updateMode)
@@ -472,11 +448,7 @@ namespace WIS
                 ViewState["PAP_CROPID"] = "0";
             }
         }
-        /// <summary>
-        /// Clear the search Fiels and Set Data to Grid Data souce
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+
         private void ClearData()
         {
             ddlCropName.ClearSelection();
@@ -491,11 +463,7 @@ namespace WIS
             //lnkViewPhoto.Visible = false;
             lblUnitMeasure.Text = "";
         }
-        /// <summary>
-        /// calls cleardata method
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+
         protected void btnClear_Click(object sender, EventArgs e)
         {
             ClearData();
@@ -505,12 +473,7 @@ namespace WIS
                // lnkViewPhoto.Visible = false;
             }
         }
-        /// <summary>
-        /// Set edit mode for edit comand
-        /// Delete data from the database for delete comand
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+
         protected void grdCrops_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             if (e.CommandName == "EditRow")
@@ -572,10 +535,7 @@ namespace WIS
 
             //lnkViewPhoto.Attributes.Add("onclick", paramPhotoView);
         }
-        /// <summary>
-        /// to delete data
-        /// </summary>
-        /// <param name="cropid"></param>
+
         private void DeleteData(string cropid)
         {
             CropsBLL CropsBLLobj = new CropsBLL();
@@ -584,9 +544,7 @@ namespace WIS
             if (cropid != null)
                 Result = CropsBLLobj.DeleteData(cropid);
         }
-        /// <summary>
-        /// to fetch data and assign to textbox
-        /// </summary>
+
         private void GetData()
         {
             CropsBLL BLLobj = new CropsBLL();
@@ -624,11 +582,7 @@ namespace WIS
 
             CommentsTextBox.Text = BOobj.COMMENTS;
         }
-        /// <summary>
-        /// to set controls in grid
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+
         protected void grdCrops_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
@@ -680,11 +634,7 @@ namespace WIS
 
             }
         }
-        /// <summary>
-        /// to change page in grid
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+
         protected void Changepage(object sender, GridViewPageEventArgs e)
         {
             grdCrops.PageIndex = e.NewPageIndex;

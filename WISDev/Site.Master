@@ -263,20 +263,15 @@
                             <asp:MenuItem NavigateUrl="~/UI/REPORTUI/OptionSummary.aspx" Text="Land Acquisition" Value="LAND_ACQUISITION_RPT" />
                             <asp:MenuItem NavigateUrl="~/UI/REPORTUI/OptionSummary.aspx" Text="Legacy Reports" Value="OPTION_SUMMARY" />
                         </asp:MenuItem>
-                        <asp:MenuItem Selectable="false" NavigateUrl="#" Text="&nbsp; My Activities &nbsp;"
-                            Value="MY_ACTIVITIES">
-                            <asp:MenuItem NavigateUrl="~/UI/MYACTIVITIES/MyTasks_Approval.aspx" Text="Approvals"
-                                Value="APPROVALS" />
-                            <asp:MenuItem NavigateUrl="~/UI/MYACTIVITIES/SharedApprovals.aspx" Text="Shared Approvals"
-                                Value="SHARED_APPROVALS" />
-                            <asp:MenuItem NavigateUrl="~/UI/MYACTIVITIES/TemporaryAuthorization.aspx" Text="Temp. Authorization"
-                                Value="TEMP_AUTHORIZATION" />
-                            <asp:MenuItem NavigateUrl="~/UI/MYACTIVITIES/SharedAuthorization.aspx" Text="Shared Authorization"
-                                Value="SHARED_AUTHORIZATION" />
-                            <asp:MenuItem NavigateUrl="~/UI/MYACTIVITIES/PapListExport.aspx" Text="GIS Export"
-                                Value="PAP_LIST_EXPORT" />
-                            <asp:MenuItem NavigateUrl="~/UI/MYACTIVITIES/PaymentExport.aspx" Text="Payment Export"
-                                Value="PAP_PAYMENT_EXPORT" />
+                        
+                        <asp:MenuItem Selectable="false" NavigateUrl="#" Text="<span style='color: Red; font-weight: bold;'>&nbsp; My Tasks &nbsp;</span>" Value="MY_ACTIVITIES" >
+                            <asp:MenuItem NavigateUrl="~/UI/MYACTIVITIES/MyTasks_Approval.aspx" Text="Approvals" Value="APPROVALS" />
+                            <asp:MenuItem NavigateUrl="~/UI/MYACTIVITIES/SharedApprovals.aspx" Text="Shared Approvals" Value="SHARED_APPROVALS" />
+                           <asp:MenuItem NavigateUrl="#" Text="Clarifications" Value="CLARIFICATIONS" />
+                            <asp:MenuItem NavigateUrl="~/UI/MYACTIVITIES/TemporaryAuthorization.aspx" Text="Temp. Authorization" Value="TEMP_AUTHORIZATION" />
+                            <asp:MenuItem NavigateUrl="~/UI/MYACTIVITIES/SharedAuthorization.aspx" Text="Shared Authorization" Value="SHARED_AUTHORIZATION" />
+                            <asp:MenuItem NavigateUrl="~/UI/MYACTIVITIES/PapListExport.aspx" Text="GIS Export" Value="PAP_LIST_EXPORT" />
+                            <asp:MenuItem NavigateUrl="~/UI/MYACTIVITIES/PaymentExport.aspx" Text="Payment Export" Value="PAP_PAYMENT_EXPORT" />
                         </asp:MenuItem>                       
                          <asp:MenuItem Selectable="false" NavigateUrl="#" Text="&nbsp; Help &nbsp;" Value="Help">
                              <asp:MenuItem  NavigateUrl="~/About us.aspx" Text="About Us" Value="AboutUs"/>
@@ -364,6 +359,14 @@
             }
             return true;
         }
+
+        function OpenResponse(UserID) {
+            var left = (screen.width - 1200) / 2;
+            var top = (screen.height - 500) / 4;
+            open('/UI/ClarificationPop.aspx?Mode=Response&UserID=' + UserID , 'BatchComments', 'width=1200px,height=500px,scrollbars=1,top=' + top + ', left=' + left);
+        }
+
+        
     </script>
 </body>
 </html>
