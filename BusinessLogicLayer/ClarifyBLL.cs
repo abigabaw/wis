@@ -30,5 +30,11 @@ namespace WIS_BusinessLogic
             ClarifyDAL ClarifyDAL = new ClarifyDAL(); 
             return ClarifyDAL.SelectClarification(ClarifyID);
         }
+
+        public string InsertReponse(ClarifyBO ClarifyBO)
+        {
+            ClarifyDAL ClarifyDAL = new ClarifyDAL(); //Data pass -to Database Layer
+            return ClarifyDAL.InsertResponse(ClarifyBO);
+        }
     }
 }

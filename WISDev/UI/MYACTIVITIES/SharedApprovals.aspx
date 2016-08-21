@@ -8,7 +8,8 @@
     <ajaxToolkit:ToolkitScriptManager ID="tsManager" runat="server" EnablePageMethods="true">
     </ajaxToolkit:ToolkitScriptManager>
     <script type="text/javascript" src="../../Scripts/CommonFunctions.js"></script>
-    <script type="text/javascript" src="../../Scripts/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <!-- script type="text/javascript" src="../../Scripts/jquery-1.9.1.min.js"></!-->
     <script type="text/javascript" src="../../Scripts/jquery-impromptu.js"></script>
     <script type="text/javascript" src="../../Scripts/jquery-1.4.1.js"></script>
     <script type="text/javascript" src="../../Scripts/jquery-1.4.1.min.js"></script>
@@ -731,15 +732,17 @@
         }
 
 
-        function OpenDocumnetlist(ProjectID, HHID, userID, ProjectCode, Mode) {
+        function OpenDocumnetlist(ProjectID, HHID, userID, ProjectCode, DocumentCode) {
             var left = (screen.width - 960) / 2;
             var top = (screen.height - 650) / 4;
-            open('../DOCUMENT/UploadDocument.aspx?ProjectID=' + ProjectID + '&HHID=' + HHID + '&UserID=' + userID + '&ProjectCode=' + ProjectCode + '&Mode=' + Mode, 'ViewPagedetailsRead', 'width=960px,height=650px,resizable=1,scrollbars=1,top=' + top + ', left=' + left);
+            // open('../UploadDocumentlist.aspx?ProjectID=' + ProjectID + '&HHID=' + HHID + '&UserID=' + userID + '&ProjectCode=' + ProjectCode + '&Mode=' + Mode, 'ViewPagedetailsRead', 'width=960px,height=650px,resizable=1,scrollbars=1,top=' + top + ', left=' + left);
+            open('../UploadDocumentList.aspx?ProjectID=' + ProjectID + '&HHID=' + HHID + '&UserID=' + userID + '&ProjectCode=' + ProjectCode + '&DOCUMENT_CODE=' + DocumentCode, 'UploadDocPoplist', 'width=800px,height=650px,top=' + top + ', left=' + left);
         }
 
         function OpenUploadDocumnetlist(ProjectID, HHID, userID, ProjectCode, DocumentCode) {
             var left = (screen.width - 800) / 2;
             var top = (screen.height - 650) / 4;
+            //open('../UploadDocumentList.aspx?ProjectID=' + ProjectID + '&HHID=' + HHID + '&UserID=' + userID + '&ProjectCode=' + ProjectCode + '&DOCUMENT_CODE=' + DocumentCode, 'UploadDocPoplist', 'width=800px,height=650px,top=' + top + ', left=' + left);
             open('../UploadDocumentList.aspx?ProjectID=' + ProjectID + '&HHID=' + HHID + '&UserID=' + userID + '&ProjectCode=' + ProjectCode + '&DOCUMENT_CODE=' + DocumentCode, 'UploadDocPoplist', 'width=800px,height=650px,top=' + top + ', left=' + left);
         }
 

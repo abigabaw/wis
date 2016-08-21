@@ -56,7 +56,7 @@
                     <td align="right" valign="top"><b>Response Details</b>
                     </td>
                     <td>
-                        <asp:TextBox ID="txtResponseDetails" runat="server" Height="86px" TextMode="MultiLine" Width="551px" Font-Names="Calibri"></asp:TextBox>
+                        <asp:TextBox ID="txtResponseDetails" runat="server" Height="86px" TextMode="MultiLine" Width="551px" Font-Names="Calibri" Enabled="False"></asp:TextBox>
                     </td>
                 </tr>
                 <%-- tr>

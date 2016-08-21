@@ -87,7 +87,7 @@
     border-width: 1px;
     border-color: #2A75A9 #3A5F7A #3A5F7A #3A5F7A;
     padding: 0 1em 1em 1em;
-    font: Arial,Verdana;
+    /*font: Arial,Verdana;
     font-weight: normal; /* Fliedset Boarder width, colour and Display type */
     margin-top: 5px;
     margin-left: 5px;
@@ -97,7 +97,7 @@
 /* **css for Label other than master page** */
 .iceLable
 {
-    font-family: Arial, Helvetica, sans-serif;
+    /* font-family: Arial, Helvetica, sans-serif; */
     line-height: 1em;
     color: #000000;
     font-size: 12px;
@@ -105,6 +105,9 @@
     text-decoration: none;
     width: auto; /*white-space:nowrap; 	margin-left:5px; 	margin-right:5px;*/
 }
+
+
+
 /* for Textbox css */
 .iceTextBox
 {
@@ -202,27 +205,24 @@
 .icebutton
 {
     background-color: #2A75A9; /*#5D95BA;*/ /* Background color for the Button */
-    width: 100px; /* Width of the Button(Take only no. of text pluse 2px, Space(Max charater 12)) */ /* Marigin form the end of the form(Design last textbox or Lable) */
-    padding: 2px 5px; 
+    /* Width of the Button(Take only no. of text pluse 2px, Space(Max charater 12)) */ /* Marigin form the end of the form(Design last textbox or Lable) */
+    /* padding: 2px; Give space of 5mm pix. for button(it include top, left,right,bottom) float: left;
+    padding: 3px; */
     color: White; /* Color for the font which is writen on the Button */
-    border: 1px solid #2A75A9; /* Boarder width, colour and Display type */
+    border: 1px solid #dedede; /* Boarder width, colour and Display type */
     -moz-border-radius: 10px; /* not work for IE, used to create */
-    margin: 0px 5px;
-}
-
-.NewButton
-{
-    background-color: #2A75A9; /*#5D95BA;*/ /* Background color for the Button */
-    width: 100px; /* Width of the Button(Take only no. of text pluse 2px, Space(Max charater 12)) */ /* Marigin form the end of the form(Design last textbox or Lable) */
-    padding: 5px; /* Give space of 5mm pix. for button(it include top, left,right,bottom)*/ /*float: left;*/
-    color: White; /* Color for the font which is writen on the Button */
+    margin-left: 0;
+    margin-right: 5;
+    margin-top: 5;
     display:block;
-    margin: 5px;
+    width: 100px;
+    padding: 5px;
 }
 
 .gridStyle
 {
     background-color: #d0d0d0;
+   vertical-align: top;
 }
 
 .gridHeaderStyle
@@ -278,31 +278,31 @@
     font-size: 12px;
     font-weight: bold;
     color: #333333;
-    border-width: 2px;
+   /*border-width: 2px;
     border-color: #CCCCCC;
-    border-collapse: collapse;
+    border-collapse: collapse;*/
 }
 .tftable th
 {
     border-width: 2px;
     padding: 8px;
-    border-style: solid;
-    border-color: #CCCCCC;
+    /*border-style: solid;
+    border-color: #CCCCCC;*/
 }
 .tftable tr
 {
     border-width: 2px;
     padding: 8px;
-    border-style: solid;
+    /*border-style: solid;
     border-color: #CCCCCC;
-    background-color: #FFFFFF;
+    background-color: #FFFFFF;*/
 }
 .tftable td
 {
-    border-width: 2px;
     padding: 8px;
+    /*border-width: 2px;
     border-style: solid;
-    border-color: #CCCCCC;
+    border-color: #CCCCCC;*/
 }
 
 .iceLinkButton

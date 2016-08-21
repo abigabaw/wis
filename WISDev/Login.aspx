@@ -5,7 +5,9 @@
 <head runat="server">
     <title></title>
     <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
-    <link href="~/Styles/Roylecss.css" rel="stylesheet" type="text/css" />
+    <link href="Styles/Roylecss.css" rel="stylesheet" />
+
+    <!-- link href="/Styles/Roylecss.css" rel="stylesheet" type="text/css" / -->
     <script type="text/javascript" src="Scripts/ImageSliderJs/jquery.min.js"></script>
     <script type="text/javascript" src="Scripts/ImageSliderJs/chili-1.7.pack.js"></script>
     <script type="text/javascript" src="Scripts/ImageSliderJs/jquery.cycle.all.js"></script>

@@ -404,9 +404,9 @@ namespace WIS
                 }
             }
 
-            LblHhidBatch.Text = "";
+            // LblHhidBatch.Text = "";
             // LblHhidBatch.Text = MyActiveStatusHHID;
-            spanPackage.Style.Add("display", "none");
+            // spanPackage.Style.Add("display", "none");
             string WorkFlowCode;
             ApprovalMultiView.Visible = true;
             GetApproavlComments();
@@ -449,7 +449,7 @@ namespace WIS
                     
                 }
 
-                if (e.CommandArgument.ToString() == UtilBO.WorkflowPackageReview) // Payment Verification
+                if (e.CommandArgument.ToString() == UtilBO.WorkflowPackageReview) // Package Review
                 {
                     PrepareActionLinks();
 
@@ -457,6 +457,15 @@ namespace WIS
                     spanPackage.Style.Remove("display");
                     lnkPageSource.Style.Remove("display");
                     lnkPackageDocument.Style.Add("display", "none");
+                    lnkAppReviewCom.Style.Add("display", "none");
+                }
+
+                if (e.CommandArgument.ToString() == UtilBO.WorkflowPaymentRequest) // Batching
+                {
+                    PrepareActionLinks();
+
+                    /* LblHhidBatch.Style.Add("display","none");
+                    lnkPageSource.Style.Add("display","none"); */
                     lnkAppReviewCom.Style.Add("display", "none");
                 }
 
@@ -3344,42 +3353,31 @@ namespace WIS
 
         protected void grdPaymentRequestBatch_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            if (e.CommandArgument.ToString() == UtilBO.WorkflowPaymentRequest) // Payment Verification
-            {
-                int HHID = Convert.ToInt32(ViewState["HHID"]);
-                PAP_HouseholdBLL PAP_HouseholdBLL = new PAP_HouseholdBLL();
-                PAP_HouseholdBO PAP_HouseholdBO = new PAP_HouseholdBO();
-                PAP_HouseholdBO = PAP_HouseholdBLL.GetHouseHoldData(HHID);
-                string PapName = PAP_HouseholdBO.PapName.ToString();
 
-                LblHhidBatch.Style.Remove("display");
-                LblHhidBatch.Text = HHID + ":  " + PapName + " ";
-            }
+            int HHID = Convert.ToInt32(e.CommandArgument);
+            PrepareActionLinks(HHID);
 
             if (e.CommandName == "EditRow")
             {
-                int ApprovalLevel = 0;
+                /* int ApprovalLevel = 0;
                 int ProjectId = 0;
                 int userID = 0;
-                if (ViewState["ProjectId"] != null)
-                {
-                    ProjectId = Convert.ToInt32(ViewState["ProjectId"]);
-                }
+                if (ViewState["ProjectId"] != null) { ProjectId = Convert.ToInt32(ViewState["ProjectId"]); }
                 string pagecode = Convert.ToString(ViewState["PageCode"]);
-                if (Session["USER_ID"] != null)
-                    userID = Convert.ToInt32(Session["USER_ID"].ToString());
+                if (Session["USER_ID"] != null) { userID = Convert.ToInt32(Session["USER_ID"].ToString()); }
                 string ProjectCode = Convert.ToString(ViewState["ProjectCode"]);
-
                 string HHID = e.CommandArgument.ToString();
 
-                if (ViewState["ApproverLevel"] != null)
-                {
-                    ApprovalLevel = Convert.ToInt32(ViewState["ApproverLevel"].ToString());
-                }
-                LblHhidBatch.Text = "";
+                if (ViewState["ApproverLevel"] != null) { ApprovalLevel = Convert.ToInt32(ViewState["ApproverLevel"].ToString()); }
+                LblHhidBatch.Text = ""; */
+
                 if (ViewState["PageCode"].ToString() == "PAYRQ")
                 {
-                    spanPackage.Style.Add("display", "");
+                    spanPackage.Style.Remove("display");
+                    LblHhidBatch.Style.Remove("display");
+                    lnkPageSource.Style.Remove("display");
+
+                    /* spanPackage.Style.Add("display", "");
                     string PhotoModule = "PAP";
                     if (ViewState["ApproverLevel"] != null)
                     {
@@ -3405,9 +3403,9 @@ namespace WIS
 
                     string DocumentCode = "CMP_PKG";
 
-                    /* string paramViewDocument = string.Format("OpenUploadDocumnetlist({0},{1},{2},'{3}','{4}');", ProjectId, HHID, userID, ProjectCode, DocumentCode);
+                    string paramViewDocument = string.Format("OpenUploadDocumnetlist({0},{1},{2},'{3}','{4}');", ProjectId, HHID, userID, ProjectCode, DocumentCode);
                     lnkUPloadDoclist.Attributes.Add("onclick", paramViewDocument);
-                    lnkUPloadDoclist.Visible = false; */
+                    lnkUPloadDoclist.Visible = false; 
 
                     string paramViewSource = string.Format("OpenSourcePage({0},{1},{2},'{3}','{4}','{5}',{6});", ProjectId, HHID, userID, ProjectCode, "Readonly", ViewState["PageCode"].ToString(), ApprovalLevel);
                     //if (ViewState["PageCode"].ToString() == "PAYRQ")
@@ -3416,7 +3414,7 @@ namespace WIS
 
 
                     string param = string.Format("OpenBatchComments({0},{1} );", Convert.ToInt32(ViewState["ElementID"].ToString()), HHID);
-                    lnkAppComments.Attributes.Add("onclick", param);
+                    lnkAppComments.Attributes.Add("onclick", param); */
                 }
                 else
                     spanPackage.Style.Add("display", "none");
@@ -3517,9 +3515,20 @@ namespace WIS
 
         #endregion
 
-        public void PrepareActionLinks()
+        public void PrepareActionLinks(int PapID = 0)
         {
-            int HHID = Convert.ToInt32(ViewState["HHID"]);
+            int HHID = 0;
+            string DocumentCode = "HH";
+
+            if (PapID == 0)
+            {
+                HHID = Convert.ToInt32(ViewState["HHID"]);
+            }
+            else
+            {
+                HHID = PapID;
+            }
+            
             int UserID = Convert.ToInt32(Session["USER_ID"]);
             PAP_HouseholdBLL PAP_HouseholdBLL = new PAP_HouseholdBLL();
             PAP_HouseholdBO PAP_HouseholdBO = new PAP_HouseholdBO();
@@ -3528,13 +3537,14 @@ namespace WIS
 
             int ProjectID = Convert.ToInt32(ViewState["ProjectId"]);
             string PageCode = Convert.ToString(ViewState["PageCode"]);
+
             string ProjectCode = Convert.ToString(ViewState["ProjectCode"]);
             int ApprovalLevel = Convert.ToInt32(ViewState["ApproverLevel"]);
             string PhotoModule = "PAP";
             int TrackHdrID = Convert.ToInt32(ViewState["TrackHdrId"]);
             int ElementID = Convert.ToInt32(ViewState["ElementID"]);
 
-            LblHhidBatch.Style.Remove("display");
+            // LblHhidBatch.Style.Remove("display");
             LblHhidBatch.Text = HHID + ":  " + PapName + " ";
 
             string paramPhotoView = string.Format("OpenViewPhoto({0},{1},{2},'{3}','{4}');", ProjectID, HHID, UserID, ProjectCode, PhotoModule);
@@ -3543,10 +3553,10 @@ namespace WIS
             string paramSource = string.Format("OpenSourcePage({0},{1},{2},'{3}','{4}','{5}',{6});", ProjectID, HHID, UserID, ProjectCode, "Readonly", "CPREV", ApprovalLevel);
             lnkPackageDocument.Attributes.Add("onclick", paramSource);
 
-            string paramViewAttachments = string.Format("OpenDocumnetlist({0},{1},{2},'{3}','{4}');", ProjectID, HHID, UserID, ProjectCode, "Readonly");
+            string paramViewAttachments = string.Format("OpenDocumnetlist({0},{1},{2},'{3}','{4}');", ProjectID, HHID, UserID, ProjectCode, DocumentCode);
             lnkUPloadDoclistSup.Attributes.Add("onclick", paramViewAttachments);
 
-            string paramViewDocument = string.Format("OpenUploadDocumnetlist({0},{1},{2},'{3}','{4}');", ProjectID, HHID, UserID, ProjectCode, "Readonly");
+            string paramViewDocument = string.Format("OpenUploadDocumnetlist({0},{1},{2},'{3}','{4}');", ProjectID, HHID, UserID, ProjectCode, DocumentCode);
             lnkUPloadDoclist.Attributes.Add("onclick", paramViewDocument);
 
             string paramViewSource = string.Format("OpenSourcePage({0},{1},{2},'{3}','{4}','{5}',{6});", ProjectID, HHID, UserID, ProjectCode, "Readonly", PageCode, ApprovalLevel);

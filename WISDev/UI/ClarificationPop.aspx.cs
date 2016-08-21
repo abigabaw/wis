@@ -195,43 +195,88 @@ namespace WIS
         
         protected void SaveButton_Click(object sender, EventArgs e)
         {
-            string statusMessage = string.Empty;
-
-            try
+            if (Request.QueryString["Mode"] == "Clarify")
             {
-                string UserID = Request.QueryString["UserID"];
-                string ReqID = Request.QueryString["ReqID"];
-
-                int HHID = Convert.ToInt32(Request.QueryString["HHID"]);
-                ClarifyBO ClarifyBO = new ClarifyBO();
-
-                
-                ClarifyBO.TrackHeader = Convert.ToInt32(ReqID);
-                ClarifyBO.RequestDetails = txtClarifyDetails.Text.ToString();
-                ClarifyBO.UserID = Convert.ToInt32(UserID);
-                ClarifyBO.RespondentID = Convert.ToInt32(ddlProjectPersonnel.SelectedValue);
-
-                ClarifyBLL ClarifyBLL = new ClarifyBLL();
-                 statusMessage = ClarifyBLL.InsertClarify(ClarifyBO);
-
-                if (statusMessage == "Failed")
+                if (txtClarifyDetails.Text == "" || ddlProjectPersonnel.SelectedIndex == 0)
                 {
-                    ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "Alert", "<script>alert('Pending Clarifications Already Exist');</script>", false);
-                    /* Alert that displays custom variable
-                    ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "Alert", "<script>alert(\"You have selected " + ClarifyID + "\");</script>", false); */
-                    
-                } else{
-                    ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "Alert", "<script>alert('Your Clarification has been Sent');</script>", false);
-                    ddlProjectPersonnel.ClearSelection();
-                    txtClarifyDetails.Text = string.Empty;
-                    BindClarifications(false, false);
+                    ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "Alert", "<script>alert('Empty Clarification, Check Details or Select Respondent');</script>", false);
                 }
-                
+                else
+                {
 
+                    string statusMessage = string.Empty;
+
+                    string UserID = Request.QueryString["UserID"];
+                    string ReqID = Request.QueryString["ReqID"];
+
+                    int HHID = Convert.ToInt32(Request.QueryString["HHID"]);
+                    ClarifyBO ClarifyBO = new ClarifyBO();
+
+
+                    ClarifyBO.TrackHeader = Convert.ToInt32(ReqID);
+                    ClarifyBO.RequestDetails = txtClarifyDetails.Text.ToString();
+                    ClarifyBO.UserID = Convert.ToInt32(UserID);
+                    ClarifyBO.RespondentID = Convert.ToInt32(ddlProjectPersonnel.SelectedValue);
+
+                    ClarifyBLL ClarifyBLL = new ClarifyBLL();
+                    statusMessage = ClarifyBLL.InsertClarify(ClarifyBO);
+
+                    if (statusMessage == "Failed")
+                    {
+                        ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "Alert", "<script>alert('Pending Clarifications Already Exist');</script>", false);
+                        /* Alert that displays custom variable
+                        ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "Alert", "<script>alert(\"You have selected " + ClarifyID + "\");</script>", false); */
+
+                    }
+                    else
+                    {
+                        ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "Alert", "<script>alert('Your Clarification has been Sent');</script>", false);
+                        ddlProjectPersonnel.ClearSelection();
+                        txtClarifyDetails.Text = string.Empty;
+                        BindClarifications(false, false);
+                    }
+                }
             }
-            catch (Exception ex)
+            else
             {
-                throw ex;
+                if (txtResponseDetails.Text == "")
+                {
+                    ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "Alert", "<script>alert('Empty Response');</script>", false);
+                }
+                else
+                {
+                    string statusMessage = string.Empty;
+                    int ReqID = Convert.ToInt32(ViewState["ID"]);
+                    // int HHID = Convert.ToInt32(Request.QueryString["HHID"]);
+                    ClarifyBO ClarifyBO = new ClarifyBO();
+
+
+                    ClarifyBO.ID = ReqID;
+                    ClarifyBO.ResponseDetails = txtResponseDetails.Text.ToString();
+                    ClarifyBO.Status = "Resolved";
+
+                    ClarifyBLL ClarifyBLL = new ClarifyBLL();
+                    statusMessage = ClarifyBLL.InsertReponse(ClarifyBO);
+
+                    if (statusMessage == "Failed")
+                    {
+                        ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "Alert", "<script>alert('Response Not Sent');</script>", false);
+                        /* Alert that displays custom variable
+                        ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "Alert", "<script>alert(\"You have selected " + ClarifyID + "\");</script>", false); */
+
+                    }
+                    else
+                    {
+                        ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "Alert", "<script>alert('Your Response has been Sent');</script>", false);
+                        // ddlProjectPersonnel.ClearSelection();
+                        txtResponseDetails.Text = string.Empty;
+                        txtResponseDetails.Enabled = false;
+                        PapDetails.Visible = false;
+                        RequesterDetails.Visible = false;
+                        ClarificationDetail.Visible = false;
+                        MyClarifications(false, false);
+                    }
+                }
             }
 
             
@@ -274,6 +319,7 @@ namespace WIS
                 PapDetails.Visible = true;
                 RequesterDetails.Visible = true;
                 txtClarifyDetails.Enabled = false;
+                txtResponseDetails.Enabled = true;
                 ClarificationDetail.Visible = true;
                 txtHHID.Text = ClarifyBO.HHID.ToString();
                 txtPapName.Text = ClarifyBO.PapName;

@@ -2384,6 +2384,7 @@
     <Content Include="IMAGE\progress.gif" />
     <Content Include="IMAGE\Refresh.jpeg" />
     <Content Include="IMAGE\UETCL_LogoAboutus.png" />
+    <Content Include="Styles\jquery-1.9.1.min.js" />
     <Content Include="Styles\page_specific.css" />
     <Content Include="UI\MYACTIVITIES\MyTasks_Approval.aspx" />
     <Content Include="UI\ApprovalMessage.ascx" />

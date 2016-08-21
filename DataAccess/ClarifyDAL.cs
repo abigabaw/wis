@@ -234,5 +234,43 @@ namespace WIS_DataAccess
 
             return ClarifyBO;
         }
+
+        public string InsertResponse(ClarifyBO ClarifyBO)
+        {
+            string statusMessage = string.Empty;
+
+            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            cnn.Open();
+            OracleCommand dcmd = new OracleCommand("USP_UPD_CLARIFY_REQUEST", cnn);
+            dcmd.CommandType = CommandType.StoredProcedure;
+            int count = Convert.ToInt32(dcmd.CommandType);
+
+            try
+            {
+
+                dcmd.Parameters.Add("ID_", ClarifyBO.ID);
+                dcmd.Parameters.Add("RESPONSE_", ClarifyBO.ResponseDetails);
+                dcmd.Parameters.Add("STATUS_", ClarifyBO.Status);
+                dcmd.Parameters.Add("ERRORMSG_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+
+
+
+                dcmd.ExecuteNonQuery();
+
+                statusMessage = dcmd.Parameters["ERRORMSG_"].Value.ToString();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                dcmd.Dispose();
+                cnn.Close();
+                cnn.Dispose();
+            }
+
+            return statusMessage;
+        }
     }
 }
