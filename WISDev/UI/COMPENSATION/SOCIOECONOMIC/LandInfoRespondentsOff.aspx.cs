@@ -230,7 +230,7 @@ namespace WIS
             int householdID = Convert.ToInt32(Session["HH_ID"]);
             objHouseHold.HhId = householdID;
             objHouseHold.PageCode = "HLIOF";
-            objHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestApprovalHH;
+            objHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestHH;
 
             Count = objHouseHoldBLL.ChangeRequestStatus(objHouseHold);
         }
@@ -244,7 +244,7 @@ namespace WIS
             WorkFlowBO objWorkFlowBO = new WorkFlowBO();
             WorkFlowBLL objWorkFlowBLL = new WorkFlowBLL();
 
-            string ChangeRequestCode = UtilBO.WorkflowChangeRequestApprovalHH;
+            string ChangeRequestCode = UtilBO.WorkflowChangeRequestHH;
 
             objWorkFlowBO = objWorkFlowBLL.getWOrkFlowApprovalID(Convert.ToInt32(Session["PROJECT_ID"]), ChangeRequestCode);
 
@@ -274,7 +274,7 @@ namespace WIS
             int householdID = Convert.ToInt32(Session["HH_ID"]);
             objHouseHold.HhId = householdID;
             objHouseHold.PageCode = "HLIOF";
-            objHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestApprovalHH;
+            objHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestHH;
 
             objHouseHold = objHouseHoldBLL.ApprovalChangerequestStatus(objHouseHold);
 

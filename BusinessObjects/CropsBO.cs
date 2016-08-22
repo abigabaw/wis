@@ -8,6 +8,7 @@ namespace WIS_BusinessObjects
     public class CropsBO
     {
         private int pAP_CROPID;
+
         private byte[] photo;
 
         public byte[] Photo

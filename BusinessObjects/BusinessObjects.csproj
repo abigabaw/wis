@@ -80,6 +80,7 @@
     <Compile Include="CategoryBO.cs" />
     <Compile Include="CDAPBudgetDescrMasterBO.cs" />
     <Compile Include="CDAPBudgetMasterBO.cs" />
+    <Compile Include="ClarifyBO.cs" />
     <Compile Include="Collections\AffectedAcreageValuationList.cs" />
     <Compile Include="Collections\CardTypeList.cs" />
     <Compile Include="Collections\CategoryList.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Collections\CDAPBudgetList.cs" />
     <Compile Include="Collections\CDAPImplementationList.cs" />
     <Compile Include="Collections\ClansList.cs" />
+    <Compile Include="Collections\ClarifyList.cs" />
     <Compile Include="Collections\Compare_projectList.cs" />
     <Compile Include="Collections\CompensationFinancialList.cs" />
     <Compile Include="Collections\CompensationPackagesList.cs" />
@@ -196,6 +198,7 @@
     <Compile Include="Parish_List.cs" />
     <Compile Include="PaymentExportBO.cs" />
     <Compile Include="RepresentationBO.cs" />
+    <Compile Include="StatusCountBO.cs" />
     <Compile Include="SubCategoryBO.cs" />
     <Compile Include="SubCategoryList.cs" />
     <Compile Include="TrackerDetailBO.cs" />

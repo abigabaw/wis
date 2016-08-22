@@ -84,7 +84,7 @@ namespace WIS
                 {
                     upHHIDTextBox.Text = HHID.ToString();
                     PAP_HouseholdBLL objHouseholdLogic = new PAP_HouseholdBLL();
-                    PAP_HouseholdBO objHousehold = objHouseholdLogic.GetHousaeHoldData(HHID);
+                    PAP_HouseholdBO objHousehold = objHouseholdLogic.GetHouseHoldData(HHID);
                     if (objHousehold != null)
                     {
                         upHHIDTextBoxDisp.Text = objHousehold.HhId.ToString();

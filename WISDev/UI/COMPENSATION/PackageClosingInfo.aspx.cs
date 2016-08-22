@@ -942,7 +942,7 @@ namespace WIS
             WorkFlowBO objWorkFlowBO = new WorkFlowBO();
             WorkFlowBLL objWorkFlowBLL = new WorkFlowBLL();
 
-            string ChangeRequestCode = UtilBO.WorkflowChangeRequestApprovalFL;
+            string ChangeRequestCode = UtilBO.WorkflowChangeRequestFL;
 
             objWorkFlowBO = objWorkFlowBLL.getWOrkFlowApprovalID(Convert.ToInt32(Session["PROJECT_ID"]), ChangeRequestCode);
 
@@ -977,7 +977,7 @@ namespace WIS
             PAP_HouseholdBLL oHouseHoldBLL = new PAP_HouseholdBLL();
             PAP_HouseholdBO oHouseHold = new PAP_HouseholdBO();
 
-            string ChangeRequestCode = UtilBO.WorkflowChangeRequestApprovalFL;
+            string ChangeRequestCode = UtilBO.WorkflowChangeRequestFL;
 
             oWorkFlowBO = oWorkFlowBLL.getWOrkFlowApprovalID(Convert.ToInt32(Session["PROJECT_ID"]), ChangeRequestCode);
 
@@ -988,13 +988,13 @@ namespace WIS
                 int HHID = Convert.ToInt32(Session["HH_ID"]);
                 oHouseHold.HhId = HHID;
                 oHouseHold.PageCode = "CREND";
-                oHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestApprovalFL;
+                oHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestFL;
 
                 oHouseHold = oHouseHoldBLL.ApprovalChangerequestStatus(oHouseHold);//get Status of Request
 
                 #region When Package is NOT Closed
 
-                int ApproverStatus = CheckAllApproverLevels("CREND", UtilBO.WorkflowChangeRequestApprovalFL);
+                int ApproverStatus = CheckAllApproverLevels("CREND", UtilBO.WorkflowChangeRequestFL);
 
                 if (oHouseHold != null && ApproverStatus != 1)//oHouseHold.ApproverStatus != 1)
                 {
@@ -1229,7 +1229,7 @@ namespace WIS
             WorkFlowBO objWorkFlowBO = new WorkFlowBO();
             WorkFlowBLL objWorkFlowBLL = new WorkFlowBLL();
 
-            string ChangeRequestCode = UtilBO.PaymentVerificationCode;
+            string ChangeRequestCode = UtilBO.WorkflowPaymentVerification;
 
             objWorkFlowBO = objWorkFlowBLL.getWOrkFlowApprovalID(Convert.ToInt32(Session["PROJECT_ID"]), ChangeRequestCode);
 
@@ -1274,14 +1274,14 @@ namespace WIS
             int householdID = Convert.ToInt32(Session["HH_ID"]);
             objHouseHold.HhId = householdID;
             objHouseHold.PageCode = "CRFND";
-            objHouseHold.Workflowcode = UtilBO.PaymentVerificationCode;
+            objHouseHold.Workflowcode = UtilBO.WorkflowPaymentVerification;
 
             objHouseHold = objHouseHoldBLL.ApprovalChangerequestStatus(objHouseHold);
 
             if ((objHouseHold) != null)
             {
                 //New Code Added Here
-                int ApproverStatus = CheckAllApproverLevels("CRFND", UtilBO.PaymentVerificationCode);
+                int ApproverStatus = CheckAllApproverLevels("CRFND", UtilBO.WorkflowPaymentVerification);
                 if (ApproverStatus == 1) //(objHouseHold.ApproverStatus == 1)
                 {
                     //APPROVED
@@ -1297,14 +1297,14 @@ namespace WIS
                     int HHID = Convert.ToInt32(Session["HH_ID"]);
                     oHouseHold.HhId = HHID;
                     oHouseHold.PageCode = "CREND";
-                    oHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestApprovalFL;
+                    oHouseHold.Workflowcode = UtilBO.WorkflowChangeRequestFL;
 
                     oHouseHold = oHouseHoldBLL.ApprovalChangerequestStatus(oHouseHold);
                     //---------------Checking Existance of Approver For File Closure---------------------
                     WorkFlowBO objWorkFlowBO = new WorkFlowBO();
                     WorkFlowBLL objWorkFlowBLL = new WorkFlowBLL();
 
-                    string ChangeRequestCode = UtilBO.WorkflowChangeRequestApprovalFL;
+                    string ChangeRequestCode = UtilBO.WorkflowChangeRequestFL;
 
                     objWorkFlowBO = objWorkFlowBLL.getWOrkFlowApprovalID(Convert.ToInt32(Session["PROJECT_ID"]), ChangeRequestCode);
 
@@ -1442,7 +1442,7 @@ namespace WIS
             int householdID = Convert.ToInt32(Session["HH_ID"]);
             objHouseHold.HhId = householdID;
             objHouseHold.PageCode = "CPREV";
-            objHouseHold.Workflowcode = UtilBO.PackagePaymentRequestCode;
+            objHouseHold.Workflowcode = UtilBO.WorkflowPackageReview;
 
             objHouseHold = objHouseHoldBLL.ApprovalChangerequestStatus(objHouseHold);
             if (objHouseHold != null)
@@ -1496,7 +1496,7 @@ namespace WIS
             int HHID = Convert.ToInt32(Session["HH_ID"]);
             oHouseHold.HhId = HHID;
             oHouseHold.PageCode = "CRFND";
-            oHouseHold.Workflowcode = UtilBO.PaymentVerificationCode;
+            oHouseHold.Workflowcode = UtilBO.WorkflowPaymentVerification;
 
             oHouseHold = oHouseHoldBLL.ApprovalChangerequestStatus(oHouseHold);
             if (oHouseHold != null)
@@ -1519,7 +1519,7 @@ namespace WIS
             int HHID = Convert.ToInt32(Session["HH_ID"]);
             oHouseHold.HhId = HHID;
             oHouseHold.PageCode = "CRFND";
-            oHouseHold.Workflowcode = UtilBO.PaymentVerificationCode;
+            oHouseHold.Workflowcode = UtilBO.WorkflowPaymentVerification;
 
             oHouseHold = oHouseHoldBLL.ApprovalChangerequestStatus(oHouseHold);
             if (oHouseHold != null)

@@ -132,7 +132,7 @@ namespace WIS
                 WorkFlowBO objWorkFlowBO = new WorkFlowBO();
                 WorkFlowBLL objWorkFlowBLL = new WorkFlowBLL();
 
-                string ChangeRequestCode = UtilBO.DataVerificationCode;
+                string ChangeRequestCode = UtilBO.WorkflowDataVerification;
 
                 objWorkFlowBO = objWorkFlowBLL.getWOrkFlowApprovalID(Convert.ToInt32(e.CommandArgument), ChangeRequestCode);
 
@@ -228,7 +228,7 @@ namespace WIS
                     WorkFlowBO objWorkFlowBO = new WorkFlowBO();
                     WorkFlowBLL objWorkFlowBLL = new WorkFlowBLL();
 
-                    string ChangeRequestCode = UtilBO.DataVerificationCode;
+                    string ChangeRequestCode = UtilBO.WorkflowDataVerification;
 
                     objWorkFlowBO = objWorkFlowBLL.getWOrkFlowApprovalID(Convert.ToInt32(litProjectID.Text), ChangeRequestCode);
 
@@ -326,7 +326,7 @@ namespace WIS
             int householdID = Convert.ToInt32(Session["HH_ID"]);
             objHouseHold.HhId = householdID;
             objHouseHold.PageCode = "DATAV";
-            objHouseHold.Workflowcode = UtilBO.DataVerificationCode;
+            objHouseHold.Workflowcode = UtilBO.WorkflowDataVerification;
 
             objHouseHold = objHouseHoldBLL.ApprovalChangerequestStatus(objHouseHold);
 
@@ -367,7 +367,7 @@ namespace WIS
             WorkFlowBO objPrintApprovalWF = null;
             WorkFlowList objWorkFlowList_ = null;
 
-            string ChangeRequestCode = UtilBO.DataVerificationCode;
+            string ChangeRequestCode = UtilBO.WorkflowDataVerification;
 
             objProjectRoute.WorkFlowApprover = ChangeRequestCode;
             objProjectRoute.Project_Id = ProjectId;
@@ -389,8 +389,8 @@ namespace WIS
                     //}
                     objProjectRoute.HHID = 0;
                     //objProjectRoute.HHID = householdID;
-                    objProjectRoute.PageCode = UtilBO.DataVerificationCode; // objHouseHold.PageCode = "DATAV";
-                    objProjectRoute.WorkflowCode = UtilBO.DataVerificationCode;
+                    objProjectRoute.PageCode = UtilBO.WorkflowDataVerification; // objHouseHold.PageCode = "DATAV";
+                    objProjectRoute.WorkflowCode = UtilBO.WorkflowDataVerification;
                     objProjectRoute.LEVEL = objWorkFlowList[i].CountApproval;
 
                     objPrintApprovalWF = objProjectRouteBLL.ApprovalStatuscheck(objProjectRoute);

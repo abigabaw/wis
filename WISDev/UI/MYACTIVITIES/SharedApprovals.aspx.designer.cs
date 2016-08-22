@@ -58,6 +58,15 @@ namespace WIS {
         protected global::System.Web.UI.WebControls.DropDownList ddlAssignFrom;
         
         /// <summary>
+        /// btnView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnView;
+        
+        /// <summary>
         /// reqddlAssignTo control.
         /// </summary>
         /// <remarks>
@@ -74,15 +83,6 @@ namespace WIS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ValidationSummary valsumTempAuth;
-        
-        /// <summary>
-        /// btnView control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnView;
         
         /// <summary>
         /// pnlMyTasksSele control.
@@ -308,6 +308,24 @@ namespace WIS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkUPloadDoclist;
+        
+        /// <summary>
+        /// lnkSendClarify control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkSendClarify;
+        
+        /// <summary>
+        /// lnkClarifyResponse control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkClarifyResponse;
         
         /// <summary>
         /// ProjectCodeLabel control.

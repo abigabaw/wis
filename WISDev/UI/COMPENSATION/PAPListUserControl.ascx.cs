@@ -276,7 +276,7 @@ namespace WIS.UI.COMPENSATION
             {
                 Session["HH_ID"] = e.CommandArgument;
                 PAP_HouseholdBLL objHouseholdLogic = new PAP_HouseholdBLL();
-                PAP_HouseholdBO objHousehold = objHouseholdLogic.GetHousaeHoldData(Convert.ToInt32(e.CommandArgument));
+                PAP_HouseholdBO objHousehold = objHouseholdLogic.GetHouseHoldData(Convert.ToInt32(e.CommandArgument));
 
                 if (objHousehold != null)
                 {

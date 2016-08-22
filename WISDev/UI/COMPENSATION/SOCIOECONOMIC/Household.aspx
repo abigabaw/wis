@@ -679,7 +679,7 @@
                 <asp:Button ID="lnkChangeRequest" runat="server" Text="Change Request" CssClass="icebutton"
                     Width="120px" Visible="false" />
                 &nbsp;&nbsp;
-                <asp:Button ID="btnSave" Text="Save" runat="server" CssClass="icebutton" ValidationGroup="HHDetails"
+                <asp:Button ID="btnSave" Text="Save" runat="server" class="icebutton" ValidationGroup="HHDetails"
                     OnClick="btnSave_Click" />
                 &nbsp;&nbsp;
                 <asp:Button ID="btnClear" Text="Clear" runat="server" CssClass="icebutton" OnClick="btnClear_Click" />

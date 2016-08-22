@@ -56,7 +56,7 @@ namespace WIS
                 int HH_ID = 0;
                 if (Session["PROJECT_ID"] != null)
                 {
-                    BindDerivedBy();
+                    BindDeliveredBy();
                 }
                 if (Session["HH_ID"] != null)
                 {
@@ -76,7 +76,9 @@ namespace WIS
                 }
             }
         }
+
         #endregion Global Declaration & Page Load
+
         /// <summary>
         /// Set Default Button using Java script
         /// </summary>
@@ -162,6 +164,7 @@ namespace WIS
             txtPackageDeliveryInfoComments.Text = string.Empty;
             DisableTextBoxes();
         }
+
         /// <summary>
         /// To Disable all the text boxes
         /// </summary>
@@ -224,7 +227,9 @@ namespace WIS
             txtRSReplacementValue.Attributes.Add("readonly", "readonly");
             txtReplacementUplift.Attributes.Add("readonly", "readonly");
         }
+
         #endregion
+
         /// <summary>
         /// Parameters HHID,ViewStatePercentage
         /// </summary>
@@ -286,6 +291,7 @@ namespace WIS
             AlertMessage = "alert('" + message + "');";
             ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Added", AlertMessage, true);
         }
+
         /// <summary>
         /// to Add data to Datat base
         /// </summary>
@@ -476,6 +482,7 @@ namespace WIS
 
             return message;
         }
+
         /// <summary>
         /// Call Clear method to Clear the data
         /// </summary>
@@ -709,10 +716,11 @@ namespace WIS
             }
 
         }
+
         /// <summary>
         /// Bind values to Drop down ddlDeliveredBy
         /// </summary>
-        private void BindDerivedBy()//These are Project Users
+        private void BindDeliveredBy()//These are Project Users
         {
             ListItem firstListItem = new ListItem(ddlDeliveredBy.Items[0].Text, ddlDeliveredBy.Items[0].Value);
             ProjectPersonalBLL objProjPersonalLogic = new ProjectPersonalBLL();
@@ -733,6 +741,7 @@ namespace WIS
                 ddlDeliveredBy.Items.Insert(0, firstListItem);
             }
         }
+
         /// <summary>
         /// Get round of Value
         /// </summary>
