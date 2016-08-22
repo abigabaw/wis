@@ -1143,6 +1143,7 @@ namespace WIS
             string EmailSubject = string.Empty;
             string SmsText = string.Empty;
             int SaveData = 0;
+            int PendingClarify = 0;
 
             if (ViewState["WorkFlowCode"] != null)
             {
@@ -1522,6 +1523,22 @@ namespace WIS
                                 }
 
                             }
+                                // Edwin: 22AUG2016 Check for pending Clarificaiton
+                            else if (ChangeRequest == "PAYVR")
+                            {
+                                int HHID = Convert.ToInt32(ViewState["HHID"]);
+                                ClarifyDAL ClarifyDAL = new ClarifyDAL();
+                                PendingClarify = ClarifyDAL.CheckPendClarify(HHID);
+
+                                if (PendingClarify == 0){
+                                    count = objMytaskApprovalBLL.AddWorkflowApproval(objWorkflowapproval, 1);
+                                }
+                                else
+                                {
+                                    ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "Alert", "<script>alert('Cant Approve, Pending Clarifications Exist');</script>", false);
+                                }
+                                
+                            }
                             else
                             {
                                 count = objMytaskApprovalBLL.AddWorkflowApproval(objWorkflowapproval, 1);
@@ -1568,11 +1585,15 @@ namespace WIS
                                 if (ChangeRequest == "PAYVR")
                                 {
                                     string updateStatus = "PP";
-                                    //Added By Anjan For Update the Fund Status
-                                    PaymentBLL objPBll = new PaymentBLL();
-                                    objPBll.UpdateStatus(Convert.ToInt32(ViewState["HHID"].ToString()), "A");
-                                    //End
-                                    UpdatePackageClosingInfo((Convert.ToInt32(ViewState["HHID"].ToString())), updateStatus);
+
+                                    if (PendingClarify == 0)
+                                    {
+                                        //Added By Anjan For Update the Fund Status
+                                        PaymentBLL objPBll = new PaymentBLL();
+                                        objPBll.UpdateStatus(Convert.ToInt32(ViewState["HHID"].ToString()), "A");
+                                        //End
+                                        UpdatePackageClosingInfo((Convert.ToInt32(ViewState["HHID"].ToString())), updateStatus);
+                                    }
                                 }
                                 if (ChangeRequest == "CR-FL")
                                 {
@@ -2295,6 +2316,7 @@ namespace WIS
             string SmsText = string.Empty;
             string message = string.Empty;
             int SaveData = 0;
+            int PendingClarify = 0;
 
             if (ViewState["WorkFlowCode"] != null)
             {
@@ -2638,68 +2660,82 @@ namespace WIS
                             #endregion
 
                             if (ChangeRequest == "PAYRQ")
+                            {
+                                int act = 0;
+                                foreach (GridViewRow gvw in grdPaymentRequestBatch.Rows)
                                 {
-                                    int act = 0;
-                                    foreach (GridViewRow gvw in grdPaymentRequestBatch.Rows)
+                                    CheckBox Selectstatus = (CheckBox)gvw.FindControl("chkSelect");
+                                    if (Selectstatus.Checked)
                                     {
-                                        CheckBox Selectstatus = (CheckBox)gvw.FindControl("chkSelect");
-                                        if (Selectstatus.Checked)
-                                        {
-                                            act = 1;
-                                        }
-                                        //else
-                                        //{
-                                        //    act = 0;
-                                        //}
-                                        Label lblRequestStatus = (Label)gvw.FindControl("lblRequestStatus");
-                                        if (lblRequestStatus.Text.Trim().ToUpper() == "Approved".ToUpper())
-                                        {
-                                            AppDataCount++;
-                                        }
-                                        else if (lblRequestStatus.Text.Trim().ToUpper() == "Declined".ToUpper())
-                                        {
-                                            DecDataCount++;
-                                        }
-                                    } 
-
-                                    //Edwin: 10/04/2016
-                                    // if (act > 1)
-                                    if (AppDataCount > 0)
-                                    {
-                                        if ((AppDataCount + DecDataCount) == (totalBatchcount - 1))
-                                        {
-                                            objWorkflowapproval.Status = "APPROVED";
-                                            count = objMytaskApprovalBLL.AddWorkflowApproval(objWorkflowapproval, AppDataCount);
-                                        }
-                                        else
-                                        {
-                                            UpdatePaymentStatus(BatchBLL.RequestStatus_Declined, "D");
-                                        }
-
+                                        act = 1;
                                     }
-                                    else if (totalBatchcount == 1)
+                                    //else
+                                    //{
+                                    //    act = 0;
+                                    //}
+                                    Label lblRequestStatus = (Label)gvw.FindControl("lblRequestStatus");
+                                    if (lblRequestStatus.Text.Trim().ToUpper() == "Approved".ToUpper())
                                     {
-                                        objWorkflowapproval.Status = "DECLINED";
-                                        count = objMytaskApprovalBLL.AddWorkflowApproval(objWorkflowapproval, AppDataCount);
+                                        AppDataCount++;
                                     }
-                                    else if (DecDataCount == (totalBatchcount - 2))
+                                    else if (lblRequestStatus.Text.Trim().ToUpper() == "Declined".ToUpper())
+                                    {
+                                        DecDataCount++;
+                                    }
+                                } 
+
+                                //Edwin: 10/04/2016
+                                // if (act > 1)
+                                if (AppDataCount > 0)
+                                {
+                                    if ((AppDataCount + DecDataCount) == (totalBatchcount - 1))
                                     {
                                         objWorkflowapproval.Status = "APPROVED";
                                         count = objMytaskApprovalBLL.AddWorkflowApproval(objWorkflowapproval, AppDataCount);
+                                    }
+                                    else
+                                    {
                                         UpdatePaymentStatus(BatchBLL.RequestStatus_Declined, "D");
                                     }
-                                    else if (DecDataCount == (totalBatchcount - 1))
-                                    {
-                                        objWorkflowapproval.Status = "DECLINED";
-                                        count = objMytaskApprovalBLL.AddWorkflowApproval(objWorkflowapproval, AppDataCount);
-                                    }
-                                    //Edwin:
+
+                                }
+                                else if (totalBatchcount == 1)
+                                {
+                                    objWorkflowapproval.Status = "DECLINED";
+                                    count = objMytaskApprovalBLL.AddWorkflowApproval(objWorkflowapproval, AppDataCount);
+                                }
+                                else if (DecDataCount == (totalBatchcount - 2))
+                                {
+                                    objWorkflowapproval.Status = "APPROVED";
+                                    count = objMytaskApprovalBLL.AddWorkflowApproval(objWorkflowapproval, AppDataCount);
+                                    UpdatePaymentStatus(BatchBLL.RequestStatus_Declined, "D");
+                                }
+                                else if (DecDataCount == (totalBatchcount - 1))
+                                {
+                                    objWorkflowapproval.Status = "DECLINED";
+                                    count = objMytaskApprovalBLL.AddWorkflowApproval(objWorkflowapproval, AppDataCount);
+                                }
+                                //Edwin:
+                            }
+                            else if (ChangeRequest == "PAYVR")
+                            {
+                                int HHID = Convert.ToInt32(ViewState["HHID"]);
+                                ClarifyDAL ClarifyDAL = new ClarifyDAL();
+                                PendingClarify = ClarifyDAL.CheckPendClarify(HHID);
+
+                                if (PendingClarify == 0){
+                                    count = objMytaskApprovalBLL.AddWorkflowApproval(objWorkflowapproval, AppDataCount);
                                 }
                                 else
                                 {
-                                    count = objMytaskApprovalBLL.AddWorkflowApproval(objWorkflowapproval, AppDataCount);
+                                    ScriptManager.RegisterClientScriptBlock(this, typeof(Page), "Alert", "<script>alert('Cant Decline, Pending Clarifications Exist');</script>", false);
                                 }
-
+                                
+                            }
+                            else
+                            {
+                                count = objMytaskApprovalBLL.AddWorkflowApproval(objWorkflowapproval, AppDataCount);
+                            }
                             // count = objMytaskApprovalBLL.AddWorkflowApproval(objWorkflowapproval); 
 
                             if (count == -1)
@@ -2936,10 +2972,12 @@ namespace WIS
 
                             if (ChangeRequest == "PAYVR")
                             {
+                                if(PendingClarify == 0){
                                 //Added By Anjan For Update the Fund Status
                                 PaymentBLL objPBll = new PaymentBLL();
                                 objPBll.UpdateStatus(Convert.ToInt32(ViewState["HHID"].ToString()), "D");
                                 //End
+                                }
                             }
 
                             if (HfTHeaderID.Value.ToString() != "0")
