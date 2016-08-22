@@ -216,6 +216,7 @@ namespace WIS
                     ClarifyBO.TrackHeader = Convert.ToInt32(ReqID);
                     ClarifyBO.RequestDetails = txtClarifyDetails.Text.ToString();
                     ClarifyBO.UserID = Convert.ToInt32(UserID);
+                    ClarifyBO.HHID = HHID;
                     ClarifyBO.RespondentID = Convert.ToInt32(ddlProjectPersonnel.SelectedValue);
 
                     ClarifyBLL ClarifyBLL = new ClarifyBLL();

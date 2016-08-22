@@ -84,7 +84,7 @@ namespace WIS_DataAccess
 
             try
             {
-                 
+                dcmd.Parameters.Add("HHID_", ClarifyBO.HHID); 
                 dcmd.Parameters.Add("TRACKHDR_", ClarifyBO.TrackHeader);
                 dcmd.Parameters.Add("REQUEST_", ClarifyBO.RequestDetails);
                 dcmd.Parameters.Add("CREATEDBY_", ClarifyBO.UserID);
@@ -110,7 +110,6 @@ namespace WIS_DataAccess
 
             return statusMessage;
         }
-
 
         public ClarifyList GetMyClarify(int UserID)
         {
@@ -271,6 +270,39 @@ namespace WIS_DataAccess
             }
 
             return statusMessage;
+        }
+
+        public int CheckPendClarify(int HHID)
+        {
+            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            OracleCommand cmd;
+
+            int CountPend = 0;
+
+            string proc = "USP_GET_CLARIFY_PENDING";
+
+            cmd = new OracleCommand(proc, cnn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("HHID_", HHID);
+            cmd.Parameters.Add("SP_RECORDSET", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+
+            cmd.Connection.Open();
+
+            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            ClarifyBO ClarifyBO = null;
+            ClarifyBO = new ClarifyBO();
+
+            while (dr.Read())
+            {
+                // ID,CLARIFYREQUEST,CLARIFYRESPONSE,CLARIFYSTATUS,CREATEDBY,CREATEDDATE,UPDATEDBY,UPDATEDDATE,ISDELETED,TRACKERHEADERID,HHID,
+                // PAPNAME,REQ.USERNAME AS REQUESTER,RES.USERNAME AS RESPONDENT
+                if (!dr.IsDBNull(dr.GetOrdinal("EXISTING_REQUESTS")))
+                    CountPend = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("EXISTING_REQUESTS")));
+
+            }
+            dr.Close();
+
+            return CountPend;
         }
     }
 }
