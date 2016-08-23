@@ -438,9 +438,34 @@ namespace WIS
                 if(e.CommandArgument.ToString() == UtilBO.WorkflowPaymentVerification) // Payment Verification
                 {
                     PrepareActionLinks();
+
                     lnkSendClarify.Style.Remove("display");
                     LblHhidBatch.Style.Remove("display");
+                    spanPackage.Style.Remove("display");
+                    lnkPageSource.Style.Remove("display");
+                    lnkPackageDocument.Style.Remove("display");
+                    lnkAppReviewCom.Style.Add("display", "none");
 
+                    
+                }
+
+                if(e.CommandArgument.ToString() == UtilBO.WorkflowChangeRequestHH || 
+                    e.CommandArgument.ToString() == UtilBO.WorkflowNegotatedAmount || 
+                    e.CommandArgument.ToString() == UtilBO.CompensationPrintRequest || 
+                    e.CommandArgument.ToString() == UtilBO.WorkflowGrievances || 
+                    e.CommandArgument.ToString() == UtilBO.WorkflowChangeRequestFL || 
+                    e.CommandArgument.ToString() == UtilBO.WorkflowCdapBudget ||  
+                    e.CommandArgument.ToString() == UtilBO.WorkflowDataVerification || 
+                    e.CommandArgument.ToString() == UtilBO.WorkflowNegotiatedAmountCrops || 
+                    e.CommandArgument.ToString() == UtilBO.WorkflowNegotiatedAmountLand || 
+                    e.CommandArgument.ToString() == UtilBO.WorkflowNegotiatedAmountFixtures || 
+                    e.CommandArgument.ToString() == UtilBO.WorkflowNegotiatedAmountStructures || 
+                    e.CommandArgument.ToString() == UtilBO.WorkflowNegotiatedAmountDamagedCrops || 
+                    e.CommandArgument.ToString() == UtilBO.WorkflowNegotiatedAmountCulture) // Payment Verification
+                {
+                    PrepareActionLinks();
+
+                    LblHhidBatch.Style.Remove("display");
                     spanPackage.Style.Remove("display");
                     lnkPageSource.Style.Remove("display");
                     lnkPackageDocument.Style.Remove("display");
