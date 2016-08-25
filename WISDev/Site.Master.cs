@@ -41,7 +41,7 @@ namespace WIS
                 NavigationMenu.Items[7].ChildItems.Remove(NavigationMenu.Items[7].ChildItems[1]);
                 NavigationMenu.Items[7].ChildItems.Remove(NavigationMenu.Items[7].ChildItems[1]);
                 NavigationMenu.Items[7].ChildItems.Remove(NavigationMenu.Items[7].ChildItems[1]);
-                NavigationMenu.Items[7].ChildItems.Remove(NavigationMenu.Items[7].ChildItems[1]);
+                //NavigationMenu.Items[7].ChildItems.Remove(NavigationMenu.Items[7].ChildItems[1]);
                 NavigationMenu.Items[7].ChildItems[0].Text = "Approvals" + "&nbsp;" + "(" + StatusCountBOA.PendingApprovals + ")" + "&nbsp;";
             }
             else
