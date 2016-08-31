@@ -17,52 +17,51 @@ namespace WIS
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            StatusCountBLL StatusCountBLL = new StatusCountBLL();
-            StatusCountBO StatusCountBOA = new StatusCountBO();
-            StatusCountBOA = StatusCountBLL.GetApprPending(Convert.ToInt32(Session["USER_ID"]));
-
-            StatusCountBLL StatusCountBLLC = new StatusCountBLL();
-            StatusCountBO StatusCountBOC = new StatusCountBO();
-            StatusCountBOC = StatusCountBLLC.GetClarifyPending(Convert.ToInt32(Session["USER_ID"]));
-
-            int totalPending = StatusCountBOA.PendingApprovals + StatusCountBOC.PendingClarify;
-
-
-            NavigationMenu.Items[7].Text = "<span style='color: Orange; font-weight: bold;'>&nbsp; Tasks" + "&nbsp;" + "(" + totalPending + ")" + "&nbsp;</span>";
-
-            UserBLL UserBLL = new UserBLL();
-            UserBO UserBO = new UserBO();
-            UserBO = UserBLL.GetUserById(Convert.ToInt32(Session["USER_ID"]));
-            string userName = UserBO.UserName;
-            bool sysAccount = userName.Contains("wis.");
-
-            if (sysAccount == true)
-            {
-                NavigationMenu.Items[7].ChildItems.Remove(NavigationMenu.Items[7].ChildItems[1]);
-                NavigationMenu.Items[7].ChildItems.Remove(NavigationMenu.Items[7].ChildItems[1]);
-                NavigationMenu.Items[7].ChildItems.Remove(NavigationMenu.Items[7].ChildItems[1]);
-                //NavigationMenu.Items[7].ChildItems.Remove(NavigationMenu.Items[7].ChildItems[1]);
-                NavigationMenu.Items[7].ChildItems[0].Text = "Approvals" + "&nbsp;" + "(" + StatusCountBOA.PendingApprovals + ")" + "&nbsp;";
-            }
-            else
-            {
-                NavigationMenu.Items[7].ChildItems.Remove(NavigationMenu.Items[7].ChildItems[0]);
-                NavigationMenu.Items[7].ChildItems.Remove(NavigationMenu.Items[7].ChildItems[2]);
-                NavigationMenu.Items[7].ChildItems.Remove(NavigationMenu.Items[7].ChildItems[2]);
-                NavigationMenu.Items[7].ChildItems[0].Text = "Approvals";
-                NavigationMenu.Items[7].ChildItems[0].Text = "Approvals" + "&nbsp;" + "(" + StatusCountBOA.PendingApprovals + ")" + "&nbsp;";
-                NavigationMenu.Items[7].ChildItems[1].Text = "Clarifications" + "&nbsp;" + "(" + StatusCountBOC.PendingClarify + ")" + "&nbsp;";
-
-                int UserID = Convert.ToInt32(Session["USER_ID"]);
-                string OpenResponse = string.Format("javascript:OpenResponse({0});", UserID, "Readonly");
-                NavigationMenu.Items[7].ChildItems[1].NavigateUrl = OpenResponse;
-            }
-
             
-
             if (Session["userName"] != null)
             {
                 userNameLabel.Text = "Welcome " + Session["userName"].ToString();
+
+                StatusCountBLL StatusCountBLL = new StatusCountBLL();
+                StatusCountBO StatusCountBOA = new StatusCountBO();
+                StatusCountBOA = StatusCountBLL.GetApprPending(Convert.ToInt32(Session["USER_ID"]));
+
+                StatusCountBLL StatusCountBLLC = new StatusCountBLL();
+                StatusCountBO StatusCountBOC = new StatusCountBO();
+                StatusCountBOC = StatusCountBLLC.GetClarifyPending(Convert.ToInt32(Session["USER_ID"]));
+
+                int totalPending = StatusCountBOA.PendingApprovals + StatusCountBOC.PendingClarify;
+
+
+                NavigationMenu.Items[7].Text = "<span style='color: Orange; font-weight: bold;'>&nbsp; Tasks" + "&nbsp;" + "(" + totalPending + ")" + "&nbsp;</span>";
+
+                UserBLL UserBLL = new UserBLL();
+                UserBO UserBO = new UserBO();
+                UserBO = UserBLL.GetUserById(Convert.ToInt32(Session["USER_ID"]));
+                string userName = UserBO.UserName;
+                bool sysAccount = userName.Contains("wis.");
+
+                if (sysAccount == true)
+                {
+                    NavigationMenu.Items[7].ChildItems.Remove(NavigationMenu.Items[7].ChildItems[1]);
+                    NavigationMenu.Items[7].ChildItems.Remove(NavigationMenu.Items[7].ChildItems[1]);
+                    NavigationMenu.Items[7].ChildItems.Remove(NavigationMenu.Items[7].ChildItems[1]);
+                    //NavigationMenu.Items[7].ChildItems.Remove(NavigationMenu.Items[7].ChildItems[1]);
+                    NavigationMenu.Items[7].ChildItems[0].Text = "Approvals" + "&nbsp;" + "(" + StatusCountBOA.PendingApprovals + ")" + "&nbsp;";
+                }
+                else
+                {
+                    NavigationMenu.Items[7].ChildItems.Remove(NavigationMenu.Items[7].ChildItems[0]);
+                    NavigationMenu.Items[7].ChildItems.Remove(NavigationMenu.Items[7].ChildItems[2]);
+                    NavigationMenu.Items[7].ChildItems.Remove(NavigationMenu.Items[7].ChildItems[2]);
+                    NavigationMenu.Items[7].ChildItems[0].Text = "Approvals";
+                    NavigationMenu.Items[7].ChildItems[0].Text = "Approvals" + "&nbsp;" + "(" + StatusCountBOA.PendingApprovals + ")" + "&nbsp;";
+                    NavigationMenu.Items[7].ChildItems[1].Text = "Clarifications" + "&nbsp;" + "(" + StatusCountBOC.PendingClarify + ")" + "&nbsp;";
+
+                    int UserID = Convert.ToInt32(Session["USER_ID"]);
+                    string OpenResponse = string.Format("javascript:OpenResponse({0});", UserID, "Readonly");
+                    NavigationMenu.Items[7].ChildItems[1].NavigateUrl = OpenResponse;
+                }
             }
             else
             {
