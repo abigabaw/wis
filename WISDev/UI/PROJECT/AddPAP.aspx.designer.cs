@@ -31,6 +31,15 @@ namespace WIS {
         protected global::WIS.ProjectMenu ProjectMenu1;
         
         /// <summary>
+        /// HouseholdSummaryCache control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::WIS.HouseholdSummary HouseholdSummaryCache;
+        
+        /// <summary>
         /// hfVisible control.
         /// </summary>
         /// <remarks>

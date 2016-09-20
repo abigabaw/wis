@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.Services;
 using WIS_BusinessObjects;
 using WIS_BusinessLogic;
 using WIS_BusinessObjects.Collections;
@@ -536,6 +537,13 @@ namespace WIS
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+
+        [WebMethod]
+        public void ReCache()
+        {
+            HouseholdSummaryCache.CachePAPData(Session["HH_ID"].ToString());
+        }
+        
         protected void btnSave_Click(object sender, EventArgs e)
         {
             ChangeRequestStatusInstitution();
@@ -578,6 +586,10 @@ namespace WIS
 
             PAP_InstitutionBLL objInstBll = new PAP_InstitutionBLL();
             string message = objInstBll.UpdateInstitutionDetails(objInstitution);
+
+            //Edwin: 19SEP2016 Reload Pap Details
+            ReCache();
+
             txtFullname.Text = txtSurname.Text + " " + txtfirstname.Text;
             projectFrozen();
             checkApprovalExitOrNot();

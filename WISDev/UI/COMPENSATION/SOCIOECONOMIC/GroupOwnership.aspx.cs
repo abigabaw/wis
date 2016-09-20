@@ -4,9 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.Services;
 using WIS_BusinessLogic;
 using WIS_BusinessObjects;
 using WIS_BusinessObjects.Collections;
+using System.IO;
 
 namespace WIS
 {
@@ -657,6 +659,13 @@ namespace WIS
             }
             ddlParish.Items.Insert(0, firstListItem);
         }
+
+        [WebMethod]
+        public void ReCache()
+        {
+            HouseholdSummaryCache.CachePAPData(Session["HH_ID"].ToString());
+        }
+
         /// <summary>
         /// to save the data to the database
         /// </summary>
@@ -695,6 +704,10 @@ namespace WIS
 
             PAP_GroupOwnershipBLL objGroupOwnershipBll = new PAP_GroupOwnershipBLL();
             string message = objGroupOwnershipBll.UpdateGroupOwnershipDetails(objGroupOwnership);
+
+            // Re Cache Pap Details
+            ReCache();
+
             txtFullname.Text = txtSurname.Text + " " + txtfirstname.Text ;
             projectFrozen();//add by ramu.s @ 11 /07/2013
             ChangeRequestStatusGroupOwnerShip();
@@ -771,6 +784,9 @@ namespace WIS
 
             PAP_GroupOwnershipBLL objGroupOwnershipBll = new PAP_GroupOwnershipBLL();
             objGroupOwnershipBll.InsertandUpdateGroupOwnership(objGroupOwnership);
+            // Reload Pap Details
+            ReCache();
+
             ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Added", "alert('Data saved successfully');", true);
             txtMeberSurname.Text = "";
             txtMeberFirstname.Text = "";
@@ -861,6 +877,9 @@ namespace WIS
             {
                 PAP_GroupOwnershipBLL objGroupOwnershipBLL = new PAP_GroupOwnershipBLL();
                 objGroupOwnershipBLL.DeleteGroupOwnershipByGMID(Convert.ToInt32(e.CommandArgument));
+                // Reload Pap Details
+                ReCache();
+
                 ViewState["RELATION_ID"] = "0";
                 txtMeberSurname.Text = "";
                 txtMeberFirstname.Text = "";

@@ -57,7 +57,7 @@ namespace WIS
         /// <summary>
         ///  Get Papa Data
         /// </summary>
-        private void GetHouseholdSummary()
+        public void GetHouseholdSummary()
         {
             string householdID = String.Empty;
             string papUID = String.Empty;
@@ -150,7 +150,7 @@ namespace WIS
         /// Store Pap data into Cache
         /// </summary>
         /// <param name="householdID"></param>
-        private void CachePAPData(string householdID)
+        public void CachePAPData(string householdID)
         {
             string papUID = String.Empty;
             string papName = String.Empty;

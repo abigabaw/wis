@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.Services;
 using WIS_BusinessObjects;
 using WIS_BusinessLogic;
 
@@ -589,6 +590,12 @@ namespace WIS
         /// <param name="sender"></param>
         /// <param name="e"></param>
 
+        [WebMethod]
+        public void ReCache()
+        {
+            HouseholdSummaryCache.CachePAPData(Session["HH_ID"].ToString());
+        }
+
         #region Save & Clear Buttons
         protected void btnSave_Click(object sender, EventArgs e)
         {
@@ -786,6 +793,10 @@ namespace WIS
             objHouseHold.CreatedBy = Convert.ToInt32(Session["USER_ID"]);
             PAP_HouseholdBLL objHouseHoldBLL = new PAP_HouseholdBLL();
             string message = objHouseHoldBLL.UpdateHouseHoldDetails(objHouseHold);
+
+            //Edwin: 19SEP2016 Reload Pap Details
+            ReCache();
+
             ChangeRequestStatus();
             projectFrozen();
             if (string.IsNullOrEmpty(message) || message == "" || message == "null")
