@@ -1526,6 +1526,15 @@ namespace WIS
                         objMyTaskApprovalDAL.ApproveStatus(objWorkflowapproval);
                         int result = objMyTaskApprovalDAL.CreateNextRequestOrExit(objWorkflowapproval);
 
+                        if (result == 0)
+                        {
+                            int USER_ID = 0;
+                            if (Session["USER_ID"] != null)
+                                USER_ID = Convert.ToInt32(Session["USER_ID"].ToString());
+                            int HHID_ = Convert.ToInt32(ViewState["HHID"]);
+                            Close_Batch(HHID_, USER_ID);
+                        }
+
                         pnlFinalPojectdEtail.Visible = false;
                         ApprovalMultiView.Visible = false;
                         pnlAprovalFooter.Visible = false;
@@ -1555,6 +1564,15 @@ namespace WIS
                     objMyTaskApprovalDAL.ApproveStatus(objWorkflowapproval);
                     int result = objMyTaskApprovalDAL.CreateNextRequestOrExit(objWorkflowapproval);
 
+                    if (result == 0)
+                    {
+                        int USER_ID = 0;
+                        if (Session["USER_ID"] != null)
+                            USER_ID = Convert.ToInt32(Session["USER_ID"].ToString());
+                        int HHID_ = Convert.ToInt32(ViewState["HHID"]);
+                        Close_Batch(HHID_, USER_ID);
+                    }
+
                     pnlFinalPojectdEtail.Visible = false;
                     ApprovalMultiView.Visible = false;
                     pnlAprovalFooter.Visible = false;
@@ -1571,6 +1589,15 @@ namespace WIS
                     MyTasks_ApprovalDAL objMyTaskApprovalDAL = new MyTasks_ApprovalDAL();
                     objMyTaskApprovalDAL.ApproveStatus(objWorkflowapproval);
                     int result = objMyTaskApprovalDAL.CreateNextRequestOrExit(objWorkflowapproval);
+
+                    if (result == 0)
+                    {
+                        int USER_ID = 0;
+                        if (Session["USER_ID"] != null)
+                            USER_ID = Convert.ToInt32(Session["USER_ID"].ToString());
+                        int HHID_ = Convert.ToInt32(ViewState["HHID"]);
+                        Close_Batch(HHID_, USER_ID);
+                    }
 
                     pnlFinalPojectdEtail.Visible = false;
                     ApprovalMultiView.Visible = false;

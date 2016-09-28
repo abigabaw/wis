@@ -661,7 +661,7 @@ namespace WIS
             ddlParish.Items.Insert(0, firstListItem);
         }
 
-        public void ReCache(int HHID)
+        public void ReCache()
         {
             PapDataCache PapCache = new PapDataCache();
             string householdID = Cache[PapCache.BuildCacheKey("HOUSEHOLD_ID")].ToString();
@@ -718,7 +718,7 @@ namespace WIS
             ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Added", "alert('" + message + "');", true);
 
             // Re Cache Pap Details
-            ReCache(objGroupOwnership.HHID);
+            ReCache();
 
         }
 
@@ -788,7 +788,7 @@ namespace WIS
             PAP_GroupOwnershipBLL objGroupOwnershipBll = new PAP_GroupOwnershipBLL();
             objGroupOwnershipBll.InsertandUpdateGroupOwnership(objGroupOwnership);
             // Reload Pap Details
-            ReCache(objGroupOwnership.HHID);
+            ReCache();
 
             ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Added", "alert('Data saved successfully');", true);
             txtMeberSurname.Text = "";
@@ -881,7 +881,7 @@ namespace WIS
                 PAP_GroupOwnershipBLL objGroupOwnershipBLL = new PAP_GroupOwnershipBLL();
                 objGroupOwnershipBLL.DeleteGroupOwnershipByGMID(Convert.ToInt32(e.CommandArgument));
                 // Reload Pap Details
-                ReCache(Convert.ToInt32(Session["HH_ID"]));
+                ReCache();
 
                 ViewState["RELATION_ID"] = "0";
                 txtMeberSurname.Text = "";

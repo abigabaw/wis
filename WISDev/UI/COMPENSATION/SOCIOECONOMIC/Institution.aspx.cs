@@ -540,7 +540,7 @@ namespace WIS
         /// <param name="e"></param>
 
         //[WebMethod]
-        public void ReCache(int HHID)
+        public void ReCache()
         {
             PapDataCache PapCache = new PapDataCache();
             string householdID = Cache[PapCache.BuildCacheKey("HOUSEHOLD_ID")].ToString();
@@ -594,7 +594,7 @@ namespace WIS
             string message = objInstBll.UpdateInstitutionDetails(objInstitution);
 
             //Edwin: 19SEP2016 Reload Pap Details
-            ReCache(objInstitution.HHID);
+            ReCache();
 
             txtFullname.Text = txtSurname.Text + " " + txtfirstname.Text;
             projectFrozen();

@@ -619,7 +619,7 @@ namespace WIS
         /// <param name="sender"></param>
         /// <param name="e"></param>
 
-        public void ReCache(int HHID)
+        public void ReCache()
         {
             PapDataCache PapCache = new PapDataCache();
             string householdID = Cache[PapCache.BuildCacheKey("HOUSEHOLD_ID")].ToString();
@@ -693,7 +693,7 @@ namespace WIS
                 message = (new AddPAPBLL()).UpdatePAP(objHousehold);
 
                 //Edwin: 20SEP2016 Reload Pap Details
-                ReCache(objHousehold.HhId);
+                ReCache();
 
                 if (string.IsNullOrEmpty(message) || message == "" || message == "null")
                 {
