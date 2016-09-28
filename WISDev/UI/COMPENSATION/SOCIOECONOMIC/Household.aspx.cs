@@ -24,6 +24,8 @@ namespace WIS
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        /// 
+        
         #region Declaration & PageLoad
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -182,7 +184,6 @@ namespace WIS
         }
 
         #endregion
-
 
         #region checkChangeRequestApproverExit and getApprovalChangerequestStatus
         //Added By Ramu
@@ -583,6 +584,7 @@ namespace WIS
             updimgPAPPhoto.Update();
         }
         #endregion
+
         /// <summary>
         /// to save the data to the database  
         /// clear the all the fields by calling  ClearCache() method
@@ -590,10 +592,12 @@ namespace WIS
         /// <param name="sender"></param>
         /// <param name="e"></param>
 
-        [WebMethod]
-        public void ReCache()
+        public void ReCache(int HHID)
         {
-            HouseholdSummaryCache.CachePAPData(Session["HH_ID"].ToString());
+            PapDataCache PapCache = new PapDataCache();
+            string householdID = Cache[PapCache.BuildCacheKey("HOUSEHOLD_ID")].ToString();
+            PapCache.ClearCache();
+            PapCache.CachePAPData(householdID);
         }
 
         #region Save & Clear Buttons
@@ -795,7 +799,7 @@ namespace WIS
             string message = objHouseHoldBLL.UpdateHouseHoldDetails(objHouseHold);
 
             //Edwin: 19SEP2016 Reload Pap Details
-            ReCache();
+            ReCache(objHouseHold.HhId);
 
             ChangeRequestStatus();
             projectFrozen();
@@ -937,6 +941,7 @@ namespace WIS
             ddlUnderTakingPeriod.SelectedIndex = 0;
         }
         #endregion Save & Clear Buttons
+
         /// <summary>
         /// to bind the data to the database
         /// </summary>
@@ -1157,6 +1162,7 @@ namespace WIS
             ddlClan.Items.Insert(0, lstItem);
         }
         #endregion Bind Data
+
         /// <summary>
         /// to bind the GOUAllowance data from the database
         /// </summary>

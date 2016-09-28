@@ -375,7 +375,7 @@
                     </div>
                     <div style="float: left; padding-left: 25px;">
                         Full Name<br />
-                        <asp:TextBox ID="txtFullname" runat="server" Width="200px" MaxLength="300" CssClass="iceTextBox"></asp:TextBox>     
+                        <asp:TextBox ID="txtFullname" runat="server" Width="200px" MaxLength="300" CssClass="iceTextBox" ReadOnly="True"></asp:TextBox>     
                         <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender5" FilterType="UppercaseLetters,LowercaseLetters,Custom"
                             ValidChars=" " TargetControlID="txtFullname" runat="server"></ajaxToolkit:FilteredTextBoxExtender>
                     </div>

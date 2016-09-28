@@ -32,6 +32,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -2667,6 +2668,9 @@
     </Compile>
     <Compile Include="About us.aspx.designer.cs">
       <DependentUpon>About us.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\COMPENSATION\SOCIOECONOMIC\PapDataCache.cs">
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UI\MYACTIVITIES\MyTasks_Approval.aspx.cs">
       <DependentUpon>MyTasks_Approval.aspx</DependentUpon>

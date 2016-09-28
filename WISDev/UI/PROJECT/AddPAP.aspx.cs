@@ -8,6 +8,7 @@ using WIS_BusinessObjects;
 using WIS_BusinessLogic;
 using System.Drawing;
 using System.Text;
+using WIS.UI.COMPENSATION.SOCIOECONOMIC;
 
 namespace WIS
 {
@@ -618,12 +619,14 @@ namespace WIS
         /// <param name="sender"></param>
         /// <param name="e"></param>
 
-        [WebMethod]
-        public void ReCache()
+        public void ReCache(int HHID)
         {
-            HouseholdSummaryCache.CachePAPData(Session["HH_ID"].ToString());
+            PapDataCache PapCache = new PapDataCache();
+            string householdID = Cache[PapCache.BuildCacheKey("HOUSEHOLD_ID")].ToString();
+            PapCache.ClearCache();
+            PapCache.CachePAPData(householdID);
         }
-        
+
         protected void btn_Save_Click(object sender, EventArgs e)
         {
             AddPAPBO objAddPAP = new AddPAPBO();
@@ -690,7 +693,7 @@ namespace WIS
                 message = (new AddPAPBLL()).UpdatePAP(objHousehold);
 
                 //Edwin: 20SEP2016 Reload Pap Details
-                ReCache();
+                ReCache(objHousehold.HhId);
 
                 if (string.IsNullOrEmpty(message) || message == "" || message == "null")
                 {

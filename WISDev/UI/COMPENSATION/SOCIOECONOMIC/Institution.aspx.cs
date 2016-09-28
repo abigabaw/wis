@@ -320,7 +320,8 @@ namespace WIS
                 txtSurname.Text = Convert.ToString(objHouseHold.Surname);
                 txtfirstname.Text = Convert.ToString(objHouseHold.Firstname);
                 txtOthername.Text = Convert.ToString(objHouseHold.Othername);
-                txtFullname.Text = txtSurname.Text + " " + txtfirstname.Text;
+                //Ediwn: 27SEP2016
+                txtFullname.Text = txtSurname.Text + " " + txtfirstname.Text + " " + txtOthername.Text;
                 txtPapUid.Text = Convert.ToString(objHouseHold.Papuid);
 
                 if (objHouseHold.CapturedDate.Trim() != "")
@@ -538,12 +539,17 @@ namespace WIS
         /// <param name="sender"></param>
         /// <param name="e"></param>
 
-        [WebMethod]
-        public void ReCache()
+        //[WebMethod]
+        public void ReCache(int HHID)
         {
-            HouseholdSummaryCache.CachePAPData(Session["HH_ID"].ToString());
+            PapDataCache PapCache = new PapDataCache();
+            string householdID = Cache[PapCache.BuildCacheKey("HOUSEHOLD_ID")].ToString();
+            PapCache.ClearCache();
+            PapCache.CachePAPData(householdID);
         }
+
         
+
         protected void btnSave_Click(object sender, EventArgs e)
         {
             ChangeRequestStatusInstitution();
@@ -588,7 +594,7 @@ namespace WIS
             string message = objInstBll.UpdateInstitutionDetails(objInstitution);
 
             //Edwin: 19SEP2016 Reload Pap Details
-            ReCache();
+            ReCache(objInstitution.HHID);
 
             txtFullname.Text = txtSurname.Text + " " + txtfirstname.Text;
             projectFrozen();

@@ -4,7 +4,7 @@
 <%@ MasterType VirtualPath="~/Site.Master" %>
 <%@ Register Src="~/UI/COMPENSATION/ViewMasterCopy.ascx" TagName="ViewMasterCopy" TagPrefix="uc2" %>
 <%@ Register Src="CompSocioEconomyMenu.ascx" TagName="CompSocioEconomyMenu" TagPrefix="uc1" %>
-<%@ Register Src="~/UI/COMPENSATION/HouseholdSummary.ascx" TagName="HouseholdSummary" TagPrefix="uc2" %>
+<%@ Register Src="~/UI/COMPENSATION/HouseholdSummary.ascx" TagName="HouseholdSummary" TagPrefix="uc3" %>
 <%@ Register Assembly="DatePickerControl" Namespace="DatePickerControl" TagPrefix="cc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <script language="javascript" type="text/javascript" src="../../../Scripts/CommonFunctions.js"></script>
@@ -19,7 +19,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <uc1:CompSocioEconomyMenu ID="CompSocioEconomyMenu1" runat="server" />
-    <uc2:HouseholdSummary ID="HouseholdSummaryCache" runat="server" Visible="false" />
+    <uc3:HouseholdSummary ID="HouseholdSummaryCache" runat="server" Visible="false" />
     <ajaxToolkit:ToolkitScriptManager ID="tsManager" runat="server">
     </ajaxToolkit:ToolkitScriptManager>
     <table align="center" border="0" cellpadding="1" cellspacing="1" style="margin-top: 10px;

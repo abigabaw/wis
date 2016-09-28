@@ -422,7 +422,8 @@ namespace WIS
                 txtSurname.Text = Convert.ToString(objHouseHold.Surname);
                 txtfirstname.Text = Convert.ToString(objHouseHold.Firstname);
                 txtOthername.Text = Convert.ToString(objHouseHold.Othername);
-                txtFullname.Text = txtSurname.Text + " " + txtfirstname.Text ;
+                //Edwin: 27SEP2016
+                txtFullname.Text = txtSurname.Text + " " + txtfirstname.Text + " " + txtOthername.Text;
                 txtPapUid.Text = Convert.ToString(objHouseHold.Papuid);
                 rdlResident.ClearSelection();
                 if (objHouseHold.Isresident == "No")
@@ -660,10 +661,12 @@ namespace WIS
             ddlParish.Items.Insert(0, firstListItem);
         }
 
-        [WebMethod]
-        public void ReCache()
+        public void ReCache(int HHID)
         {
-            HouseholdSummaryCache.CachePAPData(Session["HH_ID"].ToString());
+            PapDataCache PapCache = new PapDataCache();
+            string householdID = Cache[PapCache.BuildCacheKey("HOUSEHOLD_ID")].ToString();
+            PapCache.ClearCache();
+            PapCache.CachePAPData(householdID);
         }
 
         /// <summary>
@@ -705,10 +708,7 @@ namespace WIS
             PAP_GroupOwnershipBLL objGroupOwnershipBll = new PAP_GroupOwnershipBLL();
             string message = objGroupOwnershipBll.UpdateGroupOwnershipDetails(objGroupOwnership);
 
-            // Re Cache Pap Details
-            ReCache();
-
-            txtFullname.Text = txtSurname.Text + " " + txtfirstname.Text ;
+            txtFullname.Text = txtSurname.Text + " " + txtfirstname.Text + " " + txtOthername.Text;
             projectFrozen();//add by ramu.s @ 11 /07/2013
             ChangeRequestStatusGroupOwnerShip();
             if (string.IsNullOrEmpty(message) || message == "" || message == "null")
@@ -716,6 +716,9 @@ namespace WIS
                 message = "Data saved successfully";
             }
             ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Added", "alert('" + message + "');", true);
+
+            // Re Cache Pap Details
+            ReCache(objGroupOwnership.HHID);
 
         }
 
@@ -785,7 +788,7 @@ namespace WIS
             PAP_GroupOwnershipBLL objGroupOwnershipBll = new PAP_GroupOwnershipBLL();
             objGroupOwnershipBll.InsertandUpdateGroupOwnership(objGroupOwnership);
             // Reload Pap Details
-            ReCache();
+            ReCache(objGroupOwnership.HHID);
 
             ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Added", "alert('Data saved successfully');", true);
             txtMeberSurname.Text = "";
@@ -878,7 +881,7 @@ namespace WIS
                 PAP_GroupOwnershipBLL objGroupOwnershipBLL = new PAP_GroupOwnershipBLL();
                 objGroupOwnershipBLL.DeleteGroupOwnershipByGMID(Convert.ToInt32(e.CommandArgument));
                 // Reload Pap Details
-                ReCache();
+                ReCache(Convert.ToInt32(Session["HH_ID"]));
 
                 ViewState["RELATION_ID"] = "0";
                 txtMeberSurname.Text = "";

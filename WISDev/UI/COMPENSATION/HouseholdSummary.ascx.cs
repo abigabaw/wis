@@ -50,7 +50,7 @@ namespace WIS
         /// </summary>
         /// <param name="keyName"></param>
         /// <returns></returns>
-        private string BuildCacheKey(string keyName)
+        public string BuildCacheKey(string keyName)
         {
             return keyName + "_" + Session["USER_ID"].ToString(); 
         }
@@ -71,13 +71,17 @@ namespace WIS
             {
                 householdID = Cache[BuildCacheKey("HOUSEHOLD_ID")].ToString();
 
-                if (Session["HH_ID_Disp"].ToString() != Session["HH_ID"].ToString())
-                {
-                    householdID = Session["HH_ID"].ToString();
-                    ClearCache();
-                    //CacheHouseholdID(householdID);
-                    CachePAPData(householdID);
-                }
+                //Edwin: 26SEP2016
+                if (Session["HH_ID"] != null) {
+                    if (Session["HH_ID_Disp"].ToString() != Session["HH_ID"].ToString())
+                    {
+                        householdID = Session["HH_ID"].ToString();
+                        ClearCache();
+                        //CacheHouseholdID(householdID);
+                        CachePAPData(householdID);
+                    }
+               }
+               
 
                 if (Cache[BuildCacheKey("HOUSEHOLD_ID")] != null)
                     householdID = Cache[BuildCacheKey("HOUSEHOLD_ID")].ToString();
@@ -134,7 +138,9 @@ namespace WIS
             litPAPUID.Text = papUID;
             litSmrPAPName.Text = papName;
             litSmrPlotReference.Text = plotReference;
-            hfHHID.Value = Session["HH_ID"].ToString();
+            //Edwin: 26SEP2016
+            // if (Session["HH_ID"] != null) { hfHHID.Value = Session["HH_ID"].ToString(); }
+            hfHHID.Value = householdID;
 
             litSmrDesignation.Text = papDesignation;
         }
@@ -213,7 +219,7 @@ namespace WIS
         /// <summary>
         /// Clear Cache
         /// </summary>
-        private void ClearCache()
+        public void ClearCache()
         {
             Cache.Remove(BuildCacheKey("HOUSEHOLD_ID"));
             Cache.Remove(BuildCacheKey("UID"));

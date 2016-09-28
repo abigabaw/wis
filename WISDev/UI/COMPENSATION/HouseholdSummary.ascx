@@ -12,7 +12,7 @@
     <asp:Literal ID="litPAPUID" runat="server"></asp:Literal>&nbsp;&nbsp;
 </td>
 <td style="width:35px" nowrap><label class="iceLable">Name:</label></td>
-<td class="iceLable" style="width:250px">
+<td class="iceLable" style="width:400px">
     <asp:Literal ID="litSmrPAPName" runat="server"></asp:Literal>&nbsp;&nbsp;
 </td>
 <td style="width:90px" nowrap><label class="iceLable">Plot Reference:</label></td>
