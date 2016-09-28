@@ -643,15 +643,6 @@ namespace WIS {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPaymentAmount;
         
         /// <summary>
-        /// ChequePaymentRow control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableRow ChequePaymentRow;
-        
-        /// <summary>
         /// ddlBank control.
         /// </summary>
         /// <remarks>
@@ -679,15 +670,6 @@ namespace WIS {
         protected global::System.Web.UI.WebControls.DropDownList ddlBranch;
         
         /// <summary>
-        /// ddlFixedCostCentre control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlFixedCostCentre;
-        
-        /// <summary>
         /// lblBankReference control.
         /// </summary>
         /// <remarks>
@@ -713,6 +695,24 @@ namespace WIS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.FilteredTextBoxExtender FilteredTextBoxExtender4;
+        
+        /// <summary>
+        /// ddlFixedCostCentre control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlFixedCostCentre;
+        
+        /// <summary>
+        /// ChequePaymentRow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow ChequePaymentRow;
         
         /// <summary>
         /// rblDeliveredToStakeholder control.

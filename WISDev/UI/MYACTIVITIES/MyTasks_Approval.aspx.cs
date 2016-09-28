@@ -2169,12 +2169,26 @@ namespace WIS
                     {
                         UpdatePaymentStatus(BatchBLL.RequestStatus_Declined, "D");
                         objWorkflowapproval.Status = "APPROVED";
-                        count = objMytaskApprovalBLL.AddWorkflowApproval(objWorkflowapproval, AppDataCount);
+                        MyTasks_ApprovalDAL objMyTaskApprovalDAL = new MyTasks_ApprovalDAL();
+                        objMyTaskApprovalDAL.ApproveStatus(objWorkflowapproval);
+                        int result = objMyTaskApprovalDAL.CreateNextRequestOrExit(objWorkflowapproval);
+
+                        if (result == 0)
+                        {
+                            int USER_ID = 0;
+                            if (Session["USER_ID"] != null)
+                                USER_ID = Convert.ToInt32(Session["USER_ID"].ToString());
+                            int HHID_ = Convert.ToInt32(ViewState["HHID"]);
+                            Close_Batch(HHID_, USER_ID);
+                        }
 
                         pnlFinalPojectdEtail.Visible = false;
                         ApprovalMultiView.Visible = false;
                         pnlAprovalFooter.Visible = false;
                         PnlProjectDtl.Visible = false;
+
+                        GrdMyTaskApproval.DataSource = null;
+                        BindGrid(false, false);
                     }
                     else
                     {
@@ -2195,10 +2209,20 @@ namespace WIS
                     MyTasks_ApprovalDAL objMyTaskApprovalDAL = new MyTasks_ApprovalDAL();
                     objMyTaskApprovalDAL.DeclineStatus(objWorkflowapproval);
 
+                    // Close off the batch
+                    int USER_ID = 0;
+                    if (Session["USER_ID"] != null)
+                        USER_ID = Convert.ToInt32(Session["USER_ID"].ToString());
+                    int HHID_ = Convert.ToInt32(ViewState["HHID"]);
+                    Close_Batch(HHID_, USER_ID);
+
                     pnlFinalPojectdEtail.Visible = false;
                     ApprovalMultiView.Visible = false;
                     pnlAprovalFooter.Visible = false;
                     PnlProjectDtl.Visible = false;
+
+                    GrdMyTaskApproval.DataSource = null;
+                    BindGrid(false, false);
                 }
 
                 // tested and okay
@@ -2219,10 +2243,20 @@ namespace WIS
                     MyTasks_ApprovalDAL objMyTaskApprovalDAL = new MyTasks_ApprovalDAL();
                     objMyTaskApprovalDAL.DeclineStatus(objWorkflowapproval);
 
+                    // Close off the batch
+                    int USER_ID = 0;
+                    if (Session["USER_ID"] != null)
+                        USER_ID = Convert.ToInt32(Session["USER_ID"].ToString());
+                    int HHID_ = Convert.ToInt32(ViewState["HHID"]);
+                    Close_Batch(HHID_, USER_ID);
+
                     pnlFinalPojectdEtail.Visible = false;
                     ApprovalMultiView.Visible = false;
                     pnlAprovalFooter.Visible = false;
                     PnlProjectDtl.Visible = false;
+
+                    GrdMyTaskApproval.DataSource = null;
+                    BindGrid(false, false);
                 }
 
                 // tested and okay

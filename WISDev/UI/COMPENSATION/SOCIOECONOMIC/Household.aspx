@@ -42,10 +42,10 @@
                     </asp:DropDownList>
                 </div>
                 <div style="float: right">
-                    <a id="lnkAddPap" href="~/UI/PROJECT/AddPAP.aspx" runat="server"><b>Edit Name</b></a>&nbsp;|&nbsp;
-                    <a id="lnkUPloadPhoto" href="#" runat="server"><b>Upload Photo</b></a>&nbsp;|&nbsp;<a
-                        id="lnkViewPhoto" href="#" runat="server"><b>View Photo</b></a>&nbsp;|&nbsp;
-                    <a id="lnkUPloadDoc" href="#" runat="server"><b>Upload Document</b></a> &nbsp;|&nbsp;
+                    <a id="lnkAddPap" href="~/UI/PROJECT/AddPAP.aspx" runat="server"><b>Edit Name</b></a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                    <a id="lnkUPloadPhoto" href="#" runat="server"><b>Upload Photo</b></a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a
+                        id="lnkViewPhoto" href="#" runat="server"><b>View Photo</b></a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                    <a id="lnkUPloadDoc" href="#" runat="server"><b>Upload Document</b></a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
                     <a id="lnkUPloadDoclist" href="#" runat="server"><b>View Document</b></a>
                 </div>
                 <script type="text/javascript" language="javascript">

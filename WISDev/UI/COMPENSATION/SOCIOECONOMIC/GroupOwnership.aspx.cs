@@ -9,6 +9,7 @@ using WIS_BusinessLogic;
 using WIS_BusinessObjects;
 using WIS_BusinessObjects.Collections;
 using System.IO;
+using WIS;
 
 namespace WIS
 {

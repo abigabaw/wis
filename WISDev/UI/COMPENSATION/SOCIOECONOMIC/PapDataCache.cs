@@ -14,13 +14,13 @@ namespace WIS
     {
         public void ClearCache()
         {
-            Cache.Remove(BuildCacheKey("HOUSEHOLD_ID"));
-            Cache.Remove(BuildCacheKey("UID"));
-            Cache.Remove(BuildCacheKey("PAPNAME"));
-            Cache.Remove(BuildCacheKey("PLOTREFERENCE"));
-            Cache.Remove(BuildCacheKey("PAPDESIGNATION"));
-            Cache.Remove(BuildCacheKey("Plotlatitude"));
-            Cache.Remove(BuildCacheKey("Plotlongitude"));
+            HttpContext.Current.Cache.Remove(BuildCacheKey("HOUSEHOLD_ID"));
+            HttpContext.Current.Cache.Remove(BuildCacheKey("UID"));
+            HttpContext.Current.Cache.Remove(BuildCacheKey("PAPNAME"));
+            HttpContext.Current.Cache.Remove(BuildCacheKey("PLOTREFERENCE"));
+            HttpContext.Current.Cache.Remove(BuildCacheKey("PAPDESIGNATION"));
+            HttpContext.Current.Cache.Remove(BuildCacheKey("Plotlatitude"));
+            HttpContext.Current.Cache.Remove(BuildCacheKey("Plotlongitude"));
         }
 
         public string BuildCacheKey(string keyName)
@@ -30,7 +30,7 @@ namespace WIS
 
         private void CacheHouseholdID(string householdID)
         {
-            Cache.Insert(BuildCacheKey("HOUSEHOLD_ID"), householdID, null, System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromHours(12));
+            HttpContext.Current.Cache.Insert(BuildCacheKey("HOUSEHOLD_ID"), householdID, null, System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromHours(12));
         }
 
         public void CachePAPData(string householdID)
@@ -54,28 +54,28 @@ namespace WIS
                 else
                     papName = objHousehold.PapName;
 
-                Cache.Insert(BuildCacheKey("PAPNAME"), papName, null, System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromHours(12));
+                HttpContext.Current.Cache.Insert(BuildCacheKey("PAPNAME"), papName, null, System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromHours(12));
 
                 papUID = objHousehold.Pap_UId;
-                Cache.Insert(BuildCacheKey("UID"), papUID, null, System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromHours(12));
+                HttpContext.Current.Cache.Insert(BuildCacheKey("UID"), papUID, null, System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromHours(12));
 
                 plotReference = objHousehold.PlotReference;
-                Cache.Insert(BuildCacheKey("PLOTREFERENCE"), plotReference, null, System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromHours(12));
+                HttpContext.Current.Cache.Insert(BuildCacheKey("PLOTREFERENCE"), plotReference, null, System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromHours(12));
 
                 if (objHousehold.Designation != null)
                 {
                     papDesignation = objHousehold.Designation;
-                    Cache.Insert(BuildCacheKey("PAPDESIGNATION"), papDesignation, null, System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromHours(12));
+                    HttpContext.Current.Cache.Insert(BuildCacheKey("PAPDESIGNATION"), papDesignation, null, System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromHours(12));
                 }
                 if (objHousehold.Plotlatitude != null)
                 {
                     lati = objHousehold.Plotlatitude;
-                    Cache.Insert(BuildCacheKey("Plotlatitude"), lati, null, System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromHours(12));
+                    HttpContext.Current.Cache.Insert(BuildCacheKey("Plotlatitude"), lati, null, System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromHours(12));
                 }
                 if (objHousehold.Plotlongitude != null)
                 {
                     longi = objHousehold.Plotlongitude;
-                    Cache.Insert(BuildCacheKey("Plotlongitude"), longi, null, System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromHours(12));
+                    HttpContext.Current.Cache.Insert(BuildCacheKey("Plotlongitude"), longi, null, System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromHours(12));
                 }
 
                 //if (objHousehold.PapstatusId > 0)

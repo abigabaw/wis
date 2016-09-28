@@ -8,7 +8,7 @@ using WIS_BusinessObjects;
 using WIS_BusinessLogic;
 using System.Drawing;
 using System.Text;
-using WIS.UI.COMPENSATION.SOCIOECONOMIC;
+using WIS;
 
 namespace WIS
 {

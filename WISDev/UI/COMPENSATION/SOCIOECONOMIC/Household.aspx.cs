@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.Web.Services;
 using WIS_BusinessObjects;
 using WIS_BusinessLogic;
+using WIS;
 
 namespace WIS
 {

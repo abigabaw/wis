@@ -34,7 +34,7 @@
                             </td>
                             <td align="right" style="width: 410px">
                                 <uc2:ViewMasterCopy ID="ViewMasterCopy1" runat="server" />
-                                <div style="margin-top:-25px;">|&nbsp;<a id="lnkViewDependents" href="#" runat="server"><b>View Stakeholders</b></a></div>
+                                <div style="margin-top:-25px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id="lnkViewDependents" href="#" runat="server"><b>View Stakeholders</b></a></div>
                             </td>
                         </tr>
                     </table>

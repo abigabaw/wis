@@ -74,7 +74,7 @@
                             <span class="mandatory">*</span>
                         </td>
                         <td>
-                            <asp:DropDownList ID="ddlCropName" runat="server" CssClass="iceTextBox" AppendDataBoundItems="True">
+                            <asp:DropDownList ID="ddlCropName" runat="server" CssClass="iceTextBox" AppendDataBoundItems="True" Width="200px">
                                 <asp:ListItem Selected="True">--Select--</asp:ListItem>
                             </asp:DropDownList>
                             <ajaxToolkit:ListSearchExtender ID="ListSearchExtender5" runat="server" TargetControlID="ddlCropName"
@@ -90,7 +90,7 @@
                             <span class="mandatory">*</span>
                         </td>
                         <td>
-                            <asp:DropDownList ID="ddlCropType" runat="server" CssClass="iceTextBox" AppendDataBoundItems="True">
+                            <asp:DropDownList ID="ddlCropType" runat="server" CssClass="iceTextBox" AppendDataBoundItems="True" Width="200px">
                                 <asp:ListItem Selected="True">--Select--</asp:ListItem>
                             </asp:DropDownList>
                             <ajaxToolkit:ListSearchExtender ID="ListSearchExtender1" runat="server" TargetControlID="ddlCropType"
@@ -109,7 +109,7 @@
                             <span class="mandatory">*</span>
                         </td>
                         <td>
-                            <asp:DropDownList ID="ddlCropDescription" runat="server" CssClass="iceTextBox" AppendDataBoundItems="True">
+                            <asp:DropDownList ID="ddlCropDescription" runat="server" CssClass="iceTextBox" AppendDataBoundItems="True" Width="200px">
                                 <asp:ListItem Selected="True">--Select--</asp:ListItem>
                             </asp:DropDownList>
                             <ajaxToolkit:ListSearchExtender ID="ListSearchExtender2" runat="server" TargetControlID="ddlCropDescription"
@@ -141,10 +141,8 @@
                             <span class="mandatory">*</span>
                         </td>
                         <td>
-                            <asp:TextBox ID="txtbxQuantity" runat="server" MaxLength="4" CssClass="iceTextBox">
-                            </asp:TextBox>
-                            <ajaxToolkit:FilteredTextBoxExtender ID="fteQty" FilterType="Numbers" TargetControlID="txtbxQuantity"
-                                runat="server">
+                            <asp:TextBox ID="txtbxQuantity" runat="server" MaxLength="10" CssClass="iceTextBox" Width="200px"></asp:TextBox>
+                            <ajaxToolkit:FilteredTextBoxExtender ID="fteQty" FilterType="Numbers, Custom" ValidChars="." TargetControlID="txtbxQuantity" runat="server">
                             </ajaxToolkit:FilteredTextBoxExtender>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ErrorMessage=" Enter Quantity "
                                 ControlToValidate="txtbxQuantity" ValidationGroup="Crops" Display="None">
@@ -156,8 +154,7 @@
                         </td>
                         <td>
                             <asp:TextBox ID="txtbxCropRate" runat="server" MaxLength="15"
-                                CssClass="iceTextBox">
-                            </asp:TextBox>
+                                CssClass="iceTextBox" Width="200px"></asp:TextBox>
                             <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" FilterType="Numbers"
                                 TargetControlID="txtbxCropRate" runat="server">
                             </ajaxToolkit:FilteredTextBoxExtender>
@@ -172,8 +169,7 @@
                             </asp:Label>
                         </td>
                         <td style="vertical-align: top">
-                            <asp:TextBox ID="txtbxCropvaluation" runat="server" CssClass="iceTextBox" ReadOnly="true">
-                            </asp:TextBox>
+                            <asp:TextBox ID="txtbxCropvaluation" runat="server" CssClass="iceTextBox" ReadOnly="true" Width="200px"></asp:TextBox>
                             <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" FilterType="Numbers"
                                 TargetControlID="txtbxCropvaluation" runat="server">
                             </ajaxToolkit:FilteredTextBoxExtender>

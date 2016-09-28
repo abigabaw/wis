@@ -8,6 +8,7 @@ using System.Web.Services;
 using WIS_BusinessObjects;
 using WIS_BusinessLogic;
 using WIS_BusinessObjects.Collections;
+using WIS;
 
 namespace WIS
 {

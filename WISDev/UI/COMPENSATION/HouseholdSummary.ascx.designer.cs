@@ -40,15 +40,6 @@ namespace WIS {
         protected global::System.Web.UI.WebControls.Literal litPAPUID;
         
         /// <summary>
-        /// litSmrPAPName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal litSmrPAPName;
-        
-        /// <summary>
         /// litSmrPlotReference control.
         /// </summary>
         /// <remarks>
@@ -83,5 +74,14 @@ namespace WIS {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal litSmrDesignation;
+        
+        /// <summary>
+        /// litSmrPAPName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal litSmrPAPName;
     }
 }
