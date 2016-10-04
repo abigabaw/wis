@@ -16,11 +16,11 @@
             var top = (screen.height - 650) / 4;
             // open('/UI/REPORTUI/RptViewer.aspx?WorkflowCode=PAYRQ&ProjectID=' + ProjectID + '&BatchNo=' + BatchNo, 'Package Status', 'width=960px,height=650px,resizable=0,scrollbars=no,top=' + top + ', left=' + left);
             // function modalWin() {
-                if (window.showModalDialog) {
-                    window.showModalDialog('/UI/REPORTUI/RptViewer.aspx?WorkflowCode=PAYRQ&ProjectID=' + ProjectID + '&BatchNo=' + BatchNo, 'Package Status', "name", "dialogWidth:255px;dialogHeight:250px");
-                } else {
-                    window.open('/UI/REPORTUI/RptViewer.aspx?WorkflowCode=PAYRQ&ProjectID=' + ProjectID + '&BatchNo=' + BatchNo, 'Package Status', 'name', 'height=255,width=250,toolbar=no,directories=no,status=no,continued from previous linemenubar=no,scrollbars=no,resizable=no ,modal=yes');
-                }
+            if (window.showModalDialog) {
+                window.showModalDialog('/UI/REPORTUI/RptViewer.aspx?WorkflowCode=PAYRQ&ProjectID=' + ProjectID + '&BatchNo=' + BatchNo, 'Package Status', "name", "dialogWidth:255px;dialogHeight:250px");
+            } else {
+                window.open('/UI/REPORTUI/RptViewer.aspx?WorkflowCode=PAYRQ&ProjectID=' + ProjectID + '&BatchNo=' + BatchNo, 'Package Status', 'name', 'height=255,width=250,toolbar=no,directories=no,status=no,continued from previous linemenubar=no,scrollbars=no,resizable=no ,modal=yes');
+            }
             //} 
         }
 
@@ -107,7 +107,8 @@
                     <fieldset class="icePnlinner">
                         <legend>Batch List</legend>
                         <div align="center">
-                            <label class="iceLable">T = Total, A = Approved,  D = Declined,  P = Pending</label></div>
+                            <label class="iceLable">T = Total, A = Approved,  D = Declined,  P = Pending</label>
+                        </div>
                         <asp:Label ID="lblMessage" Text="" Visible="false" runat="server" CssClass="iceLable"></asp:Label>
                         <asp:Repeater ID="rptrBatchPayment" runat="server"
                             OnItemCommand="rptrBatchPayment_ItemCommand"
@@ -208,6 +209,12 @@
                         ItemStyle-HorizontalAlign="Right" ItemStyle-Width="12"/>--%>
                                         <asp:BoundField DataField="PAPName" HeaderText="PAP Name" HeaderStyle-HorizontalAlign="Center"
                                             ItemStyle-HorizontalAlign="Left" ItemStyle-Width="20%" />
+                                        <asp:BoundField DataField="PlotRef" HeaderText="Plot Ref" ItemStyle-HorizontalAlign="Left">
+                                            <HeaderStyle HorizontalAlign="Left"></HeaderStyle>
+                                        </asp:BoundField>
+                                        <asp:BoundField DataField="Designation" HeaderText="Design" ItemStyle-HorizontalAlign="Left">
+                                            <HeaderStyle HorizontalAlign="Left"></HeaderStyle>
+                                        </asp:BoundField>
                                         <%-- <asp:BoundField DataField="BATCHSTATUS" HeaderText="Status" HeaderStyle-HorizontalAlign="Left"
                         ItemStyle-HorizontalAlign="Left" />--%>
                                         <asp:BoundField DataField="Amt_Requested" DataFormatString="{0:N2}" HeaderText="Requested Amount" HeaderStyle-HorizontalAlign="Center"
@@ -245,11 +252,11 @@
                                 <tr>
                                     <td align="center">
                                         <span id="BatchStatusLinks" runat="server">
-                                            <a id="lnkPrintBatchDetail" class="iceStatusLinks" href="#" onclick="OpenBatchPrint();" runat="server" style="border-right: 1px solid; float:left; width:15%;"><b>Print Details</b></a>
-                                            <a href="#" id="lnkPackageStatus" class="iceStatusLinks" onclick="OpenBatchStatus();" runat="server" style="border-right: 1px solid; float:left; width:15%;"><b>View Status</b></a>
-                                                                                <a href="#" id="lnkViewBatchComments" style="float:left; width:20%;" class="iceStatusLinks" onclick="OpenBatchComments();" runat="server"><b>View Comments</b></a>
+                                            <a id="lnkPrintBatchDetail" class="iceStatusLinks" href="#" onclick="OpenBatchPrint();" runat="server" style="border-right: 1px solid; float: left; width: 15%;"><b>Print Details</b></a>
+                                            <a href="#" id="lnkPackageStatus" class="iceStatusLinks" onclick="OpenBatchStatus();" runat="server" style="border-right: 1px solid; float: left; width: 15%;"><b>View Status</b></a>
+                                            <a href="#" id="lnkViewBatchComments" style="float: left; width: 20%;" class="iceStatusLinks" onclick="OpenBatchComments();" runat="server"><b>View Comments</b></a>
                                         </span>
-                                            </td>
+                                    </td>
                                 </tr>
 
                             </table>

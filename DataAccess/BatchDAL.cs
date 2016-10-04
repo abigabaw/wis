@@ -644,6 +644,12 @@ namespace WIS_DataAccess
             if (ColumnExists(reader, "papname") && !reader.IsDBNull(reader.GetOrdinal("papname")))
                 oBatchBO.PAPName = reader.GetString(reader.GetOrdinal("papname"));
 
+            if (ColumnExists(reader, "PLOTREFERENCE") && !reader.IsDBNull(reader.GetOrdinal("PLOTREFERENCE")))
+                oBatchBO.PlotRef = reader.GetString(reader.GetOrdinal("PLOTREFERENCE"));
+
+            if (ColumnExists(reader, "DESIGNATION") && !reader.IsDBNull(reader.GetOrdinal("DESIGNATION")))
+                oBatchBO.Designation = reader.GetString(reader.GetOrdinal("DESIGNATION"));
+
             if (ColumnExists(reader, "cmp_batchno") && !reader.IsDBNull(reader.GetOrdinal("cmp_batchno")))
                 oBatchBO.CMP_BatchNo = reader.GetString(reader.GetOrdinal("cmp_batchno"));
 
