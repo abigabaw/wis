@@ -13,47 +13,30 @@ namespace WIS_Utility
         public static Boolean IsValidUser(String DomainName, String UserName, String UserPassword)
         {
             if (!String.IsNullOrEmpty(DomainName))
-            {
-                DirectoryEntry DirectoryEntryObject;
-                DirectorySearcher DirectorySearcherObject;
-                SearchResult SearchResultObject;
-
+             {
+                
                 try
-                {
-                    String LDAPPath = "LDAP://" + DomainName;
+                 {
+                     string LDAPPath = "LDAP://" + DomainName + "/OU=All Users,DC=uetcl,DC=com";
+                     if (Exists(LDAPPath, UserName, UserPassword))
+                     {
+                         return true;
+                     }
+                     else
+                     {
+                         return false;
+                     }
 
-                    DirectoryEntryObject = new DirectoryEntry(LDAPPath, UserName, UserPassword, AuthenticationTypes.Secure);
-                    DirectorySearcherObject = new DirectorySearcher(DirectoryEntryObject);
+                 }
+                 catch (Exception)
+                 {
+                     return false;
+                 }
+                 
+             }
+             return false;
 
-                    // Edwin Baguma: 23/02/2016
-                    if (IsActive(DirectoryEntryObject)){
-                        SearchResultObject = DirectorySearcherObject.FindOne();
-                    }
-                    else
-                    {
-                        SearchResultObject = null;
-                        
-                    } // End:
-                    
-                    if (SearchResultObject != null)
-                    {
-                        string Email = SearchResultObject.Properties["mail"].ToString();
-
-                        return true;
-                    }
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-                finally
-                {
-                    SearchResultObject = null;
-                    DirectorySearcherObject = null;
-                    DirectoryEntryObject = null;
-                }
-            }
-            return false;
+            
         }
 
         // Edwin Baguma: 23/02/2016
@@ -65,6 +48,31 @@ namespace WIS_Utility
 
             return !Convert.ToBoolean(flags & 0x0002);
         } // End:
+
+        public static Boolean Exists(string objectPath, string UserName, string PassWord)
+        {
+            Boolean found = false;
+            DirectoryEntry searchRoot = new DirectoryEntry(objectPath, UserName, PassWord);
+            DirectorySearcher DirectorySearcherObject = new DirectorySearcher(searchRoot);
+            SearchResult SearchResultObject = DirectorySearcherObject.FindOne();
+
+            try
+            {
+                if (SearchResultObject != null)
+                {
+                    string Email = SearchResultObject.Properties["mail"].ToString();
+                    return found = true;
+                }
+                else
+                {
+                    return found;
+                }
+            }
+            catch (Exception)
+            {
+                return found;
+            }
+        }
 
     }
 }

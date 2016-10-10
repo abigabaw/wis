@@ -1,6 +1,7 @@
 ﻿using System;
 using WIS_BusinessObjects;
 using WIS_BusinessLogic;
+using System.DirectoryServices;
 
 
 namespace WIS
@@ -130,9 +131,37 @@ namespace WIS
         private bool IsLDAPAuthenticated(string domainName, string usrID, string pwd)
         {
             if (domainName == "UETCL")
+            {
                 return true;
+            }
             else
-                return WIS_Utility.Utility.IsValidUser(domainName, usrID, pwd);
+            {
+                // return WIS_Utility.Utility.IsValidUser(domainName, usrID, pwd);
+                string LDAPPath = "LDAP://" + domainName + "/OU=All Users,DC=uetcl,DC=com";
+                Boolean found = false;
+                DirectoryEntry searchRoot = new DirectoryEntry(LDAPPath, usrID, pwd);
+                DirectorySearcher DirectorySearcherObject = new DirectorySearcher(searchRoot);
+                SearchResult SearchResultObject = DirectorySearcherObject.FindOne();
+
+                try
+                {
+                    if (SearchResultObject != null)
+                    {
+                        string Email = SearchResultObject.Properties["mail"].ToString();
+                        return found = true;
+                    }
+                    else
+                    {
+                        return found;
+                    }
+                }
+                catch (Exception)
+                {
+                    return found;
+                }
+            }
+
+            
         }
     }
 }

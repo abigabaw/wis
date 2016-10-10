@@ -15,7 +15,7 @@
         <asp:MenuItem NavigateUrl="~/UI/Compensation/SocioEconomic/LandInfoRespondents.aspx" Text="&nbsp;Other Land Holdings&nbsp;" />
         <asp:MenuItem NavigateUrl="~/UI/Compensation/SocioEconomic/LandInfoRespondentsOn.aspx" Text="&nbsp;Living On Affected Land&nbsp;" />
         <asp:MenuItem NavigateUrl="~/UI/Compensation/SocioEconomic/LandInfoRespondentsOff.aspx" Text="&nbsp;Living Off Affected Land&nbsp;" />
-        <asp:MenuItem NavigateUrl="~/UI/Compensation/SocioEconomic/AcreageValuation.aspx" Text="&nbsp;Acreage Valuation&nbsp;" />
+        <%-- <asp:MenuItem NavigateUrl="~/UI/Compensation/SocioEconomic/AcreageValuation.aspx" Text="&nbsp;Acreage Valuation&nbsp;" /> --%>
     </Items>
 </asp:Menu>
 </div>

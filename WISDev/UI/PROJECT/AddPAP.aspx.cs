@@ -619,12 +619,12 @@ namespace WIS
         /// <param name="sender"></param>
         /// <param name="e"></param>
 
-        public void ReCache()
+        public void ReCache(int HHID)
         {
             PapDataCache PapCache = new PapDataCache();
-            string householdID = Cache[PapCache.BuildCacheKey("HOUSEHOLD_ID")].ToString();
+            //string householdID = Cache[PapCache.BuildCacheKey("HOUSEHOLD_ID")].ToString();
             PapCache.ClearCache();
-            PapCache.CachePAPData(householdID);
+            PapCache.CachePAPData(HHID.ToString());
         }
 
         protected void btn_Save_Click(object sender, EventArgs e)
@@ -693,7 +693,7 @@ namespace WIS
                 message = (new AddPAPBLL()).UpdatePAP(objHousehold);
 
                 //Edwin: 20SEP2016 Reload Pap Details
-                ReCache();
+                ReCache(Convert.ToInt32(ViewState["PAPHHID_ID"]));
 
                 if (string.IsNullOrEmpty(message) || message == "" || message == "null")
                 {

@@ -82,6 +82,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Web.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
@@ -2387,6 +2388,7 @@
     <Content Include="IMAGE\UETCL_LogoAboutus.png" />
     <Content Include="Styles\jquery-1.9.1.min.js" />
     <Content Include="Styles\page_specific.css" />
+    <Content Include="UI\COMPENSATION\VALUATION\AcreageValuation.aspx" />
     <Content Include="UI\MYACTIVITIES\MyTasks_Approval.aspx" />
     <Content Include="UI\ApprovalMessage.ascx" />
     <Content Include="UI\COMPENSATION\BatchComments.aspx" />
@@ -2571,7 +2573,6 @@
     <Content Include="UI\COMPENSATION\SOCIOECONOMIC\PAPLivelihood.aspx" />
     <Content Include="UI\COMPENSATION\SOCIOECONOMIC\SocioConcerns.aspx" />
     <Content Include="UI\COMPENSATION\SOCIOECONOMIC\Welfare.aspx" />
-    <Content Include="UI\COMPENSATION\SOCIOECONOMIC\AcreageValuation.aspx" />
     <Content Include="UI\COMPENSATION\SOCIOECONOMIC\LandInfoRespondentsOff.aspx" />
     <Content Include="UI\COMPENSATION\SOCIOECONOMIC\LandInfoRespondentsOn.aspx" />
     <Content Include="UI\COMPENSATION\SURVEY\LandInfo.aspx" />
@@ -2671,6 +2672,13 @@
     </Compile>
     <Compile Include="UI\COMPENSATION\SOCIOECONOMIC\PapDataCache.cs">
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\COMPENSATION\VALUATION\AcreageValuation.aspx.cs">
+      <DependentUpon>AcreageValuation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\COMPENSATION\VALUATION\AcreageValuation.aspx.designer.cs">
+      <DependentUpon>AcreageValuation.aspx</DependentUpon>
     </Compile>
     <Compile Include="UI\MYACTIVITIES\MyTasks_Approval.aspx.cs">
       <DependentUpon>MyTasks_Approval.aspx</DependentUpon>
@@ -3709,13 +3717,6 @@
     <Compile Include="UI\COMPENSATION\SOCIOECONOMIC\Welfare.aspx.designer.cs">
       <DependentUpon>Welfare.aspx</DependentUpon>
     </Compile>
-    <Compile Include="UI\COMPENSATION\SOCIOECONOMIC\AcreageValuation.aspx.cs">
-      <DependentUpon>AcreageValuation.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\COMPENSATION\SOCIOECONOMIC\AcreageValuation.aspx.designer.cs">
-      <DependentUpon>AcreageValuation.aspx</DependentUpon>
-    </Compile>
     <Compile Include="UI\COMPENSATION\SOCIOECONOMIC\LandInfoRespondentsOff.aspx.cs">
       <DependentUpon>LandInfoRespondentsOff.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -4493,6 +4494,9 @@
       <Project>{3aee5a7d-7850-45d0-a577-b66ca45f4848}</Project>
       <Name>DataAccess</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

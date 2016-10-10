@@ -593,12 +593,12 @@ namespace WIS
         /// <param name="sender"></param>
         /// <param name="e"></param>
 
-        public void ReCache()
+        public void ReCache(int HHID)
         {
             PapDataCache PapCache = new PapDataCache();
-            string householdID = Cache[PapCache.BuildCacheKey("HOUSEHOLD_ID")].ToString();
+            // string householdID = Cache[PapCache.BuildCacheKey("HOUSEHOLD_ID")].ToString();
             PapCache.ClearCache();
-            PapCache.CachePAPData(householdID);
+            PapCache.CachePAPData(HHID.ToString());
         }
 
         #region Save & Clear Buttons
@@ -800,7 +800,7 @@ namespace WIS
             string message = objHouseHoldBLL.UpdateHouseHoldDetails(objHouseHold);
 
             //Edwin: 19SEP2016 Reload Pap Details
-            ReCache();
+            ReCache(Convert.ToInt32(txtHouseHoldID.Text));
 
             ChangeRequestStatus();
             projectFrozen();

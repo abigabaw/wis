@@ -7,13 +7,17 @@ namespace WIS
         
         public enum MenuValue
         {
+            AcreageValuation,
+            Crops,
+            DamagedCrops,
+            OtherFixtures,
             PermanentBuildings,
             //NonPermanentBuildings,
-            DamagedCrops,
-            Crops,
-            OtherFixtures,
+            
+            
+            
             CultureProperties,
-            AcreageValuation,
+            
             FinalValuation
         }
 

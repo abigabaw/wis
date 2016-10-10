@@ -68,7 +68,7 @@
                             PAP Name</label>
                     </td>
                     <td align="left">
-                        <asp:TextBox ID="txtPAPName" runat="server" MaxLength="100" CssClass="iceTextBox"
+                        <asp:TextBox ID="txtPAPName" runat="server" MaxLength="100" onblur="SetUpperCase(this);UpdateFullName();" CssClass="iceTextBox"
                             Width="200px" />
                         <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender12" FilterType="LowercaseLetters,UppercaseLetters,Custom"
                             ValidChars=" " TargetControlID="txtPAPName" runat="server" />

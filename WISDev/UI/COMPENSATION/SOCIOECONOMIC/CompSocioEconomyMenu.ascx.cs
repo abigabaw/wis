@@ -18,7 +18,7 @@ namespace WIS
             OtherLandHoldings,
             OnAffectedLand,
             OffAffectedLand,
-            AcreageValuation
+            //AcreageValuation
         }
 
         protected void Page_Load(object sender, EventArgs e)

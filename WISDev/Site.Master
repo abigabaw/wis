@@ -210,10 +210,10 @@
                             </asp:MenuItem>                               
                             <asp:MenuItem NavigateUrl="~/UI/Compensation/SocioEconomic/Household.aspx" Text="Socio-Economic"
                                 Value="SOCIO_ECONOMIC"></asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/UI/COMPENSATION/VALUATION/AcreageValuation.aspx" Text="Valuation"
+                                Value="VALUATION"></asp:MenuItem>
                             <asp:MenuItem NavigateUrl="~/UI/COMPENSATION/SURVEY/LandInfo.aspx" Text="Survey"
                                 Value="SURVEY"></asp:MenuItem>
-                            <asp:MenuItem NavigateUrl="~/UI/COMPENSATION/VALUATION/PermanenetBuilding.aspx" Text="Valuation"
-                                Value="VALUATION"></asp:MenuItem>
                             <asp:MenuItem NavigateUrl="~/UI/COMPENSATION/CompensationFinancial.aspx" Text="Compensation Financials"
                                 Value="COMPENSATION_FINANCIALS"></asp:MenuItem>
                             <asp:MenuItem NavigateUrl="~/UI/COMPENSATION/CompensationPackages.aspx" Text="Package Documents"

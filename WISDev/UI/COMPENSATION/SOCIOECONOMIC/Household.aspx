@@ -42,7 +42,6 @@
                     </asp:DropDownList>
                 </div>
                 <div style="float: right">
-                    <a id="lnkAddPap" href="~/UI/PROJECT/AddPAP.aspx" runat="server"><b>Edit Name</b></a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
                     <a id="lnkUPloadPhoto" href="#" runat="server"><b>Upload Photo</b></a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a
                         id="lnkViewPhoto" href="#" runat="server"><b>View Photo</b></a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
                     <a id="lnkUPloadDoc" href="#" runat="server"><b>Upload Document</b></a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
@@ -103,7 +102,7 @@
                 PAP UID <span class="mandatory">*</span>
             </td>
             <td align="left" colspan="3">
-                <asp:TextBox ID="txtPapUid" runat="server" Width="200px" CssClass="iceTextBox" MaxLength="15"></asp:TextBox>
+                <asp:TextBox ID="txtPapUid" runat="server" Width="260px" CssClass="iceTextBox" MaxLength="15"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator4" ControlToValidate="txtPapUid"
                     ErrorMessage="Enter PAP UID" Display="None" ValidationGroup="HHDetails" runat="server"></asp:RequiredFieldValidator>
                 <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender6" FilterType="UppercaseLetters,Numbers"
@@ -115,14 +114,17 @@
                 Name <span class="mandatory">*</span>
             </td>
             <td align="left" style="width: 32%">
-                <asp:TextBox ID="txtName" runat="server" Width="200px" CssClass="iceTextBox" MaxLength="450"
-                    onblur="SetUpperCase(this);" ReadOnly="True"></asp:TextBox>
+                <asp:TextBox ID="txtName" runat="server" Width="350px" CssClass="iceTextBox" MaxLength="450"
+                    onblur="SetUpperCase(this);"></asp:TextBox>
+                
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" ControlToValidate="txtName"
                     ErrorMessage="Enter Name" Display="None" ValidationGroup="HHDetails" runat="server"></asp:RequiredFieldValidator>
                 <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender3" FilterType="UppercaseLetters,LowercaseLetters,Custom"
-                    ValidChars=" ,()/" TargetControlID="txtName" runat="server">
+                    ValidChars=" " TargetControlID="txtName" runat="server">
                 </ajaxToolkit:FilteredTextBoxExtender>
             </td>
+            
+            
             <td class="iceLable" style="width: 16%">
                 Plot Reference <span class="mandatory">*</span>
             </td>
@@ -159,7 +161,7 @@
             </td>
             <td align="left">
                 <asp:DropDownList ID="OccupationStatus" runat="server" AppendDataBoundItems="true"
-                    Width="200px">
+                    Width="260px">
                     <asp:ListItem Value="0">--Select--</asp:ListItem>
                 </asp:DropDownList>
                 <ajaxToolkit:ListSearchExtender ID="ListSearchExtender5" runat="server" TargetControlID="OccupationStatus"
@@ -242,7 +244,7 @@
                         </td>
                         <td align="left">
                             <asp:TextBox ID="txtBoundaryDisputes" Text="" TextMode="MultiLine" CssClass="iceTextBox"
-                                Width="250px" runat="server" />
+                                Width="260px" runat="server" />
                             <asp:RequiredFieldValidator ID="rfvOverideComments" ControlToValidate="txtBoundaryDisputes"
                                 ErrorMessage="Enter Override Comments" Display="None" ValidationGroup="HHDetails"
                                 runat="server"></asp:RequiredFieldValidator>
@@ -253,7 +255,7 @@
         </tr>
         <tr>
             <td>
-                <asp:Label ID="lblpercentageOccupied" runat="server" Text="Percentage of Land Occupied by UETCL"
+                <asp:Label ID="lblpercentageOccupied" runat="server" Text="Land Occupied By UETCL (%)"
                     CssClass="iceLable" nowrap></asp:Label>
                 <span class="mandatory">*</span>
             </td>
@@ -279,7 +281,7 @@
                 Sex <span class="mandatory">*</span>
             </td>
             <td align="left">
-                <asp:DropDownList ID="ddlGender" runat="server">
+                <asp:DropDownList ID="ddlGender" runat="server" Width="150px">
                     <asp:ListItem Value="0">--Select--</asp:ListItem>
                     <asp:ListItem Value="Male">Male</asp:ListItem>
                     <asp:ListItem Value="Female">Female</asp:ListItem>
@@ -292,7 +294,7 @@
                 Place of Birth
             </td>
             <td align="left">
-                <asp:TextBox ID="txtPlaceofBirth" MaxLength="100" runat="server" CssClass="iceTextBox"></asp:TextBox>
+                <asp:TextBox ID="txtPlaceofBirth" MaxLength="100" runat="server" CssClass="iceTextBox" Width="260px"></asp:TextBox>
             </td>
         </tr>
         <tr>
@@ -300,7 +302,7 @@
                 Date of Birth
             </td>
             <td align="left">
-                <asp:TextBox ID="dpDateOfBirth" runat="server" CssClass="iceTextBox" Width="90px"></asp:TextBox>
+                <asp:TextBox ID="dpDateOfBirth" runat="server" CssClass="iceTextBox" Width="150px"></asp:TextBox>
                 <ajaxToolkit:CalendarExtender ID="calDateOfBirth" runat="server" CssClass="WISCalendarStyle"
                     TargetControlID="dpDateOfBirth">
                 </ajaxToolkit:CalendarExtender>
@@ -313,7 +315,7 @@
                 When did you come here?
             </td>
             <td align="left">
-                <asp:TextBox ID="txtwhendiducomehere" MaxLength="4" runat="server" CssClass="iceTextBox"></asp:TextBox>
+                <asp:TextBox ID="txtwhendiducomehere" MaxLength="4" runat="server" CssClass="iceTextBox" Width="260px"></asp:TextBox>
                 <ajaxToolkit:FilteredTextBoxExtender ID="flttxtwhendiducomehere" FilterType="Numbers"
                     TargetControlID="txtwhendiducomehere" runat="server">
                 </ajaxToolkit:FilteredTextBoxExtender>
@@ -341,7 +343,7 @@
             </td>
             <td align="left">
                 <asp:TextBox ID="txtwhereparentslive" runat="server" MaxLength="100" ClientIDMode="Static"
-                    Enabled="false" CssClass="iceTextBox"></asp:TextBox>
+                    Enabled="false" CssClass="iceTextBox" Width="260px"></asp:TextBox>
             </td>
         </tr>
         <tr>
@@ -359,7 +361,7 @@
             </td>
             <td align="left" colspan="2">
                 <asp:DropDownList ID="ddlcardType" Enabled="false" AppendDataBoundItems="true" runat="server"
-                    Width="200px">
+                    Width="260px">
                     <asp:ListItem Value="0">--Select--</asp:ListItem>
                 </asp:DropDownList>
             </td>
@@ -370,8 +372,7 @@
             </td>
             <td align="left">
                 <asp:TextBox ID="txtNameofCard" ClientIDMode="Static" MaxLength="300" runat="server"
-                    Enabled="false" CssClass="iceTextBox">                                    
-                </asp:TextBox>
+                    Enabled="false" CssClass="iceTextBox" Width="260px"></asp:TextBox>
                 <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender5" FilterType="UppercaseLetters,LowercaseLetters,Custom"
                     ValidChars=" " TargetControlID="txtNameofCard" runat="server">
                 </ajaxToolkit:FilteredTextBoxExtender>
@@ -381,8 +382,7 @@
             </td>
             <td align="left" colspan="2">
                 <asp:TextBox ID="txtaddressoncard" ClientIDMode="Static" MaxLength="300" runat="server"
-                    Enabled="false" CssClass="iceTextBox">                                    
-                </asp:TextBox>
+                    Enabled="false" CssClass="iceTextBox" Width="260px"></asp:TextBox>
             </td>
         </tr>
         <tr>
@@ -453,7 +453,7 @@
                 District
             </td>
             <td align="left" class="iceNormalText">
-                <asp:DropDownList ID="ddlDistrict" runat="server" Width="200px" AutoPostBack="True"
+                <asp:DropDownList ID="ddlDistrict" runat="server" Width="260px" AutoPostBack="True"
                     AppendDataBoundItems="true" OnSelectedIndexChanged="ddlDistrict_SelectedIndexChanged">
                     <asp:ListItem Value="0">--Select--</asp:ListItem>
                 </asp:DropDownList>
@@ -467,7 +467,7 @@
             <td align="left" class="iceNormalText" colspan="2">
                 <asp:UpdatePanel ID="UpdatePanel1" UpdateMode="Conditional" runat="server">
                     <ContentTemplate>
-                        <asp:DropDownList ID="ddlCounty" runat="server" Width="200px" AutoPostBack="True"
+                        <asp:DropDownList ID="ddlCounty" runat="server" Width="260px" AutoPostBack="True"
                             AppendDataBoundItems="true" OnSelectedIndexChanged="ddlCounty_SelectedIndexChanged">
                             <asp:ListItem Value="0">--Select--</asp:ListItem>
                         </asp:DropDownList>
@@ -488,7 +488,7 @@
             <td align="left" class="iceNormalText">
                 <asp:UpdatePanel ID="uplSubCounty" UpdateMode="Conditional" runat="server">
                     <ContentTemplate>
-                        <asp:DropDownList ID="ddlSubCounty" runat="server" Width="200px" AutoPostBack="True"
+                        <asp:DropDownList ID="ddlSubCounty" runat="server" Width="260px" AutoPostBack="True"
                             AppendDataBoundItems="true" OnSelectedIndexChanged="ddlSubCounty_SelectedIndexChanged">
                             <asp:ListItem Value="0">--Select--</asp:ListItem>
                         </asp:DropDownList>
@@ -507,7 +507,7 @@
             <td align="left" class="iceNormalText" colspan="2">
                 <asp:UpdatePanel ID="uplParish" UpdateMode="Conditional" runat="server">
                     <ContentTemplate>
-                        <asp:DropDownList ID="ddlParish" runat="server" Width="200px" AppendDataBoundItems="true">
+                        <asp:DropDownList ID="ddlParish" runat="server" Width="260px" AppendDataBoundItems="true">
                             <asp:ListItem Value="0">--Select--</asp:ListItem>
                         </asp:DropDownList>
                         <ajaxToolkit:ListSearchExtender ID="ListSearchExtender9" runat="server" TargetControlID="ddlParish"
@@ -527,7 +527,7 @@
             <td>
                 <asp:UpdatePanel ID="uplVillage" UpdateMode="Conditional" runat="server">
                     <ContentTemplate>
-                        <asp:DropDownList ID="ddlVillage" runat="server" Width="200px" AppendDataBoundItems="true">
+                        <asp:DropDownList ID="ddlVillage" runat="server" Width="260px" AppendDataBoundItems="true">
                             <asp:ListItem Value="0">--Select--</asp:ListItem>
                         </asp:DropDownList>
                         <ajaxToolkit:ListSearchExtender ID="ListSearchExtender10" runat="server" TargetControlID="ddlVillage"
@@ -563,7 +563,7 @@
                 Occupation
             </td>
             <td align="left">
-                <asp:DropDownList ID="ddlOccupation" runat="server" AppendDataBoundItems="true" Width="300px">
+                <asp:DropDownList ID="ddlOccupation" runat="server" AppendDataBoundItems="true" Width="260px">
                     <asp:ListItem Value="0">--Select--</asp:ListItem>
                 </asp:DropDownList>
                 <ajaxToolkit:ListSearchExtender ID="ListSearchExtender12" runat="server" TargetControlID="ddlOccupation"
@@ -575,7 +575,7 @@
             </td>
             <td align="left" colspan="2">
                 <asp:DropDownList ID="ddlLiteracyStatus" runat="server" AppendDataBoundItems="true"
-                    Width="200px">
+                    Width="260px">
                     <asp:ListItem Value="0">--Select--</asp:ListItem>
                 </asp:DropDownList>
                 <ajaxToolkit:ListSearchExtender ID="ListSearchExtender13" runat="server" TargetControlID="ddlLiteracyStatus"
@@ -588,7 +588,7 @@
                 GOU Allowance Category
             </td>
             <td align="left">
-                <asp:DropDownList ID="ddlGouAllowance" runat="server" AppendDataBoundItems="true">
+                <asp:DropDownList ID="ddlGouAllowance" runat="server" AppendDataBoundItems="true" Width="260px">
                     <asp:ListItem Value="0">--Select--</asp:ListItem>
                 </asp:DropDownList>
                 <ajaxToolkit:ListSearchExtender ID="ListSearchExtender14" runat="server" TargetControlID="ddlGouAllowance"
@@ -603,7 +603,7 @@
             </td>
             <td align="left" colspan="2">
                 <asp:DropDownList ID="ddlUnderTakingPeriod" runat="server" AppendDataBoundItems="true"
-                    Width="200px">
+                    Width="260px">
                     <asp:ListItem Value="0" Selected="True">--Select--</asp:ListItem>
                     <asp:ListItem Value="One">1 Month</asp:ListItem>
                     <asp:ListItem Value="Two">2 Months</asp:ListItem>
@@ -643,8 +643,7 @@
                 HH Details Captured By <span class="mandatory">*</span>
             </td>
             <td align="left" class="labelSuffix">
-                <asp:TextBox ID="txtCapturedBy" MaxLength="100" runat="server" CssClass="iceTextBox">                                    
-                </asp:TextBox>
+                <asp:TextBox ID="txtCapturedBy" MaxLength="100" runat="server" CssClass="iceTextBox" Width="260px"></asp:TextBox>
                 <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender4" FilterType="UppercaseLetters,LowercaseLetters,Custom"
                     ValidChars=" " TargetControlID="txtCapturedBy" runat="server">
                 </ajaxToolkit:FilteredTextBoxExtender>
@@ -656,7 +655,7 @@
                 HH Details Captured Date <span class="mandatory">*</span>
             </td>
             <td align="left">
-                <asp:TextBox ID="dpCapturedDate" runat="server"></asp:TextBox>
+                <asp:TextBox ID="dpCapturedDate" runat="server" Width="260px"></asp:TextBox>
                 <ajaxToolkit:CalendarExtender ID="cpCapturedDate" runat="server" CssClass="WISCalendarStyle"
                     TargetControlID="dpCapturedDate">
                 </ajaxToolkit:CalendarExtender>
