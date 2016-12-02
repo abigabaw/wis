@@ -796,6 +796,78 @@ namespace WIS {
         protected global::System.Web.UI.WebControls.Label lblPaytVerification;
         
         /// <summary>
+        /// itemStatuses control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl itemStatuses;
+        
+        /// <summary>
+        /// itemCompPackageStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl itemCompPackageStatus;
+        
+        /// <summary>
+        /// lblCompPackageStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCompPackageStatus;
+        
+        /// <summary>
+        /// itemDisclosureStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl itemDisclosureStatus;
+        
+        /// <summary>
+        /// lblDisclosureStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblDisclosureStatus;
+        
+        /// <summary>
+        /// itemGrievanceStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl itemGrievanceStatus;
+        
+        /// <summary>
+        /// lblGrievanceStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblGrievanceStatus;
+        
+        /// <summary>
+        /// itemPaymentRequestStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl itemPaymentRequestStatus;
+        
+        /// <summary>
         /// lblPaymentStatusMessage control.
         /// </summary>
         /// <remarks>

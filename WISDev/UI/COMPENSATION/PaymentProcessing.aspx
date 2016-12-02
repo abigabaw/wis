@@ -646,13 +646,18 @@
                     </tr>
                 </table>
             </asp:Panel>
-            <asp:Label ID="lblPaymentStatusMessage" runat="server" Text="" CssClass="iceLable"
-                Style="text-decoration: blink; color: Red; font-family: Arial; font-size: 14px; font-weight: bold"></asp:Label>
+            
             <br />
             <div align="center" class="CSSTableGenerator">
                 <table border="0" cellspacing="0" cellpadding="0">
                 </table>
             </div>
+            <ul id="itemStatuses" runat="server" style="color:red;">
+                <li id="itemCompPackageStatus" runat="server" style="display:none;"><asp:Label ID="lblCompPackageStatus" runat="server" Style="text-decoration: blink; color: Red; font-family: Arial; font-size: 18px; font-weight: bold" /></li>
+                <li id="itemDisclosureStatus" runat="server" style="display:none;"><asp:Label ID="lblDisclosureStatus" runat="server" Style="text-decoration: blink; color: Red; font-family: Arial; font-size: 18px; font-weight: bold" /></li>
+                <li id="itemGrievanceStatus" runat="server" style="display:none;"><asp:Label ID="lblGrievanceStatus" runat="server" Style="text-decoration: blink; color: Red; font-family: Arial; font-size: 18px; font-weight: bold" /></li>
+                <li id="itemPaymentRequestStatus" runat="server" style="display:none;"><asp:Label ID="lblPaymentStatusMessage" runat="server" Style="text-decoration: blink; color: Red; font-family: Arial; font-size: 18px; font-weight: bold" /></li>
+            </ul>
         </fieldset>
     </asp:Panel>
     <%--</fieldset>--%>

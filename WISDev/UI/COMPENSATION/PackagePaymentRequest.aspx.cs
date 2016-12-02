@@ -51,7 +51,9 @@ namespace WIS
                 LoadSummery();
                 LoadBatches();
                 //GetPaymentStatus();
-                getApprReqStatusPakPayment();
+                getPackageReviewStatus();
+                getDisclosureStatus();
+                getGrievanceStatus();
                 if (CheckAuthorization.HasUpdatePrivilege(UtilBO.PrivilegeCode.PRIV_PACKAGE_PAYMENT_REQ) == false)
                 {
                     btnAddToBatch.Visible = false;
@@ -76,6 +78,7 @@ namespace WIS
                 DisableAllCheckBox();
             }
         }
+
         /// <summary>
         /// Set Default Button using Java script
         /// </summary>
@@ -94,6 +97,7 @@ namespace WIS
 
             return stb.ToString();
         }
+
         /// <summary>
         /// Get Payment Status
         /// </summary>
@@ -131,6 +135,7 @@ namespace WIS
                 pnlPaymentRequest.Visible = false;
             }
         }
+
         /// <summary>
         /// get Amount Approved
         /// </summary>
@@ -170,6 +175,7 @@ namespace WIS
             }
             return false;
         }
+
         /// <summary>
         ///  Get PAP Valuation Summery Negotiated Amount
         /// </summary>
@@ -249,6 +255,7 @@ namespace WIS
             chkFacilitationValue.Checked = false;
             chkNegotiatedAmount.Checked = false;
         }
+
         /// <summary>
         /// To Save Paymet details and Batch 
         /// </summary>
@@ -341,7 +348,7 @@ namespace WIS
                 txtDamagedCropValue.Text = UtilBO.CurrencyFormat(oCompensationFinancial.DamagedCropValuation); //oCompensationFinancial.DamagedCropValuation.ToString();
                 txtCultureProperty.Text = UtilBO.CurrencyFormat(oCompensationFinancial.CulturePropValuation); //oCompensationFinancial.DamagedCropValuation.ToString();
                 txtFacilitation.Text = UtilBO.CurrencyFormat(oCompensationFinancial.FacilitationAllowance);
-                txtFinalCompensation.Text = UtilBO.CurrencyFormat(oCompensationFinancial.LandTotalValuation + oCompensationFinancial.FixtureTotalValuation + 
+                txtFinalCompensation.Text = UtilBO.CurrencyFormat(oCompensationFinancial.LandTotalValuation + oCompensationFinancial.FixtureTotalValuation +
                     oCompensationFinancial.CropTotalValuation + oCompensationFinancial.ResPayment +
                     oCompensationFinancial.DamagedCropValuation + oCompensationFinancial.CulturePropValuation + oCompensationFinancial.FacilitationAllowance); //oCompensationFinancial.TotalValuation.ToString();
                 txtNegotiatedAmount.Text = UtilBO.CurrencyFormat(oCompensationFinancial.NegotiatedAmount); //oCompensationFinancial.NegotiatedAmount.ToString();//Newly Added
@@ -371,7 +378,7 @@ namespace WIS
                 if (oCompensationFinancial.Fixture_Approval_Status != null && oCompensationFinancial.Fixture_Approval_Status.ToUpper() == "APPROVED")
                     lblFixturesValuationMsg.Text = "<font class='StatusApproved'>" + oCompensationFinancial.Fixture_Approval_Status + "</font>";
                 else
-                    lblFixturesValuationMsg.Text = "<font class='StatusPending'>"+oCompensationFinancial.Fixture_Approval_Status + "</font>";
+                    lblFixturesValuationMsg.Text = "<font class='StatusPending'>" + oCompensationFinancial.Fixture_Approval_Status + "</font>";
                 //--------------------------------------------CROP STATUS-----------------------------------------------------
                 if (oCompensationFinancial.Crop_Approval_Status != null && oCompensationFinancial.Crop_Approval_Status.ToUpper() == "APPROVED")
                     lblCropsValuationMsg.Text = "<font class='StatusApproved'>" + oCompensationFinancial.Crop_Approval_Status + "</font>";
@@ -424,7 +431,7 @@ namespace WIS
                 int cl = 1, cf = 1, cc = 1, cd = 1, cr = 1, cneg = 0, ccu = 1, co = 1;
                 // start
                 if ((txtLandValuation.Text.Trim() == "" || oCompensationFinancial.LandTotalValuation == 0)
-                    && (txtInKindLand.Text.Trim()=="" || oCompensationFinancial.LandInKindCompensation == 0))
+                    && (txtInKindLand.Text.Trim() == "" || oCompensationFinancial.LandInKindCompensation == 0))
                 {
                     chkLandValuation.Style.Add("display", "none");
                     chkcount--;
@@ -484,9 +491,9 @@ namespace WIS
                 else
                 {
                     cneg++;
-                    chkLandValuation.Style.Add("display", "none"); 
-                    chkFixtureValuation.Style.Add("display", "none"); 
-                    chkCropsValuation.Style.Add("display", "none"); 
+                    chkLandValuation.Style.Add("display", "none");
+                    chkFixtureValuation.Style.Add("display", "none");
+                    chkCropsValuation.Style.Add("display", "none");
                     chkReplacementHouseValue.Style.Add("display", "none");
                     chkDamagedCropValue.Style.Add("display", "none");
                     chkCulturePropertyValue.Style.Add("display", "none");
@@ -662,7 +669,7 @@ namespace WIS
         /// <summary>
         /// get Approval Request Status Pakage Payment
         /// </summary>
-        public void getApprReqStatusPakPayment()
+        public void getPackageReviewStatus()
         {
             PAP_HouseholdBLL objHouseHoldBLL = new PAP_HouseholdBLL();
             PAP_HouseholdBO objHouseHold = new PAP_HouseholdBO();
@@ -677,40 +684,103 @@ namespace WIS
 
             if ((objHouseHold) != null)
             {
-                if (objHouseHold.ApproverStatus == 3)
+                if (objHouseHold.ApproverStatus == 3 || objHouseHold.ApproverStatus == 2)
                 {
                     //PENDING
                     pnlPaymentReqInfo.Visible = false;
 
-                    lblCompPackageStatus.Visible = true;
-                    lblCompPackageStatus.Text = "Sent for Package Review";
-                    DisableAllCheckBox();
-                }
-                else if (objHouseHold.ApproverStatus == 2)
-                {
-                    //DECLINED
-                    pnlPaymentReqInfo.Visible = false;
-
-                    lblCompPackageStatus.Visible = true;
-                    lblCompPackageStatus.Text = "Package Reviewed and Declined";
+                    itemCompPackageStatus.Style.Remove("display");
+                    lblCompPackageStatus.Text = "Pending Package Review";
                     DisableAllCheckBox();
                 }
                 else if (objHouseHold.ApproverStatus == 1)
                 {
                     //APPROVED
                     pnlPaymentReqInfo.Visible = true;
-
-                    lblCompPackageStatus.Visible = false;
                     lblCompPackageStatus.Text = string.Empty;
                 }
             }
             else
             {
                 pnlPaymentReqInfo.Visible = false;
-                lblCompPackageStatus.Visible = true;
+                itemCompPackageStatus.Style.Remove("display");
                 lblCompPackageStatus.Text = "Pending Package Review";
                 DisableAllCheckBox();
             }
+        }
+
+        public void getDisclosureStatus()
+        {
+            PAP_HouseholdBLL objHouseHoldBLL = new PAP_HouseholdBLL();
+            PAP_HouseholdBO objHouseHold = new PAP_HouseholdBO();
+
+            objHouseHold.ProjectedId = Convert.ToInt32(Session["PROJECT_ID"]);
+            int householdID = Convert.ToInt32(Session["HH_ID"]);
+            objHouseHold.HhId = householdID;
+            objHouseHold.PageCode = "DISC";
+            objHouseHold.Workflowcode = "DISC";
+
+            objHouseHold = objHouseHoldBLL.ApprovalChangerequestStatus(objHouseHold);
+
+            if ((objHouseHold) != null)
+            {
+                if (objHouseHold.DisclosureStatus == 3 || objHouseHold.DisclosureStatus == 2)
+                {
+                    //PENDING
+                    pnlPaymentReqInfo.Visible = false;
+                    itemDisclosureStatus.Style.Remove("display");
+                    lblDisclosureStatus.Text = "Pending Disclosure";
+                    DisableAllCheckBox();
+                }
+                else if (objHouseHold.DisclosureStatus == 1)
+                {
+                    //APPROVED
+                    pnlPaymentReqInfo.Visible = true;
+                    lblDisclosureStatus.Text = string.Empty;
+
+                }
+            }
+            else
+            {
+                pnlPaymentReqInfo.Visible = false;
+                itemDisclosureStatus.Style.Remove("display");
+                lblDisclosureStatus.Text = "Pending Disclosure";
+                DisableAllCheckBox();
+            }
+        }
+
+        public void getGrievanceStatus()
+        {
+            PAP_HouseholdBLL objHouseHoldBLL = new PAP_HouseholdBLL();
+            PAP_HouseholdBO objHouseHold = new PAP_HouseholdBO();
+
+            objHouseHold.ProjectedId = Convert.ToInt32(Session["PROJECT_ID"]);
+            int householdID = Convert.ToInt32(Session["HH_ID"]);
+            objHouseHold.HhId = householdID;
+            objHouseHold.PageCode = "CRGRA";
+            objHouseHold.Workflowcode = UtilBO.WorkflowGrievances;
+
+            objHouseHold = objHouseHoldBLL.ApprovalChangerequestStatus(objHouseHold);
+
+            if ((objHouseHold) != null)
+            {
+                if (objHouseHold.GrievanceStatus == 3 || objHouseHold.GrievanceStatus == 2)
+                {
+                    //PENDING
+                    pnlPaymentReqInfo.Visible = false;
+                    itemGrievanceStatus.Style.Remove("display");
+                    lblGrievanceStatus.Text = "Pending Grievances";
+                    DisableAllCheckBox();
+                }
+                else if (objHouseHold.GrievanceStatus == 1)
+                {
+                    //APPROVED
+                    pnlPaymentReqInfo.Visible = true;
+                    lblGrievanceStatus.Text = string.Empty;
+
+                }
+            }
+            
         }
     }
 }
