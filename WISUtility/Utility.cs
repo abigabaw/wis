@@ -56,19 +56,26 @@ namespace WIS_Utility
             DirectorySearcher DirectorySearcherObject = new DirectorySearcher(searchRoot);
             SearchResult SearchResultObject = DirectorySearcherObject.FindOne();
 
-            try
-            {
-                if (SearchResultObject != null)
+            if (IsActive(searchRoot)){
+
+
+                try
                 {
-                    string Email = SearchResultObject.Properties["mail"].ToString();
-                    return found = true;
+                    if (SearchResultObject != null)
+                    {
+                        string Email = SearchResultObject.Properties["mail"].ToString();
+                        return found = true;
+                    }
+                    else
+                    {
+                        return found;
+                    }
                 }
-                else
+                catch (Exception)
                 {
                     return found;
                 }
-            }
-            catch (Exception)
+            }else
             {
                 return found;
             }

@@ -3581,6 +3581,7 @@ namespace WIS
         public void PrepareActionLinks(int PapID = 0)
         {
             int HHID = 0;
+            string PapName = string.Empty;
             string DocumentCode = "HH";
 
             if (PapID == 0)
@@ -3596,7 +3597,8 @@ namespace WIS
             PAP_HouseholdBLL PAP_HouseholdBLL = new PAP_HouseholdBLL();
             PAP_HouseholdBO PAP_HouseholdBO = new PAP_HouseholdBO();
             PAP_HouseholdBO = PAP_HouseholdBLL.GetHouseHoldData(HHID);
-            string PapName = PAP_HouseholdBO.PapName.ToString();
+
+            
 
             int ProjectID = Convert.ToInt32(ViewState["ProjectId"]);
             string PageCode = Convert.ToString(ViewState["PageCode"]);
@@ -3607,32 +3609,38 @@ namespace WIS
             int TrackHdrID = Convert.ToInt32(ViewState["TrackHdrId"]);
             int ElementID = Convert.ToInt32(ViewState["ElementID"]);
 
-            // LblHhidBatch.Style.Remove("display");
-            LblHhidBatch.Text = HHID + ":  " + PapName + " ";
+            if (PageCode != "DATAV")
+            {
+                PapName = PAP_HouseholdBO.PapName.ToString();
+                LblHhidBatch.Text = HHID + ":  " + PapName + " ";
 
-            string paramPhotoView = string.Format("OpenViewPhoto({0},{1},{2},'{3}','{4}');", ProjectID, HHID, UserID, ProjectCode, PhotoModule);
-            lnkPapPhoto.Attributes.Add("onclick", paramPhotoView);
+                string paramPhotoView = string.Format("OpenViewPhoto({0},{1},{2},'{3}','{4}');", ProjectID, HHID, UserID, ProjectCode, PhotoModule);
+                lnkPapPhoto.Attributes.Add("onclick", paramPhotoView);
 
-            string paramSource = string.Format("OpenSourcePage({0},{1},{2},'{3}','{4}','{5}',{6});", ProjectID, HHID, UserID, ProjectCode, "Readonly", "CPREV", ApprovalLevel);
-            lnkPackageDocument.Attributes.Add("onclick", paramSource);
+                string paramSource = string.Format("OpenSourcePage({0},{1},{2},'{3}','{4}','{5}',{6});", ProjectID, HHID, UserID, ProjectCode, "Readonly", "CPREV", ApprovalLevel);
+                lnkPackageDocument.Attributes.Add("onclick", paramSource);
 
-            string paramViewAttachments = string.Format("OpenDocumnetlist({0},{1},{2},'{3}','{4}');", ProjectID, HHID, UserID, ProjectCode, DocumentCode);
-            lnkUPloadDoclistSup.Attributes.Add("onclick", paramViewAttachments);
+                string paramViewAttachments = string.Format("OpenDocumnetlist({0},{1},{2},'{3}','{4}');", ProjectID, HHID, UserID, ProjectCode, DocumentCode);
+                lnkUPloadDoclistSup.Attributes.Add("onclick", paramViewAttachments);
 
-            string paramViewDocument = string.Format("OpenUploadDocumnetlist({0},{1},{2},'{3}','{4}');", ProjectID, HHID, UserID, ProjectCode, DocumentCode);
-            lnkUPloadDoclist.Attributes.Add("onclick", paramViewDocument);
+                string paramViewDocument = string.Format("OpenUploadDocumnetlist({0},{1},{2},'{3}','{4}');", ProjectID, HHID, UserID, ProjectCode, DocumentCode);
+                lnkUPloadDoclist.Attributes.Add("onclick", paramViewDocument);
 
-            string paramViewSource = string.Format("OpenSourcePage({0},{1},{2},'{3}','{4}','{5}',{6});", ProjectID, HHID, UserID, ProjectCode, "Readonly", PageCode, ApprovalLevel);
-            lnkPageSource.Attributes.Add("onclick", paramViewSource);
+                string paramViewSource = string.Format("OpenSourcePage({0},{1},{2},'{3}','{4}','{5}',{6});", ProjectID, HHID, UserID, ProjectCode, "Readonly", PageCode, ApprovalLevel);
+                lnkPageSource.Attributes.Add("onclick", paramViewSource);
 
-            string paramBatchComments = string.Format("OpenBatchComments({0},{1} );", ElementID, HHID);
-            lnkAppComments.Attributes.Add("onclick", paramBatchComments);
+                string paramBatchComments = string.Format("OpenBatchComments({0},{1} );", ElementID, HHID);
+                lnkAppComments.Attributes.Add("onclick", paramBatchComments);
 
-            string OpenClarify = string.Format("OpenClarify({0},{1},{2},{3});", UserID, HHID, TrackHdrID, ProjectID, "Readonly");
-            lnkSendClarify.Attributes.Add("onclick", OpenClarify);
+                string OpenClarify = string.Format("OpenClarify({0},{1},{2},{3});", UserID, HHID, TrackHdrID, ProjectID, "Readonly");
+                lnkSendClarify.Attributes.Add("onclick", OpenClarify);
 
-            string paramReView = string.Format("OpenReviewCom({0},{1});", ProjectID, HHID);
-            lnkAppReviewCom.Attributes.Add("onclick", paramReView);
+                string paramReView = string.Format("OpenReviewCom({0},{1});", ProjectID, HHID);
+                lnkAppReviewCom.Attributes.Add("onclick", paramReView);
+            }
+            
+
+            
         }
 
     }

@@ -101,17 +101,17 @@ namespace WIS
                             }
                             else
                             {
-                                lblMsgSave.Text = "Please check your username and password";
+                                lblMsgSave.Text = "Wrong Credentials";
                             }
                         }
                         else
                         {
-                            lblMsgSave.Text = "Please check your username and password";
+                            lblMsgSave.Text = "Wrong Credentials";
                         }
                     }
                     else
                     {
-                        lblMsgSave.Text = "Please check your username and password";
+                        lblMsgSave.Text = "Wrong Credentials";
                     }
                 }
                 catch (Exception ee)
@@ -130,7 +130,7 @@ namespace WIS
         /// </summary>
         private bool IsLDAPAuthenticated(string domainName, string usrID, string pwd)
         {
-            if (domainName == "UETCL")
+            /*if (domainName == "UETCL")
             {
                 return true;
             }
@@ -159,9 +159,14 @@ namespace WIS
                 {
                     return found;
                 }
-            }
+            }*/
 
-            
+            if (domainName == "UETCL")
+                return true;
+            else
+                return WIS_Utility.Utility.IsValidUser(domainName, usrID, pwd);
+
+
         }
     }
 }
