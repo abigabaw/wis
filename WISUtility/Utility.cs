@@ -13,40 +13,54 @@ namespace WIS_Utility
         public static Boolean IsValidUser(String DomainName, String UserName, String UserPassword)
         {
             if (!String.IsNullOrEmpty(DomainName))
-             {
-                
+            {
+
                 try
-                 {
-                     string LDAPPath = "LDAP://" + DomainName + "/OU=All Users,DC=uetcl,DC=com";
-                     if (Exists(LDAPPath, UserName, UserPassword))
-                     {
-                         return true;
-                     }
-                     else
-                     {
-                         return false;
-                     }
+                {
+                    string LDAPPath = "LDAP://" + DomainName + "/OU=All Users,DC=uetcl,DC=com";
+                    if (Exists(LDAPPath, UserName, UserPassword))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
 
-                 }
-                 catch (Exception)
-                 {
-                     return false;
-                 }
-                 
-             }
-             return false;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
 
-            
+            }
+            return false;
+
+
         }
 
         // Edwin Baguma: 23/02/2016
-        public static Boolean IsActive(DirectoryEntry de)
+        public static Boolean IsActive(string userName, string password) // DirectoryEntry de)
         {
+            /***
             if (de.NativeGuid == null) return false;
 
             int flags = (int)de.Properties["userAccountControl"].Value;
 
             return !Convert.ToBoolean(flags & 0x0002);
+            ***/
+
+            string LDAPDomainName = System.Configuration.ConfigurationManager.AppSettings.Get("LDAPDomainName");
+            bool authentic = false;
+            try
+            {
+                DirectoryEntry entry = new DirectoryEntry("LDAP://" + LDAPDomainName + "/OU=All Users,DC=uetcl,DC=com", userName, password);
+                object nativeObject = entry.NativeObject;
+                authentic = true;
+            }
+            catch (DirectoryServicesCOMException) { }
+            return authentic;
+
         } // End:
 
         public static Boolean Exists(string objectPath, string UserName, string PassWord)
@@ -56,7 +70,8 @@ namespace WIS_Utility
             DirectorySearcher DirectorySearcherObject = new DirectorySearcher(searchRoot);
             SearchResult SearchResultObject = DirectorySearcherObject.FindOne();
 
-            if (IsActive(searchRoot)){
+            if (IsActive(UserName, PassWord))
+            {
 
 
                 try
@@ -75,7 +90,8 @@ namespace WIS_Utility
                 {
                     return found;
                 }
-            }else
+            }
+            else
             {
                 return found;
             }

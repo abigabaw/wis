@@ -166,7 +166,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td align="center" colspan="2" class="mandatory">
-                                                        <asp:Label ID="lblMsgSave" runat="server" CssClass="iceLablelogin" ForeColor="Red" Width="250px" />
+                                                        <asp:Label ID="lblMsgSave" runat="server" CssClass="iceLablelogin" ForeColor="Red" Width="280px" />
                                                     </td>
                                                 </tr>
                                                 <tr>

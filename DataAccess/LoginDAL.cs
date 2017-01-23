@@ -39,7 +39,7 @@ namespace WIS_DataAccess
                     Loginobj = new LoginBO();
 
                     if (!dr.IsDBNull(dr.GetOrdinal("USERID"))) Loginobj.UserID = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("USERID")));
-                    if (!dr.IsDBNull(dr.GetOrdinal("USERNAME"))) Loginobj.USERNAME = dr.GetString(dr.GetOrdinal("USERNAME"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("USERNAME"))) Loginobj.USERNAME = dr.GetString(dr.GetOrdinal("USERNAME")) ;
                     if (!dr.IsDBNull(dr.GetOrdinal("PWD"))) Loginobj.PASSWORD = dr.GetString(dr.GetOrdinal("PWD"));
                     if (!dr.IsDBNull(dr.GetOrdinal("DISPLAYNAME"))) Loginobj.DisplayName = dr.GetString(dr.GetOrdinal("DISPLAYNAME"));
                 }
