@@ -242,7 +242,7 @@ namespace WIS
                 objWorkFlow.WorkFlowDefID = Convert.ToInt32(WORKFLOWDEFINITIONIDTextBox.Text.ToString());
                 objWorkFlow.ModuleID = Convert.ToInt32(ModuleDropDownList.SelectedItem.Value.ToString().Trim());
                 objWorkFlow.WorkflowID = Convert.ToInt32(WorkflowItemDropDownList.SelectedItem.Value.ToString());
-                objWorkFlow.HighaultorityID = Convert.ToInt32(HightAuthDropDownList.SelectedItem.Value.ToString());
+                objWorkFlow.HigherAuthorityID = Convert.ToInt32(HightAuthDropDownList.SelectedItem.Value.ToString());
                 objWorkFlow.Trigger = TriggerDropDownList.SelectedItem.Value.ToString();
                 objWorkFlow.AfterDays = Convert.ToInt32(AfterDropDownList.SelectedItem.Value.ToString());
                 objWorkFlow.UserID = Convert.ToInt32(uID);
@@ -285,7 +285,7 @@ namespace WIS
                     WorkFlowBO objWorkFlow = new WorkFlowBO();
                     objWorkFlow.ModuleID = Convert.ToInt32(ModuleDropDownList.SelectedItem.Value.ToString().Trim());
                     objWorkFlow.WorkflowID = Convert.ToInt32(WorkflowItemDropDownList.SelectedItem.Value.ToString());
-                    objWorkFlow.HighaultorityID = Convert.ToInt32(HightAuthDropDownList.SelectedItem.Value.ToString());
+                    objWorkFlow.HigherAuthorityID = Convert.ToInt32(HightAuthDropDownList.SelectedItem.Value.ToString());
                     objWorkFlow.Trigger = TriggerDropDownList.SelectedItem.Value.ToString();
                     objWorkFlow.AfterDays = Convert.ToInt32(AfterDropDownList.SelectedItem.Value.ToString());
                     objWorkFlow.UserID = Convert.ToInt32(uID);
@@ -370,8 +370,8 @@ namespace WIS
                     getAllRole();
 
                     HightAuthDropDownList.ClearSelection();
-                    if (HightAuthDropDownList.Items.FindByValue(objWorkFlowBO.HighaultorityID.ToString()) != null)
-                        HightAuthDropDownList.Items.FindByValue(objWorkFlowBO.HighaultorityID.ToString()).Selected = true;
+                    if (HightAuthDropDownList.Items.FindByValue(objWorkFlowBO.HigherAuthorityID.ToString()) != null)
+                        HightAuthDropDownList.Items.FindByValue(objWorkFlowBO.HigherAuthorityID.ToString()).Selected = true;
 
                     getLevel();
 

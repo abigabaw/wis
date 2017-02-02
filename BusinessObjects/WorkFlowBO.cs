@@ -18,7 +18,7 @@ namespace WIS_BusinessObjects
         private string workflowName = String.Empty; //MODULENAME
         private int approvalID; //WORKFLOWID
         private string workDesc = String.Empty; //DESCRIPTION
-        private int highaultorityID;
+        private int higherAuthorityID;
         private string trigger;
         private int afterDays;
         private int level;
@@ -33,6 +33,8 @@ namespace WIS_BusinessObjects
         private string workflowCode = string.Empty;
         private int approvalstatusID;
         private int eLEMENTID = 0;
+        private string higherAuthorityName;
+        private string higherAuthorityEmailID;
 
         public int ELEMENTID
         {
@@ -55,6 +57,21 @@ namespace WIS_BusinessObjects
             get { return workflowCode; }
             set { workflowCode = value; }
         }
+
+        //Start: Edwin 02FEB2017 for Notifying Higher Authority
+        public string HigherAuthorityName
+        {
+            get { return higherAuthorityName;  }
+            set { higherAuthorityName = value; }
+        }
+
+        public string HigherAuthorityEmailID
+        {
+            get { return higherAuthorityEmailID; }
+            set { higherAuthorityEmailID = value; }
+        }
+        //End:
+
         public int CountApproval
         {
             get { return countApproval; }
@@ -193,15 +210,15 @@ namespace WIS_BusinessObjects
                 workDesc = value;
             }
         }
-        public int HighaultorityID
+        public int HigherAuthorityID
         {
             get
             {
-                return highaultorityID;
+                return higherAuthorityID;
             }
             set
             {
-                highaultorityID = value;
+                higherAuthorityID = value;
             }
         }
         public string Trigger

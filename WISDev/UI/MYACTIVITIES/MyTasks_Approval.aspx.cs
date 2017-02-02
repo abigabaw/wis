@@ -2097,7 +2097,7 @@ namespace WIS
             }
 
             Boolean chkStatusofBatch = true;
-            if (ChangeRequest == "PAYRQ")
+            /* if (ChangeRequest == "PAYRQ")
             {
                 string approvalStatus = string.Empty;
                 int ChkCount = 0;
@@ -2116,7 +2116,7 @@ namespace WIS
                     chkStatusofBatch = false;
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Alertsa", "alert('Please select a batch to Decline.')", true);
                 }
-            }
+            } */
 
             int AppDataCount = 0;
             int DecDataCount = 0;
@@ -2125,62 +2125,118 @@ namespace WIS
 
             if (ChangeRequest == "PAYRQ")
             {
+
+                // string approvalStatus = string.Empty;
+                int ChkCount = 0;
+                //int SelcectCount = 0;
+
                 foreach (GridViewRow gvw in grdPaymentRequestBatch.Rows)
                 {
-
-                    Label lblRequestStatus = (Label)gvw.FindControl("lblRequestStatus");
-                    if (lblRequestStatus.Text.Trim().ToUpper() == "Approved".ToUpper())
+                    CheckBox Selectstatus = (CheckBox)gvw.FindControl("chkSelect");
+                    if (Selectstatus.Checked)
                     {
-                        AppDataCount++;
-                    }
-                    else if (lblRequestStatus.Text.Trim().ToUpper() == "Declined".ToUpper())
-                    {
-                        DecDataCount++;
+                        ChkCount = ChkCount + 1;
                     }
                 }
-
-                //Batch Count
-                int totalBatchcount = grdPaymentRequestBatch.Rows.Count;
-                int count;
-                MyTasks_ApprovalBLL objMytaskApprovalBLL = new MyTasks_ApprovalBLL();
-
-                //Edwin: 11/04/2016 Parameters for creating next level request
-                WorkflowApprovalBO objWorkflowapproval = new WorkflowApprovalBO();
-                objWorkflowapproval.WorkflowapprovalId = Convert.ToInt32(ViewState["WorkFlowApproverID"]);
-                objWorkflowapproval.Status = "DECLINED";
-                objWorkflowapproval.AuthoriserID = 1;//Convert.ToInt32(Session["ROLE_ID"]);
-                objWorkflowapproval.WorkFlowDefinationId = Convert.ToInt32(ViewState["WorkflowdefinationID"]);
-                objWorkflowapproval.Auctiontakenby = Convert.ToInt32(Session["USER_ID"]);
-                objWorkflowapproval.Approvercomments = txtapprovercomments.Text;
-                int trackerheader = Convert.ToInt32(ViewState["TrackHdrId"]);
-                objWorkflowapproval.TrackerHdrID = trackerheader;
-                objWorkflowapproval.PageCode = Convert.ToString(ViewState["PageCode"]);
-                if (ViewState["ApproverLevel"] != null) objWorkflowapproval.ApprovalLevel = Convert.ToInt32(ViewState["ApproverLevel"].ToString());
-                if (ViewState["ProjectId"] != null) objWorkflowapproval.ProjectID = Convert.ToInt32(ViewState["ProjectId"].ToString());
-                if (ViewState["HHID"] != null) objWorkflowapproval.HHID = Convert.ToInt32(ViewState["HHID"].ToString());
-                if (ViewState["ElementID"] != null) objWorkflowapproval.ElementID = Convert.ToInt32(ViewState["ElementID"].ToString());
-                objWorkflowapproval.WorkFlowCode = ChangeRequest;
-
-                //Edwin: 11/04/2016 Batching Conditions and Logic
-
-                if (AppDataCount > 0)
+                if (ChkCount == 0)
                 {
-                    if ((AppDataCount + DecDataCount) == (totalBatchcount - 1))
+                    chkStatusofBatch = false;
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Alertsa", "alert('Please select a batch to Appove.')", true);
+                }
+                else
+                {
+
+                    foreach (GridViewRow gvw in grdPaymentRequestBatch.Rows)
+                    {
+
+                        Label RequestStatus = (Label)gvw.FindControl("lblRequestStatusShow");
+                        string approvalStatus = (RequestStatus.Text.ToString());
+                        if (approvalStatus == "Approved")
+                        {
+                            AppDataCount = AppDataCount + 1;
+                        }
+                        else if (approvalStatus == "Declined")
+                        {
+                            DecDataCount = DecDataCount + 1;
+                        }
+                    }
+
+                    //Batch Count
+                    int totalBatchcount = grdPaymentRequestBatch.Rows.Count;
+                    int count;
+                    MyTasks_ApprovalBLL objMytaskApprovalBLL = new MyTasks_ApprovalBLL();
+
+                    //Edwin: 11/04/2016 Parameters for creating next level request
+                    WorkflowApprovalBO objWorkflowapproval = new WorkflowApprovalBO();
+                    objWorkflowapproval.WorkflowapprovalId = Convert.ToInt32(ViewState["WorkFlowApproverID"]);
+                    objWorkflowapproval.Status = "DECLINED";
+                    objWorkflowapproval.AuthoriserID = 1;//Convert.ToInt32(Session["ROLE_ID"]);
+                    objWorkflowapproval.WorkFlowDefinationId = Convert.ToInt32(ViewState["WorkflowdefinationID"]);
+                    objWorkflowapproval.Auctiontakenby = Convert.ToInt32(Session["USER_ID"]);
+                    objWorkflowapproval.Approvercomments = txtapprovercomments.Text;
+                    int trackerheader = Convert.ToInt32(ViewState["TrackHdrId"]);
+                    objWorkflowapproval.TrackerHdrID = trackerheader;
+                    objWorkflowapproval.PageCode = Convert.ToString(ViewState["PageCode"]);
+                    if (ViewState["ApproverLevel"] != null) objWorkflowapproval.ApprovalLevel = Convert.ToInt32(ViewState["ApproverLevel"].ToString());
+                    if (ViewState["ProjectId"] != null) objWorkflowapproval.ProjectID = Convert.ToInt32(ViewState["ProjectId"].ToString());
+                    if (ViewState["HHID"] != null) objWorkflowapproval.HHID = Convert.ToInt32(ViewState["HHID"].ToString());
+                    if (ViewState["ElementID"] != null) objWorkflowapproval.ElementID = Convert.ToInt32(ViewState["ElementID"].ToString());
+                    objWorkflowapproval.WorkFlowCode = ChangeRequest;
+
+                    //Edwin: 11/04/2016 Batching Conditions and Logic
+
+                    if (AppDataCount > 0)
+                    {
+                        if ((AppDataCount + DecDataCount) == (totalBatchcount - 1))
+                        {
+                            UpdatePaymentStatus(BatchBLL.RequestStatus_Declined, "D");
+                            objWorkflowapproval.Status = "APPROVED";
+                            MyTasks_ApprovalDAL objMyTaskApprovalDAL = new MyTasks_ApprovalDAL();
+                            objMyTaskApprovalDAL.ApproveStatus(objWorkflowapproval);
+                            int result = objMyTaskApprovalDAL.CreateNextRequestOrExit(objWorkflowapproval);
+
+                            if (result == 0)
+                            {
+                                int USER_ID = 0;
+                                if (Session["USER_ID"] != null)
+                                    USER_ID = Convert.ToInt32(Session["USER_ID"].ToString());
+                                int HHID_ = Convert.ToInt32(ViewState["HHID"]);
+                                Close_Batch(HHID_, USER_ID);
+                            }
+
+                            pnlFinalPojectdEtail.Visible = false;
+                            ApprovalMultiView.Visible = false;
+                            pnlAprovalFooter.Visible = false;
+                            PnlProjectDtl.Visible = false;
+
+                            GrdMyTaskApproval.DataSource = null;
+                            BindGrid(false, false);
+                        }
+                        else
+                        {
+                            UpdatePaymentStatus(BatchBLL.RequestStatus_Declined, "D");
+
+                            pnlFinalPojectdEtail.Visible = false;
+                            ApprovalMultiView.Visible = false;
+                            pnlAprovalFooter.Visible = false;
+                            PnlProjectDtl.Visible = false;
+                        }
+
+                    }
+
+                    // tested and okay
+                    if (totalBatchcount == 1)
                     {
                         UpdatePaymentStatus(BatchBLL.RequestStatus_Declined, "D");
-                        objWorkflowapproval.Status = "APPROVED";
                         MyTasks_ApprovalDAL objMyTaskApprovalDAL = new MyTasks_ApprovalDAL();
-                        objMyTaskApprovalDAL.ApproveStatus(objWorkflowapproval);
-                        int result = objMyTaskApprovalDAL.CreateNextRequestOrExit(objWorkflowapproval);
+                        objMyTaskApprovalDAL.DeclineStatus(objWorkflowapproval);
 
-                        if (result == 0)
-                        {
-                            int USER_ID = 0;
-                            if (Session["USER_ID"] != null)
-                                USER_ID = Convert.ToInt32(Session["USER_ID"].ToString());
-                            int HHID_ = Convert.ToInt32(ViewState["HHID"]);
-                            Close_Batch(HHID_, USER_ID);
-                        }
+                        // Close off the batch
+                        int USER_ID = 0;
+                        if (Session["USER_ID"] != null)
+                            USER_ID = Convert.ToInt32(Session["USER_ID"].ToString());
+                        int HHID_ = Convert.ToInt32(ViewState["HHID"]);
+                        Close_Batch(HHID_, USER_ID);
 
                         pnlFinalPojectdEtail.Visible = false;
                         ApprovalMultiView.Visible = false;
@@ -2190,6 +2246,42 @@ namespace WIS
                         GrdMyTaskApproval.DataSource = null;
                         BindGrid(false, false);
                     }
+
+                    // tested and okay
+                    if (DecDataCount == (totalBatchcount - 2))
+                    {
+                        UpdatePaymentStatus(BatchBLL.RequestStatus_Declined, "D");
+
+                        pnlFinalPojectdEtail.Visible = false;
+                        ApprovalMultiView.Visible = false;
+                        pnlAprovalFooter.Visible = false;
+                        PnlProjectDtl.Visible = false;
+                    }
+
+                    // tested and okay
+                    if (DecDataCount == (totalBatchcount - 1))
+                    {
+                        UpdatePaymentStatus(BatchBLL.RequestStatus_Declined, "D");
+                        MyTasks_ApprovalDAL objMyTaskApprovalDAL = new MyTasks_ApprovalDAL();
+                        objMyTaskApprovalDAL.DeclineStatus(objWorkflowapproval);
+
+                        // Close off the batch
+                        int USER_ID = 0;
+                        if (Session["USER_ID"] != null)
+                            USER_ID = Convert.ToInt32(Session["USER_ID"].ToString());
+                        int HHID_ = Convert.ToInt32(ViewState["HHID"]);
+                        Close_Batch(HHID_, USER_ID);
+
+                        pnlFinalPojectdEtail.Visible = false;
+                        ApprovalMultiView.Visible = false;
+                        pnlAprovalFooter.Visible = false;
+                        PnlProjectDtl.Visible = false;
+
+                        GrdMyTaskApproval.DataSource = null;
+                        BindGrid(false, false);
+                    }
+
+                    // tested and okay
                     else
                     {
                         UpdatePaymentStatus(BatchBLL.RequestStatus_Declined, "D");
@@ -2201,75 +2293,6 @@ namespace WIS
                     }
 
                 }
-
-                // tested and okay
-                if (totalBatchcount == 1)
-                {
-                    UpdatePaymentStatus(BatchBLL.RequestStatus_Declined, "D");
-                    MyTasks_ApprovalDAL objMyTaskApprovalDAL = new MyTasks_ApprovalDAL();
-                    objMyTaskApprovalDAL.DeclineStatus(objWorkflowapproval);
-
-                    // Close off the batch
-                    int USER_ID = 0;
-                    if (Session["USER_ID"] != null)
-                        USER_ID = Convert.ToInt32(Session["USER_ID"].ToString());
-                    int HHID_ = Convert.ToInt32(ViewState["HHID"]);
-                    Close_Batch(HHID_, USER_ID);
-
-                    pnlFinalPojectdEtail.Visible = false;
-                    ApprovalMultiView.Visible = false;
-                    pnlAprovalFooter.Visible = false;
-                    PnlProjectDtl.Visible = false;
-
-                    GrdMyTaskApproval.DataSource = null;
-                    BindGrid(false, false);
-                }
-
-                // tested and okay
-                if (DecDataCount == (totalBatchcount - 2))
-                {
-                    UpdatePaymentStatus(BatchBLL.RequestStatus_Declined, "D");
-
-                    pnlFinalPojectdEtail.Visible = false;
-                    ApprovalMultiView.Visible = false;
-                    pnlAprovalFooter.Visible = false;
-                    PnlProjectDtl.Visible = false;
-                }
-
-                // tested and okay
-                if (DecDataCount == (totalBatchcount - 1))
-                {
-                    UpdatePaymentStatus(BatchBLL.RequestStatus_Declined, "D");
-                    MyTasks_ApprovalDAL objMyTaskApprovalDAL = new MyTasks_ApprovalDAL();
-                    objMyTaskApprovalDAL.DeclineStatus(objWorkflowapproval);
-
-                    // Close off the batch
-                    int USER_ID = 0;
-                    if (Session["USER_ID"] != null)
-                        USER_ID = Convert.ToInt32(Session["USER_ID"].ToString());
-                    int HHID_ = Convert.ToInt32(ViewState["HHID"]);
-                    Close_Batch(HHID_, USER_ID);
-
-                    pnlFinalPojectdEtail.Visible = false;
-                    ApprovalMultiView.Visible = false;
-                    pnlAprovalFooter.Visible = false;
-                    PnlProjectDtl.Visible = false;
-
-                    GrdMyTaskApproval.DataSource = null;
-                    BindGrid(false, false);
-                }
-
-                // tested and okay
-                else
-                {
-                    UpdatePaymentStatus(BatchBLL.RequestStatus_Declined, "D");
-
-                    pnlFinalPojectdEtail.Visible = false;
-                    ApprovalMultiView.Visible = false;
-                    pnlAprovalFooter.Visible = false;
-                    PnlProjectDtl.Visible = false;
-                }
-
             }
 
             #endregion
@@ -2896,22 +2919,29 @@ namespace WIS
                 // Flg = true;
             }
         }
-#endregion
-        
+        #endregion
+
         /// <summary>
         /// to Close the Batch
         /// </summary>
         /// <param name="HHID"></param>
         /// <param name="UserId"></param>
-        
+
         private void Close_Batch(int HHID, int UserId)
         {
             BatchBLL oBatchBLL = new BatchBLL();
             int BatchNo = 0;
             if (ViewState["ElementID"] != null)
                 BatchNo = Convert.ToInt32(ViewState["ElementID"]);
-            string message = oBatchBLL.CloseBatch(HHID, UserId, BatchNo);
-            //int FL = 0;
+
+
+            //Start: Edwin 02FEB2017 Modified to notify Higher Authority
+            int ProjectID = Convert.ToInt32(ViewState["ProjectId"]);
+            string WorkflowCode = "PAYRQ";
+            WorkFlowBO objWorkFlow = (new WorkFlowBLL()).getWOrkFlowApprovalID(ProjectID, WorkflowCode);
+            string message = oBatchBLL.CloseBatch(HHID, UserId, BatchNo, objWorkFlow);
+            //End:
+
             if (message == "null")
             {
                 string saveMessage = "Request has been Approved";
@@ -2922,14 +2952,14 @@ namespace WIS
                 ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Added", "alert('" + message + "');", true);
             }
         }
-        
+
         #endregion
 
         /// <summary>
         /// Bind Papa Data releted to ths batch payment request
         /// </summary>
         /// <param name="myActiveHHID"></param>
-        
+
         private void BindPAP(int myActiveHHID)
         {
             int ApprovalLevel = 0;

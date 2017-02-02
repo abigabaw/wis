@@ -122,7 +122,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 objWorkFlow = new WorkFlowBO();
-                if (!dr.IsDBNull(dr.GetOrdinal("USERNAME"))) objWorkFlow.UserName = dr.GetString(dr.GetOrdinal("USERNAME"));
+                if (!dr.IsDBNull(dr.GetOrdinal("DISPLAYNAME"))) objWorkFlow.UserName = dr.GetString(dr.GetOrdinal("DISPLAYNAME"));
                 if (!dr.IsDBNull(dr.GetOrdinal("USERID"))) objWorkFlow.UserID = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("USERID")));
                 WorkFlowList.Add(objWorkFlow);
             }
@@ -264,7 +264,7 @@ namespace WIS_DataAccess
                 dcmd.Parameters.Add("ProjectID_", objWorkFlow.ProjectID);
                 dcmd.Parameters.Add("ModuleID_", objWorkFlow.ModuleID);
                 dcmd.Parameters.Add("WorkflowID_", objWorkFlow.WorkflowID);
-                dcmd.Parameters.Add("HighaultorityID_", objWorkFlow.HighaultorityID);
+                dcmd.Parameters.Add("HighaultorityID_", objWorkFlow.HigherAuthorityID);
                 if (objWorkFlow.Trigger == "0")
                 {
                     dcmd.Parameters.Add("Trigger_", DBNull.Value);
@@ -322,7 +322,7 @@ namespace WIS_DataAccess
                 if (!dr.IsDBNull(dr.GetOrdinal("WORKFLOWITEMID"))) objWorkFlow.WorkflowID = dr.GetInt32(dr.GetOrdinal("WORKFLOWITEMID"));
                 if (!dr.IsDBNull(dr.GetOrdinal("DESCRIPTION"))) objWorkFlow.WorkflowName = dr.GetString(dr.GetOrdinal("DESCRIPTION"));
 
-                if (!dr.IsDBNull(dr.GetOrdinal("HIGHERAUTHORITY"))) objWorkFlow.HighaultorityID = dr.GetInt32(dr.GetOrdinal("HIGHERAUTHORITY"));
+                if (!dr.IsDBNull(dr.GetOrdinal("HIGHERAUTHORITY"))) objWorkFlow.HigherAuthorityID = dr.GetInt32(dr.GetOrdinal("HIGHERAUTHORITY"));
 
                 if (!dr.IsDBNull(dr.GetOrdinal("UserName"))) objWorkFlow.UserName = dr.GetString(dr.GetOrdinal("UserName"));
 
@@ -374,7 +374,7 @@ namespace WIS_DataAccess
                     WorkFlowBOObj.WorkflowID = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("WORKFLOWITEMID")));
 
                 if (ColumnExists(dr, "HIGHERAUTHORITY") && !dr.IsDBNull(dr.GetOrdinal("HIGHERAUTHORITY")))
-                    WorkFlowBOObj.HighaultorityID = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("HIGHERAUTHORITY")));
+                    WorkFlowBOObj.HigherAuthorityID = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("HIGHERAUTHORITY")));
 
                 if (ColumnExists(dr, "TRIGGERTYPE") && !dr.IsDBNull(dr.GetOrdinal("TRIGGERTYPE")))
                     WorkFlowBOObj.Trigger = Convert.ToString(dr.GetValue(dr.GetOrdinal("TRIGGERTYPE")));
@@ -486,7 +486,7 @@ namespace WIS_DataAccess
                     dcmd.Parameters.Add("ProjectID_", objWorkFlow.ProjectID);
                     dcmd.Parameters.Add("ModuleID_", objWorkFlow.ModuleID);
                     dcmd.Parameters.Add("WorkflowID_", objWorkFlow.WorkflowID);
-                    dcmd.Parameters.Add("HighaultorityID_", objWorkFlow.HighaultorityID);
+                    dcmd.Parameters.Add("HighaultorityID_", objWorkFlow.HigherAuthorityID);
                     
                     if (objWorkFlow.Trigger == "0")
                     {
@@ -929,7 +929,7 @@ namespace WIS_DataAccess
                     WorkFlowObj.WorkDesc = dr.GetString(dr.GetOrdinal("DESCRIPTION"));
 
                 if (ColumnExists(dr, "HIGHERAUTHORITY") && !dr.IsDBNull(dr.GetOrdinal("HIGHERAUTHORITY")))
-                    WorkFlowObj.HighaultorityID = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("HIGHERAUTHORITY")));
+                    WorkFlowObj.HigherAuthorityID = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("HIGHERAUTHORITY")));
 
                 if (ColumnExists(dr, "TRIGGERTYPE") && !dr.IsDBNull(dr.GetOrdinal("TRIGGERTYPE")))
                     WorkFlowObj.Trigger = dr.GetString(dr.GetOrdinal("TRIGGERTYPE"));
@@ -986,7 +986,7 @@ namespace WIS_DataAccess
                     WorkFlowObj.WorkflowID = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("WORKFLOWITEMID")));
 
                 if (ColumnExists(dr, "HIGHERAUTHORITY") && !dr.IsDBNull(dr.GetOrdinal("HIGHERAUTHORITY")))
-                    WorkFlowObj.HighaultorityID = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("HIGHERAUTHORITY")));
+                    WorkFlowObj.HigherAuthorityID = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("HIGHERAUTHORITY")));
 
                 if (ColumnExists(dr, "TRIGGERTYPE") && !dr.IsDBNull(dr.GetOrdinal("TRIGGERTYPE")))
                     WorkFlowObj.Trigger = dr.GetString(dr.GetOrdinal("TRIGGERTYPE"));
@@ -1018,7 +1018,7 @@ namespace WIS_DataAccess
                     dcmd.Parameters.Add("OWORKAPPROVALID", WorkFlowObj.WorkFlowDefID);
                     dcmd.Parameters.Add("OMODULEID", WorkFlowObj.ModuleID);
                     dcmd.Parameters.Add("OWORKFLOW", WorkFlowObj.WorkflowID);
-                    dcmd.Parameters.Add("OHiGHULTORITY", WorkFlowObj.HighaultorityID);
+                    dcmd.Parameters.Add("OHiGHULTORITY", WorkFlowObj.HigherAuthorityID);
                     dcmd.Parameters.Add("OTRIGGER", WorkFlowObj.Trigger);
                     dcmd.Parameters.Add("OAFTERDAYS", WorkFlowObj.AfterDays);
                     dcmd.Parameters.Add("OCREATEDBY", WorkFlowObj.UserID);
@@ -1028,7 +1028,7 @@ namespace WIS_DataAccess
                     dcmd.Parameters.Add("PROJECTID_", objWorkFlow.ProjectID);
                     dcmd.Parameters.Add("MODULEID_", objWorkFlow.ModuleID);
                     dcmd.Parameters.Add("WORKFLOWID_", objWorkFlow.WorkflowID);
-                    dcmd.Parameters.Add("HIGHAULTID_", objWorkFlow.HighaultorityID);
+                    dcmd.Parameters.Add("HIGHAULTID_", objWorkFlow.HigherAuthorityID);
                     dcmd.Parameters.Add("TRIGGER_", objWorkFlow.Trigger);
                     dcmd.Parameters.Add("AFTERDAYS_", objWorkFlow.AfterDays);
                     dcmd.Parameters.Add("UpdatedBY_", objWorkFlow.UserID);
@@ -1096,6 +1096,14 @@ namespace WIS_DataAccess
 
                 if (!dr.IsDBNull(dr.GetOrdinal("APPROVERUSERNAME")))
                     ProjectRouteBOobj.ApproverUserName = (dr.GetString(dr.GetOrdinal("APPROVERUSERNAME")));
+
+                //Edwin: 02FEB2017 for Notifying Higher Authority
+                if (!dr.IsDBNull(dr.GetOrdinal("HIGHERAUTHORITYNAME")))
+                    ProjectRouteBOobj.HigherAuthorityName = (dr.GetString(dr.GetOrdinal("HIGHERAUTHORITYNAME")));
+
+                if (!dr.IsDBNull(dr.GetOrdinal("HIGHERAUTHORITYEMAILID")))
+                    ProjectRouteBOobj.HigherAuthorityEmailID = (dr.GetString(dr.GetOrdinal("HIGHERAUTHORITYEMAILID")));
+                //End:
 
                 if (!dr.IsDBNull(dr.GetOrdinal("PROJECTCODE")))
                     ProjectRouteBOobj.ProjectCode = (dr.GetString(dr.GetOrdinal("PROJECTCODE")));

@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 using System.Data;
 using System.Configuration;
 using Oracle.DataAccess.Client;
 using WIS_BusinessObjects;
+using System.Text;
 
 namespace WIS_DataAccess
 {
@@ -871,7 +874,7 @@ namespace WIS_DataAccess
         /// <param name="UserId"></param>
         /// <param name="BatchNo"></param>
         /// <returns></returns>
-        public string CloseBatch(int HHID,int UserId,int BatchNo)
+        public string CloseBatch(int HHID,int UserId,int BatchNo, WorkFlowBO objWorkFlow)
         {
             string returnResult = string.Empty;
             cnn = new OracleConnection(con);
@@ -901,8 +904,50 @@ namespace WIS_DataAccess
                 throw ex;
             }
 
+            #region Notify Higher Authority of Batch Completion:
+            
+            if (objWorkFlow != null)
+            {
+                NotificationBO objNotification = new NotificationBO();
+                StringBuilder sb = new StringBuilder();
+
+                if (objWorkFlow.HigherAuthorityEmailID != null)
+                {
+
+                    string HigherAuthorityName = objWorkFlow.HigherAuthorityName;
+                    string ProjectName = objWorkFlow.ProjectName;
+                    string ProjectCode = objWorkFlow.ProjectCode;
+
+                    sb.Append("Dear " + HigherAuthorityName + ",");
+                    sb.Append("<br/><br/>");
+                    sb.Append("Approval completed on " + "Batch: <a href='wisapp.uetcl.com' style='text-decoration:none'><b>" + BatchNo + "</b></a>");
+                    sb.Append("<br/>");
+                    sb.Append("You can now prepare the MEMO for payment processing.");
+                    sb.Append("<br/>");
+                    sb.Append("Follow the link to WIS for Batch Details report, and approver Comments");
+                    sb.Append("<br/><br/>");
+                    sb.Append("<br/><br/>");
+                    sb.Append("<br/><br/>");
+                    sb.Append("<br/><br/>");
+                    sb.Append("<br/><br/>");
+                    sb.Append("<br/><br/>");
+                    sb.Append("___________________________________");
+                    sb.Append("<br/><br/>");
+                    sb.Append("Wayleaves Information System (WIS)");
+
+                    objNotification.EmailID = objWorkFlow.HigherAuthorityEmailID;
+                    objNotification.EmailSubject = "Batch: " + BatchNo + " (" + ProjectCode + " Project) - Ready for payment";
+                    objNotification.EmailBody = sb.ToString();
+                    
+
+                    (new NotificationDAL()).SendEmail(objNotification);
+                }
+            }
+
+            #endregion
+
             return returnResult;
-            //return "";
+            
         }
         /// <summary>
         /// To Add Comments

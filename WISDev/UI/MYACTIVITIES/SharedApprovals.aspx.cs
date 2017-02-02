@@ -2444,6 +2444,9 @@ namespace WIS
                     {
                         if ((AppDataCount + DecDataCount) == (totalBatchcount - 1))
                         {
+                            /* UpdatePaymentStatus(BatchBLL.RequestStatus_Declined, "D");
+                            objWorkflowapproval.Status = "APPROVED"; */
+
                             UpdatePaymentStatus(BatchBLL.RequestStatus_Declined, "D");
                             objWorkflowapproval.Status = "APPROVED";
                             MyTasks_ApprovalDAL objMyTaskApprovalDAL = new MyTasks_ApprovalDAL();
@@ -3261,7 +3264,15 @@ namespace WIS
             int BatchNo = 0;
             if (ViewState["ElementID"] != null)
                 BatchNo = Convert.ToInt32(ViewState["ElementID"]);
-            string message = oBatchBLL.CloseBatch(HHID, UserId, BatchNo);
+
+            //Start: Edwin 02FEB2017 Modified to notify Higher Authority
+            int ProjectID = Convert.ToInt32(ViewState["ProjectId"]);
+            string WorkflowCode = "PAYRQ";
+            WorkFlowBO objWorkFlow = (new WorkFlowBLL()).getWOrkFlowApprovalID(ProjectID, WorkflowCode);
+            string message = oBatchBLL.CloseBatch(HHID, UserId, BatchNo, objWorkFlow);
+            //End:
+
+
             //int FL = 0;
             if (message == "null")
             {
