@@ -372,7 +372,14 @@
                             <br />
                             <asp:Label ID="lblRequestStatus" CssClass="iceLable" Text="" Visible="false" runat="server"></asp:Label>
                         </asp:Panel>
-                        <asp:Label ID="lblCompPackageStatus" runat="server" Style="text-decoration: blink; color: Red; font-family: Arial; font-size: 18px; font-weight: bold" />
+                        <ul id="itemStatuses" runat="server" style="color:red;">
+                            <li id="itemCompPackageStatus" runat="server" style="display:none;"><asp:Label ID="lblCompPackageStatus" runat="server" Style="text-decoration: blink; color: Red; font-family: Arial; font-size: 18px; font-weight: bold" /></li>
+                            <li id="itemDisclosureStatus" runat="server" style="display:none;"><asp:Label ID="lblDisclosureStatus" runat="server" Style="text-decoration: blink; color: Red; font-family: Arial; font-size: 18px; font-weight: bold" /></li>
+                            <li id="itemGrievanceStatus" runat="server" style="display:none;"><asp:Label ID="lblGrievanceStatus" runat="server" Style="text-decoration: blink; color: Red; font-family: Arial; font-size: 18px; font-weight: bold" /></li>
+                        </ul>
+                        
+                        
+                        
                     </fieldset>
                 </td>
             </tr>

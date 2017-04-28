@@ -1,6 +1,7 @@
 ﻿using System;
 using WIS_BusinessObjects;
 using WIS_BusinessLogic;
+using System.DirectoryServices;
 
 
 namespace WIS
@@ -57,6 +58,7 @@ namespace WIS
 
                 try
                 {
+
                     if (IsLDAPAuthenticated(LDAPDomainName, UsernameTextBox.Text.Trim(), PasswordTextBox.Text.Trim()))
                     {
                         string inputUsername = "";
@@ -69,10 +71,10 @@ namespace WIS
 
                         LoginBO objLogin = objLoginBLL.Authentication(inputUsername, inputPassword);
 
-                        if (objLogin != null)
+                        if (objLogin.USERNAME != "NONE")
                         {
-                            if (inputUsername.ToLower() == objLogin.USERNAME.ToLower())
-                            {
+                            // if (inputUsername.ToLower() == objLogin.USERNAME.ToLower())
+                            
                                 if (chkStaySignedIn.Checked)
                                 {
                                     // Remember the username so that, it is populated every time the login page is opened, till the check box is unchecked
@@ -97,30 +99,26 @@ namespace WIS
                                 Session["USER_ID"] = objLogin.UserID;
 
                                 Response.Redirect("Default.aspx");
-                            }
-                            else
-                            {
-                                lblMsgSave.Text = "Please check your username and password";
-                            }
+                            // else { lblMsgSave.Text = "Wrong Credentials"; }
                         }
                         else
                         {
-                            lblMsgSave.Text = "Please check your username and password";
+                            lblMsgSave.Text = "Access Denied. Contact WIS Admin";
                         }
                     }
-                    else
-                    {
-                        lblMsgSave.Text = "Please check your username and password";
-                    }
+
+                    // else { lblMsgSave.Text = "Wrong Credentials. Contact the Administrator"; } 
+
                 }
                 catch (Exception ee)
                 {
-                    lblMsgSave.Text = "Unable to connect to the application. Please contact the administrator.";
+                    lblMsgSave.Text = "Wrong Credentials. Contact WIS Admin";
                 }
                 finally
                 {
                     objLoginBLL = null;
                 }
+
             }
         }
 
@@ -130,9 +128,45 @@ namespace WIS
         private bool IsLDAPAuthenticated(string domainName, string usrID, string pwd)
         {
             if (domainName == "UETCL")
+            {
+                return true;
+            }
+            else
+            {
+                // return WIS_Utility.Utility.IsValidUser(domainName, usrID, pwd);
+                string LDAPPath = "LDAP://" + domainName + "/OU=All Users,DC=uetcl,DC=com";
+                Boolean found = false;
+                DirectoryEntry searchRoot = new DirectoryEntry(LDAPPath, usrID, pwd);
+                DirectorySearcher DirectorySearcherObject = new DirectorySearcher(searchRoot);
+                SearchResult SearchResultObject = DirectorySearcherObject.FindOne();
+
+                try
+                {
+                    if (SearchResultObject != null)
+                    {
+                        string Email = SearchResultObject.Properties["mail"].ToString();
+                        return found = true;
+                    }
+                    else
+                    {
+                        return found;
+                    }
+                }
+                catch (Exception)
+                {
+                    return found;
+                }
+            }
+
+            /*** 
+            if (domainName == "UETCL")
                 return true;
             else
                 return WIS_Utility.Utility.IsValidUser(domainName, usrID, pwd);
+
+    ***/
+
+
         }
     }
 }

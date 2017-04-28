@@ -324,7 +324,7 @@ namespace WIS.UI.COMPENSATION
                 Session["PROJECT_ID"] = lblProjectedId.Text.Trim();
                 Session["FROZEN"] = null;
                 getFrozen();
-                Session["PROJECT_CODE"] = lblProjectedId.Text;
+                Session["PROJECT_CODE"] = lblProjectCode.Text;
 
                 PAP_HouseholdBLL objHouseholdLogic = new PAP_HouseholdBLL();
                 PAP_HouseholdBO objHousehold = objHouseholdLogic.GetHouseHoldData(Convert.ToInt32(e.CommandArgument));

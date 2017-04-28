@@ -56,6 +56,10 @@ namespace WIS_BusinessObjects
 
         public string PAPName { get; set; }
 
+        public string PlotRef { get; set; }
+
+        public string Designation { get; set; }
+
         public int TOTALCount { get; set; }
         public int TOTALApproved { get; set; }
         public int TOTALDeclined { get; set; }

@@ -8,8 +8,8 @@
     <ajaxToolkit:ToolkitScriptManager ID="tsManager" runat="server" EnablePageMethods="true">
     </ajaxToolkit:ToolkitScriptManager>
     <script type="text/javascript" src="../../Scripts/CommonFunctions.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <!-- script type="text/javascript" src="../../Scripts/jquery-1.9.1.min.js"></!-->
+    <!-- script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></!-->
+    <script type="text/javascript" src="../../Scripts/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="../../Scripts/jquery-impromptu.js"></script>
     <script type="text/javascript" src="../../Scripts/jquery-1.4.1.js"></script>
     <script type="text/javascript" src="../../Scripts/jquery-1.4.1.min.js"></script>

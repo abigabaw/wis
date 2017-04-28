@@ -13,6 +13,10 @@
             background-color: transparent;
             visibility: hidden;
         }
+
+        .auto-style1 {
+            height: 124px;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -356,7 +360,7 @@
             <legend>Mode of Payment</legend>
             <asp:Panel ID="pnlPaymentMode" runat="server">
                 <asp:Panel ID="pnlPaymentDetail" runat="server">
-                    <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                    <table border="0" cellspacing="2" cellpadding="2" width="100%">
                         <tr>
                             <td align="left" style="width: 150px;">
                                 <div>
@@ -365,7 +369,7 @@
                                 </div>
                             </td>
                             <td align="left">
-                                <asp:DropDownList ID="ddlCompensationType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlCompensationType_SelectedIndexChanged">
+                                <asp:DropDownList ID="ddlCompensationType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlCompensationType_SelectedIndexChanged" Width="200px">
                                     <asp:ListItem Value="0">--Select--</asp:ListItem>
                                     <asp:ListItem Value="Cash">Cash</asp:ListItem>
                                     <asp:ListItem Value="In Kind">In Kind</asp:ListItem>
@@ -384,7 +388,7 @@
                                 </div>
                             </td>
                             <td align="left">
-                                <asp:DropDownList ID="ddlPaymentMode" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlPaymentMode_SelectedIndexChanged">
+                                <asp:DropDownList ID="ddlPaymentMode" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlPaymentMode_SelectedIndexChanged" Width="200px">
                                     <asp:ListItem Value="0">--Select--</asp:ListItem>
                                 </asp:DropDownList>
                                 <asp:RequiredFieldValidator ID="rfvPaymentMode" runat="server" ControlToValidate="ddlPaymentMode"
@@ -396,7 +400,7 @@
                                     Amount</label>
                             </td>
                             <td align="left">
-                                <asp:TextBox ID="txtPaymentAmount" runat="server" CssClass="iceTextBox" Style="text-align: right;"></asp:TextBox>
+                                <asp:TextBox ID="txtPaymentAmount" runat="server" CssClass="iceTextBox" Style="text-align: right;" Width="200px"></asp:TextBox>
                                 <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" FilterType="Numbers,Custom"
                                     TargetControlID="txtPaymentAmount" ValidChars="," runat="server">
                                 </ajaxToolkit:FilteredTextBoxExtender>
@@ -405,65 +409,65 @@
                                     Display="None" Enabled="false"></asp:RequiredFieldValidator>
                             </td>
                         </tr>
-                        <tr id="ChequePaymentRow" runat="server">
-                            <td colspan="6">
+                        <tr>
+                            <td align="left" style="width: 140px;">
+                                <label class="iceLable">
+                                    Bank</label>
+                            </td>
+                            <td>
+                                <asp:DropDownList ID="ddlBank" CssClass="iceTextBox" AppendDataBoundItems="true"
+                                    AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlBank_SelectedIndexChanged" Width="200px">
+                                    <asp:ListItem Value="0">--Select--</asp:ListItem>
+                                </asp:DropDownList>
+                            </td>
+                            <td align="left">
+                                <label class="iceLable">
+                                    Branch</label>
+                            </td>
+                            <td>
+                                <asp:UpdatePanel ID="uplBranch" UpdateMode="Conditional" runat="server">
+                                    <ContentTemplate>
+                                        <asp:DropDownList ID="ddlBranch" CssClass="iceTextBox" AppendDataBoundItems="true"
+                                            runat="server" Width="200px">
+                                            <asp:ListItem Value="0">--Select--</asp:ListItem>
+                                        </asp:DropDownList>
+                                    </ContentTemplate>
+                                    <Triggers>
+                                        <asp:AsyncPostBackTrigger ControlID="ddlBank" EventName="SelectedIndexChanged" />
+                                    </Triggers>
+                                </asp:UpdatePanel>
+                            </td>
+                            <td align="left">
+                                <asp:Label ID="lblBankReference" CssClass="iceLable" Text="Account No"
+                                    runat="server"></asp:Label>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtBankReference" runat="server" CssClass="iceTextBox" MaxLength="50" Width="200px"></asp:TextBox>
+                                <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender4" FilterType="UppercaseLetters,LowercaseLetters,Numbers,Custom"
+                                    ValidChars=" -_" TargetControlID="txtBankReference" runat="server">
+                                </ajaxToolkit:FilteredTextBoxExtender>
+                            </td>
+                        </tr>
+                        <tr style="display: none;">
+                            <td align="left" style="width: 140px;">
+                                <label class="iceLable">
+                                    Fixed Cost Centre
+                                </label>
+                            </td>
+                            <td>
+                                <asp:DropDownList ID="ddlFixedCostCentre" CssClass="iceTextBox" AppendDataBoundItems="true"
+                                    runat="server" Width="200px">
+                                    <asp:ListItem Value="0">--Select--</asp:ListItem>
+                                </asp:DropDownList>
+                            </td>
+                        </tr>
+                        <tr id="ChequePaymentRow" runat="server" style="display: none;">
+                            <td colspan="6" class="auto-style1">
                                 <table cellspacing="0" cellpadding="3">
-                                    <tr>
-                                        <td align="left" style="width: 140px;">
-                                            <label class="iceLable">
-                                                Bank</label>
-                                        </td>
-                                        <td>
-                                            <asp:DropDownList ID="ddlBank" CssClass="iceTextBox" AppendDataBoundItems="true"
-                                                AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlBank_SelectedIndexChanged">
-                                                <asp:ListItem Value="0">--Select--</asp:ListItem>
-                                            </asp:DropDownList>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="left">
-                                            <label class="iceLable">
-                                                Branch</label>
-                                        </td>
-                                        <td>
-                                            <asp:UpdatePanel ID="uplBranch" UpdateMode="Conditional" runat="server">
-                                                <ContentTemplate>
-                                                    <asp:DropDownList ID="ddlBranch" CssClass="iceTextBox" AppendDataBoundItems="true"
-                                                        runat="server">
-                                                        <asp:ListItem Value="0">--Select--</asp:ListItem>
-                                                    </asp:DropDownList>
-                                                </ContentTemplate>
-                                                <Triggers>
-                                                    <asp:AsyncPostBackTrigger ControlID="ddlBank" EventName="SelectedIndexChanged" />
-                                                </Triggers>
-                                            </asp:UpdatePanel>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="left" style="width: 140px;">
-                                            <label class="iceLable">
-                                                Fixed Cost Centre
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <asp:DropDownList ID="ddlFixedCostCentre" CssClass="iceTextBox" AppendDataBoundItems="true"
-                                                runat="server">
-                                                <asp:ListItem Value="0">--Select--</asp:ListItem>
-                                            </asp:DropDownList>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="left">
-                                            <asp:Label ID="lblBankReference" CssClass="iceLable" Text="Cheque/Reference No."
-                                                runat="server"></asp:Label>
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtBankReference" runat="server" CssClass="iceTextBox" MaxLength="50"></asp:TextBox>
-                                            <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender4" FilterType="UppercaseLetters,LowercaseLetters,Numbers,Custom"
-                                                ValidChars=" -_" TargetControlID="txtBankReference" runat="server">
-                                            </ajaxToolkit:FilteredTextBoxExtender>
-                                        </td>
-                                    </tr>
+
+                                    <%--<tr>
+                                        
+                                    </tr>--%>
                                 </table>
                             </td>
                         </tr>
@@ -474,7 +478,7 @@
                             </td>
                             <td align="left" class="iceLable">
                                 <asp:RadioButtonList ID="rblDeliveredToStakeholder" runat="server" AutoPostBack="true"
-                                    RepeatDirection="Horizontal" OnSelectedIndexChanged="rblDeliveredToStakeholder_SelectedIndexChanged">
+                                    RepeatDirection="Horizontal" OnSelectedIndexChanged="rblDeliveredToStakeholder_SelectedIndexChanged" Enabled="False">
                                     <asp:ListItem Value="Yes">Yes</asp:ListItem>
                                     <asp:ListItem Value="No">No</asp:ListItem>
                                 </asp:RadioButtonList>
@@ -484,7 +488,7 @@
                                     Received Date</label>
                             </td>
                             <td align="left" class="iceLable" colspan="2">
-                                <asp:TextBox ID="dpcDeliveredDate" runat="server" Enabled="false"></asp:TextBox>
+                                <asp:TextBox ID="dpcDeliveredDate" runat="server" Enabled="false" Width="200px"></asp:TextBox>
                                 <ajaxToolkit:CalendarExtender ID="caldpcDeliveredDate" CssClass="WISCalendarStyle"
                                     runat="server" TargetControlID="dpcDeliveredDate">
                                 </ajaxToolkit:CalendarExtender>
@@ -574,15 +578,15 @@
                                         ItemStyle-HorizontalAlign="Left" ControlStyle-Width="12%" />
                                     <asp:BoundField DataField="BranchName" HeaderText="Branch" HeaderStyle-HorizontalAlign="Center"
                                         ItemStyle-HorizontalAlign="Left" ControlStyle-Width="10%" />
-                                    <asp:BoundField DataField="BankReference" HeaderText="Cheque#" HeaderStyle-HorizontalAlign="Center"
+                                    <asp:BoundField DataField="BankReference" HeaderText="Account No" HeaderStyle-HorizontalAlign="Center"
                                         ItemStyle-HorizontalAlign="Left" ControlStyle-Width="7%" />
                                     <asp:BoundField DataField="BankCode" HeaderText="Bank Code" HeaderStyle-HorizontalAlign="Center"
                                         ItemStyle-HorizontalAlign="Left" ControlStyle-Width="10%" />
-                                    <asp:BoundField DataField="FixedCostCentre" HeaderText="Fixed Cost Centre" HeaderStyle-HorizontalAlign="Center"
+                                    <asp:BoundField DataField="FixedCostCentre" HeaderText="Cost Centre" HeaderStyle-HorizontalAlign="Center"
                                         ItemStyle-HorizontalAlign="Left" ControlStyle-Width="10%" />
-                                    <asp:BoundField DataField="BatchNos" HeaderText="Batch No's" HeaderStyle-HorizontalAlign="Center"
+                                    <asp:BoundField DataField="BatchNos" HeaderText="Batch No" HeaderStyle-HorizontalAlign="Center"
                                         ItemStyle-HorizontalAlign="Left" ControlStyle-Width="10%" />
-                                    <asp:TemplateField HeaderText="Received by StakeHolder" HeaderStyle-HorizontalAlign="Center">
+                                    <asp:TemplateField HeaderText="Received By Pap" HeaderStyle-HorizontalAlign="Center">
                                         <ItemStyle HorizontalAlign="Center" Width="10%" />
                                         <ItemTemplate>
                                             <asp:Label ID="lblDeliveredToStakeHolder" Text='<%#Eval("DeliveredToStakeHolder") %>'
@@ -642,13 +646,18 @@
                     </tr>
                 </table>
             </asp:Panel>
-            <asp:Label ID="lblPaymentStatusMessage" runat="server" Text="" CssClass="iceLable"
-                Style="text-decoration: blink; color: Red; font-family: Arial; font-size: 14px; font-weight: bold"></asp:Label>
+            
             <br />
             <div align="center" class="CSSTableGenerator">
                 <table border="0" cellspacing="0" cellpadding="0">
                 </table>
             </div>
+            <ul id="itemStatuses" runat="server" style="color:red;">
+                <li id="itemCompPackageStatus" runat="server" style="display:none;"><asp:Label ID="lblCompPackageStatus" runat="server" Style="text-decoration: blink; color: Red; font-family: Arial; font-size: 18px; font-weight: bold" /></li>
+                <li id="itemDisclosureStatus" runat="server" style="display:none;"><asp:Label ID="lblDisclosureStatus" runat="server" Style="text-decoration: blink; color: Red; font-family: Arial; font-size: 18px; font-weight: bold" /></li>
+                <li id="itemGrievanceStatus" runat="server" style="display:none;"><asp:Label ID="lblGrievanceStatus" runat="server" Style="text-decoration: blink; color: Red; font-family: Arial; font-size: 18px; font-weight: bold" /></li>
+                <li id="itemPaymentRequestStatus" runat="server" style="display:none;"><asp:Label ID="lblPaymentStatusMessage" runat="server" Style="text-decoration: blink; color: Red; font-family: Arial; font-size: 18px; font-weight: bold" /></li>
+            </ul>
         </fieldset>
     </asp:Panel>
     <%--</fieldset>--%>

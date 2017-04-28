@@ -4,9 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.Services;
 using WIS_BusinessObjects;
 using WIS_BusinessLogic;
 using WIS_BusinessObjects.Collections;
+using WIS;
 
 namespace WIS
 {
@@ -319,7 +321,8 @@ namespace WIS
                 txtSurname.Text = Convert.ToString(objHouseHold.Surname);
                 txtfirstname.Text = Convert.ToString(objHouseHold.Firstname);
                 txtOthername.Text = Convert.ToString(objHouseHold.Othername);
-                txtFullname.Text = txtSurname.Text + " " + txtfirstname.Text;
+                //Ediwn: 27SEP2016
+                txtFullname.Text = txtSurname.Text + " " + txtfirstname.Text + " " + txtOthername.Text;
                 txtPapUid.Text = Convert.ToString(objHouseHold.Papuid);
 
                 if (objHouseHold.CapturedDate.Trim() != "")
@@ -536,6 +539,18 @@ namespace WIS
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+
+        //[WebMethod]
+        public void ReCache(int HHID)
+        {
+            PapDataCache PapCache = new PapDataCache();
+           // string householdID = Cache[PapCache.BuildCacheKey("HOUSEHOLD_ID")].ToString();
+            PapCache.ClearCache();
+            PapCache.CachePAPData(HHID.ToString());
+        }
+
+        
+
         protected void btnSave_Click(object sender, EventArgs e)
         {
             ChangeRequestStatusInstitution();
@@ -578,6 +593,10 @@ namespace WIS
 
             PAP_InstitutionBLL objInstBll = new PAP_InstitutionBLL();
             string message = objInstBll.UpdateInstitutionDetails(objInstitution);
+
+            //Edwin: 19SEP2016 Reload Pap Details
+            ReCache(Convert.ToInt32(Session["HH_ID"]));
+
             txtFullname.Text = txtSurname.Text + " " + txtfirstname.Text;
             projectFrozen();
             checkApprovalExitOrNot();

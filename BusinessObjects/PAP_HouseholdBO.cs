@@ -13,7 +13,7 @@ namespace WIS_BusinessObjects
         {
             get { return percentageOccupied; }
             set { percentageOccupied = value; }
-        } 
+        }
         string overrideopt;
 
         public string Overrideopt
@@ -728,7 +728,6 @@ namespace WIS_BusinessObjects
             }
         }
 
-
         public string Isdeleted
         {
             get
@@ -760,6 +759,34 @@ namespace WIS_BusinessObjects
         {
             get { return approverStatusID; }
             set { approverStatusID = value; }
+        }
+
+        private int disclosureStatus;
+        private int grievanceStatus;
+        private int batchStatus;
+        private int paymentStatus;
+        public int DisclosureStatus
+        {
+            get { return disclosureStatus; }
+            set { disclosureStatus = value; }
+        }
+
+        public int GrievanceStatus
+        {
+            get { return grievanceStatus; }
+            set { grievanceStatus = value; }
+        }
+
+        public int BatchStatus
+        {
+            get { return batchStatus; }
+            set { batchStatus = value; }
+        }
+
+        public int PaymentStatus
+        {
+            get { return paymentStatus; }
+            set { paymentStatus = value; }
         }
 
         public string Workflowcode

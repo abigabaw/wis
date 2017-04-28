@@ -4,8 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.Services;
 using WIS_BusinessObjects;
 using WIS_BusinessLogic;
+using WIS;
 
 namespace WIS
 {
@@ -23,6 +25,8 @@ namespace WIS
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        /// 
+        
         #region Declaration & PageLoad
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -181,7 +185,6 @@ namespace WIS
         }
 
         #endregion
-
 
         #region checkChangeRequestApproverExit and getApprovalChangerequestStatus
         //Added By Ramu
@@ -582,12 +585,21 @@ namespace WIS
             updimgPAPPhoto.Update();
         }
         #endregion
+
         /// <summary>
         /// to save the data to the database  
         /// clear the all the fields by calling  ClearCache() method
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+
+        public void ReCache(int HHID)
+        {
+            PapDataCache PapCache = new PapDataCache();
+            // string householdID = Cache[PapCache.BuildCacheKey("HOUSEHOLD_ID")].ToString();
+            PapCache.ClearCache();
+            PapCache.CachePAPData(HHID.ToString());
+        }
 
         #region Save & Clear Buttons
         protected void btnSave_Click(object sender, EventArgs e)
@@ -786,6 +798,10 @@ namespace WIS
             objHouseHold.CreatedBy = Convert.ToInt32(Session["USER_ID"]);
             PAP_HouseholdBLL objHouseHoldBLL = new PAP_HouseholdBLL();
             string message = objHouseHoldBLL.UpdateHouseHoldDetails(objHouseHold);
+
+            //Edwin: 19SEP2016 Reload Pap Details
+            ReCache(Convert.ToInt32(txtHouseHoldID.Text));
+
             ChangeRequestStatus();
             projectFrozen();
             if (string.IsNullOrEmpty(message) || message == "" || message == "null")
@@ -926,6 +942,7 @@ namespace WIS
             ddlUnderTakingPeriod.SelectedIndex = 0;
         }
         #endregion Save & Clear Buttons
+
         /// <summary>
         /// to bind the data to the database
         /// </summary>
@@ -1146,6 +1163,7 @@ namespace WIS
             ddlClan.Items.Insert(0, lstItem);
         }
         #endregion Bind Data
+
         /// <summary>
         /// to bind the GOUAllowance data from the database
         /// </summary>

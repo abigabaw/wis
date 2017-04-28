@@ -22,6 +22,15 @@ namespace WIS {
         protected global::WIS.CompSocioEconomyMenu CompSocioEconomyMenu1;
         
         /// <summary>
+        /// HouseholdSummaryCache control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::WIS.HouseholdSummary HouseholdSummaryCache;
+        
+        /// <summary>
         /// tsManager control.
         /// </summary>
         /// <remarks>

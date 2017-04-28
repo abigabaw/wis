@@ -4,6 +4,7 @@
 <%@ MasterType VirtualPath="~/Site.Master" %>
 <%@ Register Src="~/UI/COMPENSATION/ViewMasterCopy.ascx" TagName="ViewMasterCopy" TagPrefix="uc2" %>
 <%@ Register Src="CompSocioEconomyMenu.ascx" TagName="CompSocioEconomyMenu" TagPrefix="uc1" %>
+<%@ Register Src="~/UI/COMPENSATION/HouseholdSummary.ascx" TagName="HouseholdSummary" TagPrefix="uc3" %>
 <%@ Register Assembly="DatePickerControl" Namespace="DatePickerControl" TagPrefix="cc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <script language="javascript" type="text/javascript" src="../../../Scripts/CommonFunctions.js"></script>
@@ -18,6 +19,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <uc1:CompSocioEconomyMenu ID="CompSocioEconomyMenu1" runat="server" />
+    <uc3:HouseholdSummary ID="HouseholdSummaryCache" runat="server" Visible="false" />
     <ajaxToolkit:ToolkitScriptManager ID="tsManager" runat="server">
     </ajaxToolkit:ToolkitScriptManager>
     <table align="center" border="0" cellpadding="1" cellspacing="1" style="margin-top: 10px;
@@ -40,9 +42,9 @@
                     </asp:DropDownList>
                 </div>
                 <div style="float: right">
-                    <a id="lnkUPloadPhoto" href="#" runat="server"><b>Upload Photo</b></a>&nbsp;|&nbsp;<a
-                        id="lnkViewPhoto" href="#" runat="server"><b>View Photo</b></a>&nbsp;|&nbsp;
-                    <a id="lnkUPloadDoc" href="#" runat="server"><b>Upload Document</b></a> &nbsp;|&nbsp;
+                    <a id="lnkUPloadPhoto" href="#" runat="server"><b>Upload Photo</b></a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a
+                        id="lnkViewPhoto" href="#" runat="server"><b>View Photo</b></a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                    <a id="lnkUPloadDoc" href="#" runat="server"><b>Upload Document</b></a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
                     <a id="lnkUPloadDoclist" href="#" runat="server"><b>View Document</b></a>
                 </div>
                 <script type="text/javascript" language="javascript">
@@ -373,7 +375,7 @@
                     </div>
                     <div style="float: left; padding-left: 25px;">
                         Full Name<br />
-                        <asp:TextBox ID="txtFullname" runat="server" Width="200px" MaxLength="300" CssClass="iceTextBox"></asp:TextBox>     
+                        <asp:TextBox ID="txtFullname" runat="server" Width="200px" MaxLength="300" CssClass="iceTextBox" ReadOnly="True"></asp:TextBox>     
                         <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender5" FilterType="UppercaseLetters,LowercaseLetters,Custom"
                             ValidChars=" " TargetControlID="txtFullname" runat="server"></ajaxToolkit:FilteredTextBoxExtender>
                     </div>

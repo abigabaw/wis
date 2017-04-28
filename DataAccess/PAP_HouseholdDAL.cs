@@ -720,15 +720,46 @@ namespace WIS_DataAccess
             cmd.Connection.Open();
             OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             PAP_HouseholdBO objTrn_Pap_HouseHold = null;
-            while (dr.Read())
+            if (objHouseHold.PageCode == "DISC")
             {
-                objTrn_Pap_HouseHold = new PAP_HouseholdBO();
-                if (!dr.IsDBNull(dr.GetOrdinal("STATUSID"))) objTrn_Pap_HouseHold.ApproverStatus = dr.GetInt32(dr.GetOrdinal("STATUSID"));
-
+                while (dr.Read())
+                {
+                    objTrn_Pap_HouseHold = new PAP_HouseholdBO();
+                    if (!dr.IsDBNull(dr.GetOrdinal("STATUSID"))) objTrn_Pap_HouseHold.DisclosureStatus = dr.GetInt32(dr.GetOrdinal("STATUSID"));
+                }
             }
+            else if (objHouseHold.PageCode == "CRGRA")
+            {
+                while (dr.Read())
+                {
+                    objTrn_Pap_HouseHold = new PAP_HouseholdBO();
+                    if (!dr.IsDBNull(dr.GetOrdinal("STATUSID"))) objTrn_Pap_HouseHold.GrievanceStatus = dr.GetInt32(dr.GetOrdinal("STATUSID"));
+                }
+            }
+            else if (objHouseHold.PageCode == "CRFND")
+            {
+                while (dr.Read())
+                {
+                    objTrn_Pap_HouseHold = new PAP_HouseholdBO();
+                    if (!dr.IsDBNull(dr.GetOrdinal("STATUSID"))) objTrn_Pap_HouseHold.PaymentStatus = dr.GetInt32(dr.GetOrdinal("STATUSID"));
+                }
+            }
+            else
+            {
+                while (dr.Read())
+                {
+                    objTrn_Pap_HouseHold = new PAP_HouseholdBO();
+                    if (!dr.IsDBNull(dr.GetOrdinal("STATUSID"))) objTrn_Pap_HouseHold.ApproverStatus = dr.GetInt32(dr.GetOrdinal("STATUSID"));
+                }
+            }
+                    
+
+            
             dr.Close();
             return objTrn_Pap_HouseHold;
         }
+
+        
 
         /// <summary>
         /// To Change Request Status

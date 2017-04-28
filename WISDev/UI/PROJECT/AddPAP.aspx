@@ -3,6 +3,7 @@
 
 <%@ MasterType VirtualPath="~/Site.Master" %>
 <%@ Register Src="ProjectMenu.ascx" TagName="ProjectMenu" TagPrefix="uc1" %>
+<%@ Register Src="~/UI/COMPENSATION/HouseholdSummary.ascx" TagName="HouseholdSummary" TagPrefix="uc2" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <script language="javascript" type="text/javascript" src="../../Scripts/CommonFunctions.js"></script>
     <style type="text/css">
@@ -19,6 +20,7 @@
     </ajaxToolkit:ToolkitScriptManager>    
     <div style="width:100%">
     <uc1:ProjectMenu ID="ProjectMenu1" runat="server" />
+    <uc2:HouseholdSummary ID="HouseholdSummaryCache" runat="server" Visible="false" />
     <div style="width: 100%">
     <asp:HiddenField ID="hfVisible" runat="server" Value="0" />
         <table>
@@ -66,7 +68,7 @@
                             PAP Name</label>
                     </td>
                     <td align="left">
-                        <asp:TextBox ID="txtPAPName" runat="server" MaxLength="100" CssClass="iceTextBox"
+                        <asp:TextBox ID="txtPAPName" runat="server" MaxLength="100" onblur="SetUpperCase(this);UpdateFullName();" CssClass="iceTextBox"
                             Width="200px" />
                         <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender12" FilterType="LowercaseLetters,UppercaseLetters,Custom"
                             ValidChars=" " TargetControlID="txtPAPName" runat="server" />

@@ -1649,7 +1649,7 @@ namespace WIS
         /// <summary>
         /// Check request status
         /// </summary>
-        private void dependencyStatusCheck()
+        private void dependencyStatusCheck_()
         {
             checkApprovalExistsForPaymentVerification();
             //checkApprovalExitOrNot();
@@ -1681,6 +1681,170 @@ namespace WIS
                 lblPaymentStatusMessage.Visible = true;
             }
         }
+
+        private void dependencyStatusCheck()
+        {
+            getPackageReviewStatus();
+            getDisclosureStatus();
+            getGrievanceStatus();
+            getBatchStatus();
+        }
+
+        public void getPackageReviewStatus()
+        {
+            PAP_HouseholdBLL objHouseHoldBLL = new PAP_HouseholdBLL();
+            PAP_HouseholdBO objHouseHold = new PAP_HouseholdBO();
+
+            objHouseHold.ProjectedId = Convert.ToInt32(Session["PROJECT_ID"]);
+            int householdID = Convert.ToInt32(Session["HH_ID"]);
+            objHouseHold.HhId = householdID;
+            objHouseHold.PageCode = "CPREV";
+            objHouseHold.Workflowcode = UtilBO.WorkflowPackageReview;
+
+            objHouseHold = objHouseHoldBLL.ApprovalChangerequestStatus(objHouseHold);
+
+            if ((objHouseHold) != null)
+            {
+                if (objHouseHold.ApproverStatus == 3 || objHouseHold.ApproverStatus == 2)
+                {
+                    //PENDING
+                    pnlPaymentMode.Visible = false;
+
+                    itemCompPackageStatus.Style.Remove("display");
+                    lblCompPackageStatus.Text = "Pending Package Review";
+                    DisableAllCheckBox();
+                }
+                else if (objHouseHold.ApproverStatus == 1)
+                {
+                    //APPROVED
+                    pnlPaymentMode.Visible = true;
+                    lblCompPackageStatus.Text = string.Empty;
+                }
+            }
+            else
+            {
+                pnlPaymentMode.Visible = false;
+                itemCompPackageStatus.Style.Remove("display");
+                lblCompPackageStatus.Text = "Pending Package Review";
+                DisableAllCheckBox();
+            }
+        }
+
+        public void getDisclosureStatus()
+        {
+            PAP_HouseholdBLL objHouseHoldBLL = new PAP_HouseholdBLL();
+            PAP_HouseholdBO objHouseHold = new PAP_HouseholdBO();
+
+            objHouseHold.ProjectedId = Convert.ToInt32(Session["PROJECT_ID"]);
+            int householdID = Convert.ToInt32(Session["HH_ID"]);
+            objHouseHold.HhId = householdID;
+            objHouseHold.PageCode = "DISC";
+            objHouseHold.Workflowcode = "DISC";
+
+            objHouseHold = objHouseHoldBLL.ApprovalChangerequestStatus(objHouseHold);
+
+            if ((objHouseHold) != null)
+            {
+                if (objHouseHold.DisclosureStatus == 3 || objHouseHold.DisclosureStatus == 2)
+                {
+                    //PENDING
+                    pnlPaymentMode.Visible = false;
+                    itemDisclosureStatus.Style.Remove("display");
+                    lblDisclosureStatus.Text = "Pending Disclosure";
+                    DisableAllCheckBox();
+                }
+                else if (objHouseHold.DisclosureStatus == 1)
+                {
+                    //APPROVED
+                    pnlPaymentMode.Visible = true;
+                    lblDisclosureStatus.Text = string.Empty;
+
+                }
+            }
+            else
+            {
+                pnlPaymentMode.Visible = false;
+                itemDisclosureStatus.Style.Remove("display");
+                lblDisclosureStatus.Text = "Pending Disclosure";
+                DisableAllCheckBox();
+            }
+        }
+
+        public void getGrievanceStatus()
+        {
+            PAP_HouseholdBLL objHouseHoldBLL = new PAP_HouseholdBLL();
+            PAP_HouseholdBO objHouseHold = new PAP_HouseholdBO();
+
+            objHouseHold.ProjectedId = Convert.ToInt32(Session["PROJECT_ID"]);
+            int householdID = Convert.ToInt32(Session["HH_ID"]);
+            objHouseHold.HhId = householdID;
+            objHouseHold.PageCode = "CRGRA";
+            objHouseHold.Workflowcode = UtilBO.WorkflowGrievances;
+
+            objHouseHold = objHouseHoldBLL.ApprovalChangerequestStatus(objHouseHold);
+
+            if ((objHouseHold) != null)
+            {
+                if (objHouseHold.GrievanceStatus == 3 || objHouseHold.GrievanceStatus == 2)
+                {
+                    //PENDING
+                    pnlPaymentMode.Visible = false;
+                    itemGrievanceStatus.Style.Remove("display");
+                    lblGrievanceStatus.Text = "Pending Grievances";
+                    DisableAllCheckBox();
+                }
+                else if (objHouseHold.GrievanceStatus == 1)
+                {
+                    //APPROVED
+                    pnlPaymentMode.Visible = true;
+                    lblGrievanceStatus.Text = string.Empty;
+
+                }
+            }
+            
+        }
+
+        public void getBatchStatus()
+        {
+            PAP_HouseholdBLL objHouseHoldBLL = new PAP_HouseholdBLL();
+            PAP_HouseholdBO objHouseHold = new PAP_HouseholdBO();
+
+            objHouseHold.ProjectedId = Convert.ToInt32(Session["PROJECT_ID"]);
+            int householdID = Convert.ToInt32(Session["HH_ID"]);
+            objHouseHold.HhId = householdID;
+            objHouseHold.PageCode = "PAYRQ";
+            objHouseHold.Workflowcode = UtilBO.WorkflowPaymentRequest;
+
+            objHouseHold = objHouseHoldBLL.ApprovalChangerequestStatus(objHouseHold);
+
+            if ((objHouseHold) != null)
+            {
+                if (objHouseHold.BatchStatus == 3 || objHouseHold.BatchStatus == 2)
+                {
+                    //PENDING
+                    pnlPaymentMode.Visible = false;
+                    itemPaymentRequestStatus.Style.Remove("display");
+                    lblPaymentStatusMessage.Text = "Pending Batching";
+                    DisableAllCheckBox();
+                }
+                else if (objHouseHold.BatchStatus == 1)
+                {
+                    //APPROVED
+                    pnlPaymentMode.Visible = true;
+                    lblPaymentStatusMessage.Text = string.Empty;
+
+                }
+            }
+            else
+            {
+                pnlPaymentMode.Visible = false;
+                itemPaymentRequestStatus.Style.Remove("display");
+                lblPaymentStatusMessage.Text = "Pending Batching";
+                DisableAllCheckBox();
+            }
+        }
+
+        
 
         /// <summary>
         /// Bind Data to Drop Downs

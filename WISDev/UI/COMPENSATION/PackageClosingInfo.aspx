@@ -300,66 +300,71 @@
             </div>
         </fieldset>
     </asp:Panel>
-    <asp:Panel ID="pnlCompensationStatus" runat="server">
-        <fieldset class="icePnlinner">
-            <legend>Compensation Status</legend>
-            <%-- <div style="background-color: #e0e0e0; text-align: left; padding: 10px">--%>
-            <table border="0" cellspacing="0" cellpadding="0" width="100%">
-                <tr>
-                    <td width="100px">
-                        <asp:Label class="iceLable" ID="label1" runat="server">
-                            Compensation Status:
-                        </asp:Label>
-                    </td>
-                    <td width="20%">
-                        <asp:DropDownList ID="ddlCompensationStatus" Width="120px" runat="server" AutoPostBack="true"
-                            CssClass="iceDropDown" OnSelectedIndexChanged="ddlCompensationStatus_SelectedIndexChanged">
-                            <asp:ListItem Value="NP">Not Paid</asp:ListItem>
-                            <asp:ListItem Value="PP">Partially Paid</asp:ListItem>
-                            <asp:ListItem Value="CP">Completely Paid</asp:ListItem>
-                        </asp:DropDownList>
-                        <ajaxToolkit:ListSearchExtender ID="ListSearchExtender2" runat="server" TargetControlID="ddlCompensationStatus"
-                            PromptText="Type to search" PromptCssClass="ListSearchExtenderPrompt" PromptPosition="Top"
-                            IsSorted="true" />
-                    </td>
-                    <td align="left" width="60%" rowspan="2">
-                        <%--                        <asp:ValidationSummary ID="ValidationSummary1" runat="server" HeaderText="Please enter/correct the following:"
-                            ShowMessageBox="true" ShowSummary="false" DisplayMode="BulletList" ValidationGroup="vgCompStatus" />
-                        --%>
-                        <asp:CheckBox ID="chkOverrideGriv" runat="server" Text="Over ride Grievance" AutoPostBack="true" Visible="false" OnCheckedChanged="chkOverrideGriv_CheckedChanged" />&nbsp;
-                        <asp:Button ID="btnCompStatusSave" runat="server" Text="Save" CssClass="icebutton"
-                            ValidationGroup="vgCompStatus" OnClick="btnCompStatusSave_Click" />
-                        <asp:Button ID="lnkValuationPCI" runat="server" Text="For File Closure Request" CssClass="icebutton"
-                            Width="160" OnClick="lnkValuationPCI_Click" />
-                        <asp:ValidationSummary ID="valSummary1" DisplayMode="BulletList" HeaderText="Please enter/correct the following:"
-                        ShowMessageBox="true" ShowSummary="false" ValidationGroup="Unfreeze" runat="server" />
-                        <%--  <a id="lnkValuationPCI" runat="server" href="#" class="iceLinkButton" >File
-                            Closure Request</a>--%>
-                        <asp:Label ID="lblStatusValuationPCI" runat="server" Style="text-decoration: blink;font-family: Arial; font-size: 16px; font-weight: bold" />
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" nowrap>
-                        <span id="Span1" runat="server" style="display: none">                        
-                            <asp:Label class="iceLable" ID="label2" runat="server" Text="File Closing comments:" />&nbsp; <span class="mandatory">*</span><br />
-                            <asp:TextBox ID="TxtFileClosingcomments" Width="300px" runat="server" CssClass="iceTextAeralarge"
-                                TextMode="MultiLine" />                            
-                            <%--<asp:RequiredFieldValidator ID="rfvUnfreezeComments" ControlToValidate="TxtFileClosingcomments"
-                                ErrorMessage="Enter File Closing comments" Display="None" ValidationGroup="Unfreeze"
-                                runat="server"> </asp:RequiredFieldValidator>--%>
-                        </span>
-                    </td>
-                </tr>
-                <%--<tr>
-                    <td align="center" colspan="2">
-                      <br />
-                        
-                    </td>
-                </tr>--%>
-            </table>
-            <%-- </div>--%>
-        </fieldset>
-    </asp:Panel>
+    <fieldset class="icePnlinner">
+       <legend>Compensation Status</legend>
+            <asp:Panel ID="pnlCompensationStatus" runat="server">
+        
+                    <%-- <div style="background-color: #e0e0e0; text-align: left; padding: 10px">--%>
+                    <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                        <tr>
+                            <td width="100px">
+                                <asp:Label class="iceLable" ID="label1" runat="server">
+                                    Compensation Status:
+                                </asp:Label>
+                            </td>
+                            <td width="20%">
+                                <asp:DropDownList ID="ddlCompensationStatus" Width="120px" runat="server" AutoPostBack="true"
+                                    CssClass="iceDropDown" OnSelectedIndexChanged="ddlCompensationStatus_SelectedIndexChanged">
+                                    <asp:ListItem Value="NP">Not Paid</asp:ListItem>
+                                    <asp:ListItem Value="PP">Partially Paid</asp:ListItem>
+                                    <asp:ListItem Value="CP">Completely Paid</asp:ListItem>
+                                </asp:DropDownList>
+                                <ajaxToolkit:ListSearchExtender ID="ListSearchExtender2" runat="server" TargetControlID="ddlCompensationStatus"
+                                    PromptText="Type to search" PromptCssClass="ListSearchExtenderPrompt" PromptPosition="Top"
+                                    IsSorted="true" />
+                            </td>
+                            <td align="left" width="60%" rowspan="2">
+                                <%--                        <asp:ValidationSummary ID="ValidationSummary1" runat="server" HeaderText="Please enter/correct the following:"
+                                    ShowMessageBox="true" ShowSummary="false" DisplayMode="BulletList" ValidationGroup="vgCompStatus" />
+                                --%>
+                                <asp:CheckBox ID="chkOverrideGriv" runat="server" Text="Over ride Grievance" AutoPostBack="true" Visible="false" OnCheckedChanged="chkOverrideGriv_CheckedChanged" />&nbsp;
+                                <asp:Button ID="btnCompStatusSave" runat="server" Text="Save" CssClass="icebutton"
+                                    ValidationGroup="vgCompStatus" OnClick="btnCompStatusSave_Click" />
+                                <asp:Button ID="lnkValuationPCI" runat="server" Text="For File Closure Request" CssClass="icebutton"
+                                    Width="160" OnClick="lnkValuationPCI_Click" />
+                                <asp:ValidationSummary ID="valSummary1" DisplayMode="BulletList" HeaderText="Please enter/correct the following:"
+                                ShowMessageBox="true" ShowSummary="false" ValidationGroup="Unfreeze" runat="server" />
+                                <%--  <a id="lnkValuationPCI" runat="server" href="#" class="iceLinkButton" >File
+                                    Closure Request</a>--%>
+                                <asp:Label ID="lblStatusValuationPCI" runat="server" Style="text-decoration: blink;font-family: Arial; font-size: 16px; font-weight: bold" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" nowrap>
+                                <span id="Span1" runat="server" style="display: none">                        
+                                    <asp:Label class="iceLable" ID="label2" runat="server" Text="File Closing comments:" />&nbsp; <span class="mandatory">*</span><br />
+                                    <asp:TextBox ID="TxtFileClosingcomments" Width="300px" runat="server" CssClass="iceTextAeralarge"
+                                        TextMode="MultiLine" />                            
+                                    <%--<asp:RequiredFieldValidator ID="rfvUnfreezeComments" ControlToValidate="TxtFileClosingcomments"
+                                        ErrorMessage="Enter File Closing comments" Display="None" ValidationGroup="Unfreeze"
+                                        runat="server"> </asp:RequiredFieldValidator>--%>
+                                </span>
+                            </td>
+                        </tr>
+                
+                    </table>
+           
+
+       
+            </asp:Panel>
+            <ul id="itemStatuses" runat="server" style="color:red;">
+                <li id="itemCompPackageStatus" runat="server" style="display:none;"><asp:Label ID="lblCompPackageStatus" runat="server" Style="text-decoration: blink; color: Red; font-family: Arial; font-size: 18px; font-weight: bold" /></li>
+                <li id="itemDisclosureStatus" runat="server" style="display:none;"><asp:Label ID="lblDisclosureStatus" runat="server" Style="text-decoration: blink; color: Red; font-family: Arial; font-size: 18px; font-weight: bold" /></li>
+                <li id="itemBatchStatus" runat="server" style="display:none;"><asp:Label ID="lblBatchStatus" runat="server" Style="text-decoration: blink; color: Red; font-family: Arial; font-size: 18px; font-weight: bold" /></li>
+                <li id="itemPaymentStatus" runat="server" style="display:none;"><asp:Label ID="lblPaymentStatus" runat="server" Style="text-decoration: blink; color: Red; font-family: Arial; font-size: 18px; font-weight: bold" /></li>
+            </ul>
+     </fieldset>
+    
     <asp:Panel ID="pnlNewLocation" runat="server">
         <fieldset class="icePnlinner">
             <legend>New Location</legend>

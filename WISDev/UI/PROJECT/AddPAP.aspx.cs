@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.Services;
 using System.Data;
 using WIS_BusinessObjects;
 using WIS_BusinessLogic;
 using System.Drawing;
 using System.Text;
+using WIS;
 
 namespace WIS
 {
@@ -615,6 +618,15 @@ namespace WIS
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+
+        public void ReCache(int HHID)
+        {
+            PapDataCache PapCache = new PapDataCache();
+            //string householdID = Cache[PapCache.BuildCacheKey("HOUSEHOLD_ID")].ToString();
+            PapCache.ClearCache();
+            PapCache.CachePAPData(HHID.ToString());
+        }
+
         protected void btn_Save_Click(object sender, EventArgs e)
         {
             AddPAPBO objAddPAP = new AddPAPBO();
@@ -679,6 +691,9 @@ namespace WIS
                 objHousehold.UpdatedBy = Convert.ToInt32(Session["USER_ID"]);
 
                 message = (new AddPAPBLL()).UpdatePAP(objHousehold);
+
+                //Edwin: 20SEP2016 Reload Pap Details
+                ReCache(Convert.ToInt32(ViewState["PAPHHID_ID"]));
 
                 if (string.IsNullOrEmpty(message) || message == "" || message == "null")
                 {

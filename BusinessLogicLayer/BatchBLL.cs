@@ -178,10 +178,10 @@ namespace WIS_BusinessLogic
         /// <param name="UserId"></param>
         /// <param name="BatchNo"></param>
         /// <returns></returns>
-        public string CloseBatch(int HHID, int UserId,int BatchNo)
+        public string CloseBatch(int HHID, int UserId,int BatchNo,WorkFlowBO objWorkFlow)
         {
             oBatchDAL = new BatchDAL();
-            return oBatchDAL.CloseBatch(HHID, UserId, BatchNo);
+            return oBatchDAL.CloseBatch(HHID, UserId, BatchNo, objWorkFlow);
         }
         /// <summary>
         /// To decline batch by ID
