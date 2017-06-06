@@ -10,7 +10,8 @@
     <table align="center" border="0" width="100%" bgcolor="#e8e8e8">
         <tr>
             <td colspan="4" align="right" style="padding-top: 12px">
-                &nbsp;<input type="button" id="btnClose" class="icebutton" value="Close" onclick="window.close();" />
+                &nbsp;<%-- input type="button" id="btnClose" class="icebutton" value="Close" runat="server"  / --%>
+                <asp:Button ID="btnClose" CssClass="icebutton" runat="server" Text="Close" OnClick="btnClose_Click" />
             </td>
         </tr>
     </table>

@@ -8,15 +8,15 @@
     <link href="~/Styles/Roylecss.css" rel="stylesheet" type="text/css" />
 </head>
 <body style="padding: 0; margin: 0">
-    
+     <form id="form1" runat="server">
     <table align="center" border="0" width="100%" bgcolor="#e8e8e8">
         <tr>
             <td colspan="4" align="right" style="padding-top: 2px">
-                &nbsp;<input type="button" id="btnClose" class="icebutton" value="Close" onclick="window.close();" />
+                &nbsp;<asp:Button ID="btnClose" CssClass="icebutton" runat="server" Text="Close" OnClick="btnClose_Click" />
             </td>
         </tr>
     </table>
-    <form id="form1" runat="server">
+   
     <div>
         <CR:CrystalReportViewer ID="CrystalReportViewer1" runat="server" AutoDataBind="True"
             ToolPanelView="None" HasToggleGroupTreeButton="False" HasDrilldownTabs="False"

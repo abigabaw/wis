@@ -1,6 +1,7 @@
-﻿<%@ Page  Language="C#" MasterPageFile="~/SitePopup.Master" AutoEventWireup="true" 
-CodeBehind="PrintApproveReports.aspx.cs" Inherits="WIS.PrintApproveReports" %>
-<%@ Register assembly="CrystalDecisions.Web, Version=12.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" namespace="CrystalDecisions.Web" tagprefix="CR" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/SitePopup.Master" AutoEventWireup="true"
+    CodeBehind="PrintApproveReports.aspx.cs" Inherits="WIS.PrintApproveReports" %>
+
+<%@ Register Assembly="CrystalDecisions.Web, Version=12.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" Namespace="CrystalDecisions.Web" TagPrefix="CR" %>
 <%@ MasterType VirtualPath="~/SitePopup.Master" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -10,48 +11,48 @@ CodeBehind="PrintApproveReports.aspx.cs" Inherits="WIS.PrintApproveReports" %>
             if (opener) {
                 window.opener.location.reload();
 
-             }
+            }
         }
 
         function AfterPrint() {
             alert('Document printed successfully.');
             window.close();
         }
-</script>
-<div>
-     <CR:CrystalReportViewer ID="CrystalReportViewer1" runat="server" 
-            AutoDataBind="True" 
+    </script>
+    <div>
+        <td>
+            <%--input type="button" id="btnClose" class="icebutton" value="Close" onclick="window.close();" runat=server/ --%>
+            <asp:Button ID="btnClose" CssClass="icebutton" runat="server" Text="Close" OnClick="btnClose_Click" />
+        </td>
+    </div>
+    <br />
+    <div>
+        <CR:CrystalReportViewer ID="CrystalReportViewer1" runat="server"
+            AutoDataBind="True"
             Width="861px"
             ToolPanelView="None"
             HasToggleGroupTreeButton="False"
             HasDrilldownTabs="False"
             HasDrillUpButton="False"
-             EnableParameterPrompt="false"
-              ReuseParameterValuesOnRefresh="true" 
-                    GroupTreeImagesFolderUrl="" Height="1158px" 
-                    ToolbarImagesFolderUrl="" 
-                    ToolPanelWidth="200px"
-                     ondrilldownsubreport="CrystalReportViewer1_DrillDownSubreport" />
+            EnableParameterPrompt="false"
+            ReuseParameterValuesOnRefresh="true"
+            GroupTreeImagesFolderUrl="" Height="1158px"
+            ToolbarImagesFolderUrl=""
+            ToolPanelWidth="200px"
+            OnDrillDownSubreport="CrystalReportViewer1_DrillDownSubreport" />
 
-</div>
-<div>
-  <td>
-       <input type="button" id="btnClose" class="icebutton" value="Close" onclick="window.close();" runat=server/>
-    </td>
- 
-       
- 
-</div>
- <asp:Panel ID="PnlPrintResion" Visible="false" runat="server">
+    </div>
+
+    <asp:Panel ID="PnlPrintResion" Visible="false" runat="server">
         <table>
             <tr>
                 <td>
                     <asp:Label ID="lblPrintcomments" runat="server" Text="Print Comments" CssClass="iceLable" />&nbsp; <span class="mandatory">*</span>
                 </td>
                 <td>
-                    <asp:TextBox ID="TxtPrintcomments" runat="server" CssClass="iceTextAeralarge" TextMode="MultiLine" />                    
-                   <asp:RequiredFieldValidator ID="rfvUnfreezeComments" ControlToValidate="TxtPrintcomments"
-                  ErrorMessage="Enter Comments" Display="None" ValidationGroup="Unfreeze" runat="server"> </asp:RequiredFieldValidator>
+                    <asp:TextBox ID="TxtPrintcomments" runat="server" CssClass="iceTextAeralarge" TextMode="MultiLine" />
+                    <asp:RequiredFieldValidator ID="rfvUnfreezeComments" ControlToValidate="TxtPrintcomments"
+                        ErrorMessage="Enter Comments" Display="None" ValidationGroup="Unfreeze" runat="server"> </asp:RequiredFieldValidator>
                 </td>
             </tr>
             <tr>
@@ -62,7 +63,7 @@ CodeBehind="PrintApproveReports.aspx.cs" Inherits="WIS.PrintApproveReports" %>
                         ShowMessageBox="true" ShowSummary="false" ValidationGroup="Unfreeze" runat="server" />
                 </td>
                 <td>
-                    <input type="button" id="btnSaveClose" class="icebutton" value="Close" onclick="window.close();" runat=server/>
+                    <input type="button" id="btnSaveClose" class="icebutton" value="Close" onclick="window.close();" runat="server" />
                 </td>
             </tr>
         </table>

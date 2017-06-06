@@ -237,7 +237,7 @@
             var left = (screen.width - 800) / 2;
             var top = (screen.height - 500) / 4;
             <%--  open('../PROJECT/ViewPAPMap.aspx?HHID=' + HHID, 'routeMapWin', 'width=800px,height=500px,top=' + top + ', left=' + left + ',scrollbars=1'); --%>
-            open('https://gisclient.uetcl.com/WIS/?query=Mirama%20PAPs,HHID,' + HHID, 'width=800px,height=500px,top=' + top + ', left=' + left + ',scrollbars=1');
+            open('https://gisclient.uetcl.com/WIS/?query=Parcels,HHID,' + HHID, 'width=800px,height=500px,top=' + top + ', left=' + left + ',scrollbars=1');
         }
 
         spnpnl = document.getElementById('<%=p1Grid.ClientID%>');

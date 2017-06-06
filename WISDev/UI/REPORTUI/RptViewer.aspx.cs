@@ -15,7 +15,7 @@ namespace WIS
     public partial class RptViewer : System.Web.UI.Page
     {
         ConnectionInfo ConnInfo = new ConnectionInfo();
-        ReportDocument myRpt = null;
+        ReportDocument myRpt = new ReportDocument();
         string RPT_SOURCE = "";
 
         /// <summary>
@@ -337,6 +337,21 @@ namespace WIS
             }
         }
 
+        //Start: Edwin Baguma (26 May, 2017) to properly dispose of report objects
+        private void DisposePreviousReport()
+        {
+            try
+            {
+                myRpt.Close();
+                myRpt.Dispose();
+                GC.Collect();
+                CrystalReportViewer1.Dispose();
+                //GC.WaitForPendingFinalizers();
+            }
+            catch { }
+        }
+        //End: Edwin Baguma
+
         private void LoadBatchingHistory()
         {
             string ProjectID = Request.QueryString["ProjectID"];
@@ -348,7 +363,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "RPT_BATCH_HISTORY.rpt");
 
@@ -399,7 +414,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "RPT_BATCH_PRINTOUT.rpt");
 
@@ -456,7 +471,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + ReportName);
 
@@ -514,7 +529,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "RPT_PAYRQ_COMMENTS.rpt");
 
@@ -565,7 +580,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "RPT_PAYVR_STATUS.rpt");
 
@@ -615,7 +630,7 @@ namespace WIS
                 CrystalReportViewer1.HasExportButton = false;
                 CrystalReportViewer1.HasPrintButton = false;
             }
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "LIVELIHOODAFTER.rpt");
 
@@ -698,7 +713,7 @@ namespace WIS
                 CrystalReportViewer1.HasExportButton = false;
                 CrystalReportViewer1.HasPrintButton = false;
             }
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "ProCompensation.rpt");
 
@@ -765,7 +780,7 @@ namespace WIS
             }
 
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "PAPStatusPieChart.rpt");
 
@@ -860,7 +875,7 @@ namespace WIS
             }
 
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             // myRpt.Load(RPT_SOURCE + "ProjectwisePAPStatusChart.rpt");
 
@@ -966,7 +981,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
             if (rpttype == "LOSNEW")
             {
                 myRpt.Load(RPT_SOURCE + "Land OwnershipStatistics.rpt");
@@ -1118,7 +1133,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
             myRpt.Load(RPT_SOURCE + "FundRequestChange.rpt");
 
             myRpt.SetDatabaseLogon(ConnInfo.UserID, ConnInfo.Password, ConnInfo.ServerName, ConnInfo.DatabaseName);
@@ -1228,7 +1243,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "PersonalIdentificationReport.rpt");
 
@@ -1344,7 +1359,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "PAPChildrenCount.rpt");
 
@@ -1404,7 +1419,7 @@ namespace WIS
             string ProjectTodate = Request.QueryString["ProjectTodate"];
             string Accountcode = Request.QueryString["accontcode"];
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "ProjectExpenseReport.rpt");
 
@@ -1495,7 +1510,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "LandInkindDelivered.rpt");
 
@@ -1580,7 +1595,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "CompFinBatchSummary.rpt");
 
@@ -1694,7 +1709,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "CompFinDetails.rpt");
 
@@ -1782,7 +1797,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "HouseInkindPending.rpt");
 
@@ -1863,7 +1878,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "LandInKindPending.rpt");
 
@@ -1942,7 +1957,7 @@ namespace WIS
                 CrystalReportViewer1.HasExportButton = false;
                 CrystalReportViewer1.HasPrintButton = false;
             }
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "CashCompensationPending.rpt");
 
@@ -2022,7 +2037,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
             if (Status == "OPT")
                 myRpt.Load(RPT_SOURCE + "NoPackagesClosed.rpt");
             else
@@ -2090,7 +2105,7 @@ namespace WIS
                 CrystalReportViewer1.HasExportButton = false;
                 CrystalReportViewer1.HasPrintButton = false;
             }
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "HouseInKindDelivered.rpt");
 
@@ -2169,7 +2184,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "CompensationDelivered.rpt");
 
@@ -2250,7 +2265,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "PackagesPrinted.rpt");
 
@@ -2329,7 +2344,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "RPT_PKREV_STATUS.rpt");
 
@@ -2383,7 +2398,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "RPT_PAYRQ_STATUS.rpt");
 
@@ -2435,7 +2450,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "OptionDetails.rpt");
 
@@ -2517,7 +2532,7 @@ namespace WIS
                 CrystalReportViewer1.HasExportButton = false;
                 CrystalReportViewer1.HasPrintButton = false;
             }
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             if (ReportType == "OPTS")
                 myRpt.Load(RPT_SOURCE + "OptionsSummaryrpt.rpt");
@@ -2607,7 +2622,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "BatchStatus.rpt");
 
@@ -2693,7 +2708,7 @@ namespace WIS
             }
 
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
             myRpt.Load(RPT_SOURCE + "MonitoringResults&Evaluations.rpt");
             myRpt.SetDatabaseLogon(ConnInfo.UserID, ConnInfo.Password, ConnInfo.ServerName, ConnInfo.DatabaseName);
 
@@ -2759,7 +2774,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             if (rptCode == "ACTCOUNT")
                 myRpt.Load(RPT_SOURCE + "PKGACCEPTANCECOUNT.rpt");
@@ -2847,7 +2862,7 @@ namespace WIS
                 CrystalReportViewer1.HasExportButton = false;
                 CrystalReportViewer1.HasPrintButton = false;
             }
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
             if (rptCode == "GPC")
                 myRpt.Load(RPT_SOURCE + "GeneralPAPCategory.rpt");
             else
@@ -2960,7 +2975,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             if (rptCode == "RIPRF")
                 myRpt.Load(RPT_SOURCE + "FundProgress.rpt");
@@ -3063,7 +3078,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             if (ReportType == "APP")
                 myRpt.Load(RPT_SOURCE + "Approvals.rpt");
@@ -3178,7 +3193,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "AuditTrail.rpt");
 
@@ -3278,7 +3293,7 @@ namespace WIS
                 CrystalReportViewer1.HasExportButton = false;
                 CrystalReportViewer1.HasPrintButton = false;
             }
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "ProjectReport.rpt");
 
@@ -3382,7 +3397,7 @@ namespace WIS
             }
 
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "BudjetEstimation.rpt");
 
@@ -3452,7 +3467,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             if (ReportType == "CMPPERM")
                 myRpt.Load(RPT_SOURCE + "CMPPermanentStr.rpt");
@@ -3592,7 +3607,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "Survey.rpt");
 
@@ -3706,7 +3721,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "CompensationBeneficiary.rpt");
 
@@ -3819,7 +3834,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             string rptCode = Request.QueryString["rptCode"];
             if (rptCode == "DRTGRI")
@@ -3937,7 +3952,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "Valuation.rpt");
 
@@ -4054,7 +4069,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "CulturalProperty.rpt");
 
@@ -4167,7 +4182,7 @@ namespace WIS
             }
 
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "PublicConsultation.rpt");
 
@@ -4269,7 +4284,7 @@ namespace WIS
             }
 
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "Compensation.rpt");
 
@@ -4343,7 +4358,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "Legal Case Tracking.rpt");
 
@@ -4458,7 +4473,7 @@ namespace WIS
                 CrystalReportViewer1.HasExportButton = false;
                 CrystalReportViewer1.HasPrintButton = false;
             }
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "Statistics.rpt");
 
@@ -4586,7 +4601,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "DailyProjectStatus.rpt");
 
@@ -4710,7 +4725,7 @@ namespace WIS
             }
 
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "MonthlyProjectExpenditure.rpt");
 
@@ -4824,7 +4839,7 @@ namespace WIS
                 CrystalReportViewer1.HasPrintButton = false;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + "LiveliHoodSupportRPT.rpt");
 
@@ -4933,7 +4948,7 @@ namespace WIS
         /// </summary>
         private void SocioEconomicQuestionnaire()
         {
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
             myRpt.Load(RPT_SOURCE + "SocioQuestionnaire.rpt");
 
             myRpt.SetDatabaseLogon(ConnInfo.UserID, ConnInfo.Password, ConnInfo.ServerName, ConnInfo.DatabaseName);
@@ -4975,7 +4990,7 @@ namespace WIS
         /// </summary>
         private void SurveyQuestionnaire()
         {
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
             myRpt.Load(RPT_SOURCE + "SurveyQuestionnaire.rpt");
 
             myRpt.SetDatabaseLogon(ConnInfo.UserID, ConnInfo.Password, ConnInfo.ServerName, ConnInfo.DatabaseName);
@@ -5017,7 +5032,7 @@ namespace WIS
         /// </summary>
         private void ValuationQuestionnaire()
         {
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
             myRpt.Load(RPT_SOURCE + "ValuationQuestionaries.rpt");
 
             myRpt.SetDatabaseLogon(ConnInfo.UserID, ConnInfo.Password, ConnInfo.ServerName, ConnInfo.DatabaseName);
@@ -5055,5 +5070,10 @@ namespace WIS
             CrystalReportViewer1.RefreshReport();
         }
 
+        protected void btnClose_Click(object sender, EventArgs e)
+        {
+            DisposePreviousReport();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "CloseWindow", "window.close()", true);
+        }
     }
 }
