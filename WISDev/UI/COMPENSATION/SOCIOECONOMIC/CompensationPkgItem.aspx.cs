@@ -16,7 +16,7 @@ namespace WIS
     {
         #region Connection
         ConnectionInfo ConnInfo = new ConnectionInfo();
-        ReportDocument myRpt = null;
+        ReportDocument myRpt = new ReportDocument();
         string RPT_SOURCE = "";
         #endregion
 
@@ -24,17 +24,18 @@ namespace WIS
         #region PageUnload
         protected void Page_Unload(object sender, EventArgs e)
         {
-            if (myRpt != null)
+           if (myRpt != null)
             {
                 try
                 {
                     myRpt.Close();
                     myRpt.Dispose();
                     GC.Collect();
+                    CrystalReportViewer1.Dispose();
                     GC.WaitForPendingFinalizers();
                 }
                 catch { }
-            }
+           }
         }
         #endregion
 
@@ -350,6 +351,22 @@ namespace WIS
         #region Methods
         // Parameters pass in these methods for different Reports
         // All there methods are user to Load reports
+
+        //Start: Edwin Baguma (24 May, 2017) For disposing of report objects
+        private void DisposePreviousReport()
+        {
+            try
+            {
+                myRpt.Close();
+                myRpt.Dispose();
+                GC.Collect();
+                CrystalReportViewer1.Dispose();
+                //GC.WaitForPendingFinalizers();
+            }
+            catch { }
+        }
+        //End: Edwin Baguma
+
         private void Consent39(string docCode)
         {
             string rptName = "";
@@ -368,7 +385,8 @@ namespace WIS
             string ProjectID = "0";
             if (Session["PROJECT_ID"] != null)
                 ProjectID = Session["PROJECT_ID"].ToString();
-            myRpt = new ReportDocument();
+
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + rptName);//"PKGConsent39.rpt"
 
@@ -448,7 +466,8 @@ namespace WIS
             string ProjectID = "0";
             if (Session["PROJECT_ID"] != null)
                 ProjectID = Session["PROJECT_ID"].ToString();
-            myRpt = new ReportDocument();
+
+           // myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + rptName);//"PKGDefinitions.rpt"
 
@@ -520,7 +539,8 @@ namespace WIS
             string ProjectID = "0";
             if (Session["PROJECT_ID"] != null)
                 ProjectID = Session["PROJECT_ID"].ToString();
-            myRpt = new ReportDocument();
+
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + rptName);//"PKGConsent.rpt"
 
@@ -572,7 +592,8 @@ namespace WIS
             if (Session["PROJECT_ID"] != null)
                 ProjectID = Session["PROJECT_ID"].ToString();
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
+
             if (docCode == "RCASH3C")
             {
                 myRpt.Load(RPT_SOURCE + "PKGResidentialStructuresGroup3C.rpt");
@@ -647,12 +668,12 @@ namespace WIS
                 case "LND3C":
                     rptName = "PKGLandGroup3C.rpt";
                     break;
-                //case "DEL1A":
-                //    rptName = "PKGCompensationChecklistGroup1A.rpt";
-                //    break;
-                //default:
-                //    rptName = "PKGCompensationChecklistGroup1.rpt";
-                //    break;
+                    //case "DEL1A":
+                    //    rptName = "PKGCompensationChecklistGroup1A.rpt";
+                    //    break;
+                    //default:
+                    //    rptName = "PKGCompensationChecklistGroup1.rpt";
+                    //    break;
             }
 
             string ProjectID = "0";
@@ -661,11 +682,14 @@ namespace WIS
 
             //CrystalReportViewer1.ReportSource = ResolveUrl("~/REPORTS/PKGLandCompensationCash.rpt");
 
-            myRpt = new ReportDocument();
+
+
+           // myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + rptName);// "PKGLandCompensationCash.rpt"
 
             myRpt.SetDatabaseLogon(ConnInfo.UserID, ConnInfo.Password, ConnInfo.ServerName, ConnInfo.DatabaseName);
+
 
             foreach (CrystalDecisions.CrystalReports.Engine.Table myTable in myRpt.Database.Tables)
             {
@@ -716,6 +740,8 @@ namespace WIS
 
 
             CrystalReportViewer1.RefreshReport();
+
+
         }
 
         private void UETCLBuildingMaterialOffered(string docCode)
@@ -737,7 +763,7 @@ namespace WIS
                 ProjectID = Session["PROJECT_ID"].ToString();
             //CrystalReportViewer1.ReportSource = ResolveUrl("~/REPORTS/PkgBuildingMaterialOffered.rpt");
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + rptName);//"PkgBuildingMaterialOffered.rpt"
 
@@ -821,7 +847,7 @@ namespace WIS
             if (Session["PROJECT_ID"] != null)
                 ProjectID = Session["PROJECT_ID"].ToString();
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + rptName);//"PKGResidentialStructureCompensation.rpt"
 
@@ -887,7 +913,8 @@ namespace WIS
                     rptName = "PKGPowerofAttorneyGroup3B.rpt";
                     break;
             }
-            myRpt = new ReportDocument();
+
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + rptName);//"PKGPowersOfAttorney.rpt"
 
@@ -956,7 +983,7 @@ namespace WIS
             if (Session["PROJECT_ID"] != null)
                 ProjectID = Session["PROJECT_ID"].ToString();
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + rptName);//"PKGCompensationFixture.rpt"
 
@@ -1039,7 +1066,8 @@ namespace WIS
             string ProjectID = "0";
             if (Session["PROJECT_ID"] != null)
                 ProjectID = Session["PROJECT_ID"].ToString();
-            myRpt = new ReportDocument();
+
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + rptName); //"PKGCropCompensation.rpt"
 
@@ -1124,7 +1152,8 @@ namespace WIS
             }
 
             //CrystalReportViewer1.ReportSource = ResolveUrl("~/REPORTS/" + rptName);
-            myRpt = new ReportDocument();
+
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + rptName);
 
@@ -1171,7 +1200,7 @@ namespace WIS
             if (Session["PROJECT_ID"] != null)
                 ProjectID = Session["PROJECT_ID"].ToString();
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             switch (docCode)
             {
@@ -1271,7 +1300,8 @@ namespace WIS
             string ProjectID = "0";
             if (Session["PROJECT_ID"] != null)
                 ProjectID = Session["PROJECT_ID"].ToString();
-            myRpt = new ReportDocument();
+
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + rptName);//"PKGDamagedCropCompensation.rpt"
 
@@ -1355,7 +1385,7 @@ namespace WIS
                     break;
             }
 
-            myRpt = new ReportDocument();
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + rptName);//"PKGPersIdentification.rpt"
 
@@ -1438,7 +1468,8 @@ namespace WIS
             string ProjectID = "0";
             if (Session["PROJECT_ID"] != null)
                 ProjectID = Session["PROJECT_ID"].ToString();
-            myRpt = new ReportDocument();
+
+            //myRpt = new ReportDocument();
 
             myRpt.Load(RPT_SOURCE + rptName);//"PkgPaymentACKNEW.rpt"
 
@@ -1790,7 +1821,11 @@ namespace WIS
             e.Handled = true;
         }
 
-       
+        protected void btnClose_Click(object sender, EventArgs e)
+        {
+            DisposePreviousReport();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "CloseWindow", "window.close()", true);
+        }
     }
 }
 
