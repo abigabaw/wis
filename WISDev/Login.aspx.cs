@@ -103,7 +103,7 @@ namespace WIS
                         }
                         else
                         {
-                            lblMsgSave.Text = "Access Denied. Contact WIS Admin";
+                            lblMsgSave.Text = "Access Denied / Wrong Credentials. Contact WIS Admin";
                         }
                     }
 
@@ -112,7 +112,7 @@ namespace WIS
                 }
                 catch (Exception ee)
                 {
-                    lblMsgSave.Text = "Wrong Credentials. Contact WIS Admin";
+                    lblMsgSave.Text = "Error Occurred. Contact WIS Admin";
                 }
                 finally
                 {
@@ -129,7 +129,8 @@ namespace WIS
         {
             if (domainName == "UETCL")
             {
-                return true;
+                Boolean found = false;
+                return found = true;
             }
             else
             {
