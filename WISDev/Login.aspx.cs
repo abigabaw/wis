@@ -46,11 +46,11 @@ namespace WIS
 
             if (UsernameTextBox.Text == string.Empty)
             {
-                lblMsgSave.Text = "Username mismatch";
+                lblMsgSave.Text = "Username can't be blank";
             }
             else if (PasswordTextBox.Text == string.Empty)
             {
-                lblMsgSave.Text = "Password mismatch";
+                lblMsgSave.Text = "Password can't be blank";
             }
             else
             {
@@ -71,7 +71,8 @@ namespace WIS
 
                         LoginBO objLogin = objLoginBLL.Authentication(inputUsername, inputPassword);
 
-                        if (objLogin.USERNAME != "NONE")
+                        //if (objLogin.USERNAME != "NONE")
+                        if (!string.IsNullOrEmpty(objLogin.USERNAME))
                         {
                             // if (inputUsername.ToLower() == objLogin.USERNAME.ToLower())
                             
@@ -101,10 +102,11 @@ namespace WIS
                                 Response.Redirect("Default.aspx");
                             // else { lblMsgSave.Text = "Wrong Credentials"; }
                         }
-                        else
-                        {
-                            lblMsgSave.Text = "Access Denied. Contact WIS Admin";
-                        }
+                        
+                    }
+                    else
+                    {
+                        lblMsgSave.Text = "Wrong Credentials. Contact WIS Admin";
                     }
 
                     // else { lblMsgSave.Text = "Wrong Credentials. Contact the Administrator"; } 
@@ -112,7 +114,7 @@ namespace WIS
                 }
                 catch (Exception ee)
                 {
-                    lblMsgSave.Text = "Wrong Credentials. Contact WIS Admin";
+                    lblMsgSave.Text = "An error occured. Contact WIS Admin";
                 }
                 finally
                 {
