@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Data;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Oracle.DataAccess.Client;
+using System.Configuration;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -18,30 +16,30 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public DSH_RecentPAPSList GetRecentPAPSByUser(int userID)
         {
-            OracleConnection cnn = new OracleConnection(con);
+            SqlConnection cnn = new SqlConnection(ConfigurationManager.ConnectionStrings["UETCL_WIS_SQL"].ToString());
             DSH_RecentPAPSBO objRecentPAPS = null;
 
             DSH_RecentPAPSList RecentPAPS = new DSH_RecentPAPSList();
 
-            OracleCommand cmd = new OracleCommand("USP_DSH_RECENT_PAPS", cnn);
+            SqlCommand cmd = new SqlCommand("USP_DSH_RECENT_PAPS", cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("USERID_", userID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("USERID_", userID);
+            //cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
                     objRecentPAPS = new DSH_RecentPAPSBO();
 
                     if (!dr.IsDBNull(dr.GetOrdinal("ProjectCode"))) objRecentPAPS.ProjectCode = dr.GetString(dr.GetOrdinal("ProjectCode"));
-                    if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objRecentPAPS.HouseholdID = dr.GetInt32(dr.GetOrdinal("HHID"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objRecentPAPS.HouseholdID = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("HHID")));
                     if (!dr.IsDBNull(dr.GetOrdinal("PAPName"))) objRecentPAPS.PAPName = dr.GetString(dr.GetOrdinal("PAPName"));
-                    if (!dr.IsDBNull(dr.GetOrdinal("ProjectID"))) objRecentPAPS.ProjectID = dr.GetInt32(dr.GetOrdinal("ProjectID"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("ProjectID"))) objRecentPAPS.ProjectID = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("ProjectID")));
 
                     RecentPAPS.Add(objRecentPAPS);
                 }
@@ -62,28 +60,28 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public DSH_PAPStatusList GetProjects(int userID)
         {
-            OracleConnection cnn = new OracleConnection(con);
+            SqlConnection cnn = new SqlConnection(ConfigurationManager.ConnectionStrings["UETCL_WIS_SQL"].ToString());
             DSH_PAPStatusBO objPAPStatus = null;
 
             DSH_PAPStatusList PAPStatusList = new DSH_PAPStatusList();
 
-            OracleCommand cmd = new OracleCommand("USP_DSH_GET_PROJECTSFORHOME", cnn);
+            SqlCommand cmd = new SqlCommand("USP_DSH_GET_PROJECTSFORHOME", cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("USERID_", userID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("USERID_", userID);
+            // cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
                     objPAPStatus = new DSH_PAPStatusBO();
                     if (!dr.IsDBNull(dr.GetOrdinal("ProjectName"))) objPAPStatus.ProjectName = dr.GetString(dr.GetOrdinal("ProjectName"));
                     if (!dr.IsDBNull(dr.GetOrdinal("ProjectCode"))) objPAPStatus.ProjectCode = dr.GetString(dr.GetOrdinal("ProjectCode"));
-                    if (!dr.IsDBNull(dr.GetOrdinal("ProjectID"))) objPAPStatus.ProjectId = dr.GetInt32(dr.GetOrdinal("ProjectID"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("ProjectID"))) objPAPStatus.ProjectId = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("ProjectID")));
 
                     PAPStatusList.Add(objPAPStatus);
                 }
@@ -104,28 +102,28 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public DSH_PAPStatusList GetRecentProject(int userID)
         {
-            OracleConnection cnn = new OracleConnection(con);
+            SqlConnection cnn = new SqlConnection(ConfigurationManager.ConnectionStrings["UETCL_WIS_SQL"].ToString());
             DSH_PAPStatusBO objPAPStatus = null;
 
             DSH_PAPStatusList PAPStatusList = new DSH_PAPStatusList();
 
-            OracleCommand cmd = new OracleCommand("USP_DSH_GET_RECENTPROJECT", cnn);
+            SqlCommand cmd = new SqlCommand("USP_DSH_GET_RECENTPROJECT", cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("USERID_", userID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("USERID_", userID);
+            // cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
                     objPAPStatus = new DSH_PAPStatusBO();
                     if (!dr.IsDBNull(dr.GetOrdinal("ProjectName"))) objPAPStatus.ProjectName = dr.GetString(dr.GetOrdinal("ProjectName"));
                     if (!dr.IsDBNull(dr.GetOrdinal("ProjectCode"))) objPAPStatus.ProjectCode = dr.GetString(dr.GetOrdinal("ProjectCode"));
-                    if (!dr.IsDBNull(dr.GetOrdinal("ProjectID"))) objPAPStatus.ProjectId = dr.GetInt32(dr.GetOrdinal("ProjectID"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("ProjectID"))) objPAPStatus.ProjectId = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("ProjectID")));
 
                     PAPStatusList.Add(objPAPStatus);
                 }
@@ -146,30 +144,30 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public DSH_PAPStatusList GetProjectwisePAPStatus(int PROJECTID)
         {
-            OracleConnection cnn = new OracleConnection(con);
+            SqlConnection cnn = new SqlConnection(ConfigurationManager.ConnectionStrings["UETCL_WIS_SQL"].ToString());
             DSH_PAPStatusBO objPAPStatus = null;
 
             DSH_PAPStatusList PAPStatusList = new DSH_PAPStatusList();
 
-            OracleCommand cmd = new OracleCommand("USP_DSH_PAPSTATUS", cnn);
+            SqlCommand cmd = new SqlCommand("USP_DSH_PAPSTATUS", cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("PROJECTIDIN", PROJECTID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PROJECTIDIN", PROJECTID);
+            // cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
                     objPAPStatus = new DSH_PAPStatusBO();
                     if (!dr.IsDBNull(dr.GetOrdinal("PROJECTNAME"))) objPAPStatus.ProjectName = dr.GetString(dr.GetOrdinal("PROJECTNAME"));
                     if (!dr.IsDBNull(dr.GetOrdinal("ProjectCode"))) objPAPStatus.ProjectCode = dr.GetString(dr.GetOrdinal("ProjectCode"));
-                    if (!dr.IsDBNull(dr.GetOrdinal("PAPCount"))) objPAPStatus.PAPCount = dr.GetInt32(dr.GetOrdinal("PAPCount"));
-                    if (!dr.IsDBNull(dr.GetOrdinal("PAPPaidCount"))) objPAPStatus.PAPPaidCount = dr.GetInt32(dr.GetOrdinal("PAPPaidCount"));
-                    if (!dr.IsDBNull(dr.GetOrdinal("PAPPendingPayCount"))) objPAPStatus.PAPPendingPayCount = dr.GetInt32(dr.GetOrdinal("PAPPendingPayCount"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("PAPCount"))) objPAPStatus.PAPCount = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("PAPCount")));
+                    if (!dr.IsDBNull(dr.GetOrdinal("PAPPaidCount"))) objPAPStatus.PAPPaidCount = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("PAPPaidCount")));
+                    if (!dr.IsDBNull(dr.GetOrdinal("PAPPendingPayCount"))) objPAPStatus.PAPPendingPayCount = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("PAPPendingPayCount")));
 
                     PAPStatusList.Add(objPAPStatus);
                 }
@@ -190,20 +188,20 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public DSH_PAPStatusList GetProjectwisePAPStatusForPie()
         {
-            OracleConnection cnn = new OracleConnection(con);
+            SqlConnection cnn = new SqlConnection(ConfigurationManager.ConnectionStrings["UETCL_WIS_SQL"].ToString());
             DSH_PAPStatusBO objPAPStatus = null;
 
             DSH_PAPStatusList PAPStatusList = new DSH_PAPStatusList();
 
-            OracleCommand cmd = new OracleCommand("USP_DSH_PAPSTATUSFORPIEHOME", cnn);
+            SqlCommand cmd = new SqlCommand("USP_DSH_PAPSTATUSFORPIEHOME", cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -231,21 +229,21 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public DSH_PAPStatusList GetProjectwisePAPBudgetForSpline(int PROJECTID)
         {
-            OracleConnection cnn = new OracleConnection(con);
+            SqlConnection cnn = new SqlConnection(ConfigurationManager.ConnectionStrings["UETCL_WIS_SQL"].ToString());
             DSH_PAPStatusBO objPAPStatus = null;
 
             DSH_PAPStatusList PAPStatusList = new DSH_PAPStatusList();
 
-            OracleCommand cmd = new OracleCommand("USP_DSH_PAPBUDGET", cnn);
+            SqlCommand cmd = new SqlCommand("USP_DSH_PAPBUDGET", cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("PROJECTIDIN", PROJECTID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PROJECTIDIN", PROJECTID);
+            // cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {

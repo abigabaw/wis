@@ -198,8 +198,8 @@ namespace WIS
         private void DeleteUser(int userID)
         {
             string message = string.Empty;
-            try
-            {
+           // try
+           // {
                 UserBLL objUserBLL = new UserBLL();
 
                 message = objUserBLL.DeleteUser(userID);
@@ -213,11 +213,11 @@ namespace WIS
                 {
                     ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Added", "alert('" + message + "');", true);
                 }
-            }
-            catch (Exception ex)
-            {                
-                throw ex;
-            }
+           // }
+           // catch (Exception ex)
+          //  {                
+          //      throw ex;
+          //  }
         }
 
         /// <summary>
@@ -226,8 +226,8 @@ namespace WIS
         protected void IsObsolete_CheckedChanged(Object sender, EventArgs e)
         {
             string message = string.Empty;
-            try
-            {
+            //try
+           // {
                 CheckBox chk = (CheckBox)sender;
                 GridViewRow gr = (GridViewRow)chk.Parent.Parent;
 
@@ -242,11 +242,11 @@ namespace WIS
                 BindGrid();
                 if (message != "")
                     ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Added", "alert('" + message + "');", true);
-            }
+           /* }
             catch (Exception ex)
             {
                 throw ex;
-            }
+            }/8*/
         }
 
         #region Clear Button & Methods

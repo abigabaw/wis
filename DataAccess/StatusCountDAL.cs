@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -9,19 +9,19 @@ namespace WIS_DataAccess
     {
         public StatusCountBO GetApprPending(int UserID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_PROJ_SHA_MY_PEND";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ASSIGNTOID_", UserID);
-            cmd.Parameters.Add("SP_RECORDSET", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ASSIGNTOID_", UserID);
+           // cmd.Parameters.AddWithValue("SP_RECORDSET", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             StatusCountBO StatusCountBO = null;
             StatusCountBO = new StatusCountBO();
 
@@ -40,19 +40,19 @@ namespace WIS_DataAccess
 
         public static StatusCountBO GetClarifyPending(int UserID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_GET_CLARIFY_STATUS_PEND";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("USERID_", UserID);
-            cmd.Parameters.Add("SP_RECORDSET", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("USERID_", UserID);
+          //  cmd.Parameters.AddWithValue("SP_RECORDSET", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             StatusCountBO StatusCountBO = null;
             StatusCountBO = new StatusCountBO();
 

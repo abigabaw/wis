@@ -1,33 +1,41 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
-
-
+using System.IO;
 
 namespace WIS_DataAccess
 {
     public class RolePrivilegesDAL
     {
+        public static void Log(string logMessage, TextWriter w)
+        {
+          //  w.Write("\r\nLog Entry : ");
+            w.WriteLine("{0} {1} {2} :", DateTime.Now.ToLongTimeString(),
+                DateTime.Now.ToLongDateString(), logMessage);
+           // w.WriteLine("  :");
+         //   w.WriteLine("  :{0}", logMessage);
+         //   w.WriteLine("-------------------------------");
+        }
 
         //public Role Privileges List Get Role Privileges()
         public DataTable GetRolePrivileges()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             
             string proc = "USP_MST_GET_ROLEPRIVILAGE";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
-            OracleDataAdapter oadp = new OracleDataAdapter(cmd);
+         //   cmd.Parameters.AddWithValue("Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+            SqlDataAdapter oadp = new SqlDataAdapter(cmd);
             DataSet dsRolePriv = new DataSet();
 
             oadp.Fill(dsRolePriv);
 
             //cmd.Connection.Open();
-            //OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            //SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             //RolePrivilegesBO objRolePrivileges = null;
             //RolePrivilegesList RolePrivilegesList = new RolePrivilegesList();
 
@@ -58,19 +66,19 @@ namespace WIS_DataAccess
             
             int Result = 0;
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_INS_ROLE_PRIV", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_INS_ROLE_PRIV", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
           
                 try
                 {
-                      dcmd.Parameters.Add("USERID_", RolePrivilegesList.UserID);
-                        dcmd.Parameters.Add("MENUID_", RolePrivilegesList.MenuID);
-                        dcmd.Parameters.Add("VIEWPRIVILEGE_", RolePrivilegesList.CanView);
-                        dcmd.Parameters.Add("UPDATEPRIVILEGE_", RolePrivilegesList.CanUpdate);
-                        dcmd.Parameters.Add("CREATEDBY_", RolePrivilegesList.UpdatedBy);
+                      dcmd.Parameters.AddWithValue("USERID_", RolePrivilegesList.UserID);
+                        dcmd.Parameters.AddWithValue("MENUID_", RolePrivilegesList.MenuID);
+                        dcmd.Parameters.AddWithValue("VIEWPRIVILEGE_", RolePrivilegesList.CanView);
+                        dcmd.Parameters.AddWithValue("UPDATEPRIVILEGE_", RolePrivilegesList.CanUpdate);
+                        dcmd.Parameters.AddWithValue("CREATEDBY_", RolePrivilegesList.UpdatedBy);
 
                         Result = dcmd.ExecuteNonQuery();
                     }
@@ -112,19 +120,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public RolePrivilegesList GetROLEPRIId(int UserID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_ROLEBYUSERID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("USERID_", UserID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("USERID_", UserID);
+           // cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             RolePrivilegesBO RolePrivilegesObj = null;
             RolePrivilegesList RolePrivilegesList = new RolePrivilegesList();
             
@@ -132,13 +140,18 @@ namespace WIS_DataAccess
             {
                 RolePrivilegesObj = new RolePrivilegesBO();
 
-                if (!dr.IsDBNull(dr.GetOrdinal("USERID"))) RolePrivilegesObj.UserID = dr.GetInt32(dr.GetOrdinal("USERID"));
-                if (!dr.IsDBNull(dr.GetOrdinal("MENUID"))) RolePrivilegesObj.MenuID = dr.GetInt32(dr.GetOrdinal("MENUID"));
-                if (!dr.IsDBNull(dr.GetOrdinal("MENULEVEL"))) RolePrivilegesObj.MenuLevel = dr.GetInt32(dr.GetOrdinal("MENULEVEL"));
+                using (StreamWriter w = File.AppendText("c:/WIS/log.txt"))
+                {
+                   // Log("Test1", w);
+                    Log(dr.GetDataTypeName(dr.GetOrdinal("CHILDMENUCOUNT")), w);
+                }
+                if (!dr.IsDBNull(dr.GetOrdinal("USERID"))) RolePrivilegesObj.UserID = Convert.ToInt32(dr.GetDecimal(dr.GetOrdinal("USERID")));
+                if (!dr.IsDBNull(dr.GetOrdinal("MENUID"))) RolePrivilegesObj.MenuID = Convert.ToInt32(dr.GetDecimal(dr.GetOrdinal("MENUID")));
+                if (!dr.IsDBNull(dr.GetOrdinal("MENULEVEL"))) RolePrivilegesObj.MenuLevel = Convert.ToInt32(dr.GetDecimal(dr.GetOrdinal("MENULEVEL")));
                 if (!dr.IsDBNull(dr.GetOrdinal("MENUNAME"))) RolePrivilegesObj.MenuName = dr.GetString(dr.GetOrdinal("MENUNAME"));
                 if (!dr.IsDBNull(dr.GetOrdinal("CANVIEW"))) RolePrivilegesObj.CanView = dr.GetString(dr.GetOrdinal("CANVIEW"));
                 if (!dr.IsDBNull(dr.GetOrdinal("CANUPDATE"))) RolePrivilegesObj.CanUpdate = dr.GetString(dr.GetOrdinal("CANUPDATE"));
-                if (!dr.IsDBNull(dr.GetOrdinal("CHILDMENUCOUNT"))) RolePrivilegesObj.ChildMenuCount = dr.GetInt32(dr.GetOrdinal("CHILDMENUCOUNT"));
+                if (!dr.IsDBNull(dr.GetOrdinal("CHILDMENUCOUNT"))) RolePrivilegesObj.ChildMenuCount = Convert.ToInt32(dr.GetInt64(dr.GetOrdinal("CHILDMENUCOUNT")));
                 
                 if (!dr.IsDBNull(dr.GetOrdinal("PROJDEPENDENT")))
                     RolePrivilegesObj.ProjectDependent = dr.GetString(dr.GetOrdinal("PROJDEPENDENT"));
@@ -164,14 +177,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int DeleteRolePrivileges(int DeletedID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_UPD_ROLE_PRIV";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("USERID_", DeletedID);
+            cmd.Parameters.AddWithValue("USERID_", DeletedID);
             cmd.Connection.Open();
 
             int result = cmd.ExecuteNonQuery();

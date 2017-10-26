@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
 using WIS_BusinessObjects;
-using System.Data.Sql;
+using System.Data.SqlClient;
 
 namespace WIS_DataAccess
 {
     public class UserDAL
     {
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
 
         /// <summary>
@@ -21,7 +20,7 @@ namespace WIS_DataAccess
         public UserList GetAllUsers(UserBO oUser)
         {
             proc = "USP_MST_GETALLUSER";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             UserBO objUser = null;
             //Role objRole = null; //Need to used assgining the Role Name
 
@@ -33,29 +32,29 @@ namespace WIS_DataAccess
                 strUser = "%" + oUser.UserName + "%";
             }
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("roleid_", oUser.RoleID);
-            cmd.Parameters.Add("username_", strUser);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("roleid_", oUser.RoleID);
+            cmd.Parameters.AddWithValue("username_", strUser);
+           // cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
                     objUser = new UserBO();
                     //objRole = new Role();
                     if (ColumnExists(dr, "UserID") && !dr.IsDBNull(dr.GetOrdinal("UserID")))
-                        objUser.UserID = dr.GetInt32(dr.GetOrdinal("UserID"));
+                        objUser.UserID = Convert.ToInt32(dr.GetDecimal(dr.GetOrdinal("UserID")));
                     if (ColumnExists(dr, "UserName") && !dr.IsDBNull(dr.GetOrdinal("UserName")))
                         objUser.UserName = dr.GetString(dr.GetOrdinal("UserName"));
                     if (ColumnExists(dr, "EmailID") && !dr.IsDBNull(dr.GetOrdinal("EmailID")))
                         objUser.EmailID = dr.GetString(dr.GetOrdinal("EmailID"));
                     if (ColumnExists(dr, "RoleID") && !dr.IsDBNull(dr.GetOrdinal("RoleID")))
-                        objUser.RoleID = dr.GetInt32(dr.GetOrdinal("RoleID"));
+                        objUser.RoleID = Convert.ToInt32(dr.GetDecimal(dr.GetOrdinal("RoleID")));
                     //Role Name need to be Assigned
                     if (ColumnExists(dr, "rolename") && !dr.IsDBNull(dr.GetOrdinal("rolename")))
                     {
@@ -73,11 +72,11 @@ namespace WIS_DataAccess
                 }
 
                 dr.Close();
-            }
-            catch (Exception ex)
-            {
+             }
+             catch (Exception ex)
+             {
                 throw ex;
-            }
+             }
 
             return Users;
         }
@@ -90,7 +89,7 @@ namespace WIS_DataAccess
         public UserList GetUsers(UserBO oUser)
         {
             proc = "USP_MST_GETUSERS";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             UserBO objUser = null;
             //Role objRole = null; //Need to used assgining the Role Name
 
@@ -103,16 +102,16 @@ namespace WIS_DataAccess
                 strUser = "%" + oUser.UserName +"%";
             }
            
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("roleid_", oUser.RoleID);
-            cmd.Parameters.Add("username_", strUser);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("roleid_", oUser.RoleID);
+            cmd.Parameters.AddWithValue("username_", strUser);
+          //  cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -181,28 +180,28 @@ namespace WIS_DataAccess
         public string SaveUser(UserBO oUser)
         {
             string returnResult = string.Empty;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_MST_INSERTUSER";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            cmd.Parameters.Add("userid_", oUser.UserID);
-            cmd.Parameters.Add("username_", oUser.UserName);
-            cmd.Parameters.Add("pwd_", oUser.Pwd);
-            cmd.Parameters.Add("emailid_", oUser.EmailID);
-            cmd.Parameters.Add("displayname_", oUser.DisplayName);
-            cmd.Parameters.Add("roleid_", oUser.RoleID);
-            cmd.Parameters.Add("cellnumber_", oUser.CellNumber);
-            cmd.Parameters.Add("isdeleted_", oUser.IsDeleted);
-            cmd.Parameters.Add("createdby_", oUser.CreatedBy);
+            cmd.Parameters.AddWithValue("userid_", oUser.UserID);
+            cmd.Parameters.AddWithValue("username_", oUser.UserName);
+            cmd.Parameters.AddWithValue("pwd_", oUser.Pwd);
+            cmd.Parameters.AddWithValue("emailid_", oUser.EmailID);
+            cmd.Parameters.AddWithValue("displayname_", oUser.DisplayName);
+            cmd.Parameters.AddWithValue("roleid_", oUser.RoleID);
+            cmd.Parameters.AddWithValue("cellnumber_", oUser.CellNumber);
+            cmd.Parameters.AddWithValue("isdeleted_", oUser.IsDeleted);
+            cmd.Parameters.AddWithValue("createdby_", oUser.CreatedBy);
 
-            cmd.Parameters.Add("createddate_", oUser.CreatedDate);
+            cmd.Parameters.AddWithValue("createddate_", oUser.CreatedDate);
             oUser.ErrorMessage = null;
 
 
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
@@ -222,25 +221,25 @@ namespace WIS_DataAccess
         public string UpdateUser(UserBO oUser)
         {
             string returnResult = string.Empty;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_MST_UPDATEUSER";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            cmd.Parameters.Add("userid_", oUser.UserID);
-            cmd.Parameters.Add("username_", oUser.UserName);
-            cmd.Parameters.Add("pwd_", oUser.Pwd);
-            cmd.Parameters.Add("emailid_", oUser.EmailID);
-            cmd.Parameters.Add("displayname_", oUser.DisplayName);
-            cmd.Parameters.Add("roleid_", oUser.RoleID);
-            cmd.Parameters.Add("cellnumber_", oUser.CellNumber);
-            cmd.Parameters.Add("isdeleted_", oUser.IsDeleted);
-            cmd.Parameters.Add("updatedby_", oUser.CreatedBy);
-            cmd.Parameters.Add("updateddate_", oUser.CreatedDate);
+            cmd.Parameters.AddWithValue("userid_", oUser.UserID);
+            cmd.Parameters.AddWithValue("username_", oUser.UserName);
+            cmd.Parameters.AddWithValue("pwd_", oUser.Pwd);
+            cmd.Parameters.AddWithValue("emailid_", oUser.EmailID);
+            cmd.Parameters.AddWithValue("displayname_", oUser.DisplayName);
+            cmd.Parameters.AddWithValue("roleid_", oUser.RoleID);
+            cmd.Parameters.AddWithValue("cellnumber_", oUser.CellNumber);
+            cmd.Parameters.AddWithValue("isdeleted_", oUser.IsDeleted);
+            cmd.Parameters.AddWithValue("updatedby_", oUser.CreatedBy);
+            cmd.Parameters.AddWithValue("updateddate_", oUser.CreatedDate);
 
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 100).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             try
             {
                 cmd.ExecuteNonQuery();
@@ -266,18 +265,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public UserBO GetUserById(int UserID)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_MST_GETUSERBYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("userID_", UserID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("userID_", UserID);
+           // cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             UserBO objUser = null;
             //Role objRole = null; //For Assgining the RoleName
             UserList Users = new UserList();
@@ -289,13 +288,13 @@ namespace WIS_DataAccess
                 // objRole = new Role();
 
                 if (ColumnExists(dr, "UserID") && !dr.IsDBNull(dr.GetOrdinal("UserID")))
-                    objUser.UserID = dr.GetInt32(dr.GetOrdinal("UserID"));
+                    objUser.UserID = Convert.ToInt32(dr.GetDecimal(dr.GetOrdinal("UserID")));
                 if (ColumnExists(dr, "UserName") && !dr.IsDBNull(dr.GetOrdinal("UserName")))
                     objUser.UserName = dr.GetString(dr.GetOrdinal("UserName"));
                 if (ColumnExists(dr, "EmailID") && !dr.IsDBNull(dr.GetOrdinal("EmailID")))
                     objUser.EmailID = dr.GetString(dr.GetOrdinal("EmailID"));
                 if (ColumnExists(dr, "RoleID") && !dr.IsDBNull(dr.GetOrdinal("RoleID")))
-                    objUser.RoleID = dr.GetInt32(dr.GetOrdinal("RoleID"));
+                    objUser.RoleID = Convert.ToInt32(dr.GetDecimal(dr.GetOrdinal("RoleID")));
                 if (ColumnExists(dr, "rolename") && !dr.IsDBNull(dr.GetOrdinal("rolename")))
                 {
                     // string RoleName = string.Empty;
@@ -325,12 +324,12 @@ namespace WIS_DataAccess
             string result = string.Empty;
             try
             {
-                cnn = new OracleConnection(con);
+                cnn = new SqlConnection(con);
                 proc = "USP_MST_DELETEUSER";
-                cmd = new OracleCommand(proc, cnn);
+                cmd = new SqlCommand(proc, cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("userid_", UserID);
-                cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("userid_", UserID);
+                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 cnn.Open();
                 cmd.ExecuteNonQuery();
                 if (cmd.Parameters["errorMessage_"].Value != null)
@@ -367,22 +366,22 @@ namespace WIS_DataAccess
         public string ObsoleteUser(int UserID,string IsDeleted)
         {
             string result = string.Empty;
-            try
-            {
-                cnn = new OracleConnection(con);
+           // try
+           // {
+                cnn = new SqlConnection(con);
 
                 proc = "USP_MST_OBSOLETEUSER";
 
-                cmd = new OracleCommand(proc, cnn);
+                cmd = new SqlCommand(proc, cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("userid_", UserID);
-                cmd.Parameters.Add("@isdeleted_", IsDeleted);
-                cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("userid_", UserID);
+                cmd.Parameters.AddWithValue("@isdeleted_", IsDeleted);
+                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 cnn.Open();
                 cmd.ExecuteNonQuery();
                 if (cmd.Parameters["errorMessage_"].Value != null)
                     result = cmd.Parameters["errorMessage_"].Value.ToString();
-            }
+            /*}
             catch (Exception ex)
             {                
                 throw ex;
@@ -392,8 +391,10 @@ namespace WIS_DataAccess
                 cmd.Dispose();
                 cnn.Close();
                 cnn.Dispose();
-            }            
-
+            }  */
+            cmd.Dispose();
+            cnn.Close();
+            cnn.Dispose();
             return result;
 
         }

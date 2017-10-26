@@ -1,5 +1,6 @@
 ﻿using WIS_BusinessObjects;
 using WIS_DataAccess;
+using System;
 
 namespace WIS_BusinessLogic
 {
@@ -28,7 +29,7 @@ namespace WIS_BusinessLogic
             {
                 return RolePrivilegesDAL.InsertRolePrivilages(RolePrivilegesList);
             }
-            catch
+            catch (Exception ex)
             {
                 throw;
             }
@@ -46,14 +47,15 @@ namespace WIS_BusinessLogic
         public RolePrivilegesList GetROLEPRIId(int UserID)
         {
             RolePrivilegesDAL RolePrivilegesDAL = new RolePrivilegesDAL(); //Data pass -to Database Layer
+            return RolePrivilegesDAL.GetROLEPRIId(UserID);
 
             try
             {
                 return RolePrivilegesDAL.GetROLEPRIId(UserID);
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
             finally
             {

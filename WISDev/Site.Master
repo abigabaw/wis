@@ -255,7 +255,6 @@
                                 Value="PROJECT_EXPENSE_RPT" />
                         </asp:MenuItem>
                         <asp:MenuItem Selectable="false" NavigateUrl="#" Text="&nbsp; Reports &nbsp;" Value="REPORTS">
-<<<<<<< HEAD
                             <asp:MenuItem Selectable="false" NavigateUrl="#" Text="Project" Value="PROJECT_REPORTS" Enabled="False">
                                 <asp:MenuItem NavigateUrl="~/UI/REPORTUI/ProjectReport.aspx" Text="Project List"
                                     Value="PROJECT_LIST" />
@@ -317,7 +316,6 @@
                             <asp:MenuItem NavigateUrl="~/UI/REPORTUI/OptionSummary.aspx" Text="Legacy Reports"
                                 Value="OPTION_SUMMARY" />
                             <asp:MenuItem NavigateUrl="~/UI/REPORTUI/LiveliHoodAfter.aspx" Text="Livelihood Restoration Assessment" Value="LRA_AFTERRPT" />
-=======
                             <asp:MenuItem NavigateUrl="#" Text="Data Management" Value="DATA_MGT_RPT" />
                             <asp:MenuItem NavigateUrl="#" Text="Consultations & Disclosures" Value="CONSULT_DISC_RPT" />
                             <asp:MenuItem NavigateUrl="#" Text="Compensation" Value="COMPENSATION_RPT" />
@@ -328,7 +326,6 @@
                             <asp:MenuItem NavigateUrl="#" Text="Monitoring" Value="MONITORING_RPT" />
                             <asp:MenuItem NavigateUrl="~/UI/REPORTUI/OptionSummary.aspx" Text="Legacy Reports" Value="OPTION_SUMMARY" />
                             
->>>>>>> Preview
                         </asp:MenuItem>
                         
                         <asp:MenuItem Selectable="false" NavigateUrl="#" Text="<span style='color: Red; font-weight: bold;'>&nbsp; My Tasks &nbsp;</span>" Value="MY_ACTIVITIES" >
