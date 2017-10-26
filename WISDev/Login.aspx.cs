@@ -108,13 +108,12 @@ namespace WIS
                     {
                         lblMsgSave.Text = "Wrong Credentials. Contact WIS Admin";
                     }
-
                     // else { lblMsgSave.Text = "Wrong Credentials. Contact the Administrator"; } 
-
                 }
                 catch (Exception ee)
                 {
-                    lblMsgSave.Text = "An error occured. Contact WIS Admin";
+
+                    lblMsgSave.Text = "Server Error, Contact WIS Admin";
                 }
                 finally
                 {
