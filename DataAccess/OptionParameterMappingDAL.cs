@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_BusinessObjects;
 
@@ -11,8 +11,8 @@ namespace WIS_DataAccess
   public  class OptionParameterMappingDAL
   {
       string connStr = AppConfiguration.ConnectionString;
-      OracleConnection cnn;
-      OracleCommand cmd;
+      SqlConnection cnn;
+      SqlCommand cmd;
       string proc = string.Empty;
 
       
@@ -27,18 +27,18 @@ namespace WIS_DataAccess
       {
           OptionParameterMappingList lstOptPrmMapping = null;
 
-          using (cnn = new OracleConnection(connStr))
+          using (cnn = new SqlConnection(connStr))
           {
-              using (cmd = new OracleCommand("USP_GET_ALL_OPT_PRM_MAPPING", cnn))
+              using (cmd = new SqlCommand("USP_GET_ALL_OPT_PRM_MAPPING", cnn))
               {
                   cmd.CommandType = CommandType.StoredProcedure;
 
-                  //cmd.Parameters.Add("SUBCOUNTYID_", subcountyid);
+                  //cmd.Parameters.AddWithValue("SUBCOUNTYID_", subcountyid);
 
-                  cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                  // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
                   cmd.Connection.Open();
 
-                  OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                  SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                   OptionParameterMappingBO optPrmMappingBO = null;
                   lstOptPrmMapping = new OptionParameterMappingList();
@@ -124,18 +124,18 @@ namespace WIS_DataAccess
       {
           string result = "";
 
-          using (cnn = new OracleConnection(connStr))
+          using (cnn = new SqlConnection(connStr))
           {
-              using (cmd = new OracleCommand("USP_MST_INS_OPT_PRM_MAP", cnn))
+              using (cmd = new SqlCommand("USP_MST_INS_OPT_PRM_MAP", cnn))
               {
                   cmd.CommandType = CommandType.StoredProcedure;
                   cmd.Connection.Open();
-                  cmd.Parameters.Add("OptionGroupID_", pOptParmMappingBO.OptionGroupID);
-                  cmd.Parameters.Add("OptionAvailableID_", pOptParmMappingBO.OptionAvailableID);
-                  cmd.Parameters.Add("DescriptionID_", pOptParmMappingBO.DescriptionID);
-                  cmd.Parameters.Add("ParameterID_", pOptParmMappingBO.ParameterID);
-                  cmd.Parameters.Add("CREATEDBY_", pOptParmMappingBO.CreatedBy);
-                  cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                  cmd.Parameters.AddWithValue("OptionGroupID_", pOptParmMappingBO.OptionGroupID);
+                  cmd.Parameters.AddWithValue("OptionAvailableID_", pOptParmMappingBO.OptionAvailableID);
+                  cmd.Parameters.AddWithValue("DescriptionID_", pOptParmMappingBO.DescriptionID);
+                  cmd.Parameters.AddWithValue("ParameterID_", pOptParmMappingBO.ParameterID);
+                  cmd.Parameters.AddWithValue("CREATEDBY_", pOptParmMappingBO.CreatedBy);
+                  cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                   cmd.ExecuteNonQuery();
 
                   if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -157,20 +157,20 @@ namespace WIS_DataAccess
       {
           string result = "";
 
-          using (cnn = new OracleConnection(connStr))
+          using (cnn = new SqlConnection(connStr))
           {
-              using (cmd = new OracleCommand("USP_MST_UPD_OPT_PRM_MAP", cnn))
+              using (cmd = new SqlCommand("USP_MST_UPD_OPT_PRM_MAP", cnn))
               {
                   cmd.CommandType = CommandType.StoredProcedure;
                   cmd.Connection.Open();
 
-                  cmd.Parameters.Add("OptParID_", pOptParmMappingBO.OptParID);
-                  cmd.Parameters.Add("DescriptionID_", pOptParmMappingBO.DescriptionID);
-                  cmd.Parameters.Add("OptionAvailableID_", pOptParmMappingBO.OptionAvailableID);
-                  cmd.Parameters.Add("OptionGroupID_", pOptParmMappingBO.OptionGroupID);
-                  cmd.Parameters.Add("ParameterID_", pOptParmMappingBO.ParameterID);
-                  cmd.Parameters.Add("UPDATEDBY_", pOptParmMappingBO.UpdatedBy);
-                  cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                  cmd.Parameters.AddWithValue("OptParID_", pOptParmMappingBO.OptParID);
+                  cmd.Parameters.AddWithValue("DescriptionID_", pOptParmMappingBO.DescriptionID);
+                  cmd.Parameters.AddWithValue("OptionAvailableID_", pOptParmMappingBO.OptionAvailableID);
+                  cmd.Parameters.AddWithValue("OptionGroupID_", pOptParmMappingBO.OptionGroupID);
+                  cmd.Parameters.AddWithValue("ParameterID_", pOptParmMappingBO.ParameterID);
+                  cmd.Parameters.AddWithValue("UPDATEDBY_", pOptParmMappingBO.UpdatedBy);
+                  cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                   cmd.ExecuteNonQuery();
 
                   if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -192,15 +192,15 @@ namespace WIS_DataAccess
       {
           string result = "";
 
-          using (cnn = new OracleConnection(connStr))
+          using (cnn = new SqlConnection(connStr))
           {
-              using (cmd = new OracleCommand("USP_MST_DEL_OPT_PRM_MAP", cnn))
+              using (cmd = new SqlCommand("USP_MST_DEL_OPT_PRM_MAP", cnn))
               {
                   cmd.CommandType = CommandType.StoredProcedure;
                   cmd.Connection.Open();
 
-                  cmd.Parameters.Add("OptParID_", pOptParameterId);
-                  cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                  cmd.Parameters.AddWithValue("OptParID_", pOptParameterId);
+                  cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                   cmd.ExecuteNonQuery();
 
                   if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -224,18 +224,18 @@ namespace WIS_DataAccess
       {
           String result = "";
 
-          using (cnn = new OracleConnection(connStr))
+          using (cnn = new SqlConnection(connStr))
           {
-              using (cmd = new OracleCommand("USP_MST_OBS_OPT_PRM_MAP", cnn))
+              using (cmd = new SqlCommand("USP_MST_OBS_OPT_PRM_MAP", cnn))
               {
                   cmd.CommandType = CommandType.StoredProcedure;
                   cmd.Connection.Open();
 
-                  cmd.Parameters.Add("OptParID_", pOptParameterId);
-                  cmd.Parameters.Add("ISDELETED_", isDeleted);
-                  cmd.Parameters.Add("UPDATEDBY_", updatedBy);
+                  cmd.Parameters.AddWithValue("OptParID_", pOptParameterId);
+                  cmd.Parameters.AddWithValue("ISDELETED_", isDeleted);
+                  cmd.Parameters.AddWithValue("UPDATEDBY_", updatedBy);
 
-                  cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                  cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                   cmd.ExecuteNonQuery();
 
                   if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -257,18 +257,18 @@ namespace WIS_DataAccess
       {
           proc = "USP_GET_OPT_PRM_MAPPING_BYID";
 
-          cnn = new OracleConnection(connStr);
+          cnn = new SqlConnection(connStr);
           OptionParameterMappingBO oOptPrmMappingBO = null;
 
-          cmd = new OracleCommand(proc, cnn);
+          cmd = new SqlCommand(proc, cnn);
           cmd.CommandType = CommandType.StoredProcedure;
 
-          cmd.Parameters.Add("OptParID_", pOptParameterId);
-          cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+          cmd.Parameters.AddWithValue("OptParID_", pOptParameterId);
+          // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
           try
           {
               cmd.Connection.Open();
-              OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+              SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
               while (dr.Read())
               {
                   oOptPrmMappingBO = new OptionParameterMappingBO();
@@ -293,14 +293,14 @@ namespace WIS_DataAccess
 
       public OptionParameterList GetOptionAvailable()
       {
-          OracleConnection con = new OracleConnection(connStr);
-          OracleCommand cmd;
+          SqlConnection con = new SqlConnection(connStr);
+          SqlCommand cmd;
           string proc = "USP_MST_GET_OPTIONS";
-          cmd = new OracleCommand(proc, con);
+          cmd = new SqlCommand(proc, con);
           cmd.CommandType = CommandType.StoredProcedure;
-          cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+          // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
           cmd.Connection.Open();
-          OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+          SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
           OptionParameterBO oOptionParameterBO = null;
           OptionParameterList objcountlist = new OptionParameterList();
 
@@ -318,14 +318,14 @@ namespace WIS_DataAccess
 
       public OptionGroupList GetOptionGroup()
       {
-          OracleConnection con = new OracleConnection(connStr);
-          OracleCommand cmd;
+          SqlConnection con = new SqlConnection(connStr);
+          SqlCommand cmd;
           string proc = "USP_MST_GET_OPTIONGROUPS";
-          cmd = new OracleCommand(proc, con);
+          cmd = new SqlCommand(proc, con);
           cmd.CommandType = CommandType.StoredProcedure;
-          cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+          // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
           cmd.Connection.Open();
-          OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+          SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
           OptionGroupBO oOptionGroupBO = null;
           OptionGroupList lstOptionGroup = new OptionGroupList();
 
@@ -343,15 +343,15 @@ namespace WIS_DataAccess
 
       public OptionGroupList GetOptionDescription(int Pid)
       {
-          OracleConnection con = new OracleConnection(connStr);
-          OracleCommand cmd;
+          SqlConnection con = new SqlConnection(connStr);
+          SqlCommand cmd;
           string proc = "USP_DSH_GET_OPT_DESCRIPTION";
-          cmd = new OracleCommand(proc, con);
+          cmd = new SqlCommand(proc, con);
           cmd.CommandType = CommandType.StoredProcedure;
-          cmd.Parameters.Add("PID_", Pid);
-          cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+          cmd.Parameters.AddWithValue("PID_", Pid);
+          // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
           cmd.Connection.Open();
-          OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+          SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
           OptionGroupBO oOptionGroupBO = null;
           OptionGroupList lstOptionGroup = new OptionGroupList();
 
@@ -369,15 +369,15 @@ namespace WIS_DataAccess
 
       public OptionParameterMappingList GetOptionParameters(int Pid)
       {
-          OracleConnection con = new OracleConnection(connStr);
-          OracleCommand cmd;
+          SqlConnection con = new SqlConnection(connStr);
+          SqlCommand cmd;
           string proc = "USP_GET_PARAMETERS";
-          cmd = new OracleCommand(proc, con);
+          cmd = new SqlCommand(proc, con);
           cmd.CommandType = CommandType.StoredProcedure;
-          cmd.Parameters.Add("OPTIONAVAILABLEID_", Pid);
-          cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+          cmd.Parameters.AddWithValue("OPTIONAVAILABLEID_", Pid);
+          // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
           cmd.Connection.Open();
-          OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+          SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
           OptionParameterMappingBO oOptionParameterBO = null;
           OptionParameterMappingList lstOptionGroup = new OptionParameterMappingList();
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 using System.Data.Sql;
 
@@ -15,22 +15,22 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public FixedCostCentreList GetFixedCostCentre(string FixedCostCentre)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_FIXEDCOSTCENTRE";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             if (FixedCostCentre.ToString() == "")
             {
-                cmd.Parameters.Add("@FixedCostCentreIN", DBNull.Value);
+                cmd.Parameters.AddWithValue("@FixedCostCentreIN", DBNull.Value);
             }
             else
             {
-                cmd.Parameters.Add("@FixedCostCentreIN", FixedCostCentre.ToString());
+                cmd.Parameters.AddWithValue("@FixedCostCentreIN", FixedCostCentre.ToString());
             }
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             FixedCostCentreBO objFixedCostCentre = null;
             FixedCostCentreList FixedCostCentres = new FixedCostCentreList();
             while (dr.Read())
@@ -52,22 +52,22 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public FixedCostCentreList GetAllFixedCostCentre(string FixedCostCentre)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_ALL_FIXEDCOSTS";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             if (FixedCostCentre.ToString() == "")
             {
-                cmd.Parameters.Add("@FixedCostCentreIN", DBNull.Value);
+                cmd.Parameters.AddWithValue("@FixedCostCentreIN", DBNull.Value);
             }
             else
             {
-                cmd.Parameters.Add("@FixedCostCentreIN", FixedCostCentre.ToString());
+                cmd.Parameters.AddWithValue("@FixedCostCentreIN", FixedCostCentre.ToString());
             }
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             FixedCostCentreBO objFixedCostCentre = null;
             FixedCostCentreList FixedCostCentres = new FixedCostCentreList();
             while (dr.Read())
@@ -91,24 +91,24 @@ namespace WIS_DataAccess
         {
             string result = string.Empty;
             {
-                OracleConnection myConnection;
-                OracleCommand myCommand;
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_INS_FIXEDCOSTCENTRE", myConnection);
+                SqlConnection myConnection;
+                SqlCommand myCommand;
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_INS_FIXEDCOSTCENTRE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("@FixedCostCentreIN", objFixedCostCentre.FixedCostCentre);
+                myCommand.Parameters.AddWithValue("@FixedCostCentreIN", objFixedCostCentre.FixedCostCentre);
                 if (string.IsNullOrEmpty(objFixedCostCentre.FixedCostCentreDescription) == true)
                 {
-                    myCommand.Parameters.Add("@FixedCostCentreDescription", " ");
+                    myCommand.Parameters.AddWithValue("@FixedCostCentreDescription", " ");
                 }
                 else
                 {
-                    myCommand.Parameters.Add("@FixedCostCentreDescription", objFixedCostCentre.FixedCostCentreDescription);
+                    myCommand.Parameters.AddWithValue("@FixedCostCentreDescription", objFixedCostCentre.FixedCostCentreDescription);
                 }
-                myCommand.Parameters.Add("@ISDELETEDIN", "False");
-                myCommand.Parameters.Add("@USERIDIN", objFixedCostCentre.CreatedBy);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("@ISDELETEDIN", "False");
+                myCommand.Parameters.AddWithValue("@USERIDIN", objFixedCostCentre.CreatedBy);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
 
@@ -128,19 +128,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteFixedCostCentre(int roleId)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DELETEFCC", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DELETEFCC", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("@FixedCostCentreId_", roleId);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("@FixedCostCentreId_", roleId);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -174,19 +174,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteFixedCostCentre(int roleId, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETEFCC", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETEFCC", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("@FixedCostCentreId_", roleId);
-                myCommand.Parameters.Add("@isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("@FixedCostCentreId_", roleId);
+                myCommand.Parameters.AddWithValue("@isdeleted_", IsDeleted);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -214,25 +214,25 @@ namespace WIS_DataAccess
         {
             string result = string.Empty;
             {
-                OracleConnection myConnection;
-                OracleCommand myCommand;
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_UPDATEFCC", myConnection);
+                SqlConnection myConnection;
+                SqlCommand myCommand;
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_UPDATEFCC", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("@FixedCostCentreIDIN", objFixedCostCentre.FixedCostCentreID);
-                myCommand.Parameters.Add("@FixedCostCentreIN", objFixedCostCentre.FixedCostCentre);
+                myCommand.Parameters.AddWithValue("@FixedCostCentreIDIN", objFixedCostCentre.FixedCostCentreID);
+                myCommand.Parameters.AddWithValue("@FixedCostCentreIN", objFixedCostCentre.FixedCostCentre);
                 if (string.IsNullOrEmpty(objFixedCostCentre.FixedCostCentreDescription) == true)
                 {
-                    myCommand.Parameters.Add("@FixedCostCentreDescription", " ");
+                    myCommand.Parameters.AddWithValue("@FixedCostCentreDescription", " ");
                 }
                 else
                 {
-                    myCommand.Parameters.Add("@FixedCostCentreDescription", objFixedCostCentre.FixedCostCentreDescription);
+                    myCommand.Parameters.AddWithValue("@FixedCostCentreDescription", objFixedCostCentre.FixedCostCentreDescription);
                 }
-                myCommand.Parameters.Add("@ISDELETEDIN", "False");
-                myCommand.Parameters.Add("@USERIDIN", objFixedCostCentre.UpdatedBy);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("@ISDELETEDIN", "False");
+                myCommand.Parameters.AddWithValue("@USERIDIN", objFixedCostCentre.UpdatedBy);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
 
                 myCommand.ExecuteNonQuery();
@@ -253,16 +253,16 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public FixedCostCentreBO GetFixedCostCentreByFixedCostCentreID(int roleID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETFCCBYID";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@FixedCostCentreIdIN", roleID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("@FixedCostCentreIdIN", roleID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             FixedCostCentreBO obFixedCostCentre = null;
             while (dr.Read())
             {

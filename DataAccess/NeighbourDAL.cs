@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 
@@ -15,22 +15,22 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string Insert(NeighbourBO Neighbourobj)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_INS_NEIGHBOUR",cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_INS_NEIGHBOUR",cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             string result = string.Empty;
 
             try 
             {
-                dcmd.Parameters.Add("NEIGHBOURNAME_", Neighbourobj.TRN_PAP_NEIGHBOURNAme1);
-                 dcmd.Parameters.Add("DIRECTION", Neighbourobj.DIRECTION1);
-                 dcmd.Parameters.Add("BOUNDARIESCONFIRMED", Neighbourobj.BOUNDARIESCONFIRMED1);
-                 dcmd.Parameters.Add("BOUNDARY_DISPUTE", Neighbourobj.BOUNDARY_DISPUTE);
-                 dcmd.Parameters.Add("DISPUTE_DETAILS", Neighbourobj.DISPUTE_DETAILS);
-                dcmd.Parameters.Add("CREATEDBY", Neighbourobj.CREATEDBY1);
-                dcmd.Parameters.Add("N_HHID", Neighbourobj.HHID1);
-                dcmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("NEIGHBOURNAME_", Neighbourobj.TRN_PAP_NEIGHBOURNAme1);
+                 dcmd.Parameters.AddWithValue("DIRECTION", Neighbourobj.DIRECTION1);
+                 dcmd.Parameters.AddWithValue("BOUNDARIESCONFIRMED", Neighbourobj.BOUNDARIESCONFIRMED1);
+                 dcmd.Parameters.AddWithValue("BOUNDARY_DISPUTE", Neighbourobj.BOUNDARY_DISPUTE);
+                 dcmd.Parameters.AddWithValue("DISPUTE_DETAILS", Neighbourobj.DISPUTE_DETAILS);
+                dcmd.Parameters.AddWithValue("CREATEDBY", Neighbourobj.CREATEDBY1);
+                dcmd.Parameters.AddWithValue("N_HHID", Neighbourobj.HHID1);
+                dcmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
 
                 if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -57,19 +57,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
        public NeighbourList GetneigbrDetails(int householdID)
        {
-           OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-           OracleCommand cmd;
+           SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+           SqlCommand cmd;
 
            string proc = "USP_TRN_SEL_NEIGHBOUR";
 
-           cmd = new OracleCommand(proc, cnn);
+           cmd = new SqlCommand(proc, cnn);
            cmd.CommandType = CommandType.StoredProcedure;
 
-           cmd.Parameters.Add("HHID_", householdID);
-           cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           cmd.Parameters.AddWithValue("HHID_", householdID);
+           //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
            cmd.Connection.Open();
-           OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+           SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
            NeighbourBO Neighbourobj = null;
            NeighbourList NeighbourListobj = new NeighbourList();
 
@@ -99,19 +99,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
        public NeighbourBO GetNeighbrById(int Pap_NeighbrID)
        {
-           OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-           OracleCommand cmd;
+           SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+           SqlCommand cmd;
 
            string proc = "USP_TRN_GET_NEIGHBR";
 
-           cmd = new OracleCommand(proc, cnn);
+           cmd = new SqlCommand(proc, cnn);
            cmd.CommandType = CommandType.StoredProcedure;
-           cmd.Parameters.Add("P_PAP_NEIGHBOURID", Pap_NeighbrID);
-           cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           cmd.Parameters.AddWithValue("P_PAP_NEIGHBOURID", Pap_NeighbrID);
+           // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
            cmd.Connection.Open();
 
-           OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+           SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
            NeighbourBO Neighbourobj = null;
            NeighbourList NeighbourListobj = new NeighbourList();
 
@@ -164,22 +164,22 @@ namespace WIS_DataAccess
         /// <returns></returns>
        public string EditNeighbr(NeighbourBO Neighbourobj)
        {
-           OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+           SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
            cnn.Open();
-           OracleCommand dcmd = new OracleCommand("USP_TRN_UPD_NEIGHBOUR",cnn);
+           SqlCommand dcmd = new SqlCommand("USP_TRN_UPD_NEIGHBOUR",cnn);
            dcmd.CommandType = CommandType.StoredProcedure;
            string result = string.Empty;
 
            try
            {
-               dcmd.Parameters.Add("N_PAP_NEIGHBOURID", Neighbourobj.PAP_NEIGHBOURID1);
-               dcmd.Parameters.Add("N_NEIGHBOURNAME", Neighbourobj.TRN_PAP_NEIGHBOURNAme1);
-               dcmd.Parameters.Add("N_DIRECTION", Neighbourobj.DIRECTION1);
-               dcmd.Parameters.Add("N_BOUNDARIESCONFIRMED", Neighbourobj.BOUNDARIESCONFIRMED1);
-               dcmd.Parameters.Add("N_BOUNDARY_DISPUTE", Neighbourobj.BOUNDARY_DISPUTE);
-               dcmd.Parameters.Add("N_DISPUTE_DETAILS", Neighbourobj.DISPUTE_DETAILS);
-               dcmd.Parameters.Add("N_UPDATEDBY", Neighbourobj.CREATEDBY1);
-               dcmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+               dcmd.Parameters.AddWithValue("N_PAP_NEIGHBOURID", Neighbourobj.PAP_NEIGHBOURID1);
+               dcmd.Parameters.AddWithValue("N_NEIGHBOURNAME", Neighbourobj.TRN_PAP_NEIGHBOURNAme1);
+               dcmd.Parameters.AddWithValue("N_DIRECTION", Neighbourobj.DIRECTION1);
+               dcmd.Parameters.AddWithValue("N_BOUNDARIESCONFIRMED", Neighbourobj.BOUNDARIESCONFIRMED1);
+               dcmd.Parameters.AddWithValue("N_BOUNDARY_DISPUTE", Neighbourobj.BOUNDARY_DISPUTE);
+               dcmd.Parameters.AddWithValue("N_DISPUTE_DETAILS", Neighbourobj.DISPUTE_DETAILS);
+               dcmd.Parameters.AddWithValue("N_UPDATEDBY", Neighbourobj.CREATEDBY1);
+               dcmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                dcmd.ExecuteNonQuery();
 
@@ -207,13 +207,13 @@ namespace WIS_DataAccess
         /// <returns></returns>
        public int Delete(int Pap_NeighbrID)
        {
-           OracleConnection conn = new OracleConnection(AppConfiguration.ConnectionString);
+           SqlConnection conn = new SqlConnection(AppConfiguration.ConnectionString);
            conn.Open();
-           OracleCommand dCmd = new OracleCommand("USP_TRN_DEL_NEIGHBOUR", conn);
+           SqlCommand dCmd = new SqlCommand("USP_TRN_DEL_NEIGHBOUR", conn);
            dCmd.CommandType = CommandType.StoredProcedure;
            try
            {
-               dCmd.Parameters.Add("PAP_NEIGHBOURID_", Pap_NeighbrID);
+               dCmd.Parameters.AddWithValue("PAP_NEIGHBOURID_", Pap_NeighbrID);
                return dCmd.ExecuteNonQuery();
            }
            catch (Exception ex)

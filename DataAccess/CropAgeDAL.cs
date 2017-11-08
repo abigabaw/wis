@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 
@@ -16,17 +16,17 @@ namespace WIS_DataAccess
         public string InsertCropAge(CropAgeBO objCropAge)
         {
             string result = "";
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_INSERTCROPAGE", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_INSERTCROPAGE", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("CROPAGE_", objCropAge.CROPAGE);
-                dcmd.Parameters.Add("CreatedBY", objCropAge.UserID);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("CROPAGE_", objCropAge.CROPAGE);
+                dcmd.Parameters.AddWithValue("CreatedBY", objCropAge.UserID);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -55,19 +55,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CropAgeBO GetCropAgeById(int CROPAGEID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETSELECTCROPAGEBYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("CROPAGEID_", CROPAGEID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CROPAGEID_", CROPAGEID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CropAgeBO CropAgeObj = null;
             CropAgeList CropAgeList = new CropAgeList();
 
@@ -113,18 +113,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteCropAge(int CROPAGEID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd=null;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd=null;
             string message = string.Empty;
 
             try
             {
                 string proc = "USP_MST_DELETECROPAGE";
 
-                cmd = new OracleCommand(proc, cnn);
+                cmd = new SqlCommand(proc, cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("CROPAGEID_", CROPAGEID);
-                cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("CROPAGEID_", CROPAGEID);
+                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 cmd.Connection.Open();
                 cmd.ExecuteNonQuery();
                 if (cmd.Parameters["errorMessage_"].Value != null)
@@ -158,19 +158,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteCropAge(int CROPAGEID,string IsDeleted)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd = null;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd = null;
             string message = string.Empty;
 
             try
             {
                 string proc = "USP_MST_OBSOLETECROPAGE";
 
-                cmd = new OracleCommand(proc, cnn);
+                cmd = new SqlCommand(proc, cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("CROPAGEID_", CROPAGEID);
-                cmd.Parameters.Add("isdeleted_", IsDeleted);
-                cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("CROPAGEID_", CROPAGEID);
+                cmd.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 cmd.Connection.Open();
                 cmd.ExecuteNonQuery();
                 if (cmd.Parameters["errorMessage_"].Value != null)
@@ -195,17 +195,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CropAgeList GetCropAge()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_SELECTCROPAGE";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CropAgeBO objCropAge = null;
             CropAgeList CropAgeList = new CropAgeList();
 
@@ -231,18 +231,18 @@ namespace WIS_DataAccess
         public string EDITCROPAGE(CropAgeBO objCropAge)
         {
             string result = "";
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_UPDATECROPAGE", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_UPDATECROPAGE", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("CROPAGE_", objCropAge.CROPAGE);
-                dcmd.Parameters.Add("CROPID_", objCropAge.CROPAGEID);
-                dcmd.Parameters.Add("UpdatedBY", objCropAge.UserID);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("CROPAGE_", objCropAge.CROPAGE);
+                dcmd.Parameters.AddWithValue("CROPID_", objCropAge.CROPAGEID);
+                dcmd.Parameters.AddWithValue("UpdatedBY", objCropAge.UserID);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 

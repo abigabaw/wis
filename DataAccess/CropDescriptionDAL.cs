@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 
@@ -17,17 +17,17 @@ namespace WIS_DataAccess
         public string InsertCropDescription(CropDescriptionBO objCropDescription)
         {
             string result = "";
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_INSERTCROPDESC", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_INSERTCROPDESC", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("CropDesc", objCropDescription.CROPDESNAME);
-                dcmd.Parameters.Add("CreatedBY", objCropDescription.UserID);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("CropDesc", objCropDescription.CROPDESNAME);
+                dcmd.Parameters.AddWithValue("CreatedBY", objCropDescription.UserID);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -54,17 +54,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CropDescriptionList GetAllCropDescription()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_ALLCROPDESCRIPTIONS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CropDescriptionBO objCropDescription = null;
             CropDescriptionList CropDescriptionList = new CropDescriptionList();
 
@@ -88,17 +88,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CropDescriptionList GetCropDescription()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_SELECTCROPDESCRIPTION";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CropDescriptionBO objCropDescription = null;
             CropDescriptionList CropDescriptionList = new CropDescriptionList();
 
@@ -123,18 +123,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteCropDESC(int CROPDESCRIPTIONID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd=null;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd=null;
             string result = string.Empty;
 
             try
             {
                 string proc = "USP_MST_DELETECROPDESC";
 
-                cmd = new OracleCommand(proc, cnn);
+                cmd = new SqlCommand(proc, cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("CROPDESCRIPTIONID_", CROPDESCRIPTIONID);
-                cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("CROPDESCRIPTIONID_", CROPDESCRIPTIONID);
+                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 cmd.Connection.Open();
                 cmd.ExecuteNonQuery();
                 if (cmd.Parameters["errorMessage_"].Value != null)
@@ -168,19 +168,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteCropDESC(int CROPDESCRIPTIONID,string IsDeleted)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd = null;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd = null;
             string result = string.Empty;
 
             try
             {
                 string proc = "USP_MST_OBSOLETECROPDESC";
 
-                cmd = new OracleCommand(proc, cnn);
+                cmd = new SqlCommand(proc, cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("CROPDESCRIPTIONID_", CROPDESCRIPTIONID);
-                cmd.Parameters.Add("isdeleted_", IsDeleted);
-                cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("CROPDESCRIPTIONID_", CROPDESCRIPTIONID);
+                cmd.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 cmd.Connection.Open();
                 cmd.ExecuteNonQuery();
                 if (cmd.Parameters["errorMessage_"].Value != null)
@@ -206,19 +206,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CropDescriptionBO GetCropDescriptionId(int CROPDESCRIPTIONID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETSELECTCROPDESC";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("CROPDESCRIPTIONID_", CROPDESCRIPTIONID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CROPDESCRIPTIONID_", CROPDESCRIPTIONID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CropDescriptionBO CropDescriptionObj = null;
             CropDescriptionList CropDescriptionList = new CropDescriptionList();
 
@@ -264,18 +264,18 @@ namespace WIS_DataAccess
         public string EDITCropDescr(CropDescriptionBO objCropDesc)
         {
             string returnResult = string.Empty;
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_UPDATECROPDESC", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_UPDATECROPDESC", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("CROPNAME_", objCropDesc.CROPDESNAME);
-                dcmd.Parameters.Add("CROPID_", objCropDesc.CROPDESID);
-                dcmd.Parameters.Add("UpdatedBY", objCropDesc.UserID);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("CROPNAME_", objCropDesc.CROPDESNAME);
+                dcmd.Parameters.AddWithValue("CROPID_", objCropDesc.CROPDESID);
+                dcmd.Parameters.AddWithValue("UpdatedBY", objCropDesc.UserID);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
                 if (dcmd.Parameters["errorMessage_"].Value != null)
                     returnResult = dcmd.Parameters["errorMessage_"].Value.ToString();

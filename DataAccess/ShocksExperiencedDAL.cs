@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -9,8 +9,8 @@ namespace WIS_DataAccess
     {
         #region Declaration Section
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
         #endregion
 
@@ -22,27 +22,27 @@ namespace WIS_DataAccess
         public ShocksExperiencedList GetALLShocksExperienced()//(ShocksExperienced oShocksExperienced)
         {
             proc = "USP_MST_GETALL_SHOCKSEXP";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             ShocksExperiencedBO objShocksExperienced = null;
 
             ShocksExperiencedList lstShocksExperiencedList = new ShocksExperiencedList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
                     objShocksExperienced = new ShocksExperiencedBO();
 
                     if (ColumnExists(dr, "SHOCKID") && !dr.IsDBNull(dr.GetOrdinal("SHOCKID")))
-                        objShocksExperienced.ShocksExperiencedID = dr.GetInt32(dr.GetOrdinal("SHOCKID"));
+                        objShocksExperienced.ShocksExperiencedID = (int)dr.GetDecimal(dr.GetOrdinal("SHOCKID"));
                     if (ColumnExists(dr, "SHOCKEXPERIENCED") && !dr.IsDBNull(dr.GetOrdinal("SHOCKEXPERIENCED")))
                         objShocksExperienced.ShocksExperience = dr.GetString(dr.GetOrdinal("SHOCKEXPERIENCED"));
                     if (ColumnExists(dr, "isdeleted") && !dr.IsDBNull(dr.GetOrdinal("isdeleted")))
@@ -67,20 +67,20 @@ namespace WIS_DataAccess
         public ShocksExperiencedList GetShocksExperienced()//(ShocksExperienced oShocksExperienced)
         {
             proc = "USP_MST_GET_SHOCKSEXPERIENCED";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             ShocksExperiencedBO objShocksExperienced = null;
             
             ShocksExperiencedList lstShocksExperiencedList = new ShocksExperiencedList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
           
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -111,18 +111,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ShocksExperiencedBO GetShocksExperiencedById(int ShockID)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_MST_GET_SHOCKSEXP_BYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("shockid_", ShockID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("shockid_", ShockID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ShocksExperiencedBO objShocksExperienced = null;
 
             while (dr.Read())
@@ -171,20 +171,20 @@ namespace WIS_DataAccess
         public string SaveShocksExperienced(ShocksExperiencedBO oShocksExperienced)
         {
             string returnResult=string.Empty;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_MST_INS_SHOCKSEXPERIENCED";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("shockexperienced_", oShocksExperienced.ShocksExperience);
+            cmd.Parameters.AddWithValue("shockexperienced_", oShocksExperienced.ShocksExperience);
 
-            cmd.Parameters.Add("isdeleted_", oShocksExperienced.IsDeleted);
-            cmd.Parameters.Add("createdby_", oShocksExperienced.CreatedBy);
+            cmd.Parameters.AddWithValue("isdeleted_", oShocksExperienced.IsDeleted);
+            cmd.Parameters.AddWithValue("createdby_", oShocksExperienced.CreatedBy);
 
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
@@ -204,19 +204,19 @@ namespace WIS_DataAccess
         public string UpdateShocksExperienced(ShocksExperiencedBO oShocksExperienced)
         {
             string returnResult = string.Empty;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_MST_UPD_SHOCKSEXPERIENCED";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            cmd.Parameters.Add("shockid_", oShocksExperienced.ShocksExperiencedID);
-            cmd.Parameters.Add("shockexperienced_", oShocksExperienced.ShocksExperience);
+            cmd.Parameters.AddWithValue("shockid_", oShocksExperienced.ShocksExperiencedID);
+            cmd.Parameters.AddWithValue("shockexperienced_", oShocksExperienced.ShocksExperience);
            
-            cmd.Parameters.Add("updatedby_", oShocksExperienced.CreatedBy);
+            cmd.Parameters.AddWithValue("updatedby_", oShocksExperienced.CreatedBy);
     
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
@@ -235,19 +235,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteShocksExperienced(int ShockID)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DEL_SHOCKSEXPERIENCED", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DEL_SHOCKSEXPERIENCED", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("shockid_", ShockID);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("shockid_", ShockID);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -283,19 +283,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string Obsoleteshockexperiencedid(int ShockID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBS_SHOCKEXP", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBS_SHOCKEXP", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("SHOCKID_", ShockID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("SHOCKID_", ShockID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 using System.Data;
 using WIS_BusinessObjects.Collections;
@@ -12,8 +12,8 @@ namespace WIS_DataAccess
     public class PAP_InstitutionDAL
     {
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = "";
         /// <summary>
         /// To Update Institution Details
@@ -25,49 +25,49 @@ namespace WIS_DataAccess
             string result = "";
             try
             {
-                cnn = new OracleConnection(con);
-                cmd = new OracleCommand("USP_TRN_UPD_HH_INSTITUTION", cnn);
+                cnn = new SqlConnection(con);
+                cmd = new SqlCommand("USP_TRN_UPD_HH_INSTITUTION", cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("Hh_IDIN", objInstitution.HHID);
+                cmd.Parameters.AddWithValue("Hh_IDIN", objInstitution.HHID);
 
-                cmd.Parameters.Add("PaptypeIN", objInstitution.Paptype);
-                cmd.Parameters.Add("DistrictIN", objInstitution.DistrictIN);
-                cmd.Parameters.Add("CountyIN", objInstitution.CountyIN);
-                cmd.Parameters.Add("SubCountyIN", objInstitution.SubCountyIN);
-                cmd.Parameters.Add("ParishIN", objInstitution.ParishIN);
-                cmd.Parameters.Add("VillageIN", objInstitution.VillageIN);
-                cmd.Parameters.Add("OptionGroupIdIN", objInstitution.OptionGroupIdIN);
-                cmd.Parameters.Add("NoofplotsIN", objInstitution.NoofplotsIN);
-                cmd.Parameters.Add("InstitutionNameIN", objInstitution.InstitutionNameIN);
-                cmd.Parameters.Add("PlotReferenceIN", objInstitution.PlotReferenceIN);
-                cmd.Parameters.Add("DateofBirthIN", objInstitution.DateofBirthIN);
-                cmd.Parameters.Add("IsResidentIN", objInstitution.IsResidentIN);
-                cmd.Parameters.Add("SexIN", objInstitution.SexIN);
-                cmd.Parameters.Add("SurnameIN", objInstitution.SurnameIN);
-                cmd.Parameters.Add("FirstnameIN", objInstitution.FirstnameIN);
-                cmd.Parameters.Add("OthernameIN", objInstitution.OthernameIN);
-                cmd.Parameters.Add("UpdatedbyIN", objInstitution.UpdatedbyIN);
-                cmd.Parameters.Add("@GOUSTATUS_", objInstitution.Gouallowance);
-                cmd.Parameters.Add("@UNDERTAKINGPERIOD_", objInstitution.Undertakingperiod);
+                cmd.Parameters.AddWithValue("PaptypeIN", objInstitution.Paptype);
+                cmd.Parameters.AddWithValue("DistrictIN", objInstitution.DistrictIN);
+                cmd.Parameters.AddWithValue("CountyIN", objInstitution.CountyIN);
+                cmd.Parameters.AddWithValue("SubCountyIN", objInstitution.SubCountyIN);
+                cmd.Parameters.AddWithValue("ParishIN", objInstitution.ParishIN);
+                cmd.Parameters.AddWithValue("VillageIN", objInstitution.VillageIN);
+                cmd.Parameters.AddWithValue("OptionGroupIdIN", objInstitution.OptionGroupIdIN);
+                cmd.Parameters.AddWithValue("NoofplotsIN", objInstitution.NoofplotsIN);
+                cmd.Parameters.AddWithValue("InstitutionNameIN", objInstitution.InstitutionNameIN);
+                cmd.Parameters.AddWithValue("PlotReferenceIN", objInstitution.PlotReferenceIN);
+                cmd.Parameters.AddWithValue("DateofBirthIN", objInstitution.DateofBirthIN);
+                cmd.Parameters.AddWithValue("IsResidentIN", objInstitution.IsResidentIN);
+                cmd.Parameters.AddWithValue("SexIN", objInstitution.SexIN);
+                cmd.Parameters.AddWithValue("SurnameIN", objInstitution.SurnameIN);
+                cmd.Parameters.AddWithValue("FirstnameIN", objInstitution.FirstnameIN);
+                cmd.Parameters.AddWithValue("OthernameIN", objInstitution.OthernameIN);
+                cmd.Parameters.AddWithValue("UpdatedbyIN", objInstitution.UpdatedbyIN);
+                cmd.Parameters.AddWithValue("@GOUSTATUS_", objInstitution.Gouallowance);
+                cmd.Parameters.AddWithValue("@UNDERTAKINGPERIOD_", objInstitution.Undertakingperiod);
 
-                cmd.Parameters.Add("POSITIONIDIN", objInstitution.POSITIONID);
-                cmd.Parameters.Add("CONT_DISTRICTIN", objInstitution.CONT_DISTRICT);
-                cmd.Parameters.Add("CONT_COUNTYIN", objInstitution.CONT_COUNTY);
-                cmd.Parameters.Add("CONT_SUBCOUNTYIN", objInstitution.CONT_SUBCOUNTY);
-                cmd.Parameters.Add("CONT_PARISHIN", objInstitution.CONT_PARISH);
-                cmd.Parameters.Add("CONT_VILLAGEIN", objInstitution.CONT_VILLAGE);
-                cmd.Parameters.Add("CONTACTPHONE1IN", objInstitution.CONTACTPHONE1);
-                cmd.Parameters.Add("CONTACTPHONE2IN", objInstitution.CONTACTPHONE2);
-                //cmd.Parameters.Add("PLOTPHOTOIN", objInstitution.PLOTPHOTO);
-                cmd.Parameters.Add("CREATEDBYIN", objInstitution.CreatedBy);
-                cmd.Parameters.Add("CONT_UPDATEBYIN", objInstitution.UpdatedbyIN);
-                cmd.Parameters.Add("PAP_UIDIN", objInstitution.Papuid);
-                cmd.Parameters.Add("@DETAILSCAPTUREDBYIN", objInstitution.CapturedBy);
+                cmd.Parameters.AddWithValue("POSITIONIDIN", objInstitution.POSITIONID);
+                cmd.Parameters.AddWithValue("CONT_DISTRICTIN", objInstitution.CONT_DISTRICT);
+                cmd.Parameters.AddWithValue("CONT_COUNTYIN", objInstitution.CONT_COUNTY);
+                cmd.Parameters.AddWithValue("CONT_SUBCOUNTYIN", objInstitution.CONT_SUBCOUNTY);
+                cmd.Parameters.AddWithValue("CONT_PARISHIN", objInstitution.CONT_PARISH);
+                cmd.Parameters.AddWithValue("CONT_VILLAGEIN", objInstitution.CONT_VILLAGE);
+                cmd.Parameters.AddWithValue("CONTACTPHONE1IN", objInstitution.CONTACTPHONE1);
+                cmd.Parameters.AddWithValue("CONTACTPHONE2IN", objInstitution.CONTACTPHONE2);
+                //cmd.Parameters.AddWithValue("PLOTPHOTOIN", objInstitution.PLOTPHOTO);
+                cmd.Parameters.AddWithValue("CREATEDBYIN", objInstitution.CreatedBy);
+                cmd.Parameters.AddWithValue("CONT_UPDATEBYIN", objInstitution.UpdatedbyIN);
+                cmd.Parameters.AddWithValue("PAP_UIDIN", objInstitution.Papuid);
+                cmd.Parameters.AddWithValue("@DETAILSCAPTUREDBYIN", objInstitution.CapturedBy);
                 if (objInstitution.CapturedDate.Trim() != "")
-                    cmd.Parameters.Add("@DETAILSCAPTUREDDATEIN", Convert.ToDateTime(objInstitution.CapturedDate).ToString(UtilBO.DateFormatDB));
+                    cmd.Parameters.AddWithValue("@DETAILSCAPTUREDDATEIN", Convert.ToDateTime(objInstitution.CapturedDate).ToString(UtilBO.DateFormatDB));
                 else
-                    cmd.Parameters.Add("@DETAILSCAPTUREDDATEIN", DBNull.Value);
-                cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("@DETAILSCAPTUREDDATEIN", DBNull.Value);
+                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 cnn.Open();
                 cmd.ExecuteNonQuery();
 
@@ -102,13 +102,13 @@ namespace WIS_DataAccess
             PAP_InstitutionList PAP_Institutionlist1;
             try
             {
-                cnn = new OracleConnection(con);
-                cmd = new OracleCommand("USP_TRN_GET_PAPINAT_CONTACT", cnn);
+                cnn = new SqlConnection(con);
+                cmd = new SqlCommand("USP_TRN_GET_PAPINAT_CONTACT", cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("HHIDIN", HHID);
-                cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("HHIDIN", HHID);
+                // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
                 cnn.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 PAP_Institutionlist1 = new PAP_InstitutionList();
                 while (dr.Read())
                 {

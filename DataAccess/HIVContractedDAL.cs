@@ -3,7 +3,7 @@ using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -16,14 +16,14 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public HIVContractedList GetALLHIVContracted()
        {
-           OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-           OracleCommand cmd;
+           SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+           SqlCommand cmd;
            string proc = "USP_MST_GETALL_HIVC";
-           cmd = new OracleCommand(proc, con);
+           cmd = new SqlCommand(proc, con);
            cmd.CommandType = CommandType.StoredProcedure;
-           cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
            cmd.Connection.Open();
-           OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+           SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
            HIVContractedBO objHIVContracted = null;
            HIVContractedList objHIV = new HIVContractedList();
 
@@ -46,14 +46,14 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public HIVContractedList GetHIVContracted()
        {
-           OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-           OracleCommand cmd;
+           SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+           SqlCommand cmd;
            string proc = "USP_MST_GET_HIVC";
-           cmd = new OracleCommand(proc, con);
+           cmd = new SqlCommand(proc, con);
            cmd.CommandType = CommandType.StoredProcedure;
-           cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
            cmd.Connection.Open();
-           OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+           SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
            HIVContractedBO objHIVContracted = null;
            HIVContractedList objHIV = new HIVContractedList();
 
@@ -77,19 +77,19 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public HIVContractedBO GetContractedID(int ContractedID)
        {
-           OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-           OracleCommand cmd;
+           SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+           SqlCommand cmd;
 
            string proc = "USP_MST_GET_HIVC";
 
-           cmd = new OracleCommand(proc, cnn);
+           cmd = new SqlCommand(proc, cnn);
            cmd.CommandType = CommandType.StoredProcedure;
-           cmd.Parameters.Add("CONTRACTEDID_", ContractedID);
-           cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           cmd.Parameters.AddWithValue("CONTRACTEDID_", ContractedID);
+           // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
            cmd.Connection.Open();
 
-           OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+           SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
            HIVContractedBO objHIVContracted = null;
            HIVContractedList Users = new HIVContractedList();
 
@@ -136,17 +136,17 @@ namespace WIS_DataAccess
        public string insertHIVC(HIVContractedBO objHIVContracted)
         {
             string returnResult = "";
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_INS_HIVC", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_INS_HIVC", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("CONTRACTEDTHROUGH_", objHIVContracted.ContractedThrough);
-                dcmd.Parameters.Add("CREATEDBY", objHIVContracted.CreatedBy);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("CONTRACTEDTHROUGH_", objHIVContracted.ContractedThrough);
+                dcmd.Parameters.AddWithValue("CREATEDBY", objHIVContracted.CreatedBy);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -177,18 +177,18 @@ namespace WIS_DataAccess
        public string EDITHIVC(HIVContractedBO objHIVContracted)
         {
             string returnResult = "";
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_UPD_HIVC", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_UPD_HIVC", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("CONTRACTEDTHROUGH_", objHIVContracted.ContractedThrough);
-                dcmd.Parameters.Add("CONTRACTEDID_", objHIVContracted.ContractedID);
-                dcmd.Parameters.Add("UpdatedBY", objHIVContracted.CreatedBy);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("CONTRACTEDTHROUGH_", objHIVContracted.ContractedThrough);
+                dcmd.Parameters.AddWithValue("CONTRACTEDID_", objHIVContracted.ContractedID);
+                dcmd.Parameters.AddWithValue("UpdatedBY", objHIVContracted.CreatedBy);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
 
                 if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -218,18 +218,18 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public string DeleteHIVC(int ContractedID)
        {
-           OracleConnection myConnection = null;
-           OracleCommand myCommand = null;
+           SqlConnection myConnection = null;
+           SqlCommand myCommand = null;
 
            string result = string.Empty;
            try
            {
-               myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-               myCommand = new OracleCommand("USP_MST_DEL_HIVC", myConnection);
+               myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+               myCommand = new SqlCommand("USP_MST_DEL_HIVC", myConnection);
                myCommand.Connection = myConnection;
                myCommand.CommandType = CommandType.StoredProcedure;
-               myCommand.Parameters.Add("CONTRACTEDID_", ContractedID);
-               myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+               myCommand.Parameters.AddWithValue("CONTRACTEDID_", ContractedID);
+               myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                myConnection.Open();
                myCommand.ExecuteNonQuery();
                if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -265,19 +265,19 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public string ObsoleteHIVC(int ContractedID, string IsDeleted, int updatedBy)
        {
-           OracleConnection myConnection = null;
-           OracleCommand myCommand = null;
+           SqlConnection myConnection = null;
+           SqlCommand myCommand = null;
            string result = "";
            try
            {
-               myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-               myCommand = new OracleCommand("USP_MST_OBSOLETE_HIVC", myConnection);
+               myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+               myCommand = new SqlCommand("USP_MST_OBSOLETE_HIVC", myConnection);
                myCommand.Connection = myConnection;
                myCommand.CommandType = CommandType.StoredProcedure;
-               myCommand.Parameters.Add("CONTRACTEDID_", ContractedID);
-               myCommand.Parameters.Add("isdeleted_", IsDeleted);
-               myCommand.Parameters.Add("updatedBy_", updatedBy);
-               myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+               myCommand.Parameters.AddWithValue("CONTRACTEDID_", ContractedID);
+               myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+               myCommand.Parameters.AddWithValue("updatedBy_", updatedBy);
+               myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                myConnection.Open();
                myCommand.ExecuteNonQuery();
                if (myCommand.Parameters["errorMessage_"].Value != null)

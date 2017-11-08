@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -15,17 +15,17 @@ namespace WIS_DataAccess
         public string InsertCropDiameter(CropDiameterBO objCropDiameter)
         {
             string result = "";
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_INSERTCROPDIAMETER", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_INSERTCROPDIAMETER", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("CROPDIAMETER_", objCropDiameter.CROPDIAMETER);
-                dcmd.Parameters.Add("CreatedBY", objCropDiameter.UserID);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("CROPDIAMETER_", objCropDiameter.CROPDIAMETER);
+                dcmd.Parameters.AddWithValue("CreatedBY", objCropDiameter.UserID);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
 
                 if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -52,19 +52,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CropDiameterBO GetCropDiameterById(int CROPDIAMETERID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETSECTCROPDIAMETRID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("CROPDIAMETERID_", CROPDIAMETERID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CROPDIAMETERID_", CROPDIAMETERID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CropDiameterBO CropDiameterObj = null;
             CropDiameterList CropDiameterList = new CropDiameterList();
 
@@ -109,18 +109,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteCropDiameter(int CROPDIAMETERID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string result = string.Empty;
 
             try
             {
                 string proc = "USP_MST_DELETECROPDIAMTR";
 
-                cmd = new OracleCommand(proc, cnn);
+                cmd = new SqlCommand(proc, cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("CROPDIAMETERID_", CROPDIAMETERID);
-                cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("CROPDIAMETERID_", CROPDIAMETERID);
+                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 cmd.Connection.Open();
 
                 cmd.ExecuteNonQuery();
@@ -150,19 +150,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteCropDiameter(int CROPDIAMETERID,string IsDeleted)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string result = string.Empty;
 
             try
             {
                 string proc = "USP_MST_OBSOLETECROPDIAMTR";
 
-                cmd = new OracleCommand(proc, cnn);
+                cmd = new SqlCommand(proc, cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("CROPDIAMETERID_", CROPDIAMETERID);
-                cmd.Parameters.Add("isdeleted_", IsDeleted);
-                cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("CROPDIAMETERID_", CROPDIAMETERID);
+                cmd.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 cmd.Connection.Open();
 
                 cmd.ExecuteNonQuery();
@@ -182,17 +182,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CropDiameterList GetCropDiameter()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_SELECTCROPDIAMTR";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CropDiameterBO objCropDiameter = null;
             CropDiameterList CropDiameterList = new CropDiameterList();
 
@@ -218,18 +218,18 @@ namespace WIS_DataAccess
         public string EDITCropDiameter(CropDiameterBO objCropDiameter)
         {
             string returnResult = string.Empty;
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_UPDATECROPDIAMTR", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_UPDATECROPDIAMTR", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("CROPDIAMETER_", objCropDiameter.CROPDIAMETER);
-                dcmd.Parameters.Add("CROPDIAMETERID_", objCropDiameter.CROPDIAMETERID);
-                dcmd.Parameters.Add("UpdatedBY", objCropDiameter.UserID);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("CROPDIAMETER_", objCropDiameter.CROPDIAMETER);
+                dcmd.Parameters.AddWithValue("CROPDIAMETERID_", objCropDiameter.CROPDIAMETERID);
+                dcmd.Parameters.AddWithValue("UpdatedBY", objCropDiameter.UserID);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
                 if (dcmd.Parameters["errorMessage_"].Value != null)

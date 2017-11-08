@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_BusinessObjects;
 
@@ -16,14 +16,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public TypeList GetLandType()
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_LND_GET_TYPE";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             TypeBO objtypeBO = null;
             TypeList objtypelist = new TypeList();
 

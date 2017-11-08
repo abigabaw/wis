@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -8,8 +8,8 @@ namespace WIS_DataAccess
     public class SocioEconomyDAL
     {
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
 
         #region "Welfare Indicator"
@@ -20,20 +20,20 @@ namespace WIS_DataAccess
         public GeneralWelfareMasterList GetGeneralWelfareMasters()
         {
             proc = "USP_MST_GET_WELFAREINDICATORS";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             GeneralWelfareMasterBO objWelfareMaster = null;
 
             GeneralWelfareMasterList WelfareMasterList = new GeneralWelfareMasterList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -65,21 +65,21 @@ namespace WIS_DataAccess
         public GeneralWelfareList GetGeneralWelfares(int householdID)
         {
             proc = "USP_MST_GET_PAPWELFARES";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             GeneralWelfareBO objWelfare = null;
 
             GeneralWelfareList WelfareList = new GeneralWelfareList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HHID_", householdID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", householdID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             //try
             //{
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -107,17 +107,17 @@ namespace WIS_DataAccess
         /// <param name="WelfareList"></param>
         public void UpdatePAPWelfare(GeneralWelfareList WelfareList)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             proc = "USP_TRN_UPD_GENERALWELFARE";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("HOUSEHOLDID_", "");
-            cmd.Parameters.Add("WLF_INDICATORID_", "");
-            cmd.Parameters.Add("WLF_INDICATORVALUE_", "");
-            cmd.Parameters.Add("UPDATEDBY_", "");
+            cmd.Parameters.AddWithValue("HOUSEHOLDID_", "");
+            cmd.Parameters.AddWithValue("WLF_INDICATORID_", "");
+            cmd.Parameters.AddWithValue("WLF_INDICATORVALUE_", "");
+            cmd.Parameters.AddWithValue("UPDATEDBY_", "");
 
             foreach (GeneralWelfareBO objWelfare in WelfareList)
             {
@@ -139,19 +139,19 @@ namespace WIS_DataAccess
         public WelfareVoluntaryBO GetWelfareVoluntary(int householdID)
         {
             proc = "USP_MST_GET_PAPWELFAREVOL";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             WelfareVoluntaryBO objVoluntary = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HHID_", householdID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", householdID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             while (dr.Read())
             {
@@ -191,31 +191,31 @@ namespace WIS_DataAccess
         /// <param name="objVoluntary"></param>
         public void UpdatePAPWelfareVoluntary(WelfareVoluntaryBO objVoluntary)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             proc = "USP_TRN_UPD_WELFAREVOLUNTARY";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("HOUSEHOLDID_", objVoluntary.HouseholdID);
-            cmd.Parameters.Add("WHEREGETDRINKINGWATER_", objVoluntary.WhereGetDrinkingWater);
-            cmd.Parameters.Add("WATERSOURCEDISTANCE_", objVoluntary.WaterSourceDistance);
-            cmd.Parameters.Add("DOYOUFISH_", objVoluntary.DoYouFish);
-            cmd.Parameters.Add("WHEREDOYOUFISH_", objVoluntary.WhereDoYouFish);
-            cmd.Parameters.Add("HOWOFTEN_", objVoluntary.HowOftenFish);
-            cmd.Parameters.Add("DOYOUHUNT_", objVoluntary.DoYouHunt);
-            cmd.Parameters.Add("WHEREHUNT_", objVoluntary.WhereHunt);
-            cmd.Parameters.Add("FIREWOOD_", objVoluntary.Firewood);
-            cmd.Parameters.Add("CHARCOAL_", objVoluntary.Charcoal);
-            cmd.Parameters.Add("PARAFFIN_", objVoluntary.Paraffin);
-            cmd.Parameters.Add("ELECTRICITY_", objVoluntary.Electricity);
-            cmd.Parameters.Add("GAS_", objVoluntary.Gas);
-            cmd.Parameters.Add("SOLAR_", objVoluntary.Solar);
-            cmd.Parameters.Add("BIOGAS_", objVoluntary.Biogas);
-            cmd.Parameters.Add("OTHERFUEL_", objVoluntary.OtherFuel);
-            cmd.Parameters.Add("COMMENTS_", objVoluntary.Comments);
-            cmd.Parameters.Add("UPDATEDBY_", objVoluntary.UpdatedBy);
+            cmd.Parameters.AddWithValue("HOUSEHOLDID_", objVoluntary.HouseholdID);
+            cmd.Parameters.AddWithValue("WHEREGETDRINKINGWATER_", objVoluntary.WhereGetDrinkingWater);
+            cmd.Parameters.AddWithValue("WATERSOURCEDISTANCE_", objVoluntary.WaterSourceDistance);
+            cmd.Parameters.AddWithValue("DOYOUFISH_", objVoluntary.DoYouFish);
+            cmd.Parameters.AddWithValue("WHEREDOYOUFISH_", objVoluntary.WhereDoYouFish);
+            cmd.Parameters.AddWithValue("HOWOFTEN_", objVoluntary.HowOftenFish);
+            cmd.Parameters.AddWithValue("DOYOUHUNT_", objVoluntary.DoYouHunt);
+            cmd.Parameters.AddWithValue("WHEREHUNT_", objVoluntary.WhereHunt);
+            cmd.Parameters.AddWithValue("FIREWOOD_", objVoluntary.Firewood);
+            cmd.Parameters.AddWithValue("CHARCOAL_", objVoluntary.Charcoal);
+            cmd.Parameters.AddWithValue("PARAFFIN_", objVoluntary.Paraffin);
+            cmd.Parameters.AddWithValue("ELECTRICITY_", objVoluntary.Electricity);
+            cmd.Parameters.AddWithValue("GAS_", objVoluntary.Gas);
+            cmd.Parameters.AddWithValue("SOLAR_", objVoluntary.Solar);
+            cmd.Parameters.AddWithValue("BIOGAS_", objVoluntary.Biogas);
+            cmd.Parameters.AddWithValue("OTHERFUEL_", objVoluntary.OtherFuel);
+            cmd.Parameters.AddWithValue("COMMENTS_", objVoluntary.Comments);
+            cmd.Parameters.AddWithValue("UPDATEDBY_", objVoluntary.UpdatedBy);
             cmd.ExecuteNonQuery();
 
             cmd.Connection.Close();

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 
@@ -17,16 +17,16 @@ namespace WIS_DataAccess
         {
             string returnResult = string.Empty;
 
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             con.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_INS_FENCE", con);
+            SqlCommand dcmd = new SqlCommand("USP_MST_INS_FENCE", con);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
             try
             {
-                dcmd.Parameters.Add("p_FENCEDESCRIPTION", FenceDescriptionBOobj.FenceDescription);
-                dcmd.Parameters.Add("p_CREATEDBY", FenceDescriptionBOobj.Createdby);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("p_FENCEDESCRIPTION", FenceDescriptionBOobj.FenceDescription);
+                dcmd.Parameters.AddWithValue("p_CREATEDBY", FenceDescriptionBOobj.Createdby);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
                 if (dcmd.Parameters["errorMessage_"].Value != null)
                     returnResult = dcmd.Parameters["errorMessage_"].Value.ToString();
@@ -53,17 +53,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public FenceDescriptionList GetAllFence()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
-            string proc = " USP_MST_GET_ALLFENCE";
+            string proc = "USP_MST_GET_ALLFENCE";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             FenceDescriptionBO objUser = null;
             FenceDescriptionList Users = new FenceDescriptionList();
 
@@ -88,17 +88,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public FenceDescriptionList GetFence()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
-            string proc = " USP_MST_GET_FENCE";
+            string proc = "USP_MST_GET_FENCE";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             FenceDescriptionBO objUser = null;
             FenceDescriptionList Users = new FenceDescriptionList();
 
@@ -123,19 +123,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteFenceDescriptionDAL(int FloorTypeID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETE_FENCE", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETE_FENCE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
 
-                myCommand.Parameters.Add("fenceid_", FloorTypeID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("fenceid_", FloorTypeID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
@@ -162,15 +162,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string Delete(int FenceID)
         {
-            OracleConnection conn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection conn = new SqlConnection(AppConfiguration.ConnectionString);
             string result = string.Empty;
             conn.Open();
-            OracleCommand dCmd = new OracleCommand("USP_MST_DEL_FENCE", conn);
+            SqlCommand dCmd = new SqlCommand("USP_MST_DEL_FENCE", conn);
             dCmd.CommandType = CommandType.StoredProcedure;
             try
             {
-                dCmd.Parameters.Add("p_fenceid", FenceID);
-                dCmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dCmd.Parameters.AddWithValue("p_fenceid", FenceID);
+                dCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 dCmd.ExecuteNonQuery();
 
                 if (dCmd.Parameters["errorMessage_"].Value != null)
@@ -197,19 +197,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public FenceDescriptionBO GetFencebyID(int FenceID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_FENCEBYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("p_fenceid", FenceID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("p_fenceid", FenceID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             FenceDescriptionBO FenceDescriptionBOobj = null;
             FenceDescriptionList Users = new FenceDescriptionList();
 
@@ -258,16 +258,16 @@ namespace WIS_DataAccess
         {
             string returnResult = string.Empty;
 
-            OracleConnection conn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection conn = new SqlConnection(AppConfiguration.ConnectionString);
             conn.Open();
-            OracleCommand dCmd = new OracleCommand("USP_MST_UPD_FENCE", conn);
+            SqlCommand dCmd = new SqlCommand("USP_MST_UPD_FENCE", conn);
             dCmd.CommandType = CommandType.StoredProcedure;
             try
             {
-                dCmd.Parameters.Add("p_FENCEID", FenceID);
-                dCmd.Parameters.Add("p_FENCEDESCRIPTION", FenceDescriptionBOobj.FenceDescription);
-                dCmd.Parameters.Add("p_UPDATEDBY", FenceDescriptionBOobj.Createdby);
-                dCmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dCmd.Parameters.AddWithValue("p_FENCEID", FenceID);
+                dCmd.Parameters.AddWithValue("p_FENCEDESCRIPTION", FenceDescriptionBOobj.FenceDescription);
+                dCmd.Parameters.AddWithValue("p_UPDATEDBY", FenceDescriptionBOobj.Createdby);
+                dCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 dCmd.ExecuteNonQuery();
 
                 if (dCmd.Parameters["errorMessage_"].Value != null)

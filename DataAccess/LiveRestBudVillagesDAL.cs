@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data;
 using System.Configuration;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 
@@ -15,8 +15,8 @@ namespace WIS_DataAccess
 
         //string connStr = ConfigurationManager.ConnectionStrings["UETCL_WIS"].ToString();  // database connection string 
         string con = WIS_DataAccess.AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
 
         #region GetData
@@ -27,17 +27,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public LiveRestBudVillagesList GetLiveRestBudVillages()
         {
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_LIVRESBUD_VILLAGE";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             LiveRestBudVillagesBO objLiveRestBudVillagesBO = null;
             LiveRestBudVillagesList oLiveRestBudVillagesList = new LiveRestBudVillagesList();
 
@@ -62,19 +62,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public LiveRestBudVillagesList GetLiveRestBudVillagesById(int LivRestBudgID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_LIV_BUD_VILLG_BYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("liv_res_budgid_", LivRestBudgID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("liv_res_budgid_", LivRestBudgID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             LiveRestBudVillagesBO oLiveRestBudVillagesBO = null;
             LiveRestBudVillagesList oLiveRestBudVillagesList = new LiveRestBudVillagesList();
@@ -129,20 +129,20 @@ namespace WIS_DataAccess
             string returnResult = string.Empty;
             LiveRestBudVillagesBO ooLiveRestBudVillagesBO = new LiveRestBudVillagesBO();//For Storing & Returning Result as Object
 
-            OracleConnection OCon = new OracleConnection(con);
+            SqlConnection OCon = new SqlConnection(con);
             OCon.Open();
-            OracleCommand oCmd = new OracleCommand("USP_TRN_INS_LIVRESBUD_VILLAGE", OCon);
+            SqlCommand oCmd = new SqlCommand("USP_TRN_INS_LIVRESBUD_VILLAGE", OCon);
             oCmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(oCmd.CommandType);
 
             try
             {
-                oCmd.Parameters.Add("Liv_Res_BudgId_", oLiveRestBudVillagesBO.Liv_Res_BudgId);
-                oCmd.Parameters.Add("Village_", oLiveRestBudVillagesBO.Village);
-                oCmd.Parameters.Add("CreatedBy_", oLiveRestBudVillagesBO.CreatedBy);
-                oCmd.Parameters.Add("IsDeleted_", oLiveRestBudVillagesBO.IsDeleted);
+                oCmd.Parameters.AddWithValue("Liv_Res_BudgId_", oLiveRestBudVillagesBO.Liv_Res_BudgId);
+                oCmd.Parameters.AddWithValue("Village_", oLiveRestBudVillagesBO.Village);
+                oCmd.Parameters.AddWithValue("CreatedBy_", oLiveRestBudVillagesBO.CreatedBy);
+                oCmd.Parameters.AddWithValue("IsDeleted_", oLiveRestBudVillagesBO.IsDeleted);
 
-                oCmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                oCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 oCmd.ExecuteNonQuery();
 
@@ -171,13 +171,13 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int DeleteLiveRestBudVillages(int LivRestBudgID)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_DEL_LIVRESBUD_VILLAGE";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("liv_res_budgid_", LivRestBudgID);
+            cmd.Parameters.AddWithValue("liv_res_budgid_", LivRestBudgID);
     
             cmd.Connection.Open();
 
@@ -194,19 +194,19 @@ namespace WIS_DataAccess
         public string UpdateLiveRestBudVillages(LiveRestBudVillagesBO oLiveRestBudVillagesBO)
         {
             string returnResult = string.Empty;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_UPD_LIVRESBUD_VILLAGE";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            cmd.Parameters.Add("Liv_Res_BudgId_", oLiveRestBudVillagesBO.Liv_Res_BudgId);
-            cmd.Parameters.Add("Village_", oLiveRestBudVillagesBO.Village);
-            cmd.Parameters.Add("updatedby_", oLiveRestBudVillagesBO.CreatedBy);
-            cmd.Parameters.Add("IsDeleted_", oLiveRestBudVillagesBO.IsDeleted);
+            cmd.Parameters.AddWithValue("Liv_Res_BudgId_", oLiveRestBudVillagesBO.Liv_Res_BudgId);
+            cmd.Parameters.AddWithValue("Village_", oLiveRestBudVillagesBO.Village);
+            cmd.Parameters.AddWithValue("updatedby_", oLiveRestBudVillagesBO.CreatedBy);
+            cmd.Parameters.AddWithValue("IsDeleted_", oLiveRestBudVillagesBO.IsDeleted);
 
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 100).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             try
             {
                 cmd.ExecuteNonQuery();

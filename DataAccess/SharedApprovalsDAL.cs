@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_DataAccess;
 using WIS_BusinessObjects;
@@ -22,16 +22,16 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public MyTasks_ApprovalList GetMyTaskApprovalDetail(int UserRoleId, int AssigntoId)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_PROJ_SHA_MYACTIVITIES";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("UserRoleId_", UserRoleId);
-            cmd.Parameters.Add("ASSIGNTOID_", AssigntoId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("UserRoleId_", UserRoleId);
+            cmd.Parameters.AddWithValue("ASSIGNTOID_", AssigntoId);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             MyTasks_Approval objMyTasks = null;
             MyTasks_ApprovalList MyTasks = new MyTasks_ApprovalList();
             while (dr.Read())
@@ -64,49 +64,49 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public TrackerHeaderList GetMyTrackHdrDetails(string ProjectId, string ModuleId, string Status, int USERIDIN_, int AssigntoId)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_PROJ_TRACKHDRDTL_SHA";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             if (ProjectId.ToString() == "")
             {
-                cmd.Parameters.Add("@ProjectIdIN", DBNull.Value);
+                cmd.Parameters.AddWithValue("@ProjectIdIN", DBNull.Value);
             }
             else
             {
-                cmd.Parameters.Add("@ProjectIdIN", ProjectId.ToString());
+                cmd.Parameters.AddWithValue("@ProjectIdIN", ProjectId.ToString());
             }
 
             if (ModuleId.ToString() == "")
             {
-                cmd.Parameters.Add("@ModuleIdIN", DBNull.Value);
+                cmd.Parameters.AddWithValue("@ModuleIdIN", DBNull.Value);
             }
             else
             {
-                cmd.Parameters.Add("@ModuleIdIN", ModuleId.ToString());
+                cmd.Parameters.AddWithValue("@ModuleIdIN", ModuleId.ToString());
             }
 
             if (Status.ToString() == "")
             {
-                cmd.Parameters.Add("@StatusIN", DBNull.Value);
+                cmd.Parameters.AddWithValue("@StatusIN", DBNull.Value);
             }
             else
             {
-                cmd.Parameters.Add("@StatusIN", Status.ToString());
+                cmd.Parameters.AddWithValue("@StatusIN", Status.ToString());
             }
             if (USERIDIN_.ToString() == "")
             {
-                cmd.Parameters.Add("@USERIDIN_", DBNull.Value);
+                cmd.Parameters.AddWithValue("@USERIDIN_", DBNull.Value);
             }
             else
             {
-                cmd.Parameters.Add("USERIDIN_", USERIDIN_.ToString());
+                cmd.Parameters.AddWithValue("USERIDIN_", USERIDIN_.ToString());
             }
-            cmd.Parameters.Add("ASSIGNTOID_", AssigntoId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ASSIGNTOID_", AssigntoId);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             TrackerHeaderBO objMyTasks = null;
             TrackerHeaderList MyTasks = new TrackerHeaderList();
             while (dr.Read())
@@ -167,15 +167,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ProjectPersonalList GetApproverUsers(int AssigntoId)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GET_SHA_APPUSERS";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ASSIGNTOID_", AssigntoId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ASSIGNTOID_", AssigntoId);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ProjectPersonalBO ObjPP = null;
             ProjectPersonalList ObjPPList = new ProjectPersonalList();
 
@@ -199,15 +199,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public void UPdateLockStatus(SharedAuthorizationBO objBo)
         {
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_TRN_UPD_LOCKSTATUS", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_TRN_UPD_LOCKSTATUS", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("TRACKERHEADERID_", objBo.TRACKERHEADERID);
-            myCommand.Parameters.Add("LOCKEDSTATUS_", objBo.LockStatus);
-            myCommand.Parameters.Add("LOCKEDBY_", objBo.UpdateBy);
+            myCommand.Parameters.AddWithValue("TRACKERHEADERID_", objBo.TRACKERHEADERID);
+            myCommand.Parameters.AddWithValue("LOCKEDSTATUS_", objBo.LockStatus);
+            myCommand.Parameters.AddWithValue("LOCKEDBY_", objBo.UpdateBy);
             myConnection.Open();
             myCommand.ExecuteNonQuery();
             myConnection.Close();
@@ -220,15 +220,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public SharedAuthorizationBO GetLockStatus(int TRACKERHEADERID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GET_LOCKSTATUS";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("TRACKERHEADERID_", TRACKERHEADERID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("TRACKERHEADERID_", TRACKERHEADERID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             SharedAuthorizationBO objBo = null;
 
             objBo = new SharedAuthorizationBO();

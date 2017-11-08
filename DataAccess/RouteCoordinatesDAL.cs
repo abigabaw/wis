@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data.OleDb;
 using WIS_BusinessObjects;
 
@@ -15,22 +15,22 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public RouteCoordinatesList GetRouteCoordinates(string RouteId)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GETCOORDINATES";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             if (RouteId.ToString() == "")
             {
-                cmd.Parameters.Add("@Route_IdIN", DBNull.Value);
+                cmd.Parameters.AddWithValue("@Route_IdIN", DBNull.Value);
             }
             else
             {
-                cmd.Parameters.Add("@Route_IdIN", RouteId.ToString());
+                cmd.Parameters.AddWithValue("@Route_IdIN", RouteId.ToString());
             }
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             RouteCoordinatesBO objRouteCoordinates = null;
             RouteCoordinatesList RouteCoordinates = new RouteCoordinatesList();
             while (dr.Read())
@@ -59,21 +59,21 @@ namespace WIS_DataAccess
         {
             int result = 0;
             {
-                OracleConnection myConnection;
-                OracleCommand myCommand;
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_TRN_INS_COORDINATES", myConnection);
+                SqlConnection myConnection;
+                SqlCommand myCommand;
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_TRN_INS_COORDINATES", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("@RouteIdIN", objRoutecoordinates.Route_ID);
-                myCommand.Parameters.Add("@X_AxiesIN", objRoutecoordinates.X_axis);
-                myCommand.Parameters.Add("@Y_AxiesIN", objRoutecoordinates.Y_axis);
-                myCommand.Parameters.Add("@Z_AxiesIN", objRoutecoordinates.Z_axis);
-                myCommand.Parameters.Add("@LATITUDEIN", objRoutecoordinates.Latitude);
-                myCommand.Parameters.Add("@LONGITUDEIN", objRoutecoordinates.Longitude);
-                myCommand.Parameters.Add("@ISDELETEDIN", "False");
-                myCommand.Parameters.Add("@USERIDIN", objRoutecoordinates.CreatedBy);
-                myCommand.Parameters.Add("rows_Affected", OracleDbType.Int32).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("@RouteIdIN", objRoutecoordinates.Route_ID);
+                myCommand.Parameters.AddWithValue("@X_AxiesIN", objRoutecoordinates.X_axis);
+                myCommand.Parameters.AddWithValue("@Y_AxiesIN", objRoutecoordinates.Y_axis);
+                myCommand.Parameters.AddWithValue("@Z_AxiesIN", objRoutecoordinates.Z_axis);
+                myCommand.Parameters.AddWithValue("@LATITUDEIN", objRoutecoordinates.Latitude);
+                myCommand.Parameters.AddWithValue("@LONGITUDEIN", objRoutecoordinates.Longitude);
+                myCommand.Parameters.AddWithValue("@ISDELETEDIN", "False");
+                myCommand.Parameters.AddWithValue("@USERIDIN", objRoutecoordinates.CreatedBy);
+                myCommand.Parameters.AddWithValue("rows_Affected", SqlDbType.Int).Direction = ParameterDirection.Output;
 
                 myConnection.Open();
                 result = myCommand.ExecuteNonQuery();
@@ -91,13 +91,13 @@ namespace WIS_DataAccess
         {
             int result = 0;
             {
-                OracleConnection myConnection;
-                OracleCommand myCommand;
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_TRN_DEL_COORDINATES", myConnection);
+                SqlConnection myConnection;
+                SqlCommand myCommand;
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_TRN_DEL_COORDINATES", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("@RoutecoordinateIdIN", Route_CoordinateId);
+                myCommand.Parameters.AddWithValue("@RoutecoordinateIdIN", Route_CoordinateId);
                 myConnection.Open();
                 result = myCommand.ExecuteNonQuery();
                 myConnection.Close();
@@ -114,21 +114,21 @@ namespace WIS_DataAccess
         {
             int result = 0;
             {
-                OracleConnection myConnection;
-                OracleCommand myCommand;
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_TRN_UPD_Coordinates", myConnection);
+                SqlConnection myConnection;
+                SqlCommand myCommand;
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_TRN_UPD_Coordinates", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("@RouteCoordinateIdIN", objRouteCoordinates.Route_CoordinateID);
-                myCommand.Parameters.Add("@RouteIdIN", objRouteCoordinates.Route_ID);
-                myCommand.Parameters.Add("@X_AxiesIN", objRouteCoordinates.X_axis);
-                myCommand.Parameters.Add("@Y_AxiesIN", objRouteCoordinates.Y_axis);
-                myCommand.Parameters.Add("@Z_AxiesIN", objRouteCoordinates.Z_axis);
-                myCommand.Parameters.Add("@LATITUDEIN", objRouteCoordinates.Latitude);
-                myCommand.Parameters.Add("@LONGITUDEIN", objRouteCoordinates.Longitude);
-                myCommand.Parameters.Add("@ISDELETEDIN", "False");
-                myCommand.Parameters.Add("@USERIDIN", objRouteCoordinates.UpdatedBy);
+                myCommand.Parameters.AddWithValue("@RouteCoordinateIdIN", objRouteCoordinates.Route_CoordinateID);
+                myCommand.Parameters.AddWithValue("@RouteIdIN", objRouteCoordinates.Route_ID);
+                myCommand.Parameters.AddWithValue("@X_AxiesIN", objRouteCoordinates.X_axis);
+                myCommand.Parameters.AddWithValue("@Y_AxiesIN", objRouteCoordinates.Y_axis);
+                myCommand.Parameters.AddWithValue("@Z_AxiesIN", objRouteCoordinates.Z_axis);
+                myCommand.Parameters.AddWithValue("@LATITUDEIN", objRouteCoordinates.Latitude);
+                myCommand.Parameters.AddWithValue("@LONGITUDEIN", objRouteCoordinates.Longitude);
+                myCommand.Parameters.AddWithValue("@ISDELETEDIN", "False");
+                myCommand.Parameters.AddWithValue("@USERIDIN", objRouteCoordinates.UpdatedBy);
                 myConnection.Open();
                 result = myCommand.ExecuteNonQuery();
                 myConnection.Close();
@@ -143,15 +143,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public RouteCoordinatesBO GetRouteCoordinatesByID(int RouteCoordinateId)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GET_CORDINATEBYID";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@RouteCoordinateIdIN", RouteCoordinateId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("@RouteCoordinateIdIN", RouteCoordinateId);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             RouteCoordinatesBO obRoutecoordinates = null;
             while (dr.Read())
             {
@@ -215,21 +215,21 @@ namespace WIS_DataAccess
         public string SaveExcelData(RouteCoordinatesList list1, int RouteID, string uID)
         {
             Int32 result = 0;
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_TRN_INS_COORDINATES", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_TRN_INS_COORDINATES", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("@RouteIdIN", "");
-            myCommand.Parameters.Add("@X_AxiesIN", "");
-            myCommand.Parameters.Add("@Y_AxiesIN", "");
-            myCommand.Parameters.Add("@Z_AxiesIN", "");
-            myCommand.Parameters.Add("@LATITUDEIN", "");
-            myCommand.Parameters.Add("@LONGITUDEIN", "");
-            myCommand.Parameters.Add("@ISDELETEDIN", "");
-            myCommand.Parameters.Add("@USERIDIN", "");
-            myCommand.Parameters.Add("rows_Affected", OracleDbType.Int32).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("@RouteIdIN", "");
+            myCommand.Parameters.AddWithValue("@X_AxiesIN", "");
+            myCommand.Parameters.AddWithValue("@Y_AxiesIN", "");
+            myCommand.Parameters.AddWithValue("@Z_AxiesIN", "");
+            myCommand.Parameters.AddWithValue("@LATITUDEIN", "");
+            myCommand.Parameters.AddWithValue("@LONGITUDEIN", "");
+            myCommand.Parameters.AddWithValue("@ISDELETEDIN", "");
+            myCommand.Parameters.AddWithValue("@USERIDIN", "");
+            myCommand.Parameters.AddWithValue("rows_Affected", SqlDbType.Int).Direction = ParameterDirection.Output;
 
             myConnection.Open();
             for (int i = 0; i < list1.Count; i++)
@@ -286,25 +286,25 @@ namespace WIS_DataAccess
             oda.Fill(dt);
             connExcel.Close();
 
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_TRN_INS_COORDINATES", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_TRN_INS_COORDINATES", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("@RouteIdIN", "");
-            myCommand.Parameters.Add("@X_AxiesIN", "");
-            myCommand.Parameters.Add("@Y_AxiesIN", "");
-            myCommand.Parameters.Add("@Z_AxiesIN", "");
-            myCommand.Parameters.Add("@ISDELETEDIN", "False");
-            myCommand.Parameters.Add("@USERIDIN", "");
+            myCommand.Parameters.AddWithValue("@RouteIdIN", "");
+            myCommand.Parameters.AddWithValue("@X_AxiesIN", "");
+            myCommand.Parameters.AddWithValue("@Y_AxiesIN", "");
+            myCommand.Parameters.AddWithValue("@Z_AxiesIN", "");
+            myCommand.Parameters.AddWithValue("@ISDELETEDIN", "False");
+            myCommand.Parameters.AddWithValue("@USERIDIN", "");
             myConnection.Open();
             //result = myCommand.ExecuteNonQuery();
             // myConnection.Close();
-            //myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            //myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
 
-            // myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            // myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
 
 

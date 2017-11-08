@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -13,14 +13,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CulturePropertiesList GetCulturalPropertyType()
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GET_NAME_CULTURPROP";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CulturPropertiesBO BOobj = null;
             CulturePropertiesList Listobj = new CulturePropertiesList();
 
@@ -45,30 +45,30 @@ namespace WIS_DataAccess
         {
             //string returnResult = string.Empty;
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_INS_CULTURPROP", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_INS_CULTURPROP", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("HHID", CulturPropertiesobj.HHID);
-                dcmd.Parameters.Add("CULTUREPROPTYPEID", CulturPropertiesobj.CULTUREPROPTYPEID);
-                dcmd.Parameters.Add("CULTUREPROPDESCRIPTION", CulturPropertiesobj.CULTUREPROPDESCRIPTION);
-                dcmd.Parameters.Add("CULT_DIMEN_LENGTH", CulturPropertiesobj.CULT_DIMEN_LENGTH);
-                dcmd.Parameters.Add("CULT_DIMEN_WIDTH", CulturPropertiesobj.CULT_DIMEN_WIDTH);
-                dcmd.Parameters.Add("CULT_DEPRECIATEDVALUE", CulturPropertiesobj.CULT_DEPRECIATEDVALUE);
-                dcmd.Parameters.Add("CULT_VALUATIONAMOUNT", CulturPropertiesobj.CULT_VALUATIONAMOUNT);
-                dcmd.Parameters.Add("ISDELETED", CulturPropertiesobj.ISDELETED);
-                dcmd.Parameters.Add("CREATEDBY", CulturPropertiesobj.CREATEDBY);
+                dcmd.Parameters.AddWithValue("HHID", CulturPropertiesobj.HHID);
+                dcmd.Parameters.AddWithValue("CULTUREPROPTYPEID", CulturPropertiesobj.CULTUREPROPTYPEID);
+                dcmd.Parameters.AddWithValue("CULTUREPROPDESCRIPTION", CulturPropertiesobj.CULTUREPROPDESCRIPTION);
+                dcmd.Parameters.AddWithValue("CULT_DIMEN_LENGTH", CulturPropertiesobj.CULT_DIMEN_LENGTH);
+                dcmd.Parameters.AddWithValue("CULT_DIMEN_WIDTH", CulturPropertiesobj.CULT_DIMEN_WIDTH);
+                dcmd.Parameters.AddWithValue("CULT_DEPRECIATEDVALUE", CulturPropertiesobj.CULT_DEPRECIATEDVALUE);
+                dcmd.Parameters.AddWithValue("CULT_VALUATIONAMOUNT", CulturPropertiesobj.CULT_VALUATIONAMOUNT);
+                dcmd.Parameters.AddWithValue("ISDELETED", CulturPropertiesobj.ISDELETED);
+                dcmd.Parameters.AddWithValue("CREATEDBY", CulturPropertiesobj.CREATEDBY);
                 if (CulturPropertiesobj.Photo != null)
-                    dcmd.Parameters.Add("PAPCPPHOTO_", OracleDbType.Blob).Value = CulturPropertiesobj.Photo;
+                    dcmd.Parameters.AddWithValue("PAPCPPHOTO_", SqlDbType.Image).Value = CulturPropertiesobj.Photo;
                 else
-                    dcmd.Parameters.Add("PAPCPPHOTO_", Oracle.DataAccess.Types.OracleBlob.Null);
+                    dcmd.Parameters.AddWithValue("PAPCPPHOTO_", DBNull.Value);
              
 
-                //dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                //dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
 
                 return dcmd.ExecuteNonQuery();
@@ -96,19 +96,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CulturePropertiesList GetCultureProp(int householdID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_SEL_CULTURPROP";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HHID_", householdID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", householdID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CulturPropertiesBO CulturPropertiesobj = null;
             CulturePropertiesList Listobj = new CulturePropertiesList();
 
@@ -146,33 +146,33 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int Update(CulturPropertiesBO CulturPropertiesobj)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_UPD_CULTURPROP", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_UPD_CULTURPROP", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("HHID_", CulturPropertiesobj.HHID);
+                dcmd.Parameters.AddWithValue("HHID_", CulturPropertiesobj.HHID);
 
-                dcmd.Parameters.Add("c_CULTURALPROPID", CulturPropertiesobj.CULTURALPROPID);
+                dcmd.Parameters.AddWithValue("c_CULTURALPROPID", CulturPropertiesobj.CULTURALPROPID);
 
-                dcmd.Parameters.Add("c_CULTUREPROPTYPEID", CulturPropertiesobj.CULTUREPROPTYPEID);
-                dcmd.Parameters.Add("c_CULTUREPROPDESCRIPTION", CulturPropertiesobj.CULTUREPROPDESCRIPTION);
-                dcmd.Parameters.Add("c_CULT_DIMEN_LENGTH", CulturPropertiesobj.CULT_DIMEN_LENGTH);
-                dcmd.Parameters.Add("c_CULT_DIMEN_WIDTH", CulturPropertiesobj.CULT_DIMEN_WIDTH);
+                dcmd.Parameters.AddWithValue("c_CULTUREPROPTYPEID", CulturPropertiesobj.CULTUREPROPTYPEID);
+                dcmd.Parameters.AddWithValue("c_CULTUREPROPDESCRIPTION", CulturPropertiesobj.CULTUREPROPDESCRIPTION);
+                dcmd.Parameters.AddWithValue("c_CULT_DIMEN_LENGTH", CulturPropertiesobj.CULT_DIMEN_LENGTH);
+                dcmd.Parameters.AddWithValue("c_CULT_DIMEN_WIDTH", CulturPropertiesobj.CULT_DIMEN_WIDTH);
 
-                dcmd.Parameters.Add("c_CULT_DEPRECIATEDVALUE", CulturPropertiesobj.CULT_DEPRECIATEDVALUE);
-                dcmd.Parameters.Add("c_CULT_VALUATIONAMOUNT", CulturPropertiesobj.CULT_VALUATIONAMOUNT);
+                dcmd.Parameters.AddWithValue("c_CULT_DEPRECIATEDVALUE", CulturPropertiesobj.CULT_DEPRECIATEDVALUE);
+                dcmd.Parameters.AddWithValue("c_CULT_VALUATIONAMOUNT", CulturPropertiesobj.CULT_VALUATIONAMOUNT);
 
 
-                dcmd.Parameters.Add("c_UPDATEDBY", CulturPropertiesobj.CREATEDBY);
+                dcmd.Parameters.AddWithValue("c_UPDATEDBY", CulturPropertiesobj.CREATEDBY);
 
                 if (CulturPropertiesobj.Photo != null)
-                    dcmd.Parameters.Add("PAPCPPHOTO_", OracleDbType.Blob).Value = CulturPropertiesobj.Photo;
+                    dcmd.Parameters.AddWithValue("PAPCPPHOTO_", SqlDbType.Image).Value = CulturPropertiesobj.Photo;
                 else
-                    dcmd.Parameters.Add("PAPCPPHOTO_", Oracle.DataAccess.Types.OracleBlob.Null);
+                    dcmd.Parameters.AddWithValue("PAPCPPHOTO_", DBNull.Value);
 
                 return dcmd.ExecuteNonQuery();
             }
@@ -195,19 +195,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CulturPropertiesBO GetData(int culTURALPROPID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_CULTURPROP";//"USP_TRN_GET_DAMAGE_CROPS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("C_CULTURALPROPID", culTURALPROPID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("C_CULTURALPROPID", culTURALPROPID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             CulturPropertiesBO CulturPropertiesobj = null;
             CulturePropertiesList Listobj = new CulturePropertiesList();
@@ -258,15 +258,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CulturPropertiesBO ShowPAPCPImage(int householdID, int PermanentStructureID)
         {
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_TRN_GET_PAPCP_PHOTO", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_TRN_GET_PAPCP_PHOTO", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("HHID_", householdID);
-            myCommand.Parameters.Add("PermanentStructureID_", PermanentStructureID);
-            myCommand.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("HHID_", householdID);
+            myCommand.Parameters.AddWithValue("PermanentStructureID_", PermanentStructureID);
+            // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             myCommand.Connection.Open();
             object img = myCommand.ExecuteScalar();

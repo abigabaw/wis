@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -8,8 +8,8 @@ namespace WIS_DataAccess
     public class NewLocationDAL
     {
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
 
         /// <summary>
@@ -20,21 +20,21 @@ namespace WIS_DataAccess
         public NewLocationBO GetNewLocation(int HHID)
         {
             proc = "USP_TRN_GET_CMP_NEW_PLOT";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             //NewLocationBO oNewLocationBO = null;
 
             NewLocationList lstNewLocation = new NewLocationList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("hhid_", HHID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("hhid_", HHID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             NewLocationBO oNewLocationBO = null;
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -70,33 +70,33 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string AddNewLocation(NewLocationBO oNewLocationBO)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnResult = string.Empty;
             proc = "USP_TRN_INS_CMP_NEW_PLOT";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("hhid_", oNewLocationBO.HHID);
-            cmd.Parameters.Add("newplotno_", oNewLocationBO.NewPlotNo);
-            cmd.Parameters.Add("newplotstatusid_", oNewLocationBO.NewPlotStatusId);
-            cmd.Parameters.Add("plotdistrict_", oNewLocationBO.District);
-            cmd.Parameters.Add("plotcounty_", oNewLocationBO.County);
-            cmd.Parameters.Add("plotsubcounty_", oNewLocationBO.SubCounty);
-            cmd.Parameters.Add("plotvillage_", oNewLocationBO.Village);
-            cmd.Parameters.Add("distFromOldPlot_", oNewLocationBO.DistanceFromOldPlot);
+            cmd.Parameters.AddWithValue("hhid_", oNewLocationBO.HHID);
+            cmd.Parameters.AddWithValue("newplotno_", oNewLocationBO.NewPlotNo);
+            cmd.Parameters.AddWithValue("newplotstatusid_", oNewLocationBO.NewPlotStatusId);
+            cmd.Parameters.AddWithValue("plotdistrict_", oNewLocationBO.District);
+            cmd.Parameters.AddWithValue("plotcounty_", oNewLocationBO.County);
+            cmd.Parameters.AddWithValue("plotsubcounty_", oNewLocationBO.SubCounty);
+            cmd.Parameters.AddWithValue("plotvillage_", oNewLocationBO.Village);
+            cmd.Parameters.AddWithValue("distFromOldPlot_", oNewLocationBO.DistanceFromOldPlot);
 
             if (oNewLocationBO.DateOfSettlement != DateTime.MinValue)
-                cmd.Parameters.Add("dateofsettlement_", oNewLocationBO.DateOfSettlement);
+                cmd.Parameters.AddWithValue("dateofsettlement_", oNewLocationBO.DateOfSettlement);
             else
-                cmd.Parameters.Add("dateofsettlement_", DBNull.Value);
+                cmd.Parameters.AddWithValue("dateofsettlement_", DBNull.Value);
 
-            cmd.Parameters.Add("plotparish_", oNewLocationBO.Parish);
+            cmd.Parameters.AddWithValue("plotparish_", oNewLocationBO.Parish);
 
-            cmd.Parameters.Add("isdeleted_", oNewLocationBO.IsDeleted);
-            cmd.Parameters.Add("createdby_", oNewLocationBO.CreatedBy);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("isdeleted_", oNewLocationBO.IsDeleted);
+            cmd.Parameters.AddWithValue("createdby_", oNewLocationBO.CreatedBy);
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["errorMessage_"].Value != null)

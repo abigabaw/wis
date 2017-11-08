@@ -27,7 +27,7 @@ namespace WIS_DataAccess
             {
                 cmd.Parameters.AddWithValue("@RoleNameIN", RoleName.ToString());
             }             
-           // cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+           // // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             RoleBO objRole = null;            
@@ -65,7 +65,7 @@ namespace WIS_DataAccess
             {
                 cmd.Parameters.AddWithValue("@RoleNameIN", RoleName.ToString());
             }
-          //  cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+          //  // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             RoleBO objRole = null;
@@ -141,7 +141,7 @@ namespace WIS_DataAccess
                 myCommand = new SqlCommand("USP_MST_DELETEROLE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.AddWithValue("@RoleId_", roleId);
+                myCommand.Parameters.AddWithValue("@RoleId_", (float)roleId);
                 myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
@@ -180,8 +180,8 @@ namespace WIS_DataAccess
             SqlConnection myConnection = null;
             SqlCommand myCommand = null;
             string result = string.Empty;
-            try
-            {
+          //  try
+           // {
 
                 myConnection = new SqlConnection(AppConfiguration.ConnectionString);
                 myCommand = new SqlCommand("USP_MST_OBSOLETEROLE", myConnection);
@@ -189,22 +189,22 @@ namespace WIS_DataAccess
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("@RoleId_", roleId);
                 myCommand.Parameters.AddWithValue("@isdeleted_", IsDeleted);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+               // myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
-                if (myCommand.Parameters["errorMessage_"].Value != null)
-                    result = myCommand.Parameters["errorMessage_"].Value.ToString();
-            }
+               // if (myCommand.Parameters["errorMessage_"].Value != null)
+               //     result = myCommand.Parameters["errorMessage_"].Value.ToString();
+          /*  }
             catch (Exception ex)
             {
                 throw ex;
             }
             finally
-            {
+            {*/
                 myCommand.Dispose();
                 myConnection.Close();
                 myConnection.Dispose();
-            }
+           // }
 
             return result;
         }
@@ -236,7 +236,7 @@ namespace WIS_DataAccess
                 }                                      
                 myCommand.Parameters.AddWithValue("@ISDELETEDIN", "False");
                 myCommand.Parameters.AddWithValue("@USERIDIN", objRole.UpdatedBy);
-                myCommand.Parameters.Add("errorMessage_", SqlDbType.NVarChar, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 
                 myCommand.ExecuteNonQuery();
@@ -265,7 +265,7 @@ namespace WIS_DataAccess
             cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@RoleIdIN", roleID);
-          //  cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+          //  // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             RoleBO obRole = null;                        

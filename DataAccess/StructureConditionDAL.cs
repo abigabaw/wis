@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -9,8 +9,8 @@ namespace WIS_DataAccess
     {
         #region Declaration Section
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
         #endregion
 
@@ -22,20 +22,20 @@ namespace WIS_DataAccess
         public StructureConditionList GetAllStructureCondition()
         {
             proc = "USP_MST_GET_ALLSTRUCTCONDITION";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             StructureConditionBO objStructureCondition = null;
 
             StructureConditionList lstStructureConditionList = new StructureConditionList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -68,20 +68,20 @@ namespace WIS_DataAccess
         public StructureConditionList GetStructureCondition()
         {
             proc = "USP_MST_GET_STRUCTURECONDITION";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             StructureConditionBO objStructureCondition = null;
             
             StructureConditionList lstStructureConditionList = new StructureConditionList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
           
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -112,18 +112,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public StructureConditionBO GetStructureConditionById(int StructureConditionID)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_MST_GET_STRUCTCONDI_BYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("str_conditionid_", StructureConditionID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("str_conditionid_", StructureConditionID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             StructureConditionBO objStructureCondition = null;
 
 
@@ -175,19 +175,19 @@ namespace WIS_DataAccess
         public string SaveStructureCondition(StructureConditionBO oStructureCondition)
         {
             string returnResult;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_MST_INS_STRUCTURECONDITION";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("str_condition_", oStructureCondition.StructureConditionName);
+            cmd.Parameters.AddWithValue("str_condition_", oStructureCondition.StructureConditionName);
 
-            cmd.Parameters.Add("isdeleted_", oStructureCondition.IsDeleted);
-            cmd.Parameters.Add("createdby_", oStructureCondition.CreatedBy);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("isdeleted_", oStructureCondition.IsDeleted);
+            cmd.Parameters.AddWithValue("createdby_", oStructureCondition.CreatedBy);
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -205,19 +205,19 @@ namespace WIS_DataAccess
         public string UpdateStructureCondition(StructureConditionBO oStructureCondition)
         {
             string returnResult;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_MST_UPD_STRUCTURECONDITION";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            cmd.Parameters.Add("str_conditionid_", oStructureCondition.StructureConditionID);
-            cmd.Parameters.Add("str_condition_", oStructureCondition.StructureConditionName);
+            cmd.Parameters.AddWithValue("str_conditionid_", oStructureCondition.StructureConditionID);
+            cmd.Parameters.AddWithValue("str_condition_", oStructureCondition.StructureConditionName);
 
-            cmd.Parameters.Add("updatedby_", oStructureCondition.CreatedBy);
+            cmd.Parameters.AddWithValue("updatedby_", oStructureCondition.CreatedBy);
 
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
@@ -236,14 +236,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteStructureCondition(int StructureConditionID_)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnResult = string.Empty;
             proc = "USP_MST_DEL_STRUCTURECONDITION";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("str_conditionid_", StructureConditionID_);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("str_conditionid_", StructureConditionID_);
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
@@ -263,18 +263,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteStructureCondition(int StructureConditionID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETE_STRUCTCONDIT", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETE_STRUCTCONDIT", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("str_conditionid_", StructureConditionID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("str_conditionid_", StructureConditionID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

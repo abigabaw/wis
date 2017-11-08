@@ -3,7 +3,7 @@ using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -16,14 +16,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ConsultantTypeList GetALLConsultantType()
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GETALL_CTYPE";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ConsultantTypeBO objTypeBO = null;
             ConsultantTypeList objConsultantTypes = new ConsultantTypeList();
 
@@ -46,14 +46,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ConsultantTypeList GetConsultantType()
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_CONSULTANT";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ConsultantTypeBO objTypeBO = null;
             ConsultantTypeList objConsultantTypes = new ConsultantTypeList();
 
@@ -77,17 +77,17 @@ namespace WIS_DataAccess
         public string insert(ConsultantTypeBO objconsultantType)
         {
             string returnResult = "";
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_INS_CONSULTANTTYPE", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_INS_CONSULTANTTYPE", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("CONSULTANTTYPE_", objconsultantType.ConsultantType);
-                dcmd.Parameters.Add("CREATEDBY", objconsultantType.CreatedBy);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("CONSULTANTTYPE_", objconsultantType.ConsultantType);
+                dcmd.Parameters.AddWithValue("CREATEDBY", objconsultantType.CreatedBy);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -118,18 +118,18 @@ namespace WIS_DataAccess
         public string EDITConsultantType(ConsultantTypeBO objconsultantType)
         {
             string returnResult = "";
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_UPD_CONSULTANTTYPE", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_UPD_CONSULTANTTYPE", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("c_consultanttype", objconsultantType.ConsultantType);
-                dcmd.Parameters.Add("c_consultanttypeid", objconsultantType.ConsultantTypeID);
-                dcmd.Parameters.Add("UpdatedBY", objconsultantType.CreatedBy);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("c_consultanttype", objconsultantType.ConsultantType);
+                dcmd.Parameters.AddWithValue("c_consultanttypeid", objconsultantType.ConsultantTypeID);
+                dcmd.Parameters.AddWithValue("UpdatedBY", objconsultantType.CreatedBy);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
 
                 if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -155,19 +155,19 @@ namespace WIS_DataAccess
         //get the data in mst_Concern table using USP_MST_GETSELECTCONCERN-SP signal Data based on ID
         public ConsultantTypeBO GetConsultantTypeId(int consultantTypeID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_CONSULTANTTYPE";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("c_consultanttype", consultantTypeID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("c_consultanttype", consultantTypeID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ConsultantTypeBO objconsultantType = null;
             ConsultantTypeList Users = new ConsultantTypeList();
 
@@ -213,18 +213,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteConsultantType(int consultantTypeID)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DEL_CONSULTANTTYPE", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DEL_CONSULTANTTYPE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("c_consultanttypeid", consultantTypeID);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("c_consultanttypeid", consultantTypeID);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -260,19 +260,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteconsultantType(int consultantTypeID, string IsDeleted, int updatedBy)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = "";
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETE_CTYPE", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETE_CTYPE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("c_consultanttypeid", consultantTypeID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("updatedBy_", updatedBy);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("c_consultanttypeid", consultantTypeID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                myCommand.Parameters.AddWithValue("updatedBy_", updatedBy);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

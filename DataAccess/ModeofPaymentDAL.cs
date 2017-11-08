@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -17,20 +17,20 @@ namespace WIS_DataAccess
         {
             string returnResult = string.Empty;
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_INSERTMODEOFPAYMENT", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_INSERTMODEOFPAYMENT", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("TYPEOFPAYMENT_", ModeofPaymentBOObj.PaymentType);
-                dcmd.Parameters.Add("MODEOFPAYMENT_", ModeofPaymentBOObj.ModeofPayment);
-                dcmd.Parameters.Add("CREATEDBY", ModeofPaymentBOObj.UserID);
+                dcmd.Parameters.AddWithValue("TYPEOFPAYMENT_", ModeofPaymentBOObj.PaymentType);
+                dcmd.Parameters.AddWithValue("MODEOFPAYMENT_", ModeofPaymentBOObj.ModeofPayment);
+                dcmd.Parameters.AddWithValue("CREATEDBY", ModeofPaymentBOObj.UserID);
                 //return dcmd.ExecuteNonQuery();
 
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -60,17 +60,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ModeofPaymentList GetModeofPayment()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_SELECTMODEOFPAYMENT";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ModeofPaymentBO objModeofPayment = null;
             ModeofPaymentList ModeofPaymentList = new ModeofPaymentList();
 
@@ -98,19 +98,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteModeofPayment(int ModeofPaymentID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETE_MODEOFPAY", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETE_MODEOFPAY", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("MODEOFPAYMENT_", ModeofPaymentID);
-                myCommand.Parameters.Add("ISDELETED_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("MODEOFPAYMENT_", ModeofPaymentID);
+                myCommand.Parameters.AddWithValue("ISDELETED_", IsDeleted);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -134,20 +134,20 @@ namespace WIS_DataAccess
         public string DeleteModeofPayment(int ModeofPaymentID)
         {
 
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DELETEMODEOFPAY", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DELETEMODEOFPAY", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("MODEOFPAYMENT_", ModeofPaymentID);
+                myCommand.Parameters.AddWithValue("MODEOFPAYMENT_", ModeofPaymentID);
 
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -177,19 +177,19 @@ namespace WIS_DataAccess
         //get the data in mst_Concern table using USP_MST_GETSELECTCONCERN-SP signal Data based on ID
         public ModeofPaymentBO GetModeofPaymentID(int ModeofPaymentID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETSELECTMODEOFPAY";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("PositionID_", ModeofPaymentID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PositionID_", ModeofPaymentID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ModeofPaymentBO ModeofPaymentBOObj = null;
             ModeofPaymentList ModeofPaymentList = new ModeofPaymentList();
 
@@ -222,21 +222,21 @@ namespace WIS_DataAccess
         {
             string returnResult = string.Empty;
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_UPDATEMODEOFPAY", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_UPDATEMODEOFPAY", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("TYPEOFPAYMENT_", ModeofPaymentBOObj.PaymentType);
-                dcmd.Parameters.Add("MODEOFPAYMENT_", ModeofPaymentBOObj.ModeofPayment);
-                dcmd.Parameters.Add("MODEOFPAYMENTID_", ModeofPaymentBOObj.ModeofPaymentID);
-                dcmd.Parameters.Add("UpdatedBY", ModeofPaymentBOObj.UserID);
+                dcmd.Parameters.AddWithValue("TYPEOFPAYMENT_", ModeofPaymentBOObj.PaymentType);
+                dcmd.Parameters.AddWithValue("MODEOFPAYMENT_", ModeofPaymentBOObj.ModeofPayment);
+                dcmd.Parameters.AddWithValue("MODEOFPAYMENTID_", ModeofPaymentBOObj.ModeofPaymentID);
+                dcmd.Parameters.AddWithValue("UpdatedBY", ModeofPaymentBOObj.UserID);
                 //return dcmd.ExecuteNonQuery();
 
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 

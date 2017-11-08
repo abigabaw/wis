@@ -25,7 +25,7 @@ namespace WIS_DataAccess
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("USERID_", userID);
-            //cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
@@ -69,7 +69,7 @@ namespace WIS_DataAccess
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("USERID_", userID);
-            // cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
@@ -111,7 +111,7 @@ namespace WIS_DataAccess
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("USERID_", userID);
-            // cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
@@ -153,7 +153,7 @@ namespace WIS_DataAccess
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("PROJECTIDIN", PROJECTID);
-            // cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
@@ -196,7 +196,7 @@ namespace WIS_DataAccess
             SqlCommand cmd = new SqlCommand("USP_DSH_PAPSTATUSFORPIEHOME", cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            //cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
@@ -238,7 +238,7 @@ namespace WIS_DataAccess
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("PROJECTIDIN", PROJECTID);
-            // cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {

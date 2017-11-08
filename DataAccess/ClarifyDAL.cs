@@ -1,5 +1,5 @@
 ﻿using System;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_BusinessObjects;
 
@@ -9,20 +9,20 @@ namespace WIS_DataAccess
     {
         public ClarifyList GetData(int HHID,int UserID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_GET_CLARIFY_REQUESTS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("HHID_", HHID);
-            cmd.Parameters.Add("UserID", UserID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", HHID);
+            cmd.Parameters.AddWithValue("UserID", UserID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ClarifyBO ClarifyBO = null;
             ClarifyList ClarifyList = new ClarifyList();
 
@@ -76,20 +76,20 @@ namespace WIS_DataAccess
         {
             string statusMessage = string.Empty;
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_INS_CLARIFY_REQUEST", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_INS_CLARIFY_REQUEST", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("HHID_", ClarifyBO.HHID); 
-                dcmd.Parameters.Add("TRACKHDR_", ClarifyBO.TrackHeader);
-                dcmd.Parameters.Add("REQUEST_", ClarifyBO.RequestDetails);
-                dcmd.Parameters.Add("CREATEDBY_", ClarifyBO.UserID);
-                dcmd.Parameters.Add("UPDATEDBY_", ClarifyBO.RespondentID);
-                dcmd.Parameters.Add("ERRORMSG_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("HHID_", ClarifyBO.HHID); 
+                dcmd.Parameters.AddWithValue("TRACKHDR_", ClarifyBO.TrackHeader);
+                dcmd.Parameters.AddWithValue("REQUEST_", ClarifyBO.RequestDetails);
+                dcmd.Parameters.AddWithValue("CREATEDBY_", ClarifyBO.UserID);
+                dcmd.Parameters.AddWithValue("UPDATEDBY_", ClarifyBO.RespondentID);
+                dcmd.Parameters.AddWithValue("ERRORMSG_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 
 
@@ -113,19 +113,19 @@ namespace WIS_DataAccess
 
         public ClarifyList GetMyClarify(int UserID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_GET_RESPONSE_REQUESTS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("USERID_", UserID);
-            cmd.Parameters.Add("SP_RECORDSET", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("USERID_", UserID);
+            // cmd.Parameters.AddWithValue("SP_RECORDSET", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ClarifyBO ClarifyBO = null;
             ClarifyList ClarifyList = new ClarifyList();
 
@@ -176,19 +176,19 @@ namespace WIS_DataAccess
 
         public ClarifyBO SelectClarification(int ClarifyID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_GET_CLARIFY_REQUEST";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ID_", ClarifyID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ID_", ClarifyID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ClarifyBO ClarifyBO = null;
             ClarifyBO = new ClarifyBO();
 
@@ -238,19 +238,19 @@ namespace WIS_DataAccess
         {
             string statusMessage = string.Empty;
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_UPD_CLARIFY_REQUEST", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_UPD_CLARIFY_REQUEST", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
 
-                dcmd.Parameters.Add("ID_", ClarifyBO.ID);
-                dcmd.Parameters.Add("RESPONSE_", ClarifyBO.ResponseDetails);
-                dcmd.Parameters.Add("STATUS_", ClarifyBO.Status);
-                dcmd.Parameters.Add("ERRORMSG_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("ID_", ClarifyBO.ID);
+                dcmd.Parameters.AddWithValue("RESPONSE_", ClarifyBO.ResponseDetails);
+                dcmd.Parameters.AddWithValue("STATUS_", ClarifyBO.Status);
+                dcmd.Parameters.AddWithValue("ERRORMSG_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
 
 
@@ -274,21 +274,21 @@ namespace WIS_DataAccess
 
         public int CheckPendClarify(int HHID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             int CountPend = 0;
 
             string proc = "USP_GET_CLARIFY_PENDING";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("HHID_", HHID);
-            cmd.Parameters.Add("SP_RECORDSET", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", HHID);
+            // cmd.Parameters.AddWithValue("SP_RECORDSET", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ClarifyBO ClarifyBO = null;
             ClarifyBO = new ClarifyBO();
 

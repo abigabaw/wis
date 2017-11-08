@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data;
 using System.Configuration;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 
@@ -15,8 +15,8 @@ namespace WIS_DataAccess
     {
         //string connStr = ConfigurationManager.ConnectionStrings["UETCL_WIS"].ToString();  // database connection string 
         string con = WIS_DataAccess.AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
 
         #region GetData
@@ -28,19 +28,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public LivelihoodRestBudgetList GetLiveRestBudget(int projectID)
         {
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_LIV_RES_BUDG";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("projectid_", projectID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("projectid_", projectID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             LivelihoodRestBudgetBO objLivelihoodRestBudgetBO = null;
             LivelihoodRestBudgetList oLivelihoodRestBudgetList = new LivelihoodRestBudgetList();
 
@@ -64,19 +64,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public LivelihoodRestBudgetBO GetLiveRestBudgetById(int LivRestBudgID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_LIV_RES_BUDG_BYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("liv_res_budgid_", LivRestBudgID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("liv_res_budgid_", LivRestBudgID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             LivelihoodRestBudgetBO objLivelihoodRestBudgetBO = null;
             LivelihoodRestBudgetList oLivelihoodRestBudgetList = new LivelihoodRestBudgetList();
@@ -190,41 +190,41 @@ namespace WIS_DataAccess
             string[] resultArray = new string[2];
             LivelihoodRestBudgetBO ooLivelihoodRestBudgetBO = new LivelihoodRestBudgetBO();//For Storing & Returning Result as Object
 
-            OracleConnection OCon = new OracleConnection(con);
+            SqlConnection OCon = new SqlConnection(con);
             OCon.Open();
-            OracleCommand oCmd = new OracleCommand("USP_TRN_INS_LIV_RES_BUDG", OCon);
+            SqlCommand oCmd = new SqlCommand("USP_TRN_INS_LIV_RES_BUDG", OCon);
             oCmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(oCmd.CommandType);
 
             try
             {
-                oCmd.Parameters.Add("Liv_Bud_CategID_", oLivelihoodRestBudgetBO.Liv_Bud_CategID);
-                oCmd.Parameters.Add("Liv_Bud_ItemID_", oLivelihoodRestBudgetBO.Liv_Bud_ItemID);
+                oCmd.Parameters.AddWithValue("Liv_Bud_CategID_", oLivelihoodRestBudgetBO.Liv_Bud_CategID);
+                oCmd.Parameters.AddWithValue("Liv_Bud_ItemID_", oLivelihoodRestBudgetBO.Liv_Bud_ItemID);
 
-                oCmd.Parameters.Add("ImplCost_", oLivelihoodRestBudgetBO.ImplCost);
-                oCmd.Parameters.Add("OperCost_", oLivelihoodRestBudgetBO.OperCost);
-                oCmd.Parameters.Add("ExternalMonitory_", oLivelihoodRestBudgetBO.ExternalMonitory);
+                oCmd.Parameters.AddWithValue("ImplCost_", oLivelihoodRestBudgetBO.ImplCost);
+                oCmd.Parameters.AddWithValue("OperCost_", oLivelihoodRestBudgetBO.OperCost);
+                oCmd.Parameters.AddWithValue("ExternalMonitory_", oLivelihoodRestBudgetBO.ExternalMonitory);
 
-                oCmd.Parameters.Add("NoOfBeneficial_", oLivelihoodRestBudgetBO.NoOfBeneficial);
-                oCmd.Parameters.Add("ItemQuantity_", oLivelihoodRestBudgetBO.ItemQuantity);
-                oCmd.Parameters.Add("CostPerUnit_", oLivelihoodRestBudgetBO.CostPerUnit);
-                oCmd.Parameters.Add("TotalAmount_", oLivelihoodRestBudgetBO.TotalAmount);
-                oCmd.Parameters.Add("Comments_", oLivelihoodRestBudgetBO.Comments);
+                oCmd.Parameters.AddWithValue("NoOfBeneficial_", oLivelihoodRestBudgetBO.NoOfBeneficial);
+                oCmd.Parameters.AddWithValue("ItemQuantity_", oLivelihoodRestBudgetBO.ItemQuantity);
+                oCmd.Parameters.AddWithValue("CostPerUnit_", oLivelihoodRestBudgetBO.CostPerUnit);
+                oCmd.Parameters.AddWithValue("TotalAmount_", oLivelihoodRestBudgetBO.TotalAmount);
+                oCmd.Parameters.AddWithValue("Comments_", oLivelihoodRestBudgetBO.Comments);
 
-                oCmd.Parameters.Add("District_", oLivelihoodRestBudgetBO.District);
-                oCmd.Parameters.Add("County_", oLivelihoodRestBudgetBO.County);
-                oCmd.Parameters.Add("SubCounty_", oLivelihoodRestBudgetBO.SubCounty);
-                oCmd.Parameters.Add("Parish_", oLivelihoodRestBudgetBO.Parish);
-                oCmd.Parameters.Add("projectid_", oLivelihoodRestBudgetBO.ProjectID);
-                oCmd.Parameters.Add("isdeleted_", oLivelihoodRestBudgetBO.IsDeleted);
-                oCmd.Parameters.Add("createdby_", oLivelihoodRestBudgetBO.CreatedBy);
+                oCmd.Parameters.AddWithValue("District_", oLivelihoodRestBudgetBO.District);
+                oCmd.Parameters.AddWithValue("County_", oLivelihoodRestBudgetBO.County);
+                oCmd.Parameters.AddWithValue("SubCounty_", oLivelihoodRestBudgetBO.SubCounty);
+                oCmd.Parameters.AddWithValue("Parish_", oLivelihoodRestBudgetBO.Parish);
+                oCmd.Parameters.AddWithValue("projectid_", oLivelihoodRestBudgetBO.ProjectID);
+                oCmd.Parameters.AddWithValue("isdeleted_", oLivelihoodRestBudgetBO.IsDeleted);
+                oCmd.Parameters.AddWithValue("createdby_", oLivelihoodRestBudgetBO.CreatedBy);
 
-                oCmd.Parameters.Add("liv_res_budgIDD_", OracleDbType.Long, 50).Direction = ParameterDirection.Output;
-                oCmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
-                //oCmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                oCmd.Parameters.AddWithValue("liv_res_budgIDD_", SqlDbType.Decimal).Direction = ParameterDirection.Output;
+                oCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
                 oCmd.ExecuteNonQuery();
-                //OracleDataReader oDataReader = oCmd.ExecuteReader();
+                //SqlDataReader oDataReader = oCmd.ExecuteReader();
 
                 if (oCmd.Parameters["liv_res_budgIDD_"].Value != null)
                     resultArray[0] = oCmd.Parameters["liv_res_budgIDD_"].Value.ToString();
@@ -255,14 +255,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int DeleteLiveRestBudget(int LiveResBudgId)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_DEL_LIV_RES_BUDG";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("liv_res_budgid_", LiveResBudgId);
-            //cmd.Parameters.Add("Sp_recordset", OracleDbType.Int32).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("liv_res_budgid_", LiveResBudgId);
+            //cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.Int).Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
@@ -279,41 +279,41 @@ namespace WIS_DataAccess
         {
             //string returnResult = string.Empty;
             string[] resultArray = new string[2];
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_UPD_LIV_RES_BUDG";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            cmd.Parameters.Add("Liv_Res_BudgID_", oLivelihoodRestBudgetBO.Liv_Res_BudgID);
-            cmd.Parameters.Add("Liv_Bud_CategID_", oLivelihoodRestBudgetBO.Liv_Bud_CategID);
-            cmd.Parameters.Add("Liv_Bud_ItemID_", oLivelihoodRestBudgetBO.Liv_Bud_ItemID);
+            cmd.Parameters.AddWithValue("Liv_Res_BudgID_", oLivelihoodRestBudgetBO.Liv_Res_BudgID);
+            cmd.Parameters.AddWithValue("Liv_Bud_CategID_", oLivelihoodRestBudgetBO.Liv_Bud_CategID);
+            cmd.Parameters.AddWithValue("Liv_Bud_ItemID_", oLivelihoodRestBudgetBO.Liv_Bud_ItemID);
 
-            cmd.Parameters.Add("ImplCost_", oLivelihoodRestBudgetBO.ImplCost);
-            cmd.Parameters.Add("OperCost_", oLivelihoodRestBudgetBO.OperCost);
-            cmd.Parameters.Add("ExternalMonitory_", oLivelihoodRestBudgetBO.ExternalMonitory);
+            cmd.Parameters.AddWithValue("ImplCost_", oLivelihoodRestBudgetBO.ImplCost);
+            cmd.Parameters.AddWithValue("OperCost_", oLivelihoodRestBudgetBO.OperCost);
+            cmd.Parameters.AddWithValue("ExternalMonitory_", oLivelihoodRestBudgetBO.ExternalMonitory);
 
-            cmd.Parameters.Add("NoOfBeneficial_", oLivelihoodRestBudgetBO.NoOfBeneficial);
-            cmd.Parameters.Add("ItemQuantity_", oLivelihoodRestBudgetBO.ItemQuantity);
-            cmd.Parameters.Add("CostPerUnit_", oLivelihoodRestBudgetBO.CostPerUnit);
-            cmd.Parameters.Add("TotalAmount_", oLivelihoodRestBudgetBO.TotalAmount);
-            cmd.Parameters.Add("Comments_", oLivelihoodRestBudgetBO.Comments);
+            cmd.Parameters.AddWithValue("NoOfBeneficial_", oLivelihoodRestBudgetBO.NoOfBeneficial);
+            cmd.Parameters.AddWithValue("ItemQuantity_", oLivelihoodRestBudgetBO.ItemQuantity);
+            cmd.Parameters.AddWithValue("CostPerUnit_", oLivelihoodRestBudgetBO.CostPerUnit);
+            cmd.Parameters.AddWithValue("TotalAmount_", oLivelihoodRestBudgetBO.TotalAmount);
+            cmd.Parameters.AddWithValue("Comments_", oLivelihoodRestBudgetBO.Comments);
 
-            cmd.Parameters.Add("District_", oLivelihoodRestBudgetBO.District);
-            cmd.Parameters.Add("County_", oLivelihoodRestBudgetBO.County);
-            cmd.Parameters.Add("SubCounty_", oLivelihoodRestBudgetBO.SubCounty);
-            cmd.Parameters.Add("Parish_", oLivelihoodRestBudgetBO.Parish);
+            cmd.Parameters.AddWithValue("District_", oLivelihoodRestBudgetBO.District);
+            cmd.Parameters.AddWithValue("County_", oLivelihoodRestBudgetBO.County);
+            cmd.Parameters.AddWithValue("SubCounty_", oLivelihoodRestBudgetBO.SubCounty);
+            cmd.Parameters.AddWithValue("Parish_", oLivelihoodRestBudgetBO.Parish);
 
-            cmd.Parameters.Add("IsDeleted_", oLivelihoodRestBudgetBO.IsDeleted);
-            cmd.Parameters.Add("UpdatedBy_", oLivelihoodRestBudgetBO.UpdatedBy);
+            cmd.Parameters.AddWithValue("IsDeleted_", oLivelihoodRestBudgetBO.IsDeleted);
+            cmd.Parameters.AddWithValue("UpdatedBy_", oLivelihoodRestBudgetBO.UpdatedBy);
 
-            cmd.Parameters.Add("liv_res_budgIDD_", OracleDbType.Long,50).Direction = ParameterDirection.Output;
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
-           // cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("liv_res_budgIDD_", SqlDbType.Decimal).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+           // //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             //cmd.ExecuteNonQuery();
-            ////OracleDataReader oDataReader = cmd.ExecuteReader();
+            ////SqlDataReader oDataReader = cmd.ExecuteReader();
 
             //if (cmd.Parameters["liv_res_budgIDD_"].Value != null)
             //    resultArray[0] = cmd.Parameters["liv_res_budgIDD_"].Value.ToString();
@@ -325,7 +325,7 @@ namespace WIS_DataAccess
             //else
             //    resultArray[1] = string.Empty;
 
-            //cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 100).Direction = ParameterDirection.Output;
+            //cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             try
             {
                 cmd.ExecuteNonQuery();

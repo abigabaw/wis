@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WIS_BusinessObjects;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 
 namespace WIS_DataAccess
@@ -18,21 +18,21 @@ namespace WIS_DataAccess
         public string InsertMNEGoalEval(MNEGoalEvaluationBO objMNEGoalEvaluationBO)
         {
             string result = "";
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_INS_TRN_MNE_EVAL", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_INS_TRN_MNE_EVAL", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("PROJECTID_", objMNEGoalEvaluationBO.ProjectID);
-                dcmd.Parameters.Add("GOALID_", objMNEGoalEvaluationBO.GoalID);
-                dcmd.Parameters.Add("GOALDESCRIPTION_", objMNEGoalEvaluationBO.GoalDescription);
-                dcmd.Parameters.Add("GOALNARRATIVE_", objMNEGoalEvaluationBO.GoalNarrative);
-                dcmd.Parameters.Add("ISDELETED_", objMNEGoalEvaluationBO.IsDeleted);
-                dcmd.Parameters.Add("CREATEDBY_", objMNEGoalEvaluationBO.CreatedBy);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("PROJECTID_", objMNEGoalEvaluationBO.ProjectID);
+                dcmd.Parameters.AddWithValue("GOALID_", objMNEGoalEvaluationBO.GoalID);
+                dcmd.Parameters.AddWithValue("GOALDESCRIPTION_", objMNEGoalEvaluationBO.GoalDescription);
+                dcmd.Parameters.AddWithValue("GOALNARRATIVE_", objMNEGoalEvaluationBO.GoalNarrative);
+                dcmd.Parameters.AddWithValue("ISDELETED_", objMNEGoalEvaluationBO.IsDeleted);
+                dcmd.Parameters.AddWithValue("CREATEDBY_", objMNEGoalEvaluationBO.CreatedBy);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
 
                 if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -60,19 +60,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public MNEGoalEvaluationList GetMNEGoalEvaluation(int projectID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             MNEGoalEvaluationBO objMNEGoalEvaluationBO = null;
 
             string proc = "USP_GET_TRN_MNE_EVAL";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ProjectID_", projectID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ProjectID_", projectID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             MNEGoalEvaluationList MNEGoalEvaluation = new MNEGoalEvaluationList();
 
@@ -101,19 +101,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public MNEGoalEvaluationBO GetMNEGoalEvaluationByID(int EvaluationID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_GET_TRN_MNE_EVALBYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("EVALUATIONID_", EvaluationID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("EVALUATIONID_", EvaluationID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             MNEGoalEvaluationBO objMNEGoalEvaluationBO = null;
             MNEGoalEvaluationList MNEGoalEvaluation = new MNEGoalEvaluationList();
 
@@ -145,21 +145,21 @@ namespace WIS_DataAccess
         public string UpdateMNEGoalEvaluation(MNEGoalEvaluationBO objMNEGoalEvaluationBO)
         {
             string result = "";
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_UPD_TRN_MNE_EVAL", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_UPD_TRN_MNE_EVAL", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("EVALUATIONID_", objMNEGoalEvaluationBO.EvaluationID);
-                dcmd.Parameters.Add("PROJECTID_", objMNEGoalEvaluationBO.ProjectID);
-                dcmd.Parameters.Add("GOALID_", objMNEGoalEvaluationBO.GoalID);
-                dcmd.Parameters.Add("GOALDESCRIPTION_", objMNEGoalEvaluationBO.GoalDescription);
-                dcmd.Parameters.Add("GOALNARRATIVE_", objMNEGoalEvaluationBO.GoalNarrative);
-                dcmd.Parameters.Add("UPDATEBY_", objMNEGoalEvaluationBO.UpdatedBy);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("EVALUATIONID_", objMNEGoalEvaluationBO.EvaluationID);
+                dcmd.Parameters.AddWithValue("PROJECTID_", objMNEGoalEvaluationBO.ProjectID);
+                dcmd.Parameters.AddWithValue("GOALID_", objMNEGoalEvaluationBO.GoalID);
+                dcmd.Parameters.AddWithValue("GOALDESCRIPTION_", objMNEGoalEvaluationBO.GoalDescription);
+                dcmd.Parameters.AddWithValue("GOALNARRATIVE_", objMNEGoalEvaluationBO.GoalNarrative);
+                dcmd.Parameters.AddWithValue("UPDATEBY_", objMNEGoalEvaluationBO.UpdatedBy);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
 
                 if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -187,18 +187,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteMNEGoalEvaluation(int EvaluationID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string result = string.Empty;
 
             try
             {
                 string proc = "USP_DEL_TRN_MNE_EVAL";
 
-                cmd = new OracleCommand(proc, cnn);
+                cmd = new SqlCommand(proc, cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("EVALUATIONID_", EvaluationID);
-                cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("EVALUATIONID_", EvaluationID);
+                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 cmd.Connection.Open();
 
                 cmd.ExecuteNonQuery();

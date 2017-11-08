@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 
@@ -16,19 +16,19 @@ namespace WIS_DataAccess
         public string Insert(VaccinationBO Vaccinationobj)
         {
             string returnResult = string.Empty;
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_INS_VACCINATION", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_INS_VACCINATION", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("VACCINATIONNAME", Vaccinationobj.VACCINATIONNAME);
-                dcmd.Parameters.Add("CREATEDBY", Vaccinationobj.Createdby);
+                dcmd.Parameters.AddWithValue("VACCINATIONNAME", Vaccinationobj.VACCINATIONNAME);
+                dcmd.Parameters.AddWithValue("CREATEDBY", Vaccinationobj.Createdby);
                 //return dcmd.ExecuteNonQuery();
 
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -58,19 +58,19 @@ namespace WIS_DataAccess
         public string EditVaccination(VaccinationBO Vaccinationobj)
         {
             string returnResult = string.Empty;
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_UPD_VACCINATION", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_UPD_VACCINATION", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("V_VACCINATIONNAME", Vaccinationobj.VACCINATIONNAME);
-                dcmd.Parameters.Add("V_VACCINATIONID", Vaccinationobj.VACCINATIONID);
-                dcmd.Parameters.Add("V_UPDATEDBY", Vaccinationobj.Createdby);
+                dcmd.Parameters.AddWithValue("V_VACCINATIONNAME", Vaccinationobj.VACCINATIONNAME);
+                dcmd.Parameters.AddWithValue("V_VACCINATIONID", Vaccinationobj.VACCINATIONID);
+                dcmd.Parameters.AddWithValue("V_UPDATEDBY", Vaccinationobj.Createdby);
                 //return dcmd.ExecuteNonQuery();
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -99,17 +99,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public VaccinationList GetALLVaccination()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETALL_VACCINATION";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             VaccinationBO Vaccinationobj = null;
             VaccinationList VaccinationListobj = new VaccinationList();
 
@@ -137,17 +137,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public VaccinationList GetVaccination()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_SEL_VACCINATION";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             VaccinationBO Vaccinationobj = null;
             VaccinationList VaccinationListobj = new VaccinationList();
 
@@ -173,19 +173,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public VaccinationBO GetVaccinationById(int VaccinationID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_VACCIN";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("V_VACCINATIONID",VaccinationID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("V_VACCINATIONID",VaccinationID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             VaccinationBO Vaccinationobj = null;
             VaccinationList VaccinationListobj = new VaccinationList();
 
@@ -231,19 +231,19 @@ namespace WIS_DataAccess
         public string DeleteVaccination(int vaccinationID)
         {
 
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DEL_VACCIN", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DEL_VACCIN", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("V_VACCINATIONID", vaccinationID);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("V_VACCINATIONID", vaccinationID);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -278,19 +278,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string Obsoletevaccination(int VaccinationID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETE_VACCINATION", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETE_VACCINATION", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("VACCINATIONID_", VaccinationID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("VACCINATIONID_", VaccinationID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

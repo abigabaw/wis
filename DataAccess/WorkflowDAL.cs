@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -14,17 +14,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public WorkFlowList getAllModule()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_SELECTMODULE";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             WorkFlowBO objWorkFlow = null;
             WorkFlowList WorkFlowList = new WorkFlowList();
 
@@ -49,19 +49,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public WorkFlowList GetWorkFlowByModuleId(int ModuleID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_SELECTWORKFLOWBYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ModuleID_", ModuleID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ModuleID_", ModuleID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             WorkFlowBO WorkFlowObj = null;
             WorkFlowList WorkFlowList = new WorkFlowList();
 
@@ -104,18 +104,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public WorkFlowList getAllProjectPersonUser(string projectID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GETALLROLE";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("projectID_", projectID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("projectID_", projectID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             WorkFlowBO objWorkFlow = null;
             WorkFlowList WorkFlowList = new WorkFlowList();
 
@@ -139,18 +139,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public WorkFlowList getAllEmpName(string projectID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GETPRJPERSONALUSER";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("projectID_", projectID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("projectID_", projectID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             WorkFlowBO objWorkFlow = null;
             WorkFlowList WorkFlowList = new WorkFlowList();
 
@@ -176,19 +176,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public WorkFlowList getApprovalRoleUserID(int projectID, int roleID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GETUSERBYROLEID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("projectID_", projectID);
-            cmd.Parameters.Add("projectID_", roleID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("projectID_", projectID);
+            cmd.Parameters.AddWithValue("projectID_", roleID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             WorkFlowBO objWorkFlow = null;
             WorkFlowList WorkFlowList = new WorkFlowList();
 
@@ -218,19 +218,19 @@ namespace WIS_DataAccess
 
             int Count = 0;
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_WORKFLOWDEF";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ProjectID_", objWorkFlow.ProjectID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ProjectID_", objWorkFlow.ProjectID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             WorkFlowBO WorkFlowObj = null;
             WorkFlowList WorkFlowList = new WorkFlowList();
 
@@ -256,25 +256,25 @@ namespace WIS_DataAccess
             }
             if (Count == 0)
             {
-                //OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+                //SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
                 cnn.Open();
-                OracleCommand dcmd = new OracleCommand("USP_TRN_WORKFLOW_DEFINITION", cnn);
+                SqlCommand dcmd = new SqlCommand("USP_TRN_WORKFLOW_DEFINITION", cnn);
                 dcmd.CommandType = CommandType.StoredProcedure;
                 int count = Convert.ToInt32(dcmd.CommandType);
-                dcmd.Parameters.Add("ProjectID_", objWorkFlow.ProjectID);
-                dcmd.Parameters.Add("ModuleID_", objWorkFlow.ModuleID);
-                dcmd.Parameters.Add("WorkflowID_", objWorkFlow.WorkflowID);
-                dcmd.Parameters.Add("HighaultorityID_", objWorkFlow.HigherAuthorityID);
+                dcmd.Parameters.AddWithValue("ProjectID_", objWorkFlow.ProjectID);
+                dcmd.Parameters.AddWithValue("ModuleID_", objWorkFlow.ModuleID);
+                dcmd.Parameters.AddWithValue("WorkflowID_", objWorkFlow.WorkflowID);
+                dcmd.Parameters.AddWithValue("HighaultorityID_", objWorkFlow.HigherAuthorityID);
                 if (objWorkFlow.Trigger == "0")
                 {
-                    dcmd.Parameters.Add("Trigger_", DBNull.Value);
+                    dcmd.Parameters.AddWithValue("Trigger_", DBNull.Value);
                 }
                 else
                 {
-                    dcmd.Parameters.Add("Trigger_", objWorkFlow.Trigger);
+                    dcmd.Parameters.AddWithValue("Trigger_", objWorkFlow.Trigger);
                 }
-                dcmd.Parameters.Add("AfterDays_", objWorkFlow.AfterDays);
-                dcmd.Parameters.Add("CreatedBY", objWorkFlow.UserID);
+                dcmd.Parameters.AddWithValue("AfterDays_", objWorkFlow.AfterDays);
+                dcmd.Parameters.AddWithValue("CreatedBY", objWorkFlow.UserID);
                 Result = dcmd.ExecuteNonQuery();
                 cnn.Close();
             }
@@ -294,18 +294,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public WorkFlowList GetWorkFlowDefinition(string projectID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_WORKFLOWDEF";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ProjectID_", projectID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ProjectID_", projectID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             WorkFlowBO objWorkFlow = null;
             WorkFlowList WorkFlowList = new WorkFlowList();
 
@@ -345,19 +345,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public WorkFlowBO GetWorkFlowDefByID(int WorkFlowDefID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_WORKFLOWDEFBYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("WorkFlowDefID_", WorkFlowDefID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("WorkFlowDefID_", WorkFlowDefID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             WorkFlowBO WorkFlowBOObj = null;
             WorkFlowList WorkFlowList = new WorkFlowList();
 
@@ -394,18 +394,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteWorkFlowDef(int WorkFlowDefID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd = null;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd = null;
             string message = string.Empty;
 
             try
             {
                 string proc = "USP_MST_DEL_WORKFLOWDEF";
 
-                cmd = new OracleCommand(proc, cnn);
+                cmd = new SqlCommand(proc, cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("WorkFlowDefID_", WorkFlowDefID);
-                cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("WorkFlowDefID_", WorkFlowDefID);
+                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 cmd.Connection.Open();
                 cmd.ExecuteNonQuery();
                 if (cmd.Parameters["errorMessage_"].Value != null)
@@ -437,19 +437,19 @@ namespace WIS_DataAccess
 
             int Count = 0;
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_WORKFLOWDEF";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ProjectID_", objWorkFlow.ProjectID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ProjectID_", objWorkFlow.ProjectID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             WorkFlowBO WorkFlowObj = null;
             WorkFlowList WorkFlowList = new WorkFlowList();
 
@@ -476,29 +476,29 @@ namespace WIS_DataAccess
             {
 
                 cnn.Open();
-                OracleCommand dcmd = new OracleCommand("USP_TRN_UPDATE_WORKFLOW_DEF", cnn);
+                SqlCommand dcmd = new SqlCommand("USP_TRN_UPDATE_WORKFLOW_DEF", cnn);
                 dcmd.CommandType = CommandType.StoredProcedure;
                 int count = Convert.ToInt32(dcmd.CommandType);
 
                 try
                 {
-                    dcmd.Parameters.Add("WorkFlowDefID_", objWorkFlow.WorkFlowDefID);
-                    dcmd.Parameters.Add("ProjectID_", objWorkFlow.ProjectID);
-                    dcmd.Parameters.Add("ModuleID_", objWorkFlow.ModuleID);
-                    dcmd.Parameters.Add("WorkflowID_", objWorkFlow.WorkflowID);
-                    dcmd.Parameters.Add("HighaultorityID_", objWorkFlow.HigherAuthorityID);
+                    dcmd.Parameters.AddWithValue("WorkFlowDefID_", objWorkFlow.WorkFlowDefID);
+                    dcmd.Parameters.AddWithValue("ProjectID_", objWorkFlow.ProjectID);
+                    dcmd.Parameters.AddWithValue("ModuleID_", objWorkFlow.ModuleID);
+                    dcmd.Parameters.AddWithValue("WorkflowID_", objWorkFlow.WorkflowID);
+                    dcmd.Parameters.AddWithValue("HighaultorityID_", objWorkFlow.HigherAuthorityID);
                     
                     if (objWorkFlow.Trigger == "0")
                     {
-                        dcmd.Parameters.Add("Trigger_", DBNull.Value);
+                        dcmd.Parameters.AddWithValue("Trigger_", DBNull.Value);
                     }
                     else
                     {
-                        dcmd.Parameters.Add("Trigger_", objWorkFlow.Trigger);
+                        dcmd.Parameters.AddWithValue("Trigger_", objWorkFlow.Trigger);
                     }
 
-                    dcmd.Parameters.Add("AfterDays_", objWorkFlow.AfterDays);
-                    dcmd.Parameters.Add("UserID_", objWorkFlow.UserID);
+                    dcmd.Parameters.AddWithValue("AfterDays_", objWorkFlow.AfterDays);
+                    dcmd.Parameters.AddWithValue("UserID_", objWorkFlow.UserID);
                     Result = dcmd.ExecuteNonQuery();
 
                 }
@@ -528,19 +528,19 @@ namespace WIS_DataAccess
         //{
         //    int Result = 0;
 
-        //    OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-        //    OracleCommand cmd;
+        //    SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+        //    SqlCommand cmd;
 
         //    string proc = "USP_MST_GET_EXIT_PRJID";
 
-        //    cmd = new OracleCommand(proc, cnn);
+        //    cmd = new SqlCommand(proc, cnn);
         //    cmd.CommandType = CommandType.StoredProcedure;
-        //    cmd.Parameters.Add("ProjectID_", objWorkFlowApp.ProjectID);
-        //    cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+        //    cmd.Parameters.AddWithValue("ProjectID_", objWorkFlowApp.ProjectID);
+        //    // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
         //    cmd.Connection.Open();
 
-        //    OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+        //    SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
         //    WorkFlowBO WorkFlowObj = null;
         //    WorkFlowList WorkFlowList = new WorkFlowList();
 
@@ -557,14 +557,14 @@ namespace WIS_DataAccess
         //    if (WorkFlowObj.ProjectID == objWorkFlowApp.ProjectID)
         //    {
         //        cnn.Open();
-        //        OracleCommand dcmd = new OracleCommand("USP_TRN_INS_WRKFLW_APPROVAL", cnn);
+        //        SqlCommand dcmd = new SqlCommand("USP_TRN_INS_WRKFLW_APPROVAL", cnn);
         //        dcmd.CommandType = CommandType.StoredProcedure;
         //        int count = Convert.ToInt32(dcmd.CommandType);
 
-        //        dcmd.Parameters.Add("WORKFLOWDEFINITIONID_", WorkFlowObj.WorkflowID);
-        //        dcmd.Parameters.Add("ApprovalID_", objWorkFlowApp.ApprovalID);
-        //        dcmd.Parameters.Add("LEVEL_", objWorkFlowApp.LEVEL);
-        //        dcmd.Parameters.Add("CreatedBY", objWorkFlowApp.UserID);
+        //        dcmd.Parameters.AddWithValue("WORKFLOWDEFINITIONID_", WorkFlowObj.WorkflowID);
+        //        dcmd.Parameters.AddWithValue("ApprovalID_", objWorkFlowApp.ApprovalID);
+        //        dcmd.Parameters.AddWithValue("LEVEL_", objWorkFlowApp.LEVEL);
+        //        dcmd.Parameters.AddWithValue("CreatedBY", objWorkFlowApp.UserID);
 
         //        Result = dcmd.ExecuteNonQuery();
         //        cnn.Close();
@@ -582,19 +582,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public WorkFlowList GetApprover(string projectID, string WorkflowDefID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_SELECTWORKFLOW";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ProjectID_", projectID);
-            cmd.Parameters.Add("WorkflowDefID_", WorkflowDefID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ProjectID_", projectID);
+            cmd.Parameters.AddWithValue("WorkflowDefID_", WorkflowDefID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             WorkFlowBO objWorkFlow = null;
             WorkFlowList WorkFlowList = new WorkFlowList();
 
@@ -624,19 +624,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public WorkFlowBO GetWorkFlowById(int WORKAPPROVALID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_WORKFLOWBYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("WORKFLOWDEFID_", WORKAPPROVALID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("WORKFLOWDEFID_", WORKAPPROVALID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             WorkFlowBO WorkFlowObj = null;
             WorkFlowList WorkFlowList = new WorkFlowList();
 
@@ -671,16 +671,16 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int DeleteApprover(int WORKFLOWDEFID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             int result = 0;
 
             string proc = "USP_TRN_DELT_WORK_APP";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("WORKFLOWDEFID_", WORKFLOWDEFID);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("WORKFLOWDEFID_", WORKFLOWDEFID);
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             cmd.Connection.Open();
 
             cmd.ExecuteNonQuery();
@@ -701,20 +701,20 @@ namespace WIS_DataAccess
             int Result = 0;
             int Count = 0;
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_SELECTWORKFLOW";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ProjectID_", objWorkFlow.ProjectID);
-            cmd.Parameters.Add("WorkflowDefID_", objWorkFlow.WorkFlowDefID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ProjectID_", objWorkFlow.ProjectID);
+            cmd.Parameters.AddWithValue("WorkflowDefID_", objWorkFlow.WorkFlowDefID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             WorkFlowBO WorkFlowObj = null;
             WorkFlowList WorkFlowList = new WorkFlowList();
 
@@ -744,17 +744,17 @@ namespace WIS_DataAccess
             if (Count == 0)
             {
                     cnn.Open();
-                    OracleCommand dcmd = new OracleCommand("USP_TRN_INS_WRKFLW_APPROVAL", cnn);
+                    SqlCommand dcmd = new SqlCommand("USP_TRN_INS_WRKFLW_APPROVAL", cnn);
                     dcmd.CommandType = CommandType.StoredProcedure;
                     int count = Convert.ToInt32(dcmd.CommandType);
 
                     try
                     {
-                        dcmd.Parameters.Add("WORKFLOWDEFINITIONID_", objWorkFlow.WorkFlowDefID);
-                        dcmd.Parameters.Add("ApproverUserID_", objWorkFlow.ApproverUserID);
-                        dcmd.Parameters.Add("ApprovalID_", objWorkFlow.ApprovalID);
-                        dcmd.Parameters.Add("LEVEL_", objWorkFlow.LEVEL);
-                        dcmd.Parameters.Add("CreatedBY", objWorkFlow.UserID);
+                        dcmd.Parameters.AddWithValue("WORKFLOWDEFINITIONID_", objWorkFlow.WorkFlowDefID);
+                        dcmd.Parameters.AddWithValue("ApproverUserID_", objWorkFlow.ApproverUserID);
+                        dcmd.Parameters.AddWithValue("ApprovalID_", objWorkFlow.ApprovalID);
+                        dcmd.Parameters.AddWithValue("LEVEL_", objWorkFlow.LEVEL);
+                        dcmd.Parameters.AddWithValue("CreatedBY", objWorkFlow.UserID);
                         Result = dcmd.ExecuteNonQuery();
                     }
                     catch
@@ -787,20 +787,20 @@ namespace WIS_DataAccess
             int Result = 0;
             int Count = 0;
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_SELECTWORKFLOW";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ProjectID_", objWorkFlow.ProjectID);
-            cmd.Parameters.Add("WorkflowDefID_", objWorkFlow.WorkFlowDefID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ProjectID_", objWorkFlow.ProjectID);
+            cmd.Parameters.AddWithValue("WorkflowDefID_", objWorkFlow.WorkFlowDefID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             WorkFlowBO WorkFlowObj = null;
             WorkFlowList WorkFlowList = new WorkFlowList();
                        
@@ -834,28 +834,28 @@ namespace WIS_DataAccess
             if (Count == 0)
             {
                 cnn.Open();
-                OracleCommand dcmd = new OracleCommand("USP_TRN_UPDATE_APPROVER", cnn);
+                SqlCommand dcmd = new SqlCommand("USP_TRN_UPDATE_APPROVER", cnn);
                 dcmd.CommandType = CommandType.StoredProcedure;
                 int count = Convert.ToInt32(dcmd.CommandType);
 
                 try
                 {
 
-                    dcmd.Parameters.Add("OWORKAPPROVALID", WorkFlowObj.WorkApprovalID);
-                    dcmd.Parameters.Add("OROLEID", WorkFlowObj.RoleID);
-                    dcmd.Parameters.Add("OLEVEL", WorkFlowObj.LEVEL);
-                    dcmd.Parameters.Add("OISDELETE", WorkFlowObj.WorkIsDeleted);
-                    dcmd.Parameters.Add("OCREATEDBY", WorkFlowObj.UserID);
-                    dcmd.Parameters.Add("OCREATEDDATE", WorkFlowObj.WCreatedDate);
-                    //dcmd.Parameters.Add("WorkFlowDefID_", WorkFlowObj.WUpdatedBy);
-                    //dcmd.Parameters.Add("WorkFlowDefID_", WorkFlowObj.WUpdatedDate);
+                    dcmd.Parameters.AddWithValue("OWORKAPPROVALID", WorkFlowObj.WorkApprovalID);
+                    dcmd.Parameters.AddWithValue("OROLEID", WorkFlowObj.RoleID);
+                    dcmd.Parameters.AddWithValue("OLEVEL", WorkFlowObj.LEVEL);
+                    dcmd.Parameters.AddWithValue("OISDELETE", WorkFlowObj.WorkIsDeleted);
+                    dcmd.Parameters.AddWithValue("OCREATEDBY", WorkFlowObj.UserID);
+                    dcmd.Parameters.AddWithValue("OCREATEDDATE", WorkFlowObj.WCreatedDate);
+                    //dcmd.Parameters.AddWithValue("WorkFlowDefID_", WorkFlowObj.WUpdatedBy);
+                    //dcmd.Parameters.AddWithValue("WorkFlowDefID_", WorkFlowObj.WUpdatedDate);
 
-                    dcmd.Parameters.Add("WorkApprovalID_", objWorkFlow.WorkApprovalID);
-                    dcmd.Parameters.Add("WorkFlowDefID_", objWorkFlow.WorkFlowDefID);
-                    dcmd.Parameters.Add("RoleID_", objWorkFlow.ApprovalID);
-                    dcmd.Parameters.Add("LEVEL_", objWorkFlow.LEVEL);
-                    dcmd.Parameters.Add("UpdatedBY_", objWorkFlow.UserID);
-                    dcmd.Parameters.Add("ApproverUserID_", objWorkFlow.ApproverUserID);
+                    dcmd.Parameters.AddWithValue("WorkApprovalID_", objWorkFlow.WorkApprovalID);
+                    dcmd.Parameters.AddWithValue("WorkFlowDefID_", objWorkFlow.WorkFlowDefID);
+                    dcmd.Parameters.AddWithValue("RoleID_", objWorkFlow.ApprovalID);
+                    dcmd.Parameters.AddWithValue("LEVEL_", objWorkFlow.LEVEL);
+                    dcmd.Parameters.AddWithValue("UpdatedBY_", objWorkFlow.UserID);
+                    dcmd.Parameters.AddWithValue("ApproverUserID_", objWorkFlow.ApproverUserID);
                     Result = dcmd.ExecuteNonQuery();
                 }
                 catch
@@ -887,19 +887,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public WorkFlowBO getALLSaveWORKFLOWData(string pID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_ALL_WORKFLOW";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ProjectID_", pID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ProjectID_", pID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             WorkFlowBO WorkFlowObj = null;
             WorkFlowList WorkFlowList = new WorkFlowList();
 
@@ -951,19 +951,19 @@ namespace WIS_DataAccess
         {
             int Result = 0;
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_ALL_WORKFLOW";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ProjectID_", objWorkFlow.ProjectID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ProjectID_", objWorkFlow.ProjectID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             WorkFlowBO WorkFlowObj = null;
             WorkFlowList WorkFlowList = new WorkFlowList();
 
@@ -1006,32 +1006,32 @@ namespace WIS_DataAccess
 
             if (WorkFlowObj.WorkFlowDefID == objWorkFlow.WorkFlowDefID)
             {
-                //OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+                //SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
                 cnn.Open();
-                OracleCommand dcmd = new OracleCommand("USP_TRN_UPDATE_WORKFLOWDEF", cnn);
+                SqlCommand dcmd = new SqlCommand("USP_TRN_UPDATE_WORKFLOWDEF", cnn);
                 dcmd.CommandType = CommandType.StoredProcedure;
                 int count = Convert.ToInt32(dcmd.CommandType);
 
                 try
                 {
 
-                    dcmd.Parameters.Add("OWORKAPPROVALID", WorkFlowObj.WorkFlowDefID);
-                    dcmd.Parameters.Add("OMODULEID", WorkFlowObj.ModuleID);
-                    dcmd.Parameters.Add("OWORKFLOW", WorkFlowObj.WorkflowID);
-                    dcmd.Parameters.Add("OHiGHULTORITY", WorkFlowObj.HigherAuthorityID);
-                    dcmd.Parameters.Add("OTRIGGER", WorkFlowObj.Trigger);
-                    dcmd.Parameters.Add("OAFTERDAYS", WorkFlowObj.AfterDays);
-                    dcmd.Parameters.Add("OCREATEDBY", WorkFlowObj.UserID);
-                    dcmd.Parameters.Add("OCREATEDDATE", WorkFlowObj.WCreatedDate);
+                    dcmd.Parameters.AddWithValue("OWORKAPPROVALID", WorkFlowObj.WorkFlowDefID);
+                    dcmd.Parameters.AddWithValue("OMODULEID", WorkFlowObj.ModuleID);
+                    dcmd.Parameters.AddWithValue("OWORKFLOW", WorkFlowObj.WorkflowID);
+                    dcmd.Parameters.AddWithValue("OHiGHULTORITY", WorkFlowObj.HigherAuthorityID);
+                    dcmd.Parameters.AddWithValue("OTRIGGER", WorkFlowObj.Trigger);
+                    dcmd.Parameters.AddWithValue("OAFTERDAYS", WorkFlowObj.AfterDays);
+                    dcmd.Parameters.AddWithValue("OCREATEDBY", WorkFlowObj.UserID);
+                    dcmd.Parameters.AddWithValue("OCREATEDDATE", WorkFlowObj.WCreatedDate);
 
-                    dcmd.Parameters.Add("WorkFlowDefID_", objWorkFlow.WorkFlowDefID);
-                    dcmd.Parameters.Add("PROJECTID_", objWorkFlow.ProjectID);
-                    dcmd.Parameters.Add("MODULEID_", objWorkFlow.ModuleID);
-                    dcmd.Parameters.Add("WORKFLOWID_", objWorkFlow.WorkflowID);
-                    dcmd.Parameters.Add("HIGHAULTID_", objWorkFlow.HigherAuthorityID);
-                    dcmd.Parameters.Add("TRIGGER_", objWorkFlow.Trigger);
-                    dcmd.Parameters.Add("AFTERDAYS_", objWorkFlow.AfterDays);
-                    dcmd.Parameters.Add("UpdatedBY_", objWorkFlow.UserID);
+                    dcmd.Parameters.AddWithValue("WorkFlowDefID_", objWorkFlow.WorkFlowDefID);
+                    dcmd.Parameters.AddWithValue("PROJECTID_", objWorkFlow.ProjectID);
+                    dcmd.Parameters.AddWithValue("MODULEID_", objWorkFlow.ModuleID);
+                    dcmd.Parameters.AddWithValue("WORKFLOWID_", objWorkFlow.WorkflowID);
+                    dcmd.Parameters.AddWithValue("HIGHAULTID_", objWorkFlow.HigherAuthorityID);
+                    dcmd.Parameters.AddWithValue("TRIGGER_", objWorkFlow.Trigger);
+                    dcmd.Parameters.AddWithValue("AFTERDAYS_", objWorkFlow.AfterDays);
+                    dcmd.Parameters.AddWithValue("UpdatedBY_", objWorkFlow.UserID);
                     Result = dcmd.ExecuteNonQuery();
                 }
                 catch
@@ -1059,20 +1059,20 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public WorkFlowBO getWOrkFlowApprovalID(int projectID, string workflowCode)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_WORKFLOWAPPREID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ProjectId_", projectID);
-            cmd.Parameters.Add("WorkFlowApprover_", workflowCode);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ProjectId_", projectID);
+            cmd.Parameters.AddWithValue("WorkFlowApprover_", workflowCode);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             WorkFlowBO ProjectRouteBOobj = null;
 
             while (dr.Read())
@@ -1133,22 +1133,22 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public WorkFlowList getTotalcountapproval(WorkFlowBO objProjectRoute)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_TOTALAPPREID";
 
             //string APPROVERLEVEL = "1";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ProjectId_", objProjectRoute.Project_Id);
-            cmd.Parameters.Add("WorkFlowApprover_", objProjectRoute.WorkFlowApprover);
-            //cmd.Parameters.Add("APPROVERLEVEL_", APPROVERLEVEL);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ProjectId_", objProjectRoute.Project_Id);
+            cmd.Parameters.AddWithValue("WorkFlowApprover_", objProjectRoute.WorkFlowApprover);
+            //cmd.Parameters.AddWithValue("APPROVERLEVEL_", APPROVERLEVEL);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             WorkFlowBO ProjectRouteBOobj = null;
             // ProjectRouteList ProjectRouteList = new ProjectRouteList();
             WorkFlowList WorkFlowList = new WorkFlowList();
@@ -1172,24 +1172,24 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public WorkFlowBO ApprovalStatuscheck(WorkFlowBO objProjectRoute)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_TOTALAPPRESTATUS";
 
             //string APPROVERLEVEL = "1";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ProjectId_", objProjectRoute.Project_Id);
-            cmd.Parameters.Add("WorkFlowCode_", objProjectRoute.WorkflowCode);
-            cmd.Parameters.Add("APPROVERLEVEL_", objProjectRoute.LEVEL);
-            cmd.Parameters.Add("HHID_", objProjectRoute.HHID);
-            cmd.Parameters.Add("PageCode_", objProjectRoute.PageCode);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ProjectId_", objProjectRoute.Project_Id);
+            cmd.Parameters.AddWithValue("WorkFlowCode_", objProjectRoute.WorkflowCode);
+            cmd.Parameters.AddWithValue("APPROVERLEVEL_", objProjectRoute.LEVEL);
+            cmd.Parameters.AddWithValue("HHID_", objProjectRoute.HHID);
+            cmd.Parameters.AddWithValue("PageCode_", objProjectRoute.PageCode);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             WorkFlowBO ProjectRouteBOobj = null;
             // ProjectRouteList ProjectRouteList = new ProjectRouteList();
             //WorkFlowList WorkFlowList = new WorkFlowList();
@@ -1215,24 +1215,24 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public WorkFlowList ApprovalStatuschecklist(WorkFlowBO objProjectRoute)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_TOTALAPPRESTATUS";
 
             //string APPROVERLEVEL = "1";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ProjectId_", objProjectRoute.Project_Id);
-            cmd.Parameters.Add("WorkFlowCode_", objProjectRoute.WorkflowCode);
-            cmd.Parameters.Add("APPROVERLEVEL_", objProjectRoute.LEVEL);
-            cmd.Parameters.Add("HHID_", objProjectRoute.HHID);
-            cmd.Parameters.Add("PageCode_", objProjectRoute.PageCode);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ProjectId_", objProjectRoute.Project_Id);
+            cmd.Parameters.AddWithValue("WorkFlowCode_", objProjectRoute.WorkflowCode);
+            cmd.Parameters.AddWithValue("APPROVERLEVEL_", objProjectRoute.LEVEL);
+            cmd.Parameters.AddWithValue("HHID_", objProjectRoute.HHID);
+            cmd.Parameters.AddWithValue("PageCode_", objProjectRoute.PageCode);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             WorkFlowBO ProjectRouteBOobj = null;
             // ProjectRouteList ProjectRouteList = new ProjectRouteList();
             WorkFlowList WorkFlowList = new WorkFlowList();

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -8,8 +8,8 @@ namespace WIS_DataAccess
     public class BankDAL
     {
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
         /// <summary>
         /// To fetch bank details from database
@@ -23,23 +23,23 @@ namespace WIS_DataAccess
 
             BankList Banks = new BankList();
 
-            using (cnn = new OracleConnection(con))
+            using (cnn = new SqlConnection(con))
             {
-                using (cmd = new OracleCommand(proc, cnn))
+                using (cmd = new SqlCommand(proc, cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                    
 
                     try
                     {
                         cmd.Connection.Open();
-                        using (OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                        using (SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
                         {
                             while (dr.Read())
                             {
                                 objBank = new BankBO();
 
-                                if (!dr.IsDBNull(dr.GetOrdinal("BankID"))) objBank.BankID = dr.GetInt32(dr.GetOrdinal("BankID"));
+                                if (!dr.IsDBNull(dr.GetOrdinal("BankID"))) objBank.BankID = (int)dr.GetDecimal(dr.GetOrdinal("BankID"));
                                 if (!dr.IsDBNull(dr.GetOrdinal("BankName"))) objBank.BankName = dr.GetString(dr.GetOrdinal("BankName"));
 
                                 Banks.Add(objBank);
@@ -68,30 +68,28 @@ namespace WIS_DataAccess
             BankBO objBank = null;
             BankList Banks = new BankList();
 
-            using (cnn = new OracleConnection(con))
+            using (cnn = new SqlConnection(con))
             {
-                using (cmd = new OracleCommand(proc, cnn))
+                using (cmd = new SqlCommand(proc, cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     if (bankName != "")
-                        cmd.Parameters.Add("bankName_", bankName);
+                        cmd.Parameters.AddWithValue("bankName_", bankName);
                     else
-                        cmd.Parameters.Add("bankName_", DBNull.Value);
+                        cmd.Parameters.AddWithValue("bankName_", DBNull.Value);
 
-                    
-                    cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
 
                     try
                     {
                         cmd.Connection.Open();
-                        OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                         while (dr.Read())
                         {
                             objBank = new BankBO();
 
-                            if (!dr.IsDBNull(dr.GetOrdinal("BankID"))) objBank.BankID = dr.GetInt32(dr.GetOrdinal("BankID"));
+                            if (!dr.IsDBNull(dr.GetOrdinal("BankID"))) objBank.BankID = (int)dr.GetDecimal(dr.GetOrdinal("BankID"));
                             if (!dr.IsDBNull(dr.GetOrdinal("BankName"))) objBank.BankName = dr.GetString(dr.GetOrdinal("BankName"));
                             if (!dr.IsDBNull(dr.GetOrdinal("IsDeleted"))) objBank.IsDeleted = dr.GetString(dr.GetOrdinal("IsDeleted")); 
 
@@ -116,18 +114,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string AddBank(BankBO objBank)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnResult = string.Empty;
             proc = "USP_MST_INS_BANK";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("bankName", objBank.BankName);
+            cmd.Parameters.AddWithValue("bankName", objBank.BankName);
            
-            cmd.Parameters.Add("createdby", objBank.CreatedBy);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("createdby", objBank.CreatedBy);
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -146,26 +144,24 @@ namespace WIS_DataAccess
         public BankBO GetBankByBankID(int bankID)
         {
             proc = "USP_MST_GET_BANKBYID";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             BankBO objBank = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("bankID_", bankID);
-
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("bankID_", bankID);
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
                     objBank = new BankBO();
 
-                    if (!dr.IsDBNull(dr.GetOrdinal("BankID"))) objBank.BankID = dr.GetInt32(dr.GetOrdinal("BankID"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("BankID"))) objBank.BankID = (int)dr.GetDecimal(dr.GetOrdinal("BankID"));
                     if (!dr.IsDBNull(dr.GetOrdinal("BankName"))) objBank.BankName = dr.GetString(dr.GetOrdinal("BankName"));
                     
                 }
@@ -186,20 +182,20 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string UpdateBank(BankBO objBank)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnResult = string.Empty;
 
             proc = "USP_MST_UPD_BANK";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("bankID", objBank.BankID);
-            cmd.Parameters.Add("bankName", objBank.BankName);
+            cmd.Parameters.AddWithValue("bankID", Convert.ToSingle(objBank.BankID));
+            cmd.Parameters.AddWithValue("bankName", objBank.BankName);
            
-            cmd.Parameters.Add("updatedby", objBank.UpdatedBy);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("updatedby", objBank.UpdatedBy);
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -217,18 +213,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteBank(int bankID)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DEL_BANK", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DEL_BANK", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("bankid_", bankID);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("bankid_", bankID);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -262,18 +258,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteBank(int bankID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETEBANK", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETEBANK", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("bankid_", bankID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("bankid_", bankID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

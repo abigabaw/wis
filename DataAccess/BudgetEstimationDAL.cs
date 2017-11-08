@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -13,17 +13,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public BudgetEstimationList getAllCategory()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_SELECTALLCATEGORY";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             BudgetEstimationBO objBudgetEstimation = null;
             BudgetEstimationList BudgetEstimationList = new BudgetEstimationList();
 
@@ -47,19 +47,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public BudgetEstimationList getSubCatByCatID(int CategoryID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_SUBCATBYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("CategoryID_", CategoryID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CategoryID_", CategoryID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             BudgetEstimationBO BudgetEstimationObj = null;
             BudgetEstimationList BudgetEstimationList = new BudgetEstimationList();
 
@@ -108,24 +108,24 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string InsertBudgetEstimation(BudgetEstimationBO objBudgetEstimation)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_INS_PROJ_BGT_EST", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_INS_PROJ_BGT_EST", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             string returnResult = string.Empty;
             try
             {
-                dcmd.Parameters.Add("CategoryID_", objBudgetEstimation.CategoryID);
-                dcmd.Parameters.Add("SubCategoryID_", objBudgetEstimation.SubCategoryID);
-                dcmd.Parameters.Add("ValueAmount_", objBudgetEstimation.ValueAmount);
-                dcmd.Parameters.Add("ValueAmountper_", objBudgetEstimation.ValueAmountper);
-                dcmd.Parameters.Add("ProjectID_", objBudgetEstimation.ProjectID);
-                dcmd.Parameters.Add("UserID_", objBudgetEstimation.UserID);
-                dcmd.Parameters.Add("CurrencyID_", objBudgetEstimation.CurrencyID);
-                dcmd.Parameters.Add("AccountNo_", objBudgetEstimation.AccountNo);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("CategoryID_", objBudgetEstimation.CategoryID);
+                dcmd.Parameters.AddWithValue("SubCategoryID_", objBudgetEstimation.SubCategoryID);
+                dcmd.Parameters.AddWithValue("ValueAmount_", objBudgetEstimation.ValueAmount);
+                dcmd.Parameters.AddWithValue("ValueAmountper_", objBudgetEstimation.ValueAmountper);
+                dcmd.Parameters.AddWithValue("ProjectID_", objBudgetEstimation.ProjectID);
+                dcmd.Parameters.AddWithValue("UserID_", objBudgetEstimation.UserID);
+                dcmd.Parameters.AddWithValue("CurrencyID_", objBudgetEstimation.CurrencyID);
+                dcmd.Parameters.AddWithValue("AccountNo_", objBudgetEstimation.AccountNo);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
                 if (dcmd.Parameters["errorMessage_"].Value != null)
                     returnResult = dcmd.Parameters["errorMessage_"].Value.ToString();
@@ -154,17 +154,17 @@ namespace WIS_DataAccess
         public string InsertNEWCategory(BudgetEstimationBO objNEWCategory)
         {
             string returnResult = string.Empty;
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_BGT_EST_CATEGORY", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_BGT_EST_CATEGORY", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("CategoryName_", objNEWCategory.CategoryName);
-                dcmd.Parameters.Add("UserID_", objNEWCategory.UserID);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("CategoryName_", objNEWCategory.CategoryName);
+                dcmd.Parameters.AddWithValue("UserID_", objNEWCategory.UserID);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -195,18 +195,18 @@ namespace WIS_DataAccess
         public string InsertNEWsubCategory(BudgetEstimationBO objNEWsubCategory)
         {
             string returnResult = string.Empty;
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_BGT_EST_SUBCATEGORY", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_BGT_EST_SUBCATEGORY", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("SUBCategoryName_", objNEWsubCategory.SubCategoryName);
-                dcmd.Parameters.Add("CategoryID_", objNEWsubCategory.CategoryID);
-                dcmd.Parameters.Add("UserID_", objNEWsubCategory.UserID);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("SUBCategoryName_", objNEWsubCategory.SubCategoryName);
+                dcmd.Parameters.AddWithValue("CategoryID_", objNEWsubCategory.CategoryID);
+                dcmd.Parameters.AddWithValue("UserID_", objNEWsubCategory.UserID);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 
                 dcmd.ExecuteNonQuery();
 
@@ -236,20 +236,20 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public BudgetEstimationList GetBudgetEstimation(string pID, int categoryID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_PRJ_BGT_EST";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("PROJECTID_", pID);
-            cmd.Parameters.Add("CATEGORYID_", categoryID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PROJECTID_", pID);
+            cmd.Parameters.AddWithValue("CATEGORYID_", categoryID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             BudgetEstimationBO BudgetEstimationObj = null;
             BudgetEstimationList BudgetEstimationList = new BudgetEstimationList();
 
@@ -289,19 +289,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public BudgetEstimationBO GetBudgetEstimationByID(int BudgetEstimationID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_BGT_EST_BYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("BudgetEstimationID_", BudgetEstimationID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("BudgetEstimationID_", BudgetEstimationID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             BudgetEstimationBO BudgetEstimationBOObj = null;
             BudgetEstimationList BudgetEstimationList = new BudgetEstimationList();
 
@@ -335,18 +335,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteBudgetEstimation(int BudgetEstimationID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd = null;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd = null;
             string message = string.Empty;
 
             try
             {
                 string proc = "USP_MST_DELETEBGTEST";
 
-                cmd = new OracleCommand(proc, cnn);
+                cmd = new SqlCommand(proc, cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("BudgetEstimationID_", BudgetEstimationID);
-                cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("BudgetEstimationID_", BudgetEstimationID);
+                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 cmd.Connection.Open();
                 cmd.ExecuteNonQuery();
                 if (cmd.Parameters["errorMessage_"].Value != null)
@@ -373,25 +373,25 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string EditBudgetEstimation(BudgetEstimationBO objBudgetEstimation)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_UPDATE_PROJ_BGT_EST", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_UPDATE_PROJ_BGT_EST", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             string returnResult = string.Empty;
             try
             {
-                dcmd.Parameters.Add("BudgetEstimationID_", objBudgetEstimation.BudgetEstimationID);
-                dcmd.Parameters.Add("CategoryID_", objBudgetEstimation.CategoryID);
-                dcmd.Parameters.Add("SubCategoryID_", objBudgetEstimation.SubCategoryID);
-                dcmd.Parameters.Add("ValueAmount_", objBudgetEstimation.ValueAmount);
-                dcmd.Parameters.Add("ValueAmountper_", objBudgetEstimation.ValueAmountper);
-                dcmd.Parameters.Add("ProjectID_", objBudgetEstimation.ProjectID);
-                dcmd.Parameters.Add("UserID_", objBudgetEstimation.UserID);
-                dcmd.Parameters.Add("CurrencyID_", objBudgetEstimation.CurrencyID);
-                dcmd.Parameters.Add("AccountNo_", objBudgetEstimation.AccountNo);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("BudgetEstimationID_", objBudgetEstimation.BudgetEstimationID);
+                dcmd.Parameters.AddWithValue("CategoryID_", objBudgetEstimation.CategoryID);
+                dcmd.Parameters.AddWithValue("SubCategoryID_", objBudgetEstimation.SubCategoryID);
+                dcmd.Parameters.AddWithValue("ValueAmount_", objBudgetEstimation.ValueAmount);
+                dcmd.Parameters.AddWithValue("ValueAmountper_", objBudgetEstimation.ValueAmountper);
+                dcmd.Parameters.AddWithValue("ProjectID_", objBudgetEstimation.ProjectID);
+                dcmd.Parameters.AddWithValue("UserID_", objBudgetEstimation.UserID);
+                dcmd.Parameters.AddWithValue("CurrencyID_", objBudgetEstimation.CurrencyID);
+                dcmd.Parameters.AddWithValue("AccountNo_", objBudgetEstimation.AccountNo);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
                 if (dcmd.Parameters["errorMessage_"].Value != null)
                     returnResult = dcmd.Parameters["errorMessage_"].Value.ToString();
@@ -419,19 +419,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public BudgetEstimationBO getCurrenceFromProject(string projectID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_SELECTCURRBUDEST";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("projectID_", projectID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("projectID_", projectID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             BudgetEstimationBO BudgetEstimationBOObj = null;
             BudgetEstimationList BudgetEstimationList = new BudgetEstimationList();
 

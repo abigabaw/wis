@@ -1,5 +1,5 @@
 ﻿using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 using System;
 
@@ -8,8 +8,8 @@ namespace WIS_DataAccess
     public class MasterDAL
     {
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
 
         /// <summary>
@@ -18,13 +18,13 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public DistrictList LoadDistrictData()
         {
-            cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            cnn = new SqlConnection(AppConfiguration.ConnectionString);
             string proc = "USP_MST_GET_DISTRICT";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             DistrictBO obMaster = null;
             DistrictList Master = new DistrictList();
             while (dr.Read())
@@ -45,14 +45,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CountyList LoadCountyData(string pDstrictId)
         {
-            cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            cnn = new SqlConnection(AppConfiguration.ConnectionString);
             string proc = "USP_MST_GET_COUNTY";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@DistrictIDIN", pDstrictId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("@DistrictIDIN", pDstrictId);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CountyBO obMaster = null;
             CountyList Master = new CountyList();
             while (dr.Read())
@@ -73,14 +73,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public SubCountyList LoadSubCountyData(string pCountyId)
         {
-            cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            cnn = new SqlConnection(AppConfiguration.ConnectionString);
             string proc = "USP_MST_GET_SUBCOUNTY";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@CountyIDIN", pCountyId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("@CountyIDIN", pCountyId);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             SubCountyBO obMaster = null;
             SubCountyList Master = new SubCountyList();
             while (dr.Read())
@@ -101,15 +101,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ParishList LoadParishData(string pSubcountyId)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_PARISH";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("SUBCOUNTYID_", pSubcountyId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("SUBCOUNTYID_", pSubcountyId);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ParishBO obMaster = null;
             ParishList Master = new ParishList();
             while (dr.Read())
@@ -131,15 +131,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public VillageList LoadVillageData(string pSubcountyId)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_VILLAGE";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@SubcountyIDIN", pSubcountyId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("@SubcountyIDIN", pSubcountyId);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             VillageBO obMaster = null;
             VillageList Master = new VillageList();
             while (dr.Read())
@@ -159,13 +159,13 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ReligionList LoadReligionData()
         {
-            cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            cnn = new SqlConnection(AppConfiguration.ConnectionString);
             string proc = "USP_MST_GET_RELIGION";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ReligionBO obMaster = null;
             ReligionList Master = new ReligionList();
             while (dr.Read())
@@ -185,13 +185,13 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public OptionGroupList LoadOptionGroupData()
         {
-            cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            cnn = new SqlConnection(AppConfiguration.ConnectionString);
             string proc = "USP_MST_GET_OPTIONGROUPS";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             OptionGroupBO obMaster = null;
             OptionGroupList Master = new OptionGroupList();
             while (dr.Read())
@@ -211,13 +211,13 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ProprietorList LoadProprieterData()
         {
-            cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            cnn = new SqlConnection(AppConfiguration.ConnectionString);
             string proc = "USP_MST_GET_PROPRIETORGROUP";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           // cmd.Parameters.AddWithValue("sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ProprietorBO obProprietor = null;
             ProprietorList Proprietor = new ProprietorList();
             while (dr.Read())
@@ -237,14 +237,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public TenureLandList LoadTenureLand()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_ALLLANDTENURE";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             TenureLandBO objTenureLand = null;
             TenureLandList TenureLand = new TenureLandList();
             while (dr.Read())
@@ -264,14 +264,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CurrencyList LoadCurrency()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GETCURRENCY";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CurrencyBO objCurrencyBO = null;
             CurrencyList Currency = new CurrencyList();
             while (dr.Read())
@@ -291,13 +291,13 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public RepresentationList LoadRepresentationData()
         {
-            cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            cnn = new SqlConnection(AppConfiguration.ConnectionString);
             string proc = "USP_MST_LOADREPRESENTATION";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             RepresentationBO obMaster = null;
             RepresentationList Master = new RepresentationList();
             while (dr.Read())

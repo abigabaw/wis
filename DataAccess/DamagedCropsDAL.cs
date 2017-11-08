@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 
@@ -14,14 +14,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public DamagedCropsList GetDamagedBy()
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GET_DAMAGE_DCROP";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             DamagedCropsBO BOobj = null;
             DamagedCropsList Listobj = new DamagedCropsList();
 
@@ -44,40 +44,40 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int Insert(DamagedCropsBO DamagedCropsobj)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand(" USP_TRN_INS_DAMAGE_CROPS", cnn);
+            SqlCommand dcmd = new SqlCommand(" USP_TRN_INS_DAMAGE_CROPS", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("HHID", DamagedCropsobj.HHID);
-                dcmd.Parameters.Add("DMGCRPFORMREFNO", DamagedCropsobj.DMGCRPFORMREFNO);
-                dcmd.Parameters.Add("CROPID", DamagedCropsobj.CROPID);
-                dcmd.Parameters.Add("CROPTYPEID", DamagedCropsobj.CROPTYPEID);
-                dcmd.Parameters.Add("CROPDESCRIPTIONID", DamagedCropsobj.CROPDESCRIPTIONID);
-                dcmd.Parameters.Add("DATEDAMAGED", DamagedCropsobj.DATEDAMAGED);
+                dcmd.Parameters.AddWithValue("HHID", DamagedCropsobj.HHID);
+                dcmd.Parameters.AddWithValue("DMGCRPFORMREFNO", DamagedCropsobj.DMGCRPFORMREFNO);
+                dcmd.Parameters.AddWithValue("CROPID", DamagedCropsobj.CROPID);
+                dcmd.Parameters.AddWithValue("CROPTYPEID", DamagedCropsobj.CROPTYPEID);
+                dcmd.Parameters.AddWithValue("CROPDESCRIPTIONID", DamagedCropsobj.CROPDESCRIPTIONID);
+                dcmd.Parameters.AddWithValue("DATEDAMAGED", DamagedCropsobj.DATEDAMAGED);
 
-                dcmd.Parameters.Add("CROPDAMAGEDBYID", DamagedCropsobj.CROPDAMAGEDBYID);
+                dcmd.Parameters.AddWithValue("CROPDAMAGEDBYID", DamagedCropsobj.CROPDAMAGEDBYID);
 
-                dcmd.Parameters.Add("CROPDAMAGEDBYOTHER", DamagedCropsobj.CROPDAMAGEDBYOTHER);
+                dcmd.Parameters.AddWithValue("CROPDAMAGEDBYOTHER", DamagedCropsobj.CROPDAMAGEDBYOTHER);
 
-                dcmd.Parameters.Add("QUANTITY", DamagedCropsobj.QUANTITY);
-                dcmd.Parameters.Add("CROPRATE", DamagedCropsobj.CROPRATE);
-                dcmd.Parameters.Add("AMOUNTPAID", DamagedCropsobj.AMOUNTPAID);
+                dcmd.Parameters.AddWithValue("QUANTITY", DamagedCropsobj.QUANTITY);
+                dcmd.Parameters.AddWithValue("CROPRATE", DamagedCropsobj.CROPRATE);
+                dcmd.Parameters.AddWithValue("AMOUNTPAID", DamagedCropsobj.AMOUNTPAID);
 
                 if (DamagedCropsobj.COMMENTS.Length > 1500)
-                    dcmd.Parameters.Add("COMMENTS", DamagedCropsobj.COMMENTS.Substring(0, 1500));
+                    dcmd.Parameters.AddWithValue("COMMENTS", DamagedCropsobj.COMMENTS.Substring(0, 1500));
                 else
-                    dcmd.Parameters.Add("COMMENTS", DamagedCropsobj.COMMENTS);
+                    dcmd.Parameters.AddWithValue("COMMENTS", DamagedCropsobj.COMMENTS);
 
-                dcmd.Parameters.Add("ISDELETED", DamagedCropsobj.ISDELETED);
-                dcmd.Parameters.Add("CREATEDBY", DamagedCropsobj.CREATEDBY);
+                dcmd.Parameters.AddWithValue("ISDELETED", DamagedCropsobj.ISDELETED);
+                dcmd.Parameters.AddWithValue("CREATEDBY", DamagedCropsobj.CREATEDBY);
                 if (DamagedCropsobj.Photo != null)
-                    dcmd.Parameters.Add("DAMGEDCROPPHOTO_", OracleDbType.Blob).Value = DamagedCropsobj.Photo;
+                    dcmd.Parameters.AddWithValue("DAMGEDCROPPHOTO_", SqlDbType.Image).Value = DamagedCropsobj.Photo;
                 else
-                    dcmd.Parameters.Add("DAMGEDCROPPHOTO_", Oracle.DataAccess.Types.OracleBlob.Null);
+                    dcmd.Parameters.AddWithValue("DAMGEDCROPPHOTO_", DBNull.Value);
 
                 return dcmd.ExecuteNonQuery();
             }
@@ -99,18 +99,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public DamagedCropsList GetDamagedCrops(string hhid)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_SEL_DAMAG_CROPS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("D_HHID", hhid);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("D_HHID", hhid);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             DamagedCropsBO DamagedCropsobj = null;
             DamagedCropsList Listobj = new DamagedCropsList();
 
@@ -199,19 +199,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public DamagedCropsBO GetData(int damageCropId)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_DAMAGE_CROPS";//"USP_TRN_GET_DAMAGE_CROPS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("D_DAMAGED_CROPID", damageCropId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("D_DAMAGED_CROPID", damageCropId);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             DamagedCropsBO DamagedCropsobj = null;
             DamagedCropsList Listobj = new DamagedCropsList();
 
@@ -271,38 +271,38 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int Update(DamagedCropsBO DamagedCropsobj)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_UPD_DAMAGE_CROPS", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_UPD_DAMAGE_CROPS", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("HHID_", DamagedCropsobj.HHID);
+                dcmd.Parameters.AddWithValue("HHID_", DamagedCropsobj.HHID);
 
-                dcmd.Parameters.Add("D_DAMAGED_CROPID", DamagedCropsobj.DAMAGED_CROPID);
-                dcmd.Parameters.Add("D_DMGCRPFORMREFNO", DamagedCropsobj.DMGCRPFORMREFNO);
-                dcmd.Parameters.Add("D_CROPID", DamagedCropsobj.CROPID);
-                dcmd.Parameters.Add("D_CROPTYPEID", DamagedCropsobj.CROPTYPEID);
-                dcmd.Parameters.Add("D_CROPDESCRIPTIONID", DamagedCropsobj.CROPDESCRIPTIONID);
-                dcmd.Parameters.Add("D_DATEDAMAGED", DamagedCropsobj.DATEDAMAGED);
-                dcmd.Parameters.Add("D_CROPDAMAGEDBYID", DamagedCropsobj.CROPDAMAGEDBYID);
-                dcmd.Parameters.Add("D_CROPDAMAGEDBYOTHER", DamagedCropsobj.CROPDAMAGEDBYOTHER);
-                dcmd.Parameters.Add("D_QUANTITY", DamagedCropsobj.QUANTITY);
-                dcmd.Parameters.Add("D_CROPRATE", DamagedCropsobj.CROPRATE);
-                dcmd.Parameters.Add("D_AMOUNTPAID", DamagedCropsobj.AMOUNTPAID);
+                dcmd.Parameters.AddWithValue("D_DAMAGED_CROPID", DamagedCropsobj.DAMAGED_CROPID);
+                dcmd.Parameters.AddWithValue("D_DMGCRPFORMREFNO", DamagedCropsobj.DMGCRPFORMREFNO);
+                dcmd.Parameters.AddWithValue("D_CROPID", DamagedCropsobj.CROPID);
+                dcmd.Parameters.AddWithValue("D_CROPTYPEID", DamagedCropsobj.CROPTYPEID);
+                dcmd.Parameters.AddWithValue("D_CROPDESCRIPTIONID", DamagedCropsobj.CROPDESCRIPTIONID);
+                dcmd.Parameters.AddWithValue("D_DATEDAMAGED", DamagedCropsobj.DATEDAMAGED);
+                dcmd.Parameters.AddWithValue("D_CROPDAMAGEDBYID", DamagedCropsobj.CROPDAMAGEDBYID);
+                dcmd.Parameters.AddWithValue("D_CROPDAMAGEDBYOTHER", DamagedCropsobj.CROPDAMAGEDBYOTHER);
+                dcmd.Parameters.AddWithValue("D_QUANTITY", DamagedCropsobj.QUANTITY);
+                dcmd.Parameters.AddWithValue("D_CROPRATE", DamagedCropsobj.CROPRATE);
+                dcmd.Parameters.AddWithValue("D_AMOUNTPAID", DamagedCropsobj.AMOUNTPAID);
 
                 if (DamagedCropsobj.COMMENTS.Length > 1500)
-                    dcmd.Parameters.Add("D_COMMENTS", DamagedCropsobj.COMMENTS.Substring(0, 1500));
+                    dcmd.Parameters.AddWithValue("D_COMMENTS", DamagedCropsobj.COMMENTS.Substring(0, 1500));
                 else
-                    dcmd.Parameters.Add("D_COMMENTS", DamagedCropsobj.COMMENTS);
+                    dcmd.Parameters.AddWithValue("D_COMMENTS", DamagedCropsobj.COMMENTS);
 
-                dcmd.Parameters.Add("D_UPDATEDBY", DamagedCropsobj.CREATEDBY);
+                dcmd.Parameters.AddWithValue("D_UPDATEDBY", DamagedCropsobj.CREATEDBY);
                 if (DamagedCropsobj.Photo != null)
-                    dcmd.Parameters.Add("DAMGEDCROPPHOTO_", OracleDbType.Blob).Value = DamagedCropsobj.Photo;
+                    dcmd.Parameters.AddWithValue("DAMGEDCROPPHOTO_", SqlDbType.Image).Value = DamagedCropsobj.Photo;
                 else
-                    dcmd.Parameters.Add("DAMGEDCROPPHOTO_", Oracle.DataAccess.Types.OracleBlob.Null);
+                    dcmd.Parameters.AddWithValue("DAMGEDCROPPHOTO_", DBNull.Value);
 
                 return dcmd.ExecuteNonQuery();
             }
@@ -324,14 +324,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int DeleteData(int damageCropId)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_DEL_DAMGE_CROPS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("DAMAGED_CROPID_", damageCropId);
+            cmd.Parameters.AddWithValue("DAMAGED_CROPID_", damageCropId);
             cmd.Connection.Open();
 
             int result = cmd.ExecuteNonQuery();
@@ -348,15 +348,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public DamagedCropsBO ShowDAMAGEDCROPSImage(int householdID, int PermanentStructureID)
         {
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_TRN_GET_DAMAGED_CROP_PHOTO", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_TRN_GET_DAMAGED_CROP_PHOTO", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("HHID_", householdID);
-            myCommand.Parameters.Add("PermanentStructureID_", PermanentStructureID);
-            myCommand.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("HHID_", householdID);
+            myCommand.Parameters.AddWithValue("PermanentStructureID_", PermanentStructureID);
+            // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             myCommand.Connection.Open();
             object img = myCommand.ExecuteScalar();

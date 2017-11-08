@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data;
 using System.Configuration;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 
@@ -24,19 +24,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public LivelihoodBudgetItemsList GetLivBudgetItems_ById(LivelihoodBudgetItemsBO prmLiveBudgItemsBO)
         {
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_BDG_ITEM_BYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("liv_bud_categid_", prmLiveBudgItemsBO.Liv_Bud_CategID);
-            cmd.Parameters.Add("liv_bud_itemid_", prmLiveBudgItemsBO.Liv_Bud_ItemID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("liv_bud_categid_", prmLiveBudgItemsBO.Liv_Bud_CategID);
+            cmd.Parameters.AddWithValue("liv_bud_itemid_", prmLiveBudgItemsBO.Liv_Bud_ItemID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             LivelihoodBudgetItemsBO oLivBudgItemsBO = null;
             LivelihoodBudgetItemsList lstLivBudgItem = new LivelihoodBudgetItemsList();
 
@@ -109,29 +109,29 @@ namespace WIS_DataAccess
         //    string returnResult = string.Empty;
         //    BatchBO ooBatchBO = new BatchBO();//For Storing & Returning Result as Object
 
-        //    OracleConnection OCon = new OracleConnection(con);
+        //    SqlConnection OCon = new SqlConnection(con);
         //    OCon.Open();
-        //    OracleCommand oCmd = new OracleCommand("USP_TRN_CMP_ADDBATCH", OCon);
+        //    SqlCommand oCmd = new SqlCommand("USP_TRN_CMP_ADDBATCH", OCon);
         //    oCmd.CommandType = CommandType.StoredProcedure;
         //    int count = Convert.ToInt32(oCmd.CommandType);
 
         //    try
         //    {
-        //        oCmd.Parameters.Add("batchstatus_", oBatchBO.BatchStatus);
-        //        oCmd.Parameters.Add("payt_requestdate_", oBatchBO.Payt_RequestDate);
+        //        oCmd.Parameters.AddWithValue("batchstatus_", oBatchBO.BatchStatus);
+        //        oCmd.Parameters.AddWithValue("payt_requestdate_", oBatchBO.Payt_RequestDate);
 
-        //        oCmd.Parameters.Add("hhid_", oBatchBO.HHID);
-        //        oCmd.Parameters.Add("requeststatus_", oBatchBO.RequestStatus);
+        //        oCmd.Parameters.AddWithValue("hhid_", oBatchBO.HHID);
+        //        oCmd.Parameters.AddWithValue("requeststatus_", oBatchBO.RequestStatus);
 
-        //        oCmd.Parameters.Add("isdeleted_", oBatchBO.IsDeleted);
-        //        oCmd.Parameters.Add("createdby_", oBatchBO.CreatedBy);
+        //        oCmd.Parameters.AddWithValue("isdeleted_", oBatchBO.IsDeleted);
+        //        oCmd.Parameters.AddWithValue("createdby_", oBatchBO.CreatedBy);
 
-        //        oCmd.Parameters.Add("getBatchNo_", OracleDbType.Varchar2, 50).Direction = ParameterDirection.Output;
-        //        oCmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
-        //        oCmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+        //        oCmd.Parameters.AddWithValue("getBatchNo_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+        //        oCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+        //        // Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
         //        //oCmd.ExecuteNonQuery();
-        //        OracleDataReader oDataReader = oCmd.ExecuteReader();
+        //        SqlDataReader oDataReader = oCmd.ExecuteReader();
 
         //        if (oCmd.Parameters["errorMessage_"].Value != null)
         //            ooBatchBO.dbMessage = oCmd.Parameters["errorMessage_"].Value.ToString();
@@ -169,14 +169,14 @@ namespace WIS_DataAccess
 
         //public int DeletePaymentRequest(int PaymentRequestId)
         //{
-        //    cnn = new OracleConnection(con);
+        //    cnn = new SqlConnection(con);
 
         //    proc = "USP_TRN_CMP_DEL_SUBMIT_PAYMENT";
 
-        //    cmd = new OracleCommand(proc, cnn);
+        //    cmd = new SqlCommand(proc, cnn);
         //    cmd.CommandType = CommandType.StoredProcedure;
-        //    cmd.Parameters.Add("payt_requestid_", PaymentRequestId);
-        //    //cmd.Parameters.Add("Sp_recordset", OracleDbType.Int32).Direction = ParameterDirection.Output;
+        //    cmd.Parameters.AddWithValue("payt_requestid_", PaymentRequestId);
+        //    //cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.Int).Direction = ParameterDirection.Output;
 
         //    cmd.Connection.Open();
 
@@ -188,18 +188,18 @@ namespace WIS_DataAccess
         //public string UpdatePaymentRequest(BatchBO oBatchBO)
         //{
         //    string returnResult = string.Empty;
-        //    cnn = new OracleConnection(con);
+        //    cnn = new SqlConnection(con);
 
         //    proc = "USP_TRN_CMP_UPD_SUBMIT_PAYMENT";
 
-        //    cmd = new OracleCommand(proc, cnn);
+        //    cmd = new SqlCommand(proc, cnn);
         //    cmd.CommandType = CommandType.StoredProcedure;
         //    cmd.Connection.Open();
-        //    cmd.Parameters.Add("payt_requestid_", oBatchBO.Payt_RequestID);
-        //    cmd.Parameters.Add("requeststatus_", oBatchBO.RequestStatus);
-        //    cmd.Parameters.Add("updatedby_", oBatchBO.UpdatedBy);           
+        //    cmd.Parameters.AddWithValue("payt_requestid_", oBatchBO.Payt_RequestID);
+        //    cmd.Parameters.AddWithValue("requeststatus_", oBatchBO.RequestStatus);
+        //    cmd.Parameters.AddWithValue("updatedby_", oBatchBO.UpdatedBy);           
 
-        //    cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 100).Direction = ParameterDirection.Output;
+        //    cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
         //    try
         //    {
         //        cmd.ExecuteNonQuery();
@@ -221,19 +221,19 @@ namespace WIS_DataAccess
 
         /*  public Concern GetConcernById(int ConcernID)
           {
-              OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-              OracleCommand cmd;
+              SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+              SqlCommand cmd;
 
               string proc = "USP_MST_GETSELECTCONCERN";
 
-              cmd = new OracleCommand(proc, cnn);
+              cmd = new SqlCommand(proc, cnn);
               cmd.CommandType = CommandType.StoredProcedure;
-              cmd.Parameters.Add("ConcernID_", ConcernID);
-              cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+              cmd.Parameters.AddWithValue("ConcernID_", ConcernID);
+              // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
               cmd.Connection.Open();
 
-              OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+              SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
               BO.Concern ConcernObj = null;
               BO.ConcernList Users = new BO.ConcernList();
 

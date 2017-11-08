@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -15,19 +15,19 @@ namespace WIS_DataAccess
         public string Insert(LiteracyStatusBO LiteracyStatusBoobj)
         {
             string returnResult = string.Empty;
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             con.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_INSERTLITERACYSTATUS", con);
+            SqlCommand dcmd = new SqlCommand("USP_MST_INSERTLITERACYSTATUS", con);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
             try
             {
-                dcmd.Parameters.Add("LTR_STATUS", LiteracyStatusBoobj.LTR_STATUS);
-                dcmd.Parameters.Add("DESCRIPTION", LiteracyStatusBoobj.DESCRIPTION);
-                dcmd.Parameters.Add("createdby", LiteracyStatusBoobj.CREATEDBY);
+                dcmd.Parameters.AddWithValue("LTR_STATUS", LiteracyStatusBoobj.LTR_STATUS);
+                dcmd.Parameters.AddWithValue("DESCRIPTION", LiteracyStatusBoobj.DESCRIPTION);
+                dcmd.Parameters.AddWithValue("createdby", LiteracyStatusBoobj.CREATEDBY);
                 //return dcmd.ExecuteNonQuery();
 
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -56,17 +56,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public LiteracyStatusList GetAllLiteracyStatus()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
-            string proc = " USP_MST_GETALLLITERACYSTATUS";
+            string proc = "USP_MST_GETALLLITERACYSTATUS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             LiteracyStatusBO LiteracyStatusBOobj = null;
             LiteracyStatusList LiteracyStatusListobj = new LiteracyStatusList();
 
@@ -96,17 +96,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public LiteracyStatusList GetLiteracyStatus()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
-            string proc = " USP_MST_GETLITERACYSTATUS";
+            string proc = "USP_MST_GETLITERACYSTATUS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             LiteracyStatusBO LiteracyStatusBOobj = null;
             LiteracyStatusList LiteracyStatusListobj = new LiteracyStatusList();
 
@@ -128,13 +128,13 @@ namespace WIS_DataAccess
 
         //public int Delete(int literacyStatusID)
         //{
-        //    OracleConnection conn = new OracleConnection(AppConfiguration.ConnectionString);
+        //    SqlConnection conn = new SqlConnection(AppConfiguration.ConnectionString);
         //    conn.Open();
-        //    OracleCommand dCmd = new OracleCommand("USP_MST_DELETELITERACYSTATUS", conn);
+        //    SqlCommand dCmd = new SqlCommand("USP_MST_DELETELITERACYSTATUS", conn);
         //    dCmd.CommandType = CommandType.StoredProcedure;
         //    try
         //    {
-        //        dCmd.Parameters.Add("L_LTR_STATUSID", literacyStatusID);
+        //        dCmd.Parameters.AddWithValue("L_LTR_STATUSID", literacyStatusID);
         //        return dCmd.ExecuteNonQuery();
         //    }
         //    catch (Exception ex)
@@ -158,18 +158,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string Delete(int literacyStatusID)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DELETELITERACYSTATUS", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DELETELITERACYSTATUS", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("L_LTR_STATUSID", literacyStatusID);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("L_LTR_STATUSID", literacyStatusID);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -205,17 +205,17 @@ namespace WIS_DataAccess
         public string Update(LiteracyStatusBO LitStatusBoobj, int litStatusID)
         {
             string returnResult = string.Empty;
-            OracleConnection conn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection conn = new SqlConnection(AppConfiguration.ConnectionString);
             conn.Open();
-            OracleCommand dCmd = new OracleCommand("USP_MST_UPDATELITERACYSTATUS", conn);
+            SqlCommand dCmd = new SqlCommand("USP_MST_UPDATELITERACYSTATUS", conn);
             dCmd.CommandType = CommandType.StoredProcedure;
             try
             {
-                dCmd.Parameters.Add("L_LTR_STATUSID", litStatusID);
-                dCmd.Parameters.Add("L_LTR_STATUS", LitStatusBoobj.LTR_STATUS);
-                dCmd.Parameters.Add("L_DESCRIPTION", LitStatusBoobj.DESCRIPTION);
-                dCmd.Parameters.Add("L_CREATEDBY", LitStatusBoobj.CREATEDBY);
-                dCmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dCmd.Parameters.AddWithValue("L_LTR_STATUSID", litStatusID);
+                dCmd.Parameters.AddWithValue("L_LTR_STATUS", LitStatusBoobj.LTR_STATUS);
+                dCmd.Parameters.AddWithValue("L_DESCRIPTION", LitStatusBoobj.DESCRIPTION);
+                dCmd.Parameters.AddWithValue("L_CREATEDBY", LitStatusBoobj.CREATEDBY);
+                dCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
 
                 dCmd.ExecuteNonQuery();
@@ -250,18 +250,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteLiteracyStatus(int literacyStatusID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETELITERACYSTATUS", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETELITERACYSTATUS", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("L_LTR_STATUSID", literacyStatusID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("L_LTR_STATUSID", literacyStatusID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

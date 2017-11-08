@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -15,36 +15,36 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public String Insert(PublicConsultationBO oBO)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_INS_PCDD", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_INS_PCDD", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("PROJECTID_", oBO.ProjectID);
-                dcmd.Parameters.Add("DISTRICT_", oBO.District);
-                dcmd.Parameters.Add("COUNTY_", oBO.County);
-                dcmd.Parameters.Add("SUBCOUNTY_", oBO.SubCounty);
-                dcmd.Parameters.Add("PARISH_", oBO.Parish);
-                dcmd.Parameters.Add("VILLAGE_", oBO.Village);
-                dcmd.Parameters.Add("NAMEOFPERSON_", oBO.NameOfPerson);
-                dcmd.Parameters.Add("ADDRESS_", oBO.Address);
-                dcmd.Parameters.Add("TELEPHONE_", oBO.Telephone);
-                dcmd.Parameters.Add("STAKEHOLDINGCATEG_", oBO.StakeholdingCategory);
+                dcmd.Parameters.AddWithValue("PROJECTID_", oBO.ProjectID);
+                dcmd.Parameters.AddWithValue("DISTRICT_", oBO.District);
+                dcmd.Parameters.AddWithValue("COUNTY_", oBO.County);
+                dcmd.Parameters.AddWithValue("SUBCOUNTY_", oBO.SubCounty);
+                dcmd.Parameters.AddWithValue("PARISH_", oBO.Parish);
+                dcmd.Parameters.AddWithValue("VILLAGE_", oBO.Village);
+                dcmd.Parameters.AddWithValue("NAMEOFPERSON_", oBO.NameOfPerson);
+                dcmd.Parameters.AddWithValue("ADDRESS_", oBO.Address);
+                dcmd.Parameters.AddWithValue("TELEPHONE_", oBO.Telephone);
+                dcmd.Parameters.AddWithValue("STAKEHOLDINGCATEG_", oBO.StakeholdingCategory);
 
                 if (oBO.ConsultationDate != DateTime.MinValue)
-                    dcmd.Parameters.Add("CONSULTATIONDATE_", oBO.ConsultationDate.ToString(UtilBO.DateFormatDB));
+                    dcmd.Parameters.AddWithValue("CONSULTATIONDATE_", oBO.ConsultationDate.ToString(UtilBO.DateFormatDB));
                 else
-                    dcmd.Parameters.Add("CONSULTATIONDATE_", DBNull.Value);
+                    dcmd.Parameters.AddWithValue("CONSULTATIONDATE_", DBNull.Value);
 
-                dcmd.Parameters.Add("PURPOSEOFMEETING_", oBO.PurposeOfMeeting);
-                dcmd.Parameters.Add("ISSUES_", oBO.Issues);
-                dcmd.Parameters.Add("REMEDIES_", oBO.Remedies);
-                dcmd.Parameters.Add("OFFICERINCHARGE_", oBO.OfficerIncharge);
-                dcmd.Parameters.Add("CREATEDBY_", oBO.CreatedBy);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("PURPOSEOFMEETING_", oBO.PurposeOfMeeting);
+                dcmd.Parameters.AddWithValue("ISSUES_", oBO.Issues);
+                dcmd.Parameters.AddWithValue("REMEDIES_", oBO.Remedies);
+                dcmd.Parameters.AddWithValue("OFFICERINCHARGE_", oBO.OfficerIncharge);
+                dcmd.Parameters.AddWithValue("CREATEDBY_", oBO.CreatedBy);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                  dcmd.ExecuteNonQuery();
 
@@ -70,16 +70,16 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public PublicConsultationList GetPublucConsultation(int projectID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_SEL_PCDD";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("projectID_", projectID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("projectID_", projectID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             PublicConsultationBO oBO = null;
             PublicConsultationList listobj = new PublicConsultationList();
@@ -117,19 +117,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public PublicConsultationBO GetData(int CONSULTATIONID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_PCDD";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("C_CONSULTATIONID", CONSULTATIONID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("C_CONSULTATIONID", CONSULTATIONID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             PublicConsultationBO oBO = null;
             PublicConsultationList listobj = new PublicConsultationList();
@@ -179,38 +179,38 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public String Update(PublicConsultationBO oBO)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_UPD_PCDD", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_UPD_PCDD", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("consultationid_", oBO.CONSULTATIONID);
+                dcmd.Parameters.AddWithValue("consultationid_", oBO.CONSULTATIONID);
 
-                dcmd.Parameters.Add("DISTRICT_", oBO.District);
-                dcmd.Parameters.Add("COUNTY_", oBO.County);
-                dcmd.Parameters.Add("SUBCOUNTY_", oBO.SubCounty);
-                dcmd.Parameters.Add("PARISH_", oBO.Parish);
-                dcmd.Parameters.Add("VILLAGE_", oBO.Village);
-                dcmd.Parameters.Add("NAMEOFPERSON_", oBO.NameOfPerson);
-                dcmd.Parameters.Add("ADDRESS_", oBO.Address);
-                dcmd.Parameters.Add("TELEPHONE_", oBO.Telephone);
-                dcmd.Parameters.Add("STAKEHOLDINGCATEG_", oBO.StakeholdingCategory);
+                dcmd.Parameters.AddWithValue("DISTRICT_", oBO.District);
+                dcmd.Parameters.AddWithValue("COUNTY_", oBO.County);
+                dcmd.Parameters.AddWithValue("SUBCOUNTY_", oBO.SubCounty);
+                dcmd.Parameters.AddWithValue("PARISH_", oBO.Parish);
+                dcmd.Parameters.AddWithValue("VILLAGE_", oBO.Village);
+                dcmd.Parameters.AddWithValue("NAMEOFPERSON_", oBO.NameOfPerson);
+                dcmd.Parameters.AddWithValue("ADDRESS_", oBO.Address);
+                dcmd.Parameters.AddWithValue("TELEPHONE_", oBO.Telephone);
+                dcmd.Parameters.AddWithValue("STAKEHOLDINGCATEG_", oBO.StakeholdingCategory);
 
                 if (oBO.ConsultationDate != DateTime.MinValue)
-                    dcmd.Parameters.Add("CONSULTATIONDATE_", oBO.ConsultationDate.ToString(UtilBO.DateFormatDB));
+                    dcmd.Parameters.AddWithValue("CONSULTATIONDATE_", oBO.ConsultationDate.ToString(UtilBO.DateFormatDB));
                 else
-                    dcmd.Parameters.Add("CONSULTATIONDATE_", DBNull.Value);
+                    dcmd.Parameters.AddWithValue("CONSULTATIONDATE_", DBNull.Value);
 
-                dcmd.Parameters.Add("PURPOSEOFMEETING_", oBO.PurposeOfMeeting);
-                dcmd.Parameters.Add("ISSUES_", oBO.Issues);
-                dcmd.Parameters.Add("REMEDIES_", oBO.Remedies);
-                dcmd.Parameters.Add("OFFICERINCHARGE_", oBO.OfficerIncharge);
+                dcmd.Parameters.AddWithValue("PURPOSEOFMEETING_", oBO.PurposeOfMeeting);
+                dcmd.Parameters.AddWithValue("ISSUES_", oBO.Issues);
+                dcmd.Parameters.AddWithValue("REMEDIES_", oBO.Remedies);
+                dcmd.Parameters.AddWithValue("OFFICERINCHARGE_", oBO.OfficerIncharge);
 
-                dcmd.Parameters.Add("updatedby_", oBO.UpdatedBy);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("updatedby_", oBO.UpdatedBy);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
                 String result = dcmd.Parameters["errorMessage_"].Value.ToString();

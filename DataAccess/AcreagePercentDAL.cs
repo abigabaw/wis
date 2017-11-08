@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -11,8 +11,8 @@ namespace WIS_DataAccess
     public class AcreagePercentDAL
     {
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
 
         /// <summary>
@@ -24,17 +24,17 @@ namespace WIS_DataAccess
         {
             string returnResult = string.Empty;
 
-            using (cnn = new OracleConnection(con))
+            using (cnn = new SqlConnection(con))
             {
-                using (cmd = new OracleCommand(proc, cnn))
+                using (cmd = new SqlCommand(proc, cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandText = "USP_MST_INS_ACREAGEPERC";
                     cmd.Connection.Open();
 
-                    cmd.Parameters.Add("percent_", objPercent.Percent);
-                    cmd.Parameters.Add("createdBy_", objPercent.CreatedBy);
-                    cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("percent_", objPercent.Percent);
+                    cmd.Parameters.AddWithValue("createdBy_", objPercent.CreatedBy);
+                    cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                     cmd.ExecuteNonQuery();
 
                     if (cmd.Parameters["errorMessage_"].Value != null)
@@ -53,19 +53,19 @@ namespace WIS_DataAccess
         {
             string returnResult = string.Empty;
 
-            using (cnn = new OracleConnection(con))
+            using (cnn = new SqlConnection(con))
             {
-                using (cmd = new OracleCommand(proc, cnn))
+                using (cmd = new SqlCommand(proc, cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandText = "USP_MST_UPD_ACREAGEPERC";
                     cmd.Connection.Open();
 
-                    cmd.Parameters.Add("percentID_", objPercent.PercentID);
-                    cmd.Parameters.Add("percent_", objPercent.Percent);
-                    cmd.Parameters.Add("updatedBy_", objPercent.UpdatedBy);
+                    cmd.Parameters.AddWithValue("percentID_", objPercent.PercentID);
+                    cmd.Parameters.AddWithValue("percent_", objPercent.Percent);
+                    cmd.Parameters.AddWithValue("updatedBy_", objPercent.UpdatedBy);
 
-                    cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                     cmd.ExecuteNonQuery();
 
                     if (cmd.Parameters["errorMessage_"].Value != null)
@@ -83,16 +83,16 @@ namespace WIS_DataAccess
         public void DeleteAcreagePercent(int percentID)
         {
             string result = string.Empty;
-            using (cnn = new OracleConnection(con))
+            using (cnn = new SqlConnection(con))
             {
-                using (cmd = new OracleCommand(proc, cnn))
+                using (cmd = new SqlCommand(proc, cnn))
                 {
                     try
                     {                        
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = "USP_MST_DEL_ACREAGEPERC";
                         
-                        cmd.Parameters.Add("percentid_", percentID);
+                        cmd.Parameters.AddWithValue("percentid_", percentID);
 
                         cmd.Connection.Open();
                         cmd.ExecuteNonQuery();
@@ -113,20 +113,20 @@ namespace WIS_DataAccess
        public AcreagePercentBO GetAcreagePercentID(int percentID)
        {
            AcreagePercentBO objPercent = null;
-           using (cnn = new OracleConnection(con))
+           using (cnn = new SqlConnection(con))
            {
-               using (cmd = new OracleCommand(proc, cnn))
+               using (cmd = new SqlCommand(proc, cnn))
                {
                    cmd.CommandType = CommandType.StoredProcedure;
                    cmd.CommandText = "USP_MST_GET_ACREAGEPERCBYID";
 
-                   cmd.Parameters.Add("percentID_", percentID);
-                   cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                   cmd.Parameters.AddWithValue("percentID_", percentID);
+                   // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
                    try
                    {
                        cmd.Connection.Open();
-                       OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                       SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                        while (dr.Read())
                        {

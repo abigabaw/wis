@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 using WIS_BusinessObjects.Collections;
 
@@ -17,17 +17,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string Insert(GOUAllowanceBO GOUAllowanceBOobj)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             con.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_INS_GOUALLOWANC", con);
+            SqlCommand dcmd = new SqlCommand("USP_MST_INS_GOUALLOWANC", con);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
             try
             {
-                dcmd.Parameters.Add("p_GOUALLOWANCECATEGORY", GOUAllowanceBOobj.GOUAllowanceCategory);
-                dcmd.Parameters.Add("p_GOUALLOWANCEVALUE", GOUAllowanceBOobj.GOUAllowanceValue);
-                dcmd.Parameters.Add("p_CREATEDBY", GOUAllowanceBOobj.Createdby);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 100).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("p_GOUALLOWANCECATEGORY", GOUAllowanceBOobj.GOUAllowanceCategory);
+                dcmd.Parameters.AddWithValue("p_GOUALLOWANCEVALUE", GOUAllowanceBOobj.GOUAllowanceValue);
+                dcmd.Parameters.AddWithValue("p_CREATEDBY", GOUAllowanceBOobj.Createdby);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 //return dcmd.ExecuteNonQuery();
 
                 dcmd.ExecuteNonQuery();
@@ -56,17 +56,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public GOUAllowanceList GetGOUAllowance()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_GOUALLOWANC";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             GOUAllowanceBO objUser = null;
             GOUAllowanceList ReasonList = new GOUAllowanceList();
 
@@ -93,17 +93,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public GOUAllowanceList GetAllSchoolGOUAllowance()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETALL_GOUALLOWANC";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             GOUAllowanceBO objUser = null;
             GOUAllowanceList ReasonList = new GOUAllowanceList();
 
@@ -133,19 +133,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public GOUAllowanceBO GetGOUAllowancebyID(int GouAllowanceID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_GOUALLOWANCEBYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("p_GOUALLOWANCECATEGORYID", GouAllowanceID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("p_GOUALLOWANCECATEGORYID", GouAllowanceID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             GOUAllowanceBO GOUAllowanceBOobj = null;
             GOUAllowanceList Users = new GOUAllowanceList();
 
@@ -174,17 +174,17 @@ namespace WIS_DataAccess
         public string Update(GOUAllowanceBO GOUAllowanceBOobj, int reasonid)
         {
             string returnResult = string.Empty;
-            OracleConnection conn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection conn = new SqlConnection(AppConfiguration.ConnectionString);
             conn.Open();
-            OracleCommand dCmd = new OracleCommand("USP_MST_UPD_GOUALLOWANC", conn);
+            SqlCommand dCmd = new SqlCommand("USP_MST_UPD_GOUALLOWANC", conn);
             dCmd.CommandType = CommandType.StoredProcedure;
             try
             {
-                dCmd.Parameters.Add("p_GOUALLOWANCECATEGORYID", reasonid);
-                dCmd.Parameters.Add("p_GOUALLOWANCECATEGORY", GOUAllowanceBOobj.GOUAllowanceCategory);
-                dCmd.Parameters.Add("p_GOUALLOWANCEVALUE", GOUAllowanceBOobj.GOUAllowanceValue);
-                dCmd.Parameters.Add("p_CREATEDBY", GOUAllowanceBOobj.Createdby);
-                dCmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 100).Direction = ParameterDirection.Output;
+                dCmd.Parameters.AddWithValue("p_GOUALLOWANCECATEGORYID", reasonid);
+                dCmd.Parameters.AddWithValue("p_GOUALLOWANCECATEGORY", GOUAllowanceBOobj.GOUAllowanceCategory);
+                dCmd.Parameters.AddWithValue("p_GOUALLOWANCEVALUE", GOUAllowanceBOobj.GOUAllowanceValue);
+                dCmd.Parameters.AddWithValue("p_CREATEDBY", GOUAllowanceBOobj.Createdby);
+                dCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 //return dCmd.ExecuteNonQuery();
 
                 dCmd.ExecuteNonQuery();
@@ -215,18 +215,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string Obsolete(int reasonid, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBS_GOUALLOWANC", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBS_GOUALLOWANC", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("p_SCH_DRP_REASONID", reasonid);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("p_SCH_DRP_REASONID", reasonid);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -270,18 +270,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string Delete(int reasonid)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DEL_GOUALLOWANC", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DEL_GOUALLOWANC", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("p_GOUALLOWANCECATEGORYID", reasonid);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("p_GOUALLOWANCECATEGORYID", reasonid);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

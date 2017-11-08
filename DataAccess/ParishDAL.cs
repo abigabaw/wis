@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_BusinessObjects;
 
@@ -11,8 +11,8 @@ namespace WIS_DataAccess
     public class ParishDAL
     {
         string connStr = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
 
         /// <summary>
@@ -22,15 +22,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public Parish_List GetParish(string subcountyid)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_PARISH";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("SUBCOUNTYID_", subcountyid);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("SUBCOUNTYID_", subcountyid);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ParishBO ParishBOobj = null;
             Parish_List ParishListobj = new Parish_List();
 
@@ -57,19 +57,19 @@ namespace WIS_DataAccess
         {
             Parish_List Parish_Listobj = null;
 
-            using (cnn = new OracleConnection(connStr))
+            using (cnn = new SqlConnection(connStr))
             {
-                using (cmd = new OracleCommand("USP_MST_GET_PARISH_ALL", cnn))
+                using (cmd = new SqlCommand("USP_MST_GET_PARISH_ALL", cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add("SUBCOUNTYID_", subcountyid);
-                    cmd.Parameters.Add("countyid_", countyid);
-                    cmd.Parameters.Add("districtid_", districtid);
-                    cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("SUBCOUNTYID_", subcountyid);
+                    cmd.Parameters.AddWithValue("countyid_", countyid);
+                    cmd.Parameters.AddWithValue("districtid_", districtid);
+                    // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
                     cmd.Connection.Open();
 
-                    OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                    SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                     ParishBO ParishBOobj = null;
                     Parish_Listobj = new Parish_List();
@@ -103,17 +103,17 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            using (cnn = new OracleConnection(connStr))
+            using (cnn = new SqlConnection(connStr))
             {
-                using (cmd = new OracleCommand("USP_MST_INS_PARISH", cnn))
+                using (cmd = new SqlCommand("USP_MST_INS_PARISH", cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection.Open();
 
-                    cmd.Parameters.Add("SUBCOUNTYID_", ParishBOobj.SubcountyID);
-                    cmd.Parameters.Add("PARISHNAME_", ParishBOobj.ParishName);
-                    cmd.Parameters.Add("CREATEDBY_", ParishBOobj.CreatedBy);
-                    cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("SUBCOUNTYID_", ParishBOobj.SubcountyID);
+                    cmd.Parameters.AddWithValue("PARISHNAME_", ParishBOobj.ParishName);
+                    cmd.Parameters.AddWithValue("CREATEDBY_", ParishBOobj.CreatedBy);
+                    cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                     cmd.ExecuteNonQuery();
 
                     if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -135,18 +135,18 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            using (cnn = new OracleConnection(connStr))
+            using (cnn = new SqlConnection(connStr))
             {
-                using (cmd = new OracleCommand("USP_MST_UPD_PARISH", cnn))
+                using (cmd = new SqlCommand("USP_MST_UPD_PARISH", cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection.Open();
 
-                    cmd.Parameters.Add("PARISHID_", ParishBOobj.ParishId);
-                    cmd.Parameters.Add("SUBCOUNTYID_", ParishBOobj.SubcountyID);
-                    cmd.Parameters.Add("PARISHNAME_", ParishBOobj.ParishName);
-                    cmd.Parameters.Add("UPDATEDBY_", ParishBOobj.UpdatedBy);
-                    cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("PARISHID_", ParishBOobj.ParishId);
+                    cmd.Parameters.AddWithValue("SUBCOUNTYID_", ParishBOobj.SubcountyID);
+                    cmd.Parameters.AddWithValue("PARISHNAME_", ParishBOobj.ParishName);
+                    cmd.Parameters.AddWithValue("UPDATEDBY_", ParishBOobj.UpdatedBy);
+                    cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                     cmd.ExecuteNonQuery();
 
                     if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -168,15 +168,15 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            using (cnn = new OracleConnection(connStr))
+            using (cnn = new SqlConnection(connStr))
             {
-                using (cmd = new OracleCommand("USP_MST_DEL_PARISH", cnn))
+                using (cmd = new SqlCommand("USP_MST_DEL_PARISH", cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection.Open();
 
-                    cmd.Parameters.Add("PARISHID_", ParishId);
-                    cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("PARISHID_", ParishId);
+                    cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                     cmd.ExecuteNonQuery();
 
                     if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -200,18 +200,18 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            using (cnn = new OracleConnection(connStr))
+            using (cnn = new SqlConnection(connStr))
             {
-                using (cmd = new OracleCommand("USP_MST_OBS_PARISH", cnn))
+                using (cmd = new SqlCommand("USP_MST_OBS_PARISH", cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection.Open();
 
-                    cmd.Parameters.Add("PARISHID_", ParishId);
-                    cmd.Parameters.Add("ISDELETED_", isDeleted);
-                    cmd.Parameters.Add("UPDATEDBY_", updatedBy);
+                    cmd.Parameters.AddWithValue("PARISHID_", ParishId);
+                    cmd.Parameters.AddWithValue("ISDELETED_", isDeleted);
+                    cmd.Parameters.AddWithValue("UPDATEDBY_", updatedBy);
 
-                    cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                     cmd.ExecuteNonQuery();
 
                     if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -233,18 +233,18 @@ namespace WIS_DataAccess
         {
             proc = "USP_MST_GET_PARISHBYID";
 
-            cnn = new OracleConnection(connStr);
+            cnn = new SqlConnection(connStr);
             ParishBO ParishBOobj = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("PARISHID_", ParishId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PARISHID_", ParishId);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
                 {
                     ParishBOobj = new ParishBO();
@@ -277,17 +277,17 @@ namespace WIS_DataAccess
         {
             Parish_List Parish_Listobj = null;
 
-            using (cnn = new OracleConnection(connStr))
+            using (cnn = new SqlConnection(connStr))
             {
-                using (cmd = new OracleCommand("USP_MST_SER_COMBPARISH", cnn))
+                using (cmd = new SqlCommand("USP_MST_SER_COMBPARISH", cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add("SearchParish_", SearchParish);
-                    cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("SearchParish_", SearchParish);
+                    // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
                     cmd.Connection.Open();
 
-                    OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                    SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                     ParishBO ParishBOobj = null;
                     Parish_Listobj = new Parish_List();

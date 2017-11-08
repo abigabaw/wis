@@ -1,5 +1,5 @@
 ﻿using System;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_BusinessObjects;
 
@@ -13,17 +13,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public object GetAllCropNameDetails()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_ALLCROPNAMES";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                        
             CropNameBO CropNameBOObj = null;
             CropNameList CropNameListObj = new CropNameList();
@@ -47,17 +47,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public object GetCropNameDetails()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_CROPNAME";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             CropNameBO CropNameBOObj = null;
             CropNameList CropNameListObj = new CropNameList();
@@ -82,18 +82,18 @@ namespace WIS_DataAccess
         public string InsertCropNameDetails(CropNameBO CropNameBOObj)
         {
             string result = "";
-            OracleConnection Con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection Con = new SqlConnection(AppConfiguration.ConnectionString);
             Con.Open();
-            OracleCommand cmd = new OracleCommand("USP_MST_INSERT_CROPNAME", Con);
+            SqlCommand cmd = new SqlCommand("USP_MST_INSERT_CROPNAME", Con);
             cmd.CommandType = CommandType.StoredProcedure;
             int Count = Convert.ToInt32(cmd.CommandType);
 
             try
             {
-                cmd.Parameters.Add("C_CROPNAME", CropNameBOObj.CropName);
-                cmd.Parameters.Add("C_UnitId", CropNameBOObj.UnitMeasure);
-                cmd.Parameters.Add("C_CREATEDBY", CropNameBOObj.CreatedBy);
-                cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("C_CROPNAME", CropNameBOObj.CropName);
+                cmd.Parameters.AddWithValue("C_UnitId", CropNameBOObj.UnitMeasure);
+                cmd.Parameters.AddWithValue("C_CREATEDBY", CropNameBOObj.CreatedBy);
+                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 cmd.ExecuteNonQuery();
 
                 if (cmd.Parameters["errorMessage_"].Value != null)
@@ -121,19 +121,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string UpdateCropNameDetails(CropNameBO CropNameBOObj, int CROPID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_UPD_CROPNAME", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_UPD_CROPNAME", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             string result = "";
 
             try
             {
-                dcmd.Parameters.Add("C_CROPID", CROPID);
-                dcmd.Parameters.Add("C_CROPNAME", CropNameBOObj.CropName);
-                dcmd.Parameters.Add("C_UnitId", CropNameBOObj.UnitMeasure);
-                dcmd.Parameters.Add("C_UPDATEDBY", CropNameBOObj.CreatedBy);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("C_CROPID", CROPID);
+                dcmd.Parameters.AddWithValue("C_CROPNAME", CropNameBOObj.CropName);
+                dcmd.Parameters.AddWithValue("C_UnitId", CropNameBOObj.UnitMeasure);
+                dcmd.Parameters.AddWithValue("C_UPDATEDBY", CropNameBOObj.CreatedBy);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
 
                 if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -159,19 +159,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CropNameBO GetCropNameById(int CROPID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_SEL_CROPNAME ";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("C_CROPID", CROPID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("C_CROPID", CROPID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);                      
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);                      
            
             CropNameBO CropNameBOObj = null;
             CropNameList CropNameListObj = new CropNameList();
@@ -212,14 +212,14 @@ namespace WIS_DataAccess
 
         //public int DeleteCropTypeRow(int CROPID)
         //{
-        //    OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-        //    OracleCommand cmd;
+        //    SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+        //    SqlCommand cmd;
 
         //    string proc = "USP_MST_DEL_CROPNAME";
 
-        //    cmd = new OracleCommand(proc, cnn);
+        //    cmd = new SqlCommand(proc, cnn);
         //    cmd.CommandType = CommandType.StoredProcedure;
-        //    cmd.Parameters.Add("C_CROPID", CROPID);
+        //    cmd.Parameters.AddWithValue("C_CROPID", CROPID);
         //    cmd.Connection.Open();
 
         //    int result = cmd.ExecuteNonQuery();
@@ -232,18 +232,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteCropTypeRow(int CROPID)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DEL_CROPNAME", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DEL_CROPNAME", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("C_CROPID", CROPID);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("C_CROPID", CROPID);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -278,18 +278,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteCropName(int CROPID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETECROPNAME", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETECROPNAME", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("C_CROPID", CROPID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("C_CROPID", CROPID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

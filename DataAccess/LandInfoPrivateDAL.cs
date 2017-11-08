@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_DataAccess;
 using WIS_BusinessObjects;
@@ -18,16 +18,16 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public PrivateLandInfoBO GetLandInfoPriv(int householdID)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GET_PAP_LND_PRIVATE";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HHID_", householdID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", householdID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             PrivateLandInfoBO objPrivateLF = null;
 
             while (dr.Read())
@@ -61,16 +61,16 @@ namespace WIS_DataAccess
             PAP_RelationBO objRelation = null;
             PAPRelationList Relations = new PAPRelationList();
 
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GET_PAP_LND_SPOSE";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("PRIVATELANDIDIN", PRIVATELANDID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PRIVATELANDIDIN", PRIVATELANDID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             while (dr.Read())
             {
                 objRelation = new PAP_RelationBO();
@@ -95,16 +95,16 @@ namespace WIS_DataAccess
             PAP_RelationBO objRelation = null;
             PAPRelationList Relations = new PAPRelationList();
 
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GET_PAP_LND_CHILD";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("PRIVATELANDIDIN", PRIVATELANDID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PRIVATELANDIDIN", PRIVATELANDID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             while (dr.Read())
             {
                 objRelation = new PAP_RelationBO();
@@ -125,34 +125,34 @@ namespace WIS_DataAccess
         public void AddLandInfoPriv(PrivateLandInfoBO objLF)
         {
 
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             int result = 0;
             {
-                OracleCommand myCommand;
-                myCommand = new OracleCommand("USP_TRN_UPD_PAP_LND_PRIVATE", con);
+                SqlCommand myCommand;
+                myCommand = new SqlCommand("USP_TRN_UPD_PAP_LND_PRIVATE", con);
                 myCommand.Connection = con;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("HOUSEHOLDID_", objLF.HIDPriv);
-                myCommand.Parameters.Add("LND_TENUREID_", objLF.Lnd_TENUREIDPriv);
-                myCommand.Parameters.Add("LANDLORDNAME_", objLF.LANDLORDNAME);
-                myCommand.Parameters.Add("CLAIMANTNAME_", objLF.CLAIMANTNAME);
-                myCommand.Parameters.Add("WHENFARMINGBEGAN_", objLF.WHENFARMINGBEGAN);
-                myCommand.Parameters.Add("WHEREFARMEDBEFORE_", objLF.WHEREFARMEDBEFORE);
-                myCommand.Parameters.Add("DOSPOUSESFARM_", objLF.DOSPOUSESFARM);
-                myCommand.Parameters.Add("DOCHILDRENFARM_", objLF.DOCHILDRENFARM);
-                myCommand.Parameters.Add("AGREEMENTTYPE_", objLF.AGREEMENTTYPE);
-                myCommand.Parameters.Add("PRODASSETOPPORTUNITIES_", objLF.PRODASSETOPPORTUNITIES);
-                myCommand.Parameters.Add("CREATEDBY", objLF.Createby);
+                myCommand.Parameters.AddWithValue("HOUSEHOLDID_", objLF.HIDPriv);
+                myCommand.Parameters.AddWithValue("LND_TENUREID_", objLF.Lnd_TENUREIDPriv);
+                myCommand.Parameters.AddWithValue("LANDLORDNAME_", objLF.LANDLORDNAME);
+                myCommand.Parameters.AddWithValue("CLAIMANTNAME_", objLF.CLAIMANTNAME);
+                myCommand.Parameters.AddWithValue("WHENFARMINGBEGAN_", objLF.WHENFARMINGBEGAN);
+                myCommand.Parameters.AddWithValue("WHEREFARMEDBEFORE_", objLF.WHEREFARMEDBEFORE);
+                myCommand.Parameters.AddWithValue("DOSPOUSESFARM_", objLF.DOSPOUSESFARM);
+                myCommand.Parameters.AddWithValue("DOCHILDRENFARM_", objLF.DOCHILDRENFARM);
+                myCommand.Parameters.AddWithValue("AGREEMENTTYPE_", objLF.AGREEMENTTYPE);
+                myCommand.Parameters.AddWithValue("PRODASSETOPPORTUNITIES_", objLF.PRODASSETOPPORTUNITIES);
+                myCommand.Parameters.AddWithValue("CREATEDBY", objLF.Createby);
                 con.Open();
                 result = myCommand.ExecuteNonQuery();
                 con.Close();
             }
 
-            OracleCommand myCommand1;
-            myCommand1 = new OracleCommand("USP_TRN_DEL_LND_CHILD", con);
+            SqlCommand myCommand1;
+            myCommand1 = new SqlCommand("USP_TRN_DEL_LND_CHILD", con);
             myCommand1.Connection = con;
             myCommand1.CommandType = CommandType.StoredProcedure;
-            myCommand1.Parameters.Add("HHID_", objLF.HIDPriv);
+            myCommand1.Parameters.AddWithValue("HHID_", objLF.HIDPriv);
             con.Open();
             result = myCommand1.ExecuteNonQuery();
             con.Close();
@@ -165,18 +165,18 @@ namespace WIS_DataAccess
         /// <param name="RelationsSpose"></param>
         public void InsertUpdateRelationsSpose(PAPRelationList RelationsSpose)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             int result = 0;
             {
                 for (int i = 0; i < RelationsSpose.Count; i++)
                 {
-                    OracleCommand myCommand;
-                    myCommand = new OracleCommand("USP_TRN_UPD_LND_SPOSE", con);
+                    SqlCommand myCommand;
+                    myCommand = new SqlCommand("USP_TRN_UPD_LND_SPOSE", con);
                     myCommand.Connection = con;
                     myCommand.CommandType = CommandType.StoredProcedure;
-                    myCommand.Parameters.Add("RelationID_", RelationsSpose[i].RelationID);
-                    myCommand.Parameters.Add("HHID_", RelationsSpose[i].HouseholdID);
-                    myCommand.Parameters.Add("CREATEDBY", RelationsSpose[i].CreatedBy);
+                    myCommand.Parameters.AddWithValue("RelationID_", RelationsSpose[i].RelationID);
+                    myCommand.Parameters.AddWithValue("HHID_", RelationsSpose[i].HouseholdID);
+                    myCommand.Parameters.AddWithValue("CREATEDBY", RelationsSpose[i].CreatedBy);
                     con.Open();
                     result = myCommand.ExecuteNonQuery();
                     con.Close();
@@ -190,20 +190,20 @@ namespace WIS_DataAccess
         /// <param name="RelationsChild"></param>
         public void InsertUpdateRelationsChild(PAPRelationList RelationsChild)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             int result = 0;
             {
                 try
                 {
                     for (int i = 0; i < RelationsChild.Count; i++)
                     {
-                        OracleCommand myCommand;
-                        myCommand = new OracleCommand("USP_TRN_UPD_LND_CHILD", con);
+                        SqlCommand myCommand;
+                        myCommand = new SqlCommand("USP_TRN_UPD_LND_CHILD", con);
                         myCommand.Connection = con;
                         myCommand.CommandType = CommandType.StoredProcedure;
-                        myCommand.Parameters.Add("RelationID_", RelationsChild[i].RelationID);
-                        myCommand.Parameters.Add("HHID_", RelationsChild[i].HouseholdID);
-                        myCommand.Parameters.Add("CREATEDBY", RelationsChild[i].CreatedBy);
+                        myCommand.Parameters.AddWithValue("RelationID_", RelationsChild[i].RelationID);
+                        myCommand.Parameters.AddWithValue("HHID_", RelationsChild[i].HouseholdID);
+                        myCommand.Parameters.AddWithValue("CREATEDBY", RelationsChild[i].CreatedBy);
                         con.Open();
                         result = myCommand.ExecuteNonQuery();
                         con.Close();
@@ -223,55 +223,55 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int UpdateLandInfoPriv(PrivateLandInfoBO objLF)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             int result = 0;
             {
-                OracleCommand myCommand;
-                myCommand = new OracleCommand("USP_TRN_UPD_PAP_LND_PRIVATE", con);
+                SqlCommand myCommand;
+                myCommand = new SqlCommand("USP_TRN_UPD_PAP_LND_PRIVATE", con);
                 myCommand.Connection = con;
                 myCommand.CommandType = CommandType.StoredProcedure;
 
                 //if (string.IsNullOrEmpty(objLF.LANDLORDNAME) == true)
                 //{
-                //    myCommand.Parameters.Add("LND_TENUREID_", objLF.Lnd_TENUREIDPriv).Value = "";
-                //    myCommand.Parameters.Add("LANDLORDNAME_", objLF.LANDLORDNAME).Value="";
-                //    myCommand.Parameters.Add("CLAIMANTNAME_", objLF.CLAIMANTNAME).Value="";
-                //    myCommand.Parameters.Add("WHENFARMINGBEGAN_", objLF.WHENFARMINGBEGAN).Value="";
-                //    myCommand.Parameters.Add("WHEREFARMEDBEFORE_", objLF.WHEREFARMEDBEFORE).Value="";
-                //    myCommand.Parameters.Add("DOSPOUSESFARM_", objLF.DOSPOUSESFARM).Value="";
-                //    myCommand.Parameters.Add("DOCHILDRENFARM_", objLF.DOCHILDRENFARM).Value="";
-                //    myCommand.Parameters.Add("AGREEMENTTYPE_", objLF.AGREEMENTTYPE).Value="";
-                //    myCommand.Parameters.Add("PRODASSETOPPORTUNITIES_", objLF.PRODASSETOPPORTUNITIES).Value="";
+                //    myCommand.Parameters.AddWithValue("LND_TENUREID_", objLF.Lnd_TENUREIDPriv).Value = "";
+                //    myCommand.Parameters.AddWithValue("LANDLORDNAME_", objLF.LANDLORDNAME).Value="";
+                //    myCommand.Parameters.AddWithValue("CLAIMANTNAME_", objLF.CLAIMANTNAME).Value="";
+                //    myCommand.Parameters.AddWithValue("WHENFARMINGBEGAN_", objLF.WHENFARMINGBEGAN).Value="";
+                //    myCommand.Parameters.AddWithValue("WHEREFARMEDBEFORE_", objLF.WHEREFARMEDBEFORE).Value="";
+                //    myCommand.Parameters.AddWithValue("DOSPOUSESFARM_", objLF.DOSPOUSESFARM).Value="";
+                //    myCommand.Parameters.AddWithValue("DOCHILDRENFARM_", objLF.DOCHILDRENFARM).Value="";
+                //    myCommand.Parameters.AddWithValue("AGREEMENTTYPE_", objLF.AGREEMENTTYPE).Value="";
+                //    myCommand.Parameters.AddWithValue("PRODASSETOPPORTUNITIES_", objLF.PRODASSETOPPORTUNITIES).Value="";
 
                 //}
                 //else
                 //{
-                myCommand.Parameters.Add("HHID", objLF.HIDPriv);
-                myCommand.Parameters.Add("LND_TENUREID_", objLF.Lnd_TENUREIDPriv);
-                myCommand.Parameters.Add("LANDLORDNAME_", objLF.LANDLORDNAME);
-                myCommand.Parameters.Add("CLAIMANTNAME_", objLF.CLAIMANTNAME);
-                myCommand.Parameters.Add("WHENFARMINGBEGAN_", objLF.WHENFARMINGBEGAN);
-                myCommand.Parameters.Add("WHEREFARMEDBEFORE_", objLF.WHEREFARMEDBEFORE);
-                myCommand.Parameters.Add("DOSPOUSESFARM_", objLF.DOSPOUSESFARM);
-                myCommand.Parameters.Add("DOCHILDRENFARM_", objLF.DOCHILDRENFARM);
-                myCommand.Parameters.Add("AGREEMENTTYPE_", objLF.AGREEMENTTYPE);
-                myCommand.Parameters.Add("PRODASSETOPPORTUNITIES_", objLF.PRODASSETOPPORTUNITIES);
-                myCommand.Parameters.Add("CREATEDBY", objLF.Useridpriv);
+                myCommand.Parameters.AddWithValue("HHID", objLF.HIDPriv);
+                myCommand.Parameters.AddWithValue("LND_TENUREID_", objLF.Lnd_TENUREIDPriv);
+                myCommand.Parameters.AddWithValue("LANDLORDNAME_", objLF.LANDLORDNAME);
+                myCommand.Parameters.AddWithValue("CLAIMANTNAME_", objLF.CLAIMANTNAME);
+                myCommand.Parameters.AddWithValue("WHENFARMINGBEGAN_", objLF.WHENFARMINGBEGAN);
+                myCommand.Parameters.AddWithValue("WHEREFARMEDBEFORE_", objLF.WHEREFARMEDBEFORE);
+                myCommand.Parameters.AddWithValue("DOSPOUSESFARM_", objLF.DOSPOUSESFARM);
+                myCommand.Parameters.AddWithValue("DOCHILDRENFARM_", objLF.DOCHILDRENFARM);
+                myCommand.Parameters.AddWithValue("AGREEMENTTYPE_", objLF.AGREEMENTTYPE);
+                myCommand.Parameters.AddWithValue("PRODASSETOPPORTUNITIES_", objLF.PRODASSETOPPORTUNITIES);
+                myCommand.Parameters.AddWithValue("CREATEDBY", objLF.Useridpriv);
 
                 //}
 
-                //myCommand.Parameters.Add("CREATEDBY", OracleDbType.Int64, 5).Value = 1;
+                //myCommand.Parameters.AddWithValue("CREATEDBY", SqlDbType.BigInt, 5).Value = 1;
                 con.Open();
                 result = myCommand.ExecuteNonQuery();
                 con.Close();
 
             }
 
-            OracleCommand myCommand1;
-            myCommand1 = new OracleCommand("USP_TRN_DEL_LND_CHILD", con);
+            SqlCommand myCommand1;
+            myCommand1 = new SqlCommand("USP_TRN_DEL_LND_CHILD", con);
             myCommand1.Connection = con;
             myCommand1.CommandType = CommandType.StoredProcedure;
-            myCommand1.Parameters.Add("HHID_", objLF.HIDPriv);
+            myCommand1.Parameters.AddWithValue("HHID_", objLF.HIDPriv);
             con.Open();
             result = myCommand1.ExecuteNonQuery();
             con.Close();

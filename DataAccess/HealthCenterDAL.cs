@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 
@@ -16,19 +16,19 @@ namespace WIS_DataAccess
         public string Insert(HealthCenterBO HealthCenterBOobj)
         {
             string returnResult = string.Empty;
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_INS_HEALTHCENTER", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_INS_HEALTHCENTER", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("HEALTHCENTERNAME", HealthCenterBOobj.HEALTHCENTERNAME);
-                dcmd.Parameters.Add("CREATEDBY", HealthCenterBOobj.CREATEDBY);
+                dcmd.Parameters.AddWithValue("HEALTHCENTERNAME", HealthCenterBOobj.HEALTHCENTERNAME);
+                dcmd.Parameters.AddWithValue("CREATEDBY", HealthCenterBOobj.CREATEDBY);
                 //return dcmd.ExecuteNonQuery();
 
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -56,19 +56,19 @@ namespace WIS_DataAccess
         public string Edit(HealthCenterBO HealthCenterBOobj)
         {
             string returnResult = string.Empty;
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_UPD_HEALTHCENTER", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_UPD_HEALTHCENTER", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("H_HEALTHCENTERNAME", HealthCenterBOobj.HEALTHCENTERNAME);
-                dcmd.Parameters.Add("H_HEALTHCENTERID", HealthCenterBOobj.HEALTHCENTERID);
-                dcmd.Parameters.Add("H_UPDATEDBY", HealthCenterBOobj.CREATEDBY);
+                dcmd.Parameters.AddWithValue("H_HEALTHCENTERNAME", HealthCenterBOobj.HEALTHCENTERNAME);
+                dcmd.Parameters.AddWithValue("H_HEALTHCENTERID", HealthCenterBOobj.HEALTHCENTERID);
+                dcmd.Parameters.AddWithValue("H_UPDATEDBY", HealthCenterBOobj.CREATEDBY);
                 //return dcmd.ExecuteNonQuery();
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -97,17 +97,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public HealthCenterList GetALLHealthCenter()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETALL_HEALTH";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             HealthCenterBO HealthCenterBOobj = null;
             HealthCenterList HealthCenterListobj = new HealthCenterList();
 
@@ -134,17 +134,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public HealthCenterList GetHealthCenter()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_SEL_HEALTH";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             HealthCenterBO HealthCenterBOobj = null;
             HealthCenterList HealthCenterListobj = new HealthCenterList();
 
@@ -170,19 +170,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public HealthCenterBO GetHealthCenterById(int HEALTHCENTERID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_HEALTH";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("H_HEALTHCENTERID", HEALTHCENTERID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("H_HEALTHCENTERID", HEALTHCENTERID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             HealthCenterBO HealthCenterBOobj = null;
             HealthCenterList HealthCenterListobj = new HealthCenterList();
 
@@ -228,19 +228,19 @@ namespace WIS_DataAccess
         public string DeleteHealthCenter(int HEALTHCENTERID)
         {
 
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DEL_HEALTH", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DEL_HEALTH", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("H_HEALTHCENTERID", HEALTHCENTERID);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("H_HEALTHCENTERID", HEALTHCENTERID);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -275,19 +275,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteHealthCenter(int HEALTHCENTERID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETE_HEALTH", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETE_HEALTH", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("HEALTHCENTERID_", HEALTHCENTERID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("HEALTHCENTERID_", HEALTHCENTERID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

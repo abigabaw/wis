@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -14,17 +14,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public DiseaseList GetALLDisease(string DiseaseName)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETALLDISEASE";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             DiseaseBO objDisease = null;
             DiseaseList Diseases = new DiseaseList();
 
@@ -50,18 +50,18 @@ namespace WIS_DataAccess
 
         public DiseaseList SearchDisease(string DiseaseName)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_DISEASES";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("DiseaseNameIN", DiseaseName);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("DiseaseNameIN", DiseaseName);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             DiseaseBO objDisease = null;
            DiseaseList Diseases = new DiseaseList();
 
@@ -89,18 +89,18 @@ namespace WIS_DataAccess
             string returnResult = string.Empty;
             int result = 0;
             {
-                OracleConnection myConnection;
-                OracleCommand myCommand;
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_INSERTDISEASE", myConnection);
+                SqlConnection myConnection;
+                SqlCommand myCommand;
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_INSERTDISEASE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("@DiseaseNameIN", objDisease.DiseaseName);
-                myCommand.Parameters.Add("@ISDELETEDIN",  "False");
-                myCommand.Parameters.Add("@USERIDIN", objDisease.CreatedBy);
+                myCommand.Parameters.AddWithValue("@DiseaseNameIN", objDisease.DiseaseName);
+                myCommand.Parameters.AddWithValue("@ISDELETEDIN",  "False");
+                myCommand.Parameters.AddWithValue("@USERIDIN", objDisease.CreatedBy);
                 myConnection.Open();
                 //result = myCommand.ExecuteNonQuery();
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 myCommand.ExecuteNonQuery();
 
@@ -121,19 +121,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteDisease(int DiseaseID)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DELETEDISEASE", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DELETEDISEASE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("DiseaseIDIN", DiseaseID);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("DiseaseIDIN", DiseaseID);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -168,19 +168,19 @@ namespace WIS_DataAccess
         {
             string returnResult = string.Empty;
 
-                OracleConnection myConnection;
-                OracleCommand myCommand;
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_UPDATEDISEASE", myConnection);
+                SqlConnection myConnection;
+                SqlCommand myCommand;
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_UPDATEDISEASE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("@DISEASEIDIN",  objDisease.DiseaseID);
-                myCommand.Parameters.Add("@DISEASENAMEIN", objDisease.DiseaseName);
-                myCommand.Parameters.Add("@ISDELETEDIN", "False");
-                myCommand.Parameters.Add("@USERIDIN", objDisease.UpdatedBy);                
+                myCommand.Parameters.AddWithValue("@DISEASEIDIN",  objDisease.DiseaseID);
+                myCommand.Parameters.AddWithValue("@DISEASENAMEIN", objDisease.DiseaseName);
+                myCommand.Parameters.AddWithValue("@ISDELETEDIN", "False");
+                myCommand.Parameters.AddWithValue("@USERIDIN", objDisease.UpdatedBy);                
                 myConnection.Open();
                 //result = myCommand.ExecuteNonQuery();
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 myCommand.ExecuteNonQuery();
 
@@ -199,15 +199,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public DiseaseBO GetDiseaseByDiseaseID(int diseaseID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;            
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;            
             string proc = "USP_MST_GETDISEASEBYDISEASEID";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@DiseaseIdIN", diseaseID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("@DiseaseIdIN", diseaseID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             DiseaseBO obDisease = null;
             while (dr.Read())
             {
@@ -226,19 +226,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteDisease(int DiSEASEID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETE_DISEASE", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETE_DISEASE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("DISEASEID_", DiSEASEID);
-                myCommand.Parameters.Add("@isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("DISEASEID_", DiSEASEID);
+                myCommand.Parameters.AddWithValue("@isdeleted_", IsDeleted);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

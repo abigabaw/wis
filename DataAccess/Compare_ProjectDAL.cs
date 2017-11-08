@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 
@@ -15,14 +15,14 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public Compare_projectList Getprojectname(string PROJECTID)
        {
-           OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-           OracleCommand cmd;
+           SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+           SqlCommand cmd;
            string proc = "USP_TRN_GET_PROJECTNAME";
-           cmd = new OracleCommand(proc, con);
+           cmd = new SqlCommand(proc, con);
            cmd.CommandType = CommandType.StoredProcedure;
-           cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
            cmd.Connection.Open();
-           OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+           SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
            Compare_projectBO ObjPc = null;
            Compare_projectList ObjPcList = new Compare_projectList();
 
@@ -48,16 +48,16 @@ namespace WIS_DataAccess
 
        public Compare_projectList Getdata(Compare_projectBO Compare_projectBOObj)
        {
-           OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-           OracleCommand cmd;
+           SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+           SqlCommand cmd;
           
            string proc = "USP_TRN_COMPARE_PROJECTS";
-           cmd = new OracleCommand(proc, con);
+           cmd = new SqlCommand(proc, con);
            cmd.CommandType = CommandType.StoredProcedure;
-           cmd.Parameters.Add("PROJECTIDS_", OracleDbType.Varchar2, 100).Value = Compare_projectBOObj.CompairID;
-           cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           cmd.Parameters.AddWithValue("PROJECTIDS_", SqlDbType.NVarChar).Value = Compare_projectBOObj.CompairID;
+           // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
            cmd.Connection.Open();
-           OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+           SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
            Compare_projectBO objPRJBO = null;
            Compare_projectList objPRJList = new Compare_projectList();
 

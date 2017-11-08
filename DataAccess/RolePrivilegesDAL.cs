@@ -28,7 +28,7 @@ namespace WIS_DataAccess
 
             cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-         //   cmd.Parameters.AddWithValue("Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+         //   //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             SqlDataAdapter oadp = new SqlDataAdapter(cmd);
             DataSet dsRolePriv = new DataSet();
 
@@ -128,7 +128,7 @@ namespace WIS_DataAccess
             cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("USERID_", UserID);
-           // cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+           // // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 

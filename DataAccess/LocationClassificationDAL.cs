@@ -1,5 +1,5 @@
 ﻿using System;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_BusinessObjects;
 
@@ -16,18 +16,18 @@ namespace WIS_DataAccess
        public string INSERTlocation(LocationClassificationBO BOobj)
        {
            string returnResult = "";
-           OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+           SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
            cnn.Open();
-           OracleCommand dcmd = new OracleCommand("USP_MST_INS_LOCATION", cnn);
+           SqlCommand dcmd = new SqlCommand("USP_MST_INS_LOCATION", cnn);
            dcmd.CommandType = CommandType.StoredProcedure;
            int count = Convert.ToInt32(dcmd.CommandType);
 
            try
            {
-               dcmd.Parameters.Add("LOCTNCLASFCTNNAME_", BOobj.LOCTNCLASFCTNNAME);
-               dcmd.Parameters.Add("LOCTNCODE_", BOobj.LOCTNCODE);
-               dcmd.Parameters.Add("CREATEDBY_", BOobj.CREATEDBY);
-               dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+               dcmd.Parameters.AddWithValue("LOCTNCLASFCTNNAME_", BOobj.LOCTNCLASFCTNNAME);
+               dcmd.Parameters.AddWithValue("LOCTNCODE_", BOobj.LOCTNCODE);
+               dcmd.Parameters.AddWithValue("CREATEDBY_", BOobj.CREATEDBY);
+               dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                dcmd.ExecuteNonQuery();
 
@@ -57,18 +57,18 @@ namespace WIS_DataAccess
        public string UPDATElocation(LocationClassificationBO BOobj)
        {
            string returnResult = "";
-           OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+           SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
            cnn.Open();
-           OracleCommand dcmd = new OracleCommand("USP_MST_UPD_LOCATION", cnn);
+           SqlCommand dcmd = new SqlCommand("USP_MST_UPD_LOCATION", cnn);
            dcmd.CommandType = CommandType.StoredProcedure;
            int count = Convert.ToInt32(dcmd.CommandType);
            try
            {
-               dcmd.Parameters.Add("LOCTNCLASFCTNID_", BOobj.LOCTNCLASFCTNID);
-               dcmd.Parameters.Add("LOCTNCLASFCTNNAME_", BOobj.LOCTNCLASFCTNNAME);
-               dcmd.Parameters.Add("LOCTNCODE_", BOobj.LOCTNCODE);
-               dcmd.Parameters.Add("CREATEDBY_", BOobj.CREATEDBY);
-               dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+               dcmd.Parameters.AddWithValue("LOCTNCLASFCTNID_", BOobj.LOCTNCLASFCTNID);
+               dcmd.Parameters.AddWithValue("LOCTNCLASFCTNNAME_", BOobj.LOCTNCLASFCTNNAME);
+               dcmd.Parameters.AddWithValue("LOCTNCODE_", BOobj.LOCTNCODE);
+               dcmd.Parameters.AddWithValue("CREATEDBY_", BOobj.CREATEDBY);
+               dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                dcmd.ExecuteNonQuery();
 
                if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -96,14 +96,14 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public LocationClassificationList GetallLOCATION()
        {
-           OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-           OracleCommand cmd;
+           SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+           SqlCommand cmd;
            string proc = "USP_MST_GETALL_LOCATION";
-           cmd = new OracleCommand(proc, con);
+           cmd = new SqlCommand(proc, con);
            cmd.CommandType = CommandType.StoredProcedure;
-           cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
            cmd.Connection.Open();
-           OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+           SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
            LocationClassificationBO BOobj = null;
            LocationClassificationList objlocation = new LocationClassificationList();
 
@@ -127,14 +127,14 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public LocationClassificationList GetLOCATIONClassification()
        {
-           OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-           OracleCommand cmd;
+           SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+           SqlCommand cmd;
            string proc = "USP_MST_GET_LOCATIONCLS";
-           cmd = new OracleCommand(proc, con);
+           cmd = new SqlCommand(proc, con);
            cmd.CommandType = CommandType.StoredProcedure;
-           cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
            cmd.Connection.Open();
-           OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+           SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
            LocationClassificationBO BOobj = null;
            LocationClassificationList objlocation = new LocationClassificationList();
 
@@ -159,19 +159,19 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public LocationClassificationBO GetLOCTNCLASFCTNID(int LOCTNCLASFCTNID)
        {
-           OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-           OracleCommand cmd;
+           SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+           SqlCommand cmd;
 
            string proc = "USP_MST_GET_LOCATION";
 
-           cmd = new OracleCommand(proc, cnn);
+           cmd = new SqlCommand(proc, cnn);
            cmd.CommandType = CommandType.StoredProcedure;
-           cmd.Parameters.Add("LOCTNCLASFCTNID_", LOCTNCLASFCTNID);
-           cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           cmd.Parameters.AddWithValue("LOCTNCLASFCTNID_", LOCTNCLASFCTNID);
+           // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
            cmd.Connection.Open();
 
-           OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+           SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
            LocationClassificationBO BOobj = null;
            LocationClassificationList listobj = new LocationClassificationList();
 
@@ -220,18 +220,18 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public string DeleteLocation(int LOCTNCLASFCTNID)
        {
-           OracleConnection myConnection = null;
-           OracleCommand myCommand = null;
+           SqlConnection myConnection = null;
+           SqlCommand myCommand = null;
 
            string result = string.Empty;
            try
            {
-               myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-               myCommand = new OracleCommand("USP_MST_DEL_Location", myConnection);
+               myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+               myCommand = new SqlCommand("USP_MST_DEL_Location", myConnection);
                myCommand.Connection = myConnection;
                myCommand.CommandType = CommandType.StoredProcedure;
-               myCommand.Parameters.Add("LOCTNCLASFCTNID_", LOCTNCLASFCTNID);
-               myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+               myCommand.Parameters.AddWithValue("LOCTNCLASFCTNID_", LOCTNCLASFCTNID);
+               myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                myConnection.Open();
                myCommand.ExecuteNonQuery();
                if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -267,19 +267,19 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public string ObsoleteLocation(int LOCTNCLASFCTNID, string IsDeleted, int updatedBy)
        {
-           OracleConnection myConnection = null;
-           OracleCommand myCommand = null;
+           SqlConnection myConnection = null;
+           SqlCommand myCommand = null;
            string result = "";
            try
            {
-               myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-               myCommand = new OracleCommand("USP_MST_OBS_LOCATION", myConnection);
+               myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+               myCommand = new SqlCommand("USP_MST_OBS_LOCATION", myConnection);
                myCommand.Connection = myConnection;
                myCommand.CommandType = CommandType.StoredProcedure;
-               myCommand.Parameters.Add("LOCTNCLASFCTNID_", LOCTNCLASFCTNID);
-               myCommand.Parameters.Add("isdeleted_", IsDeleted);
-            //   myCommand.Parameters.Add("updatedBy_", updatedBy);
-               myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+               myCommand.Parameters.AddWithValue("LOCTNCLASFCTNID_", LOCTNCLASFCTNID);
+               myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+            //   myCommand.Parameters.AddWithValue("updatedBy_", updatedBy);
+               myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                myConnection.Open();
                myCommand.ExecuteNonQuery();
                if (myCommand.Parameters["errorMessage_"].Value != null)

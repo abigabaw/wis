@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -9,8 +9,8 @@ namespace WIS_DataAccess
     {
         #region Declaration Section
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
         #endregion
 
@@ -22,20 +22,20 @@ namespace WIS_DataAccess
         public RoofTypeList GetAllRoofType()
         {
             proc = "USP_MST_GET_ALLROOF";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             RoofTypeBO objRoofType = null;
 
             RoofTypeList lstRoofTypeList = new RoofTypeList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -68,20 +68,20 @@ namespace WIS_DataAccess
         public RoofTypeList GetRoofType()
         {
             proc = "USP_MST_GET_ROOF";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             RoofTypeBO objRoofType = null;
             
             RoofTypeList lstRoofTypeList = new RoofTypeList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
           
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -114,18 +114,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public RoofTypeBO GetRoofTypeById(int RoofTypeID)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_MST_GET_ROOF_BYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("roofid_", RoofTypeID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("roofid_", RoofTypeID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             RoofTypeBO objRoofType = null;
 
 
@@ -177,20 +177,20 @@ namespace WIS_DataAccess
         public string SaveRoofType(RoofTypeBO oRoofType)
         {
             string returnResult;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_MST_INS_ROOF";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("rooftype_", oRoofType.RoofTypeName);
+            cmd.Parameters.AddWithValue("rooftype_", oRoofType.RoofTypeName);
 
-            cmd.Parameters.Add("isdeleted_", oRoofType.IsDeleted);
-            cmd.Parameters.Add("createdby_", oRoofType.CreatedBy);
+            cmd.Parameters.AddWithValue("isdeleted_", oRoofType.IsDeleted);
+            cmd.Parameters.AddWithValue("createdby_", oRoofType.CreatedBy);
 
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
@@ -210,19 +210,19 @@ namespace WIS_DataAccess
         public string UpdateRoofType(RoofTypeBO oRoofType)
         {
             string returnResult;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_MST_UPD_ROOF";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            cmd.Parameters.Add("roofid_", oRoofType.RoofTypeID);
-            cmd.Parameters.Add("RoofType_", oRoofType.RoofTypeName);
+            cmd.Parameters.AddWithValue("roofid_", oRoofType.RoofTypeID);
+            cmd.Parameters.AddWithValue("RoofType_", oRoofType.RoofTypeName);
 
-            cmd.Parameters.Add("updatedby_", oRoofType.CreatedBy);
+            cmd.Parameters.AddWithValue("updatedby_", oRoofType.CreatedBy);
 
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
@@ -243,14 +243,14 @@ namespace WIS_DataAccess
         public string DeleteRoofType(int RoofTypeID_,int UserID_)
         {
             string retrunResult = string.Empty;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_MST_DEL_ROOF";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("roofid_", RoofTypeID_);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("roofid_", RoofTypeID_);
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
             cmd.ExecuteNonQuery();
@@ -268,19 +268,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteFloorTypeDAL(int RoofTypeID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETE_ROOF", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETE_ROOF", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
 
-                myCommand.Parameters.Add("roofid_", RoofTypeID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("roofid_", RoofTypeID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();

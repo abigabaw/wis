@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -8,8 +8,8 @@ namespace WIS_DataAccess
    public class FixtureTypeDAL
     {
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
        /// <summary>
        /// to insert data
@@ -18,18 +18,18 @@ namespace WIS_DataAccess
        /// <returns></returns>
         public string AddFixtureType(FixtureTypeBO ObjFixture)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnResult = string.Empty;
            // proc = "USP_MST_INS_BANK";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("fixtureType", ObjFixture.FixtureType);
+            cmd.Parameters.AddWithValue("fixtureType", ObjFixture.FixtureType);
 
-            cmd.Parameters.Add("createdby", ObjFixture.CreatedBy);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("createdby", ObjFixture.CreatedBy);
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -47,20 +47,20 @@ namespace WIS_DataAccess
        /// <returns></returns>
         public string UpdateFixtureType(FixtureTypeBO ObjFixture)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnResult = string.Empty;
 
            // proc = "USP_MST_UPD_BANK";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("fixturetypeID", ObjFixture.FixtureID);
-            cmd.Parameters.Add("fixturetype", ObjFixture.FixtureType);
+            cmd.Parameters.AddWithValue("fixturetypeID", ObjFixture.FixtureID);
+            cmd.Parameters.AddWithValue("fixturetype", ObjFixture.FixtureType);
 
-            cmd.Parameters.Add("updatedby", ObjFixture.UpdatedBy);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("updatedby", ObjFixture.UpdatedBy);
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -78,18 +78,18 @@ namespace WIS_DataAccess
        /// <returns></returns>
         public string DeleteFixtureType(int fixtureID)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-               // myCommand = new OracleCommand("USP_MST_DEL_BANK", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+               // myCommand = new SqlCommand("USP_MST_DEL_BANK", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("fixtureID_", fixtureID);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("fixtureID_", fixtureID);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -123,18 +123,18 @@ namespace WIS_DataAccess
        /// <returns></returns>
         public string ObsoleteFixtureType(int fixtureID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                //myCommand = new OracleCommand("USP_MST_OBSOLETEBANK", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                //myCommand = new SqlCommand("USP_MST_OBSOLETEBANK", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("fixtureID_", fixtureID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("fixtureID_", fixtureID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -164,24 +164,24 @@ namespace WIS_DataAccess
             FixtureTypeBO ObjFixture = null;
             FixtureTypeList fixtureList = new FixtureTypeList();
 
-            using (cnn = new OracleConnection(con))
+            using (cnn = new SqlConnection(con))
             {
-                using (cmd = new OracleCommand(proc, cnn))
+                using (cmd = new SqlCommand(proc, cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     if (fixturetype != "")
-                        cmd.Parameters.Add("fixturetype_", fixturetype);
+                        cmd.Parameters.AddWithValue("fixturetype_", fixturetype);
                     else
-                        cmd.Parameters.Add("fixturetype_", DBNull.Value);
+                        cmd.Parameters.AddWithValue("fixturetype_", DBNull.Value);
 
 
-                    cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                    // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
                     try
                     {
                         cmd.Connection.Open();
-                        OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                         while (dr.Read())
                         {

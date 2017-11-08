@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -8,8 +8,8 @@ namespace WIS_DataAccess
   public  class PAPliveliwoodAfterDAL
     {
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
 
         /// <summary>
@@ -20,20 +20,20 @@ namespace WIS_DataAccess
         public PAPliveliwoodAfterList GetLivelihoodItemsByID(int householdID)
         {
             proc = "USP_TRN_GET_LIVELIHOODAFTER";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             PAPliveliwoodAfterList LivelihoodItems = new PAPliveliwoodAfterList();
             PAPLiveliwoodAfter objLivelihood = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HOUSEHOLDID_", householdID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HOUSEHOLDID_", householdID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -63,24 +63,24 @@ namespace WIS_DataAccess
         /// <param name="LivelihoodItems"></param>
         public string UpdateLivelihood(PAPliveliwoodAfterList LivelihoodItems)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnResult = string.Empty;
 
             proc = "USP_TRN_UPD_LIVELIHOODAFTER";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("ID_", "");
-            cmd.Parameters.Add("LIVELIHOOD_ITEMID_", "");
-            cmd.Parameters.Add("HOUSEHOLDID_", "");
-            cmd.Parameters.Add("CASH_", "");
-            cmd.Parameters.Add("INKIND_", "");
-            cmd.Parameters.Add("CREATEDBY_", "");
-            cmd.Parameters.Add("UPDATEDBY_", "");
-            cmd.Parameters.Add("CAPTUREDDATE_", "");
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ID_", "");
+            cmd.Parameters.AddWithValue("LIVELIHOOD_ITEMID_", "");
+            cmd.Parameters.AddWithValue("HOUSEHOLDID_", "");
+            cmd.Parameters.AddWithValue("CASH_", "");
+            cmd.Parameters.AddWithValue("INKIND_", "");
+            cmd.Parameters.AddWithValue("CREATEDBY_", "");
+            cmd.Parameters.AddWithValue("UPDATEDBY_", "");
+            cmd.Parameters.AddWithValue("CAPTUREDDATE_", "");
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             foreach (PAPLiveliwoodAfter objLivelihood in LivelihoodItems)
             {
@@ -110,17 +110,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public PAPliveliwoodAfterList GetLivelihood()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETLIVELIHOOD";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             PAPLiveliwoodAfter objLivelihood = null;
             PAPliveliwoodAfterList Livelihoods = new PAPliveliwoodAfterList();
 
@@ -140,21 +140,21 @@ namespace WIS_DataAccess
         public PAPliveliwoodAfterList GetLivelihoodItemsByIDCD(int householdID,string CaptDate)
         {
             proc = "USP_TRN_GET_LIVHOODABYID";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             PAPliveliwoodAfterList LivelihoodItems = new PAPliveliwoodAfterList();
             PAPLiveliwoodAfter objLivelihood = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HOUSEHOLDID_", householdID);
-            cmd.Parameters.Add("CAPTUREDDATE_", Convert.ToDateTime(CaptDate).ToString(UtilBO.DateFormatDB));
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HOUSEHOLDID_", householdID);
+            cmd.Parameters.AddWithValue("CAPTUREDDATE_", Convert.ToDateTime(CaptDate).ToString(UtilBO.DateFormatDB));
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -180,19 +180,19 @@ namespace WIS_DataAccess
         }
         public string DeleteLiveliHood(int HHID, string CaptDate)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_TRN_DEL_LIVHOODABYID", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_TRN_DEL_LIVHOODABYID", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("HOUSEHOLDID_", HHID);
-                myCommand.Parameters.Add("CAPTUREDDATE_", CaptDate);
-                //myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("HOUSEHOLDID_", HHID);
+                myCommand.Parameters.AddWithValue("CAPTUREDDATE_", CaptDate);
+                //myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 //if (myCommand.Parameters["errorMessage_"].Value != null)

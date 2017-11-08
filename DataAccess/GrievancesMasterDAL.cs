@@ -3,7 +3,7 @@ using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -16,14 +16,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public GrievancesMasterList GetALLGrievancesCategory()
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GETALL_GRIVCATEGORY";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             GrievancesMasterBO objTypeBO = null;
             GrievancesMasterList objGrievancesCategorys = new GrievancesMasterList();
 
@@ -47,17 +47,17 @@ namespace WIS_DataAccess
         public string insert(GrievancesMasterBO objconsultantType)
         {
             string returnResult = "";
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_INS_GRIEVANCECATEGORY", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_INS_GRIEVANCECATEGORY", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("GRIEVANCECATEGORY_", objconsultantType.GrievancesCategory);
-                dcmd.Parameters.Add("CREATEDBY", objconsultantType.CreatedBy);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("GRIEVANCECATEGORY_", objconsultantType.GrievancesCategory);
+                dcmd.Parameters.AddWithValue("CREATEDBY", objconsultantType.CreatedBy);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -87,18 +87,18 @@ namespace WIS_DataAccess
         public string EDITGrievancesCategory(GrievancesMasterBO objconsultantType)
         {
             string returnResult = "";
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_UPD_GRIEVANCECATEGORY", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_UPD_GRIEVANCECATEGORY", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("GRIEVANCECATEGID_", objconsultantType.GRIEVANCECATEGID);
-                dcmd.Parameters.Add("GRIEVANCECATEGORY_", objconsultantType.GrievancesCategory);
-                dcmd.Parameters.Add("UpdatedBY", objconsultantType.CreatedBy);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("GRIEVANCECATEGID_", objconsultantType.GRIEVANCECATEGID);
+                dcmd.Parameters.AddWithValue("GRIEVANCECATEGORY_", objconsultantType.GrievancesCategory);
+                dcmd.Parameters.AddWithValue("UpdatedBY", objconsultantType.CreatedBy);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
 
                 if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -128,19 +128,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public GrievancesMasterBO GetGrievancesCategoryId(int GRIEVANCECATEGID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_GRIVCATEGORYBYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("GRIEVANCECATEGID_", GRIEVANCECATEGID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("GRIEVANCECATEGID_", GRIEVANCECATEGID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             GrievancesMasterBO objconsultantType = null;
             GrievancesMasterList Users = new GrievancesMasterList();
 
@@ -184,18 +184,18 @@ namespace WIS_DataAccess
 
         public string DeleteGrievancesCategory(int GRIEVANCECATEGID)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DEL_GRIEVANCECATEGORY", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DEL_GRIEVANCECATEGORY", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("GRIEVANCECATEGID_", GRIEVANCECATEGID);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("GRIEVANCECATEGID_", GRIEVANCECATEGID);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -230,18 +230,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteconsultantType(int GRIEVANCECATEGID, string IsDeleted, int updatedBy)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = "";
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBS_GRIEVANCECATEGORY", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBS_GRIEVANCECATEGORY", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("GRIEVANCECATEGID_", GRIEVANCECATEGID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("GRIEVANCECATEGID_", GRIEVANCECATEGID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

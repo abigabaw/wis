@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -12,8 +12,8 @@ namespace WIS_DataAccess
     {
         #region Declaration Section
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
         #endregion
 
@@ -25,16 +25,16 @@ namespace WIS_DataAccess
         public ItemList GetItem()
         {
             proc = "USP_GET_MST_CDAP_CATEG";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             ITEMBO objITEMBO = null;
             ItemList lstItemList = new ItemList();
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
                 {
                     objITEMBO = new ITEMBO();
@@ -61,17 +61,17 @@ namespace WIS_DataAccess
         public ItemList GetSubItem(int CatID)
         {
             proc = "USP_GET_MST_CDAP_SUBCATEG";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             ITEMBO objITEMBO = null;
             ItemList lstItemList = new ItemList();
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@CDAP_CATEGORYID_", CatID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("@CDAP_CATEGORYID_", CatID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
                 {
                     objITEMBO = new ITEMBO();
@@ -96,16 +96,16 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string AddCDAPBudgetMaster(CDAPBudgetMasterBO objCDAPBudgetMasterBO)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnResult = "";
 
             proc = "USP_MST_INS_CDAP_CATEG";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            cmd.Parameters.Add("CDAP_CATEGORYNAME_", objCDAPBudgetMasterBO.CategoryName);
-            cmd.Parameters.Add("CREATEDBY_", objCDAPBudgetMasterBO.CreatedBy);
-            cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CDAP_CATEGORYNAME_", objCDAPBudgetMasterBO.CategoryName);
+            cmd.Parameters.AddWithValue("CREATEDBY_", objCDAPBudgetMasterBO.CreatedBy);
+            cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -123,18 +123,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string UpdateCDAPBudgetMaster(CDAPBudgetMasterBO objCDAPBudgetMasterBO)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnResult = "";
 
             proc = "USP_MST_UPD_CDAP_CATEG";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("CDAP_CATEGORYID_", objCDAPBudgetMasterBO.CategoryID);
-            cmd.Parameters.Add("CDAP_CATEGORYNAME_", objCDAPBudgetMasterBO.CategoryName);
-            cmd.Parameters.Add("UPDATEDBY_", objCDAPBudgetMasterBO.UpdatedBy);
-            cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CDAP_CATEGORYID_", objCDAPBudgetMasterBO.CategoryID);
+            cmd.Parameters.AddWithValue("CDAP_CATEGORYNAME_", objCDAPBudgetMasterBO.CategoryName);
+            cmd.Parameters.AddWithValue("UPDATEDBY_", objCDAPBudgetMasterBO.UpdatedBy);
+            cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -152,16 +152,16 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteCDAPBudgetMaster(int categoryID)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnResult = "";
 
             proc = "USP_MST_DEL_CDAP_CATEG";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("CDAP_CATEGORYID_", categoryID);
-            cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CDAP_CATEGORYID_", categoryID);
+            cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -181,18 +181,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteCDAPBudgetMaster(int categoryID, string isDeleted, int updatedBy)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnResult = "";
 
             proc = "USP_MST_OBS_CDAP_CATEG";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("CDAP_CATEGORYID_", categoryID);
-            cmd.Parameters.Add("UPDATEDBY_", updatedBy);
-            cmd.Parameters.Add("ISDELETED_", isDeleted);
-            cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CDAP_CATEGORYID_", categoryID);
+            cmd.Parameters.AddWithValue("UPDATEDBY_", updatedBy);
+            cmd.Parameters.AddWithValue("ISDELETED_", isDeleted);
+            cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -212,18 +212,18 @@ namespace WIS_DataAccess
         {
             proc = "USP_GET_MST_CDAP_CATEGBYID";
 
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             CDAPBudgetMasterBO objBudgetBO = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("CDAP_CATEGORYID_", categoryID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CDAP_CATEGORYID_", categoryID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
                 {
                     objBudgetBO = new CDAPBudgetMasterBO();
@@ -247,16 +247,16 @@ namespace WIS_DataAccess
         public List<CDAPBudgetMasterBO> GetAllCDAPBudgetItems()
         {
             proc = "USP_GET_ALL_MST_CDAP_CATEG";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             CDAPBudgetMasterBO objBudgetBO = null;
             List<CDAPBudgetMasterBO> CDAPBudgetMasterList = new List<CDAPBudgetMasterBO>();
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
                 {
                     objBudgetBO = new CDAPBudgetMasterBO();
@@ -285,18 +285,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string AddCDAPBudgetSubItem(CDAPBudgetDescrMasterBO objCDAPBudgetMasterBO)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnResult = "";
 
             proc = "USP_MST_INS_CDAP_SUBCATEG";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("CDAP_CATEGORYID_", objCDAPBudgetMasterBO.CategoryID);
-            cmd.Parameters.Add("CDAP_SUBCATEGORYNAME_", objCDAPBudgetMasterBO.SubCategoryName);
-            cmd.Parameters.Add("CREATEDBY_", objCDAPBudgetMasterBO.CreatedBy);
-            cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CDAP_CATEGORYID_", objCDAPBudgetMasterBO.CategoryID);
+            cmd.Parameters.AddWithValue("CDAP_SUBCATEGORYNAME_", objCDAPBudgetMasterBO.SubCategoryName);
+            cmd.Parameters.AddWithValue("CREATEDBY_", objCDAPBudgetMasterBO.CreatedBy);
+            cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -314,19 +314,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string UpdateCDAPBudgetSubItem(CDAPBudgetDescrMasterBO objCDAPBudgetMasterBO)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnResult = "";
 
             proc = "USP_MST_UPD_CDAP_SUBCATEG";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("CDAP_SUBCATEGORYID_", objCDAPBudgetMasterBO.SubCategoryID);
-            cmd.Parameters.Add("CDAP_CATEGORYID_", objCDAPBudgetMasterBO.CategoryID);
-            cmd.Parameters.Add("CDAP_SUBCATEGORYNAME_", objCDAPBudgetMasterBO.SubCategoryName);
-            cmd.Parameters.Add("UPDATEDBY_", objCDAPBudgetMasterBO.UpdatedBy);
-            cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CDAP_SUBCATEGORYID_", objCDAPBudgetMasterBO.SubCategoryID);
+            cmd.Parameters.AddWithValue("CDAP_CATEGORYID_", objCDAPBudgetMasterBO.CategoryID);
+            cmd.Parameters.AddWithValue("CDAP_SUBCATEGORYNAME_", objCDAPBudgetMasterBO.SubCategoryName);
+            cmd.Parameters.AddWithValue("UPDATEDBY_", objCDAPBudgetMasterBO.UpdatedBy);
+            cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -344,16 +344,16 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteCDAPBudgetSubItem(int subcategoryID)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnResult = "";
 
             proc = "USP_MST_DEL_CDAP_SUBCATEG";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("CDAP_SUBCATEGORYID_", subcategoryID);
-            cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CDAP_SUBCATEGORYID_", subcategoryID);
+            cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -373,18 +373,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteCDAPBudgetSubItem(int subcategoryID, string isDeleted, int updatedBy)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnResult = "";
 
             proc = "USP_MST_OBS_CDAP_SUBCATEG";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("CDAP_SUBCATEGORYID_", subcategoryID);
-            cmd.Parameters.Add("UPDATEDBY_", updatedBy);
-            cmd.Parameters.Add("ISDELETED_", isDeleted);
-            cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CDAP_SUBCATEGORYID_", subcategoryID);
+            cmd.Parameters.AddWithValue("UPDATEDBY_", updatedBy);
+            cmd.Parameters.AddWithValue("ISDELETED_", isDeleted);
+            cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -404,18 +404,18 @@ namespace WIS_DataAccess
         {
             proc = "USP_GET_MST_CDAP_SUBCATEGBYID";
 
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             CDAPBudgetDescrMasterBO objBudgetBO = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("CDAP_SUBCATEGORYID_", subcategoryID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CDAP_SUBCATEGORYID_", subcategoryID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
                 {
                     objBudgetBO = new CDAPBudgetDescrMasterBO();
@@ -440,19 +440,19 @@ namespace WIS_DataAccess
         public List<CDAPBudgetDescrMasterBO> GetAllCDAPBudgetSubItems(int categoryID)
         {
             proc = "USP_GET_ALL_MST_CDAP_SUBCATEG";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             CDAPBudgetDescrMasterBO objBudgetBO = null;
             List<CDAPBudgetDescrMasterBO> CDAPBudgetDescrList = new List<CDAPBudgetDescrMasterBO>();
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("CDAP_CATEGORYID_", categoryID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CDAP_CATEGORYID_", categoryID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
                 {
                     objBudgetBO = new CDAPBudgetDescrMasterBO();

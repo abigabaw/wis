@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -8,8 +8,8 @@ namespace WIS_DataAccess
     public class PAP_BankDAL
     {
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
 
         /// <summary>
@@ -20,20 +20,20 @@ namespace WIS_DataAccess
         public PAP_BankBO GetPAPBankByID(int householdID)
         {
             proc = "USP_TRN_GET_PAPBANKBYID";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             PAP_BankBO objPAPBank = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HOUSEHOLDID_", householdID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HOUSEHOLDID_", householdID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -63,22 +63,22 @@ namespace WIS_DataAccess
         /// <param name="objPAPBank"></param>
         public void UpdatePAPBank(PAP_BankBO objPAPBank)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_UPD_PAPBANK";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("BANKDETAILID_", objPAPBank.BankDetailID);
-            cmd.Parameters.Add("HOUSEHOLDID_", objPAPBank.HouseHoldID);
-            cmd.Parameters.Add("BANKID_", objPAPBank.BankID);
-            cmd.Parameters.Add("BRANCH_", objPAPBank.BranchID);
-            cmd.Parameters.Add("ACCOUNTNO_", objPAPBank.AccountNo);
-            cmd.Parameters.Add("ACCOUNTHOLDERNAME_", objPAPBank.AccountHolderName);
-            cmd.Parameters.Add("CREATEDBY_", objPAPBank.CreatedBy);
-            cmd.Parameters.Add("UPDATEDBY_", objPAPBank.UpdatedBy);
+            cmd.Parameters.AddWithValue("BANKDETAILID_", objPAPBank.BankDetailID);
+            cmd.Parameters.AddWithValue("HOUSEHOLDID_", objPAPBank.HouseHoldID);
+            cmd.Parameters.AddWithValue("BANKID_", objPAPBank.BankID);
+            cmd.Parameters.AddWithValue("BRANCH_", objPAPBank.BranchID);
+            cmd.Parameters.AddWithValue("ACCOUNTNO_", objPAPBank.AccountNo);
+            cmd.Parameters.AddWithValue("ACCOUNTHOLDERNAME_", objPAPBank.AccountHolderName);
+            cmd.Parameters.AddWithValue("CREATEDBY_", objPAPBank.CreatedBy);
+            cmd.Parameters.AddWithValue("UPDATEDBY_", objPAPBank.UpdatedBy);
             cmd.ExecuteNonQuery();
             cmd.Connection.Close();
         }
@@ -89,14 +89,14 @@ namespace WIS_DataAccess
         /// <param name="HHID"></param>
         public void DeletePAPBank(int HHID)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_DEL_PAPBANK";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            cmd.Parameters.Add("HOUSEHOLDID_", HHID);
+            cmd.Parameters.AddWithValue("HOUSEHOLDID_", HHID);
             cmd.ExecuteNonQuery();
             cmd.Connection.Close();
         }

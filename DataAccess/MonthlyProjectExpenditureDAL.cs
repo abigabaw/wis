@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_BusinessObjects;
 
@@ -12,8 +12,8 @@ namespace WIS_DataAccess
   public class MonthlyProjectExpenditureDAL
     {
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
       /// <summary>
         /// To Load Project Code
@@ -21,13 +21,13 @@ namespace WIS_DataAccess
       /// <returns></returns>
         public List<MonthlyProjectExpenditureBO> LoadProjectCode()
         {
-            cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            cnn = new SqlConnection(AppConfiguration.ConnectionString);
             string proc = "USP_MST_GETPROJECTCODE";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             List<MonthlyProjectExpenditureBO> ProjectCodeList = new List<MonthlyProjectExpenditureBO>();
             MonthlyProjectExpenditureBO MonthlyProjectExpenditureBOobj=null;
             while(dr.Read())

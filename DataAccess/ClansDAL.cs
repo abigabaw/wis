@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -14,17 +14,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int InsertIntoClansMaster(ClansBO ClansBOObj)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             con.Open();
-            OracleCommand cmd = new OracleCommand("USP_MST_INSERTINTOCLANSMASTER", con);
+            SqlCommand cmd = new SqlCommand("USP_MST_INSERTINTOCLANSMASTER", con);
             cmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(cmd.CommandType);
 
             try
             {
-                cmd.Parameters.Add("TRbID", ClansBOObj.TRIBEID);
-                cmd.Parameters.Add("ClansName", ClansBOObj.CLANNAME);
-                cmd.Parameters.Add("CretBy", ClansBOObj.CreatedBy);
+                cmd.Parameters.AddWithValue("TRbID", ClansBOObj.TRIBEID);
+                cmd.Parameters.AddWithValue("ClansName", ClansBOObj.CLANNAME);
+                cmd.Parameters.AddWithValue("CretBy", ClansBOObj.CreatedBy);
 
                 return cmd.ExecuteNonQuery();
             }
@@ -47,19 +47,19 @@ namespace WIS_DataAccess
 
         public ClansList FetchALLClansList(int tribeID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETALLCLANSDETAILS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("TRIBEID_", tribeID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("TRIBEID_", tribeID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ClansBO ClansBOObj = null;
             ClansList ClansListObj = new ClansList();
 
@@ -93,19 +93,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ClansList FetchClansList(int tribeID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETCLANSDETAILS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("TRIBEID_", tribeID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("TRIBEID_", tribeID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ClansBO ClansBOObj = null;
             ClansList ClansListObj = new ClansList();
 
@@ -139,19 +139,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ClansBO GetClansById(int ClansID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GetClansByID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ClansID", ClansID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ClansID", ClansID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ClansBO ClansBOObj = null;
             ClansList ClansListObj = new ClansList();
 
@@ -193,19 +193,19 @@ namespace WIS_DataAccess
 
         public string DeleteClansDetails(int ClansID)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DELETECLANSBYID", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DELETECLANSBYID", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("ClansID_", ClansID);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("ClansID_", ClansID);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -238,17 +238,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int EDITClans(ClansBO ClansBOObj)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_EDITCLANS", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_EDITCLANS", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("ClansID", ClansBOObj.CLANID);
-                dcmd.Parameters.Add("ClName", ClansBOObj.CLANNAME);
-                dcmd.Parameters.Add("UpBy", ClansBOObj.UpdatedBy);
+                dcmd.Parameters.AddWithValue("ClansID", ClansBOObj.CLANID);
+                dcmd.Parameters.AddWithValue("ClName", ClansBOObj.CLANNAME);
+                dcmd.Parameters.AddWithValue("UpBy", ClansBOObj.UpdatedBy);
 
                 return dcmd.ExecuteNonQuery();
             }
@@ -271,19 +271,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string Obsoleteclan(int ClansID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETE_CLANS", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETE_CLANS", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("ClansID_", ClansID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("ClansID_", ClansID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

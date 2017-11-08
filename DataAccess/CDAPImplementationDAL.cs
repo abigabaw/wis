@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 using System.Data;
 
@@ -11,8 +11,8 @@ namespace WIS_DataAccess
     public class CDAPImplementationDAL
     {
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
         /// <summary>
         /// To Add CDAP Phase to database
@@ -21,22 +21,22 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string AddCDAPPhase(CDAPImplementationBO objCDAPImplementationBO)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             
             string result = "";
             
             proc = "USP_TRN_CDAP_PHASE";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            cmd.Parameters.Add("CDAP_PHASEID_", objCDAPImplementationBO.Cdap_phaseid);
-            cmd.Parameters.Add("CDAP_PHASENO_", objCDAPImplementationBO.Cdap_phaseno);
-            cmd.Parameters.Add("CDAP_PERIODFROM_", objCDAPImplementationBO.PeriodFrom.ToString(UtilBO.DateFormatDB));
-            cmd.Parameters.Add("CDAP_PERIODTO_", objCDAPImplementationBO.PeriodTo.ToString(UtilBO.DateFormatDB));
-            cmd.Parameters.Add("PROJECTID_", objCDAPImplementationBO.ProjectedId);
-            cmd.Parameters.Add("UPDATEDBY_", objCDAPImplementationBO.Updatedby);
-            cmd.Parameters.Add("EXPENDITURE_", objCDAPImplementationBO.EXPENDITURE);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CDAP_PHASEID_", objCDAPImplementationBO.Cdap_phaseid);
+            cmd.Parameters.AddWithValue("CDAP_PHASENO_", objCDAPImplementationBO.Cdap_phaseno);
+            cmd.Parameters.AddWithValue("CDAP_PERIODFROM_", objCDAPImplementationBO.PeriodFrom.ToString(UtilBO.DateFormatDB));
+            cmd.Parameters.AddWithValue("CDAP_PERIODTO_", objCDAPImplementationBO.PeriodTo.ToString(UtilBO.DateFormatDB));
+            cmd.Parameters.AddWithValue("PROJECTID_", objCDAPImplementationBO.ProjectedId);
+            cmd.Parameters.AddWithValue("UPDATEDBY_", objCDAPImplementationBO.Updatedby);
+            cmd.Parameters.AddWithValue("EXPENDITURE_", objCDAPImplementationBO.EXPENDITURE);
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             
             cmd.ExecuteNonQuery();
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -56,10 +56,10 @@ namespace WIS_DataAccess
         {
             try
             {
-                cnn = new OracleConnection(con);
-                cmd = new OracleCommand("USP_DEL_TRN_CDAP_PHASE", cnn);
+                cnn = new SqlConnection(con);
+                cmd = new SqlCommand("USP_DEL_TRN_CDAP_PHASE", cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("CDAP_PHASEID_", PhaseID);
+                cmd.Parameters.AddWithValue("CDAP_PHASEID_", PhaseID);
                 cnn.Open();
                 cmd.ExecuteNonQuery();
                 cnn.Close();
@@ -82,15 +82,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CDAPImplementationList GetCDAPPhaseDetailsByID(int PhaseID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_GET_TRN_CDAP_PHASESBYID";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("CDAP_PHASEID_", PhaseID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CDAP_PHASEID_", PhaseID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CDAPImplementationBO obCDAPImplementationBO = null;
             CDAPImplementationList objCDAPImplementationList = new CDAPImplementationList();
             while (dr.Read())
@@ -114,15 +114,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CDAPImplementationList GetCDAPPhaseDetails(int ProjectID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_GET_TRN_CDAP_PHASES";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("PROJECTID_", ProjectID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PROJECTID_", ProjectID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CDAPImplementationBO obCDAPImplementationBO = null;
             CDAPImplementationList objCDAPImplementationList = new CDAPImplementationList();
             while (dr.Read())
@@ -145,14 +145,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CDAPImplementationList GetCDAPPhaseID()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_GET_CDAP_PHASEID";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CDAPImplementationBO obCDAPImplementationBO = null;
             CDAPImplementationList objCDAPImplementationList = new CDAPImplementationList();
             while (dr.Read())
@@ -171,14 +171,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CDAPImplementationList GetCDAPPhases()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_GET_CDAP_PHASES";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CDAPImplementationBO obCDAPImplementationBO = null;
             CDAPImplementationList objCDAPImplementationList = new CDAPImplementationList();
             while (dr.Read())
@@ -198,26 +198,26 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int AddCDAPPhaseActivity(CDAPImplementationBO objCDAPImplementationBO)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             int returnResult = 0;
             proc = "USP_TRN_CDAP_PHASE_ACTIVITY";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            cmd.Parameters.Add("CDAP_PHASEACTIVITYID_", objCDAPImplementationBO.Cdap_phaseactivityid);
-            cmd.Parameters.Add("CDAP_PHASEID_", objCDAPImplementationBO.Cdap_phaseid);
-            cmd.Parameters.Add("CDAP_ACTIVITYID_", objCDAPImplementationBO.Cdap_activityid);
-            cmd.Parameters.Add("DISTRICT_", objCDAPImplementationBO.District);
-            cmd.Parameters.Add("COUNTY_", objCDAPImplementationBO.County);
-            cmd.Parameters.Add("SUBCOUNTY_", objCDAPImplementationBO.SubCounty);
-            cmd.Parameters.Add("VILLAGES_", objCDAPImplementationBO.Village);
-            cmd.Parameters.Add("ACTIVITYDETAILS_", objCDAPImplementationBO.Activitydetails);
-            cmd.Parameters.Add("MODEOFIMPLEMENTATION_", objCDAPImplementationBO.Modeofimplementation);
-            cmd.Parameters.Add("CHALLENGES_", objCDAPImplementationBO.Challenges);
-            cmd.Parameters.Add("COMMENTS_", objCDAPImplementationBO.Comments);
-            cmd.Parameters.Add("ACTIVITYDATEFROM_", objCDAPImplementationBO.Activitydatefrom.ToString(UtilBO.DateFormatDB));
-            cmd.Parameters.Add("ACTIVITYDATETO_", objCDAPImplementationBO.Activitydateto.ToString(UtilBO.DateFormatDB));
-            cmd.Parameters.Add("UPDATEDBY_", objCDAPImplementationBO.Updatedby);
+            cmd.Parameters.AddWithValue("CDAP_PHASEACTIVITYID_", objCDAPImplementationBO.Cdap_phaseactivityid);
+            cmd.Parameters.AddWithValue("CDAP_PHASEID_", objCDAPImplementationBO.Cdap_phaseid);
+            cmd.Parameters.AddWithValue("CDAP_ACTIVITYID_", objCDAPImplementationBO.Cdap_activityid);
+            cmd.Parameters.AddWithValue("DISTRICT_", objCDAPImplementationBO.District);
+            cmd.Parameters.AddWithValue("COUNTY_", objCDAPImplementationBO.County);
+            cmd.Parameters.AddWithValue("SUBCOUNTY_", objCDAPImplementationBO.SubCounty);
+            cmd.Parameters.AddWithValue("VILLAGES_", objCDAPImplementationBO.Village);
+            cmd.Parameters.AddWithValue("ACTIVITYDETAILS_", objCDAPImplementationBO.Activitydetails);
+            cmd.Parameters.AddWithValue("MODEOFIMPLEMENTATION_", objCDAPImplementationBO.Modeofimplementation);
+            cmd.Parameters.AddWithValue("CHALLENGES_", objCDAPImplementationBO.Challenges);
+            cmd.Parameters.AddWithValue("COMMENTS_", objCDAPImplementationBO.Comments);
+            cmd.Parameters.AddWithValue("ACTIVITYDATEFROM_", objCDAPImplementationBO.Activitydatefrom.ToString(UtilBO.DateFormatDB));
+            cmd.Parameters.AddWithValue("ACTIVITYDATETO_", objCDAPImplementationBO.Activitydateto.ToString(UtilBO.DateFormatDB));
+            cmd.Parameters.AddWithValue("UPDATEDBY_", objCDAPImplementationBO.Updatedby);
 
             returnResult = cmd.ExecuteNonQuery();
 
@@ -230,14 +230,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CDAPImplementationList GetCDAPPhaseActivityID()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_GET_CDAP_PHASE_ACTIVITYID";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CDAPImplementationBO obCDAPImplementationBO = null;
             CDAPImplementationList objCDAPImplementationList = new CDAPImplementationList();
             while (dr.Read())
@@ -258,15 +258,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int AddCDAPActivityPAPS(CDAPImplementationBO objCDAPImplementationBO)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             int returnResult = 0;
             proc = "USP_CDAP_ACTIVITY_PAPS";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            cmd.Parameters.Add("CDAP_PHASEACTIVITYID_", objCDAPImplementationBO.Cdap_phaseactivityid);
-            cmd.Parameters.Add("HHID_", objCDAPImplementationBO.HhId);
-            cmd.Parameters.Add("UPDATEDBY_", objCDAPImplementationBO.Updatedby);
+            cmd.Parameters.AddWithValue("CDAP_PHASEACTIVITYID_", objCDAPImplementationBO.Cdap_phaseactivityid);
+            cmd.Parameters.AddWithValue("HHID_", objCDAPImplementationBO.HhId);
+            cmd.Parameters.AddWithValue("UPDATEDBY_", objCDAPImplementationBO.Updatedby);
             returnResult = cmd.ExecuteNonQuery();
             cmd.Connection.Close();
             return returnResult;
@@ -279,16 +279,16 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CDAPImplementationList GetCDAPPhaseActivityDetails(int prjctID, int PhaseID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_GET_PHASEACTIVITY";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("PROJECTID_", prjctID);
-            cmd.Parameters.Add("PHASEID_", PhaseID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PROJECTID_", prjctID);
+            cmd.Parameters.AddWithValue("PHASEID_", PhaseID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CDAPImplementationBO obCDAPImplementationBO = null;
             CDAPImplementationList objCDAPImplementationList = new CDAPImplementationList();
             while (dr.Read())
@@ -324,15 +324,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CDAPImplementationList GetCDAPPAPDetails(int PhaseactivityID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_GET_CDAPPLANDISPLAY";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("CDAP_PHASEACTIVITYID_", PhaseactivityID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CDAP_PHASEACTIVITYID_", PhaseactivityID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CDAPImplementationBO obCDAPImplementationBO = null;
             CDAPImplementationList objCDAPImplementationList = new CDAPImplementationList();
             while (dr.Read())
@@ -367,15 +367,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CDAPImplementationList GetCDAPVillageID(string village)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_GET_VILLAGEID";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("VILLAGES_", village);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("VILLAGES_", village);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CDAPImplementationBO obCDAPImplementationBO = null;
             CDAPImplementationList objCDAPImplementationList = new CDAPImplementationList();
             while (dr.Read())

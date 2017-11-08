@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -9,8 +9,8 @@ namespace WIS_DataAccess
     {
         #region Declaration Section
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
         #endregion
 
@@ -22,20 +22,20 @@ namespace WIS_DataAccess
         public UnitList GetAllUnit()//(Unit oUnit)
         {
             proc = "USP_MST_GET_ALL_UNIT";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             UnitBO objUnit = null;
 
             UnitList lstUnitList = new UnitList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -68,20 +68,20 @@ namespace WIS_DataAccess
         public UnitList GetUnit()//(Unit oUnit)
         {
             proc = "USP_MST_GET_UNIT";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             UnitBO objUnit = null;
             
             UnitList lstUnitList = new UnitList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
           
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -112,18 +112,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public UnitBO GetUnitById(int UnitID)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_MST_GET_UNIT_BYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("unitid_", UnitID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("unitid_", UnitID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             UnitBO objUnit = null;
 
 
@@ -175,19 +175,19 @@ namespace WIS_DataAccess
         public string SaveUnit(UnitBO oUnit)
         {
             string returnResult;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_MST_INS_UNIT";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("unitname_", oUnit.UnitName);
+            cmd.Parameters.AddWithValue("unitname_", oUnit.UnitName);
 
-            cmd.Parameters.Add("isdeleted_", oUnit.IsDeleted);
-            cmd.Parameters.Add("createdby_", oUnit.CreatedBy);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("isdeleted_", oUnit.IsDeleted);
+            cmd.Parameters.AddWithValue("createdby_", oUnit.CreatedBy);
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
@@ -207,19 +207,19 @@ namespace WIS_DataAccess
         public string UpdateUnit(UnitBO oUnit)
         {
             string returnResult;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_MST_UPD_UNIT";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            cmd.Parameters.Add("unitid_", oUnit.UnitID);
-            cmd.Parameters.Add("unitname_", oUnit.UnitName);
+            cmd.Parameters.AddWithValue("unitid_", oUnit.UnitID);
+            cmd.Parameters.AddWithValue("unitname_", oUnit.UnitName);
 
-            cmd.Parameters.Add("updatedby_", oUnit.CreatedBy);
+            cmd.Parameters.AddWithValue("updatedby_", oUnit.CreatedBy);
 
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
@@ -238,14 +238,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteUnit(int UnitID_)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnResult=string.Empty;
             proc = "USP_MST_DEL_UNIT";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("unitid_", UnitID_);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("unitid_", UnitID_);
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
@@ -264,19 +264,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteUnit(int UnitID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
 
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETE_UNIT", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETE_UNIT", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("UnitID_", UnitID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("UnitID_", UnitID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();

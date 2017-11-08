@@ -1,5 +1,5 @@
 ﻿using System;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_BusinessObjects;
 
@@ -14,19 +14,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ConsultantList GetConsultant(int projectID)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GET_CONSULTANT";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
 
             if (projectID > 0)
-                cmd.Parameters.Add("PROJECTID_", projectID);
+                cmd.Parameters.AddWithValue("PROJECTID_", projectID);
             else
-                cmd.Parameters.Add("PROJECTID_", DBNull.Value);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("PROJECTID_", DBNull.Value);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ConsultantBO objCon = null;
             ConsultantList objConList = new ConsultantList();
 
@@ -54,15 +54,15 @@ namespace WIS_DataAccess
         public ConsultantBO GetConsultantByID(int ConID)
         {
 
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GET_CONSULTANTBYID";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("CONSULTANTID", ConID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CONSULTANTID", ConID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ConsultantBO objCon = null;
             ConsultantList objConList = new ConsultantList();
 
@@ -92,22 +92,22 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
 
-            OracleCommand myCommand;
-            myCommand = new OracleCommand("USP_TRN_INS_CONSULTANT", con);
+            SqlCommand myCommand;
+            myCommand = new SqlCommand("USP_TRN_INS_CONSULTANT", con);
             myCommand.Connection = con;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("CONSULTANTNAME_", objCon.ConsultName);
-            myCommand.Parameters.Add("PROJECTID_", objCon.ProjectID);
-            myCommand.Parameters.Add("CONSULTANTTYPE_", objCon.ConsultType);
-            myCommand.Parameters.Add("ADDRESS_", objCon.Address);
-            myCommand.Parameters.Add("CONTACTNUMBER_", objCon.ConNumber);
-            myCommand.Parameters.Add("CONTACTPERSON_", objCon.ConPerson);
-            myCommand.Parameters.Add("EMAILADDRESS_", objCon.EmailAddress);
-            myCommand.Parameters.Add("ISDELETEDIN_", "False");
-            myCommand.Parameters.Add("CREATEDBY_", objCon.CreatedBy);
-            myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("CONSULTANTNAME_", objCon.ConsultName);
+            myCommand.Parameters.AddWithValue("PROJECTID_", objCon.ProjectID);
+            myCommand.Parameters.AddWithValue("CONSULTANTTYPE_", objCon.ConsultType);
+            myCommand.Parameters.AddWithValue("ADDRESS_", objCon.Address);
+            myCommand.Parameters.AddWithValue("CONTACTNUMBER_", objCon.ConNumber);
+            myCommand.Parameters.AddWithValue("CONTACTPERSON_", objCon.ConPerson);
+            myCommand.Parameters.AddWithValue("EMAILADDRESS_", objCon.EmailAddress);
+            myCommand.Parameters.AddWithValue("ISDELETEDIN_", "False");
+            myCommand.Parameters.AddWithValue("CREATEDBY_", objCon.CreatedBy);
+            myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             con.Open();
             myCommand.ExecuteNonQuery();
@@ -126,14 +126,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int DeleteConsultant(int ConID)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             int result = 0;
             {
-                OracleCommand myCommand;
-                myCommand = new OracleCommand("USP_TRN_DEL_CONSULTANT", con);
+                SqlCommand myCommand;
+                myCommand = new SqlCommand("USP_TRN_DEL_CONSULTANT", con);
                 myCommand.Connection = con;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("CONSULTANTID_", ConID);
+                myCommand.Parameters.AddWithValue("CONSULTANTID_", ConID);
                 con.Open();
                 result = myCommand.ExecuteNonQuery();
                 con.Close();
@@ -148,14 +148,14 @@ namespace WIS_DataAccess
         /// <param name="isObsolete"></param>
         public void ObsoleteConsultant(int consultantID, string isObsolete)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
 
-            OracleCommand myCommand;
-            myCommand = new OracleCommand("USP_TRN_OBSOLETE_CONSULTANT", con);
+            SqlCommand myCommand;
+            myCommand = new SqlCommand("USP_TRN_OBSOLETE_CONSULTANT", con);
             myCommand.Connection = con;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("CONSULTANTID_", consultantID);
-            myCommand.Parameters.Add("ISOBSOLETE_", isObsolete);
+            myCommand.Parameters.AddWithValue("CONSULTANTID_", consultantID);
+            myCommand.Parameters.AddWithValue("ISOBSOLETE_", isObsolete);
             con.Open();
             myCommand.ExecuteNonQuery();
             con.Close();
@@ -168,22 +168,22 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int UpdateConsultant(ConsultantBO objCon)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             int result = 0;
             {
-                OracleCommand myCommand;
-                myCommand = new OracleCommand("USP_TRN_UPD_CONSULTANT", con);
+                SqlCommand myCommand;
+                myCommand = new SqlCommand("USP_TRN_UPD_CONSULTANT", con);
                 myCommand.Connection = con;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("CONSULTANTID", objCon.ConsultID);
+                myCommand.Parameters.AddWithValue("CONSULTANTID", objCon.ConsultID);
               
-                myCommand.Parameters.Add("@CONSULTANTNAME", objCon.ConsultName);
-                myCommand.Parameters.Add("@CONSULTATIONTYPE", objCon.ConsultType);
-                myCommand.Parameters.Add("@ADDRESS", objCon.Address);
-                myCommand.Parameters.Add("@CONTACTPERSON", objCon.ConPerson);
-                myCommand.Parameters.Add("@CONTACTNUMBER", objCon.ConNumber);
-                myCommand.Parameters.Add("@EMAILADDRESS", objCon.EmailAddress);
-                myCommand.Parameters.Add("UPDATEDBY", objCon.UpdatedBy);
+                myCommand.Parameters.AddWithValue("@CONSULTANTNAME", objCon.ConsultName);
+                myCommand.Parameters.AddWithValue("@CONSULTATIONTYPE", objCon.ConsultType);
+                myCommand.Parameters.AddWithValue("@ADDRESS", objCon.Address);
+                myCommand.Parameters.AddWithValue("@CONTACTPERSON", objCon.ConPerson);
+                myCommand.Parameters.AddWithValue("@CONTACTNUMBER", objCon.ConNumber);
+                myCommand.Parameters.AddWithValue("@EMAILADDRESS", objCon.EmailAddress);
+                myCommand.Parameters.AddWithValue("UPDATEDBY", objCon.UpdatedBy);
 
                 con.Open();
                 result = myCommand.ExecuteNonQuery();

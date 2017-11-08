@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -8,8 +8,8 @@ namespace WIS_DataAccess
     public class PAP_RelationDAL
     {
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
 
         /// <summary>
@@ -20,48 +20,48 @@ namespace WIS_DataAccess
         public string AddRelation(PAP_RelationBO objRelation)
         {
             string returnResult = string.Empty;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_INS_PAPRELATION";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("HOUSEHOLDID_", objRelation.HouseholdID);
-            cmd.Parameters.Add("HOLDERTYPEID_", objRelation.HolderTypeID);
-            cmd.Parameters.Add("HOLDERNAME_", objRelation.HolderName);
-            cmd.Parameters.Add("RESIDEONAFFECTEDLAND_", objRelation.ResideOnAffectedLand);
+            cmd.Parameters.AddWithValue("HOUSEHOLDID_", objRelation.HouseholdID);
+            cmd.Parameters.AddWithValue("HOLDERTYPEID_", objRelation.HolderTypeID);
+            cmd.Parameters.AddWithValue("HOLDERNAME_", objRelation.HolderName);
+            cmd.Parameters.AddWithValue("RESIDEONAFFECTEDLAND_", objRelation.ResideOnAffectedLand);
 
             if (objRelation.DateOfBirth != null && objRelation.DateOfBirth != DateTime.MinValue)
-                cmd.Parameters.Add("DATEOFBIRTH_", objRelation.DateOfBirth);
+                cmd.Parameters.AddWithValue("DATEOFBIRTH_", objRelation.DateOfBirth);
             else
-                cmd.Parameters.Add("DATEOFBIRTH_", DBNull.Value);
+                cmd.Parameters.AddWithValue("DATEOFBIRTH_", DBNull.Value);
 
-            cmd.Parameters.Add("GENDER_", objRelation.Sex);
+            cmd.Parameters.AddWithValue("GENDER_", objRelation.Sex);
 
             if (objRelation.LiteracyLevelID > 0)
-                cmd.Parameters.Add("LITERACYLEVELID_", objRelation.LiteracyLevelID);
+                cmd.Parameters.AddWithValue("LITERACYLEVELID_", objRelation.LiteracyLevelID);
             else
-                cmd.Parameters.Add("LITERACYLEVELID_", DBNull.Value);
+                cmd.Parameters.AddWithValue("LITERACYLEVELID_", DBNull.Value);
 
             if (objRelation.CurrentSchoolStatusID > 0)
-                cmd.Parameters.Add("CUR_SCH_STATUSID_", objRelation.CurrentSchoolStatusID);
+                cmd.Parameters.AddWithValue("CUR_SCH_STATUSID_", objRelation.CurrentSchoolStatusID);
             else
-                cmd.Parameters.Add("CUR_SCH_STATUSID_", DBNull.Value);
+                cmd.Parameters.AddWithValue("CUR_SCH_STATUSID_", DBNull.Value);
 
             if (objRelation.NeverAttendedSchoolID > 0)
-                cmd.Parameters.Add("NVR_ATT_SCH_REASONID_", objRelation.NeverAttendedSchoolID);
+                cmd.Parameters.AddWithValue("NVR_ATT_SCH_REASONID_", objRelation.NeverAttendedSchoolID);
             else
-                cmd.Parameters.Add("NVR_ATT_SCH_REASONID_", DBNull.Value);
+                cmd.Parameters.AddWithValue("NVR_ATT_SCH_REASONID_", DBNull.Value);
 
             if (objRelation.SchoolDropReasonID > 0)
-                cmd.Parameters.Add("SCH_DRP_REASONID_", objRelation.SchoolDropReasonID);
+                cmd.Parameters.AddWithValue("SCH_DRP_REASONID_", objRelation.SchoolDropReasonID);
             else
-                cmd.Parameters.Add("SCH_DRP_REASONID_", DBNull.Value);
+                cmd.Parameters.AddWithValue("SCH_DRP_REASONID_", DBNull.Value);
 
-            cmd.Parameters.Add("CREATEDBY_", objRelation.CreatedBy);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CREATEDBY_", objRelation.CreatedBy);
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -80,49 +80,49 @@ namespace WIS_DataAccess
         public string UpdateRelation(PAP_RelationBO objRelation)
         {
             string returnResult = string.Empty;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_UPD_PAPRELATION";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("PAP_HH_RELATIONID_", objRelation.RelationID);
-            cmd.Parameters.Add("HOUSEHOLDID_", objRelation.HouseholdID);
-            cmd.Parameters.Add("HOLDERTYPEID_", objRelation.HolderTypeID);
-            cmd.Parameters.Add("HOLDERNAME_", objRelation.HolderName);
-            cmd.Parameters.Add("RESIDEONAFFECTEDLAND_", objRelation.ResideOnAffectedLand);
+            cmd.Parameters.AddWithValue("PAP_HH_RELATIONID_", objRelation.RelationID);
+            cmd.Parameters.AddWithValue("HOUSEHOLDID_", objRelation.HouseholdID);
+            cmd.Parameters.AddWithValue("HOLDERTYPEID_", objRelation.HolderTypeID);
+            cmd.Parameters.AddWithValue("HOLDERNAME_", objRelation.HolderName);
+            cmd.Parameters.AddWithValue("RESIDEONAFFECTEDLAND_", objRelation.ResideOnAffectedLand);
 
             if (objRelation.DateOfBirth != null && objRelation.DateOfBirth != DateTime.MinValue)
-                cmd.Parameters.Add("DATEOFBIRTH_", objRelation.DateOfBirth);
+                cmd.Parameters.AddWithValue("DATEOFBIRTH_", objRelation.DateOfBirth);
             else
-                cmd.Parameters.Add("DATEOFBIRTH_", DBNull.Value);
+                cmd.Parameters.AddWithValue("DATEOFBIRTH_", DBNull.Value);
 
-            cmd.Parameters.Add("GENDER_", objRelation.Sex);
+            cmd.Parameters.AddWithValue("GENDER_", objRelation.Sex);
 
             if (objRelation.LiteracyLevelID > 0)
-                cmd.Parameters.Add("LITERACYLEVELID_", objRelation.LiteracyLevelID);
+                cmd.Parameters.AddWithValue("LITERACYLEVELID_", objRelation.LiteracyLevelID);
             else
-                cmd.Parameters.Add("LITERACYLEVELID_", DBNull.Value);
+                cmd.Parameters.AddWithValue("LITERACYLEVELID_", DBNull.Value);
 
             if (objRelation.CurrentSchoolStatusID > 0)
-                cmd.Parameters.Add("CUR_SCH_STATUSID_", objRelation.CurrentSchoolStatusID);
+                cmd.Parameters.AddWithValue("CUR_SCH_STATUSID_", objRelation.CurrentSchoolStatusID);
             else
-                cmd.Parameters.Add("CUR_SCH_STATUSID_", DBNull.Value);
+                cmd.Parameters.AddWithValue("CUR_SCH_STATUSID_", DBNull.Value);
 
             if (objRelation.NeverAttendedSchoolID > 0)
-                cmd.Parameters.Add("NVR_ATT_SCH_REASONID_", objRelation.NeverAttendedSchoolID);
+                cmd.Parameters.AddWithValue("NVR_ATT_SCH_REASONID_", objRelation.NeverAttendedSchoolID);
             else
-                cmd.Parameters.Add("NVR_ATT_SCH_REASONID_", DBNull.Value);
+                cmd.Parameters.AddWithValue("NVR_ATT_SCH_REASONID_", DBNull.Value);
 
             if (objRelation.SchoolDropReasonID > 0)
-                cmd.Parameters.Add("SCH_DRP_REASONID_", objRelation.SchoolDropReasonID);
+                cmd.Parameters.AddWithValue("SCH_DRP_REASONID_", objRelation.SchoolDropReasonID);
             else
-                cmd.Parameters.Add("SCH_DRP_REASONID_", DBNull.Value);
+                cmd.Parameters.AddWithValue("SCH_DRP_REASONID_", DBNull.Value);
 
-            cmd.Parameters.Add("UPDATEDBY_", objRelation.UpdatedBy);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("UPDATEDBY_", objRelation.UpdatedBy);
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -141,16 +141,16 @@ namespace WIS_DataAccess
         public string DeleteRelation(int relationID)
         {
             string result = string.Empty;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_DEL_PAPRELATION";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("PAP_HH_RELATIONID_", relationID);
-            //cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PAP_HH_RELATIONID_", relationID);
+            //cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
             //if (cmd.Parameters["errorMessage_"].Value != null)
              //   result = cmd.Parameters["errorMessage_"].Value.ToString();
@@ -167,22 +167,22 @@ namespace WIS_DataAccess
         public PAPRelationList GetRelations(int householdID, int holderTypeID)
         {
             proc = "USP_TRN_GET_PAPRELATIONS";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             PAP_RelationBO objRelation = null;
             PAPRelationList Relations = new PAPRelationList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HOUSEHOLDID_", householdID);
-            cmd.Parameters.Add("HOLDERTYPEID_", holderTypeID);            
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HOUSEHOLDID_", householdID);
+            cmd.Parameters.AddWithValue("HOLDERTYPEID_", holderTypeID);            
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -221,20 +221,20 @@ namespace WIS_DataAccess
         public PAP_RelationBO GetRelationByID(int relationID)
         {
             proc = "USP_TRN_GET_PAPRELATIONBYID";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             PAP_RelationBO objRelation = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("PAP_HH_RELATIONID_", relationID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PAP_HH_RELATIONID_", relationID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -271,27 +271,27 @@ namespace WIS_DataAccess
         public HolderTypeList GetHolderTypes(int householdID, int holderTypeID)
         {
             proc = "USP_MST_GET_HOLDERTYPES";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             HolderTypeBO objHolderType = null;
 
             HolderTypeList HolderTypes = new HolderTypeList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HHID_", householdID);
+            cmd.Parameters.AddWithValue("HHID_", householdID);
 
             if (holderTypeID > 0)
-                cmd.Parameters.Add("HOLDERTYPEID_", holderTypeID);
+                cmd.Parameters.AddWithValue("HOLDERTYPEID_", holderTypeID);
             else
-                cmd.Parameters.Add("HOLDERTYPEID_", DBNull.Value);
+                cmd.Parameters.AddWithValue("HOLDERTYPEID_", DBNull.Value);
             
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -323,21 +323,21 @@ namespace WIS_DataAccess
         public string AddAffectedLandUser(AffectedLandUserBO objAffLandUser)
         {
             string returnResult = string.Empty;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_INS_AFFECTEDLNDUSERS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("HOUSEHOLDID_", objAffLandUser.HouseholdID);
-            cmd.Parameters.Add("LANDUSERNAME_", objAffLandUser.LandUserName);
-            cmd.Parameters.Add("STATUSID_", objAffLandUser.StatusID);
-            cmd.Parameters.Add("RELATEDTO_", objAffLandUser.RelatedTo);
-            cmd.Parameters.Add("TIMEONLAND_", objAffLandUser.TimeOnLand);
-            cmd.Parameters.Add("CREATEDBY_", objAffLandUser.CreatedBy);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HOUSEHOLDID_", objAffLandUser.HouseholdID);
+            cmd.Parameters.AddWithValue("LANDUSERNAME_", objAffLandUser.LandUserName);
+            cmd.Parameters.AddWithValue("STATUSID_", objAffLandUser.StatusID);
+            cmd.Parameters.AddWithValue("RELATEDTO_", objAffLandUser.RelatedTo);
+            cmd.Parameters.AddWithValue("TIMEONLAND_", objAffLandUser.TimeOnLand);
+            cmd.Parameters.AddWithValue("CREATEDBY_", objAffLandUser.CreatedBy);
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -356,22 +356,22 @@ namespace WIS_DataAccess
         public string UpdateAffectedLandUser(AffectedLandUserBO objAffLandUser)
         {
             string returnResult = string.Empty;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_UPD_AFFECTEDLNDUSERS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("LANDUSERID_", objAffLandUser.LandUserID);
-            cmd.Parameters.Add("HOUSEHOLDID_", objAffLandUser.HouseholdID);
-            cmd.Parameters.Add("LANDUSERNAME_", objAffLandUser.LandUserName);
-            cmd.Parameters.Add("STATUSID_", objAffLandUser.StatusID);
-            cmd.Parameters.Add("RELATEDTO_", objAffLandUser.RelatedTo);
-            cmd.Parameters.Add("TIMEONLAND_", objAffLandUser.TimeOnLand);
-            cmd.Parameters.Add("UPDATEDBY_", objAffLandUser.UpdatedBy);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("LANDUSERID_", objAffLandUser.LandUserID);
+            cmd.Parameters.AddWithValue("HOUSEHOLDID_", objAffLandUser.HouseholdID);
+            cmd.Parameters.AddWithValue("LANDUSERNAME_", objAffLandUser.LandUserName);
+            cmd.Parameters.AddWithValue("STATUSID_", objAffLandUser.StatusID);
+            cmd.Parameters.AddWithValue("RELATEDTO_", objAffLandUser.RelatedTo);
+            cmd.Parameters.AddWithValue("TIMEONLAND_", objAffLandUser.TimeOnLand);
+            cmd.Parameters.AddWithValue("UPDATEDBY_", objAffLandUser.UpdatedBy);
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
@@ -391,16 +391,16 @@ namespace WIS_DataAccess
         /// <param name="updatedBy"></param>
         public void DeleteAffectedLandUser(int landUserID, int updatedBy)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_DEL_AFFECTEDLNDUSERS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("LANDUSERID_", landUserID);
-           // cmd.Parameters.Add("UPDATEDBY_", updatedBy);
+            cmd.Parameters.AddWithValue("LANDUSERID_", landUserID);
+           // cmd.Parameters.AddWithValue("UPDATEDBY_", updatedBy);
 
             cmd.ExecuteNonQuery();
             cmd.Connection.Close();
@@ -415,26 +415,26 @@ namespace WIS_DataAccess
         public PAP_AffectedLandUserList GetAffectedLandUsers(int landUserID, int householdID)
         {
             proc = "USP_TRN_GET_AFFECTEDLNDUSERS";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             AffectedLandUserBO objAffecLandUser = null;
 
             PAP_AffectedLandUserList AffecLandUserList = new PAP_AffectedLandUserList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
             if (landUserID > 0)
-                cmd.Parameters.Add("LANDUSERID_", landUserID);
+                cmd.Parameters.AddWithValue("LANDUSERID_", landUserID);
             else
-                cmd.Parameters.Add("LANDUSERID_", DBNull.Value);
+                cmd.Parameters.AddWithValue("LANDUSERID_", DBNull.Value);
 
-            cmd.Parameters.Add("HOUSEHOLDID_", householdID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HOUSEHOLDID_", householdID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -470,20 +470,20 @@ namespace WIS_DataAccess
         public PAPServiceMasterList GetPAPServiceMasters()
         {
             proc = "USP_MST_GET_PAPSERVICES";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             PAPServiceMasterBO objServiceMaster = null;
 
             PAPServiceMasterList ServiceMasterList = new PAPServiceMasterList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -516,21 +516,21 @@ namespace WIS_DataAccess
         public PAPServicesList GetPAPServices(int householdID)
         {
             proc = "USP_TRN_GET_PAPSERVICES";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             PAPServiceBO objPAPService = null;
 
             PAPServicesList Services = new PAPServicesList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HOUSEHOLDID_", householdID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HOUSEHOLDID_", householdID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -559,17 +559,17 @@ namespace WIS_DataAccess
         /// <param name="PAPServices"></param>
         public void AddPAPService(PAPServicesList PAPServices)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             proc = "USP_TRN_UPD_PAPSERVICE";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("HOUSEHOLDID_", "");
-            cmd.Parameters.Add("SERVICEID_", "");
-            cmd.Parameters.Add("FIELDVALUE_", "");
-            cmd.Parameters.Add("UPDATEDBY_", "");
+            cmd.Parameters.AddWithValue("HOUSEHOLDID_", "");
+            cmd.Parameters.AddWithValue("SERVICEID_", "");
+            cmd.Parameters.AddWithValue("FIELDVALUE_", "");
+            cmd.Parameters.AddWithValue("UPDATEDBY_", "");
 
             foreach (PAPServiceBO objPAPService in PAPServices)
             {

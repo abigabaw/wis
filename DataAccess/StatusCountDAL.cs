@@ -17,7 +17,7 @@ namespace WIS_DataAccess
             cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("ASSIGNTOID_", UserID);
-           // cmd.Parameters.AddWithValue("SP_RECORDSET", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+           // // cmd.Parameters.AddWithValue("SP_RECORDSET", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
@@ -48,7 +48,7 @@ namespace WIS_DataAccess
             cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("USERID_", UserID);
-          //  cmd.Parameters.AddWithValue("SP_RECORDSET", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+          //  // cmd.Parameters.AddWithValue("SP_RECORDSET", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 

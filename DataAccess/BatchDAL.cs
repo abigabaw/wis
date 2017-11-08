@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Configuration;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 using System.Text;
 
@@ -15,8 +15,8 @@ namespace WIS_DataAccess
     public class BatchDAL
     {
         string con = WIS_DataAccess.AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
 
         #region GetData
@@ -27,20 +27,20 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public BatchList GetBatches(int projectID)
         {
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_CMP_GET_BATCH";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("PROJECTID_", projectID);
+            cmd.Parameters.AddWithValue("PROJECTID_", projectID);
          
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             BatchBO objBatchBO = null;
             BatchList Batches = new BatchList();
 
@@ -69,32 +69,32 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public BatchList GetPaymentBatches(int projectID, string BatchNO, string ToDate, string FromData)
         {            
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_PAYMENTBATCHES";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("PROJECTID_", projectID);
+            cmd.Parameters.AddWithValue("PROJECTID_", projectID);
             if (BatchNO.Trim().Length > 0)
-                cmd.Parameters.Add("CMP_BATCHNO_", BatchNO);
+                cmd.Parameters.AddWithValue("CMP_BATCHNO_", BatchNO);
             else
-                cmd.Parameters.Add("CMP_BATCHNO_", DBNull.Value);
+                cmd.Parameters.AddWithValue("CMP_BATCHNO_", DBNull.Value);
             if (FromData.Trim().Length > 0)
-                cmd.Parameters.Add("BATCHFROMDATE_", FromData);
+                cmd.Parameters.AddWithValue("BATCHFROMDATE_", FromData);
             else
-                cmd.Parameters.Add("BATCHFROMDATE_", DBNull.Value);
+                cmd.Parameters.AddWithValue("BATCHFROMDATE_", DBNull.Value);
             if (ToDate.Trim().Length > 0)
-                cmd.Parameters.Add("BATCHTODATE_", ToDate);
+                cmd.Parameters.AddWithValue("BATCHTODATE_", ToDate);
             else
-                cmd.Parameters.Add("BATCHTODATE_", DBNull.Value);
+                cmd.Parameters.AddWithValue("BATCHTODATE_", DBNull.Value);
 
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             BatchBO objBatchBO = null;
             BatchList Batches = new BatchList();
 
@@ -128,19 +128,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public BatchList GetSubmitedPayment(int projectID)
         {
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_CMP_GET_SUBMIT_PAYMENT";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("PROJECTID_", projectID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PROJECTID_", projectID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             BatchBO objBatchBO = null;
             BatchList oBatchList = new BatchList();
 
@@ -164,20 +164,20 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public BatchList GetPaymentRequestBatch(int projectID, int BatchNo)
         {
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_PAPS_PROJECT_ID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("PROJECTID_", projectID);
-            cmd.Parameters.Add("cmp_batchno_", BatchNo);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PROJECTID_", projectID);
+            cmd.Parameters.AddWithValue("cmp_batchno_", BatchNo);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             BatchBO objBatchBO = null;
             BatchList oBatchList = new BatchList();
 
@@ -201,20 +201,20 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public BatchList GetPaymentPendingBatch(int projectID, int BatchNo)
         {
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_PENDING_BATCH_BYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("PROJECTID_", projectID);
-            cmd.Parameters.Add("cmp_batchno_", BatchNo);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PROJECTID_", projectID);
+            cmd.Parameters.AddWithValue("cmp_batchno_", BatchNo);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             BatchBO objBatchBO = null;
             BatchList oBatchList = new BatchList();
 
@@ -237,19 +237,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public BatchBO GetPaymentRequestByHHID(int householdID)
         {
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_PAYTREQUESTSTATUS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HHID_", householdID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", householdID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             BatchBO objBatchBO = null;
 
             while (dr.Read())
@@ -273,20 +273,20 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public BatchList GetPaymentRequestByHHID(int ProjectId, int HHID)
         {
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_PAPS_BY_HHID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HHID_", HHID);
-            cmd.Parameters.Add("ProjectId_", ProjectId);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", HHID);
+            cmd.Parameters.AddWithValue("ProjectId_", ProjectId);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             BatchBO oBatchBO = null;
             BatchList oBatchList = new BatchList();
             while (dr.Read())
@@ -311,24 +311,24 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public BatchList GetPaymentRequestByHHID(int ProjectId, int HHID, int ElementId, string Status, int ApprovalLevel)
         {
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_BATCH_HHID_TRAKID";// USP_TRN_GET_BATCH_HHID_TRAKID
 
-             cmd = new OracleCommand(proc, cnn);
+             cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HHID_", HHID);
-            cmd.Parameters.Add("ProjectId_", ProjectId);
-            cmd.Parameters.Add("ElementId_", ElementId);
-            cmd.Parameters.Add("Status_", Status);
-            cmd.Parameters.Add("ApprovalLevel_", ApprovalLevel);
+            cmd.Parameters.AddWithValue("HHID_", HHID);
+            cmd.Parameters.AddWithValue("ProjectId_", ProjectId);
+            cmd.Parameters.AddWithValue("ElementId_", ElementId);
+            cmd.Parameters.AddWithValue("Status_", Status);
+            cmd.Parameters.AddWithValue("ApprovalLevel_", ApprovalLevel);
              
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             BatchBO oBatchBO = null;
             BatchList oBatchList = new BatchList();
             while (dr.Read())
@@ -393,24 +393,24 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public BatchBO GetPaymentAmountApproved(BatchBO oBatchBO)
         {
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GETPAYMENTAMTAPPROVED";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HHID_", oBatchBO.HHID);
-            cmd.Parameters.Add("amt_requested_", oBatchBO.Amt_Requested);
-            //cmd.Parameters.Add("HHID_", oBatchBO.HHID);
+            cmd.Parameters.AddWithValue("HHID_", oBatchBO.HHID);
+            cmd.Parameters.AddWithValue("amt_requested_", oBatchBO.Amt_Requested);
+            //cmd.Parameters.AddWithValue("HHID_", oBatchBO.HHID);
 
-            cmd.Parameters.Add("AmountMessage_", OracleDbType.Decimal, 100).Direction = ParameterDirection.Output;
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 100).Direction = ParameterDirection.Output;
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("AmountMessage_", SqlDbType.Decimal).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             BatchBO ooBatchBO = null;
 
             while (dr.Read())
@@ -432,20 +432,20 @@ namespace WIS_DataAccess
 
         //public CompensationFinancialList getCompPackagePaymentRequest(BatchBO oBatchBO)
         //{
-        //    OracleConnection cnn = new OracleConnection(con);
-        //    OracleCommand cmd;
+        //    SqlConnection cnn = new SqlConnection(con);
+        //    SqlCommand cmd;
 
         //    string proc = "USP_TRN_GET_CMP_PAK_PAY_REQ";
 
-        //    cmd = new OracleCommand(proc, cnn);
+        //    cmd = new SqlCommand(proc, cnn);
         //    cmd.CommandType = CommandType.StoredProcedure;
 
-        //    cmd.Parameters.Add("HHID_", oBatchBO.HHID);
-        //    //cmd.Parameters.Add("ProjectId_", oBatchBO.p);
-        //    cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+        //    cmd.Parameters.AddWithValue("HHID_", oBatchBO.HHID);
+        //    //cmd.Parameters.AddWithValue("ProjectId_", oBatchBO.p);
+        //    //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
         //    cmd.Connection.Open();
-        //    OracleDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+        //    SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
         //    CompensationFinancialBO oCompFinancialBO = null;
         //   // BatchBO ooBatchBO = null;
         //    CompensationFinancialList lstCompensationFinancial = new CompensationFinancialList();
@@ -695,34 +695,34 @@ namespace WIS_DataAccess
             string returnResult = string.Empty;
             BatchBO ooBatchBO = new BatchBO();
 
-            OracleConnection OCon = new OracleConnection(con);
+            SqlConnection OCon = new SqlConnection(con);
             OCon.Open();
-            OracleCommand oCmd = new OracleCommand("USP_TRN_CMP_ADDBATCH", OCon);
+            SqlCommand oCmd = new SqlCommand("USP_TRN_CMP_ADDBATCH", OCon);
             oCmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(oCmd.CommandType);
 
             try
             {
-                oCmd.Parameters.Add("CMP_BATCHNO_", oBatchBO.CMP_BatchNo);
-                oCmd.Parameters.Add("batchstatus_", oBatchBO.BatchStatus);
-                oCmd.Parameters.Add("payt_requestdate_", Convert.ToDateTime(oBatchBO.Payt_RequestDate).ToString(UtilBO.DateFormatDB));
+                oCmd.Parameters.AddWithValue("CMP_BATCHNO_", oBatchBO.CMP_BatchNo);
+                oCmd.Parameters.AddWithValue("batchstatus_", oBatchBO.BatchStatus);
+                oCmd.Parameters.AddWithValue("payt_requestdate_", Convert.ToDateTime(oBatchBO.Payt_RequestDate).ToString(UtilBO.DateFormatDB));
 
-                oCmd.Parameters.Add("hhid_", oBatchBO.HHID);
-                oCmd.Parameters.Add("requeststatus_", oBatchBO.RequestStatus);
+                oCmd.Parameters.AddWithValue("hhid_", oBatchBO.HHID);
+                oCmd.Parameters.AddWithValue("requeststatus_", oBatchBO.RequestStatus);
 
-                oCmd.Parameters.Add("Payt_Description_", oBatchBO.Payt_Description);
-                oCmd.Parameters.Add("Amt_Requested_", oBatchBO.Amt_Requested);
-                oCmd.Parameters.Add("Comments_", oBatchBO.Comments);
-                oCmd.Parameters.Add("TotalAmount_", oBatchBO.TotalAmount);
+                oCmd.Parameters.AddWithValue("Payt_Description_", oBatchBO.Payt_Description);
+                oCmd.Parameters.AddWithValue("Amt_Requested_", oBatchBO.Amt_Requested);
+                oCmd.Parameters.AddWithValue("Comments_", oBatchBO.Comments);
+                oCmd.Parameters.AddWithValue("TotalAmount_", oBatchBO.TotalAmount);
 
-                oCmd.Parameters.Add("isdeleted_", oBatchBO.IsDeleted);
-                oCmd.Parameters.Add("createdby_", oBatchBO.CreatedBy);
+                oCmd.Parameters.AddWithValue("isdeleted_", oBatchBO.IsDeleted);
+                oCmd.Parameters.AddWithValue("createdby_", oBatchBO.CreatedBy);
 
-                oCmd.Parameters.Add("getBatchNo_", OracleDbType.Varchar2, 50).Direction = ParameterDirection.Output;
-                oCmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
-                oCmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                oCmd.Parameters.AddWithValue("getBatchNo_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                oCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+               // // Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
-                OracleDataReader oDataReader = oCmd.ExecuteReader();
+                SqlDataReader oDataReader = oCmd.ExecuteReader();
 
                 if (oCmd.Parameters["errorMessage_"].Value == null)
                     ooBatchBO.dbMessage = string.Empty;
@@ -761,13 +761,13 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int DeletePaymentRequest(int PaymentRequestId)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_CMP_DEL_SUBMIT_PAYMENT";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("payt_requestid_", PaymentRequestId);
+            cmd.Parameters.AddWithValue("payt_requestid_", PaymentRequestId);
 
             cmd.Connection.Open();
 
@@ -783,35 +783,35 @@ namespace WIS_DataAccess
         public string UpdatePaymentRequest(BatchBO oBatchBO)
         {
             string returnResult = string.Empty;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_CMP_UPD_SUBMIT_PAYMENT";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            cmd.Parameters.Add("payt_requestid_", oBatchBO.Payt_RequestID);
+            cmd.Parameters.AddWithValue("payt_requestid_", oBatchBO.Payt_RequestID);
             if (oBatchBO.CMP_BatchNo != null)
             {
-                cmd.Parameters.Add("CMP_BatchNo_", oBatchBO.CMP_BatchNo);
+                cmd.Parameters.AddWithValue("CMP_BatchNo_", oBatchBO.CMP_BatchNo);
             }
             else
             {
-                cmd.Parameters.Add("CMP_BatchNo_", "0");
+                cmd.Parameters.AddWithValue("CMP_BatchNo_", "0");
             }
             if (oBatchBO.HHID != 0)
             {
-                cmd.Parameters.Add("HHID_", oBatchBO.HHID);
+                cmd.Parameters.AddWithValue("HHID_", oBatchBO.HHID);
             }
             else
             {
-                cmd.Parameters.Add("HHID_","0");
+                cmd.Parameters.AddWithValue("HHID_","0");
             }
-            cmd.Parameters.Add("statuslevel_", oBatchBO.StausLevel);
-            cmd.Parameters.Add("requeststatus_", oBatchBO.RequestStatus);
-            cmd.Parameters.Add("updatedby_", oBatchBO.UpdatedBy);           
+            cmd.Parameters.AddWithValue("statuslevel_", oBatchBO.StausLevel);
+            cmd.Parameters.AddWithValue("requeststatus_", oBatchBO.RequestStatus);
+            cmd.Parameters.AddWithValue("updatedby_", oBatchBO.UpdatedBy);           
 
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 100).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             try
             {
                 cmd.ExecuteNonQuery();
@@ -838,18 +838,18 @@ namespace WIS_DataAccess
         public void DeclineBatchHHID(int BatchNo, int PaymentRequestId, int HHID)
         {
             string returnResult = string.Empty;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_UPD_DECLINE_BATCH_HHID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-           // cmd.Parameters.Add("BatchNo_", BatchNo);
-            cmd.Parameters.Add("PaymentRequestId_", PaymentRequestId);
-            cmd.Parameters.Add("HHID_", HHID);
+           // cmd.Parameters.AddWithValue("BatchNo_", BatchNo);
+            cmd.Parameters.AddWithValue("PaymentRequestId_", PaymentRequestId);
+            cmd.Parameters.AddWithValue("HHID_", HHID);
 
-           // cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 100).Direction = ParameterDirection.Output;
+           // cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             try
             {
                 cmd.ExecuteNonQuery();
@@ -877,18 +877,18 @@ namespace WIS_DataAccess
         public string CloseBatch(int HHID,int UserId,int BatchNo, WorkFlowBO objWorkFlow)
         {
             string returnResult = string.Empty;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_CMP_CLOSE_PAYREQ_BATCH";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            //cmd.Parameters.Add("HHID_", HHID);
-            cmd.Parameters.Add("CMP_BATCHNO_", BatchNo);
-            cmd.Parameters.Add("UPDATEDBY_", UserId);
+            //cmd.Parameters.AddWithValue("HHID_", HHID);
+            cmd.Parameters.AddWithValue("CMP_BATCHNO_", BatchNo);
+            cmd.Parameters.AddWithValue("UPDATEDBY_", UserId);
 
-            cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 100).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             try
             {
                 cmd.ExecuteNonQuery();
@@ -957,34 +957,34 @@ namespace WIS_DataAccess
         public void AddBatchComments(BatchBO oBatchBO)
         {
             string returnResult = string.Empty;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_INS_BATCHINDCOMMENTS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            //cmd.Parameters.Add("payt_requestid_", oBatchBO.Payt_RequestID);
+            //cmd.Parameters.AddWithValue("payt_requestid_", oBatchBO.Payt_RequestID);
             if (oBatchBO.CMP_BatchNo != null)
             {
-                cmd.Parameters.Add("CMP_BatchNo_", oBatchBO.CMP_BatchNo);
+                cmd.Parameters.AddWithValue("CMP_BatchNo_", oBatchBO.CMP_BatchNo);
             }
             else
             {
-                cmd.Parameters.Add("CMP_BatchNo_", "0");
+                cmd.Parameters.AddWithValue("CMP_BatchNo_", "0");
             }
             if (oBatchBO.HHID != 0)
             {
-                cmd.Parameters.Add("HHID_", oBatchBO.HHID);
+                cmd.Parameters.AddWithValue("HHID_", oBatchBO.HHID);
             }
             else
             {
-                cmd.Parameters.Add("HHID_", "0");
+                cmd.Parameters.AddWithValue("HHID_", "0");
             }
-            cmd.Parameters.Add("statuslevel_", oBatchBO.StausLevel);
-            cmd.Parameters.Add("requeststatus_", oBatchBO.RequestStatus);
-            cmd.Parameters.Add("updatedby_", oBatchBO.UpdatedBy);
-            cmd.Parameters.Add("Comments_", oBatchBO.Comments);
+            cmd.Parameters.AddWithValue("statuslevel_", oBatchBO.StausLevel);
+            cmd.Parameters.AddWithValue("requeststatus_", oBatchBO.RequestStatus);
+            cmd.Parameters.AddWithValue("updatedby_", oBatchBO.UpdatedBy);
+            cmd.Parameters.AddWithValue("Comments_", oBatchBO.Comments);
             cmd.ExecuteNonQuery();
         }
     }

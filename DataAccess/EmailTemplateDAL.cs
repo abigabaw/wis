@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WIS_BusinessObjects;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 
 namespace WIS_DataAccess
@@ -16,18 +16,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public EmailTemplateList GetAllOverdueApprovals()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_NOTIF_OVERDUE_APPROVAL";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             EmailTemplateBO EmailTemplateBOobj = null;
             EmailTemplateList EmailTemplateListobj = new EmailTemplateList();
 
@@ -77,19 +77,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public EmailTemplateBO GetEmailDetailsForOverDue(string EMAILTEMPLATECODE)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_GET_EMAILDETAILSFORDUE";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("EMAILTEMPLATECODE_", EMAILTEMPLATECODE);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("EMAILTEMPLATECODE_", EMAILTEMPLATECODE);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             EmailTemplateBO EmailTemplateBOobj = null;
 
             while (dr.Read())
@@ -113,19 +113,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public EmailTemplateBO GetSMSDetailsForOverDue(string SMSTEMPLATECODE)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_GET_SMSDETAILSFORDUE";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("SMSTEMPLATECODE_", SMSTEMPLATECODE);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("SMSTEMPLATECODE_", SMSTEMPLATECODE);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             EmailTemplateBO EmailTemplateBOobj = null;
 
             while (dr.Read())
@@ -144,19 +144,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public WIS_ConfigBO GetSMSSenderDataForOverDue()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             WIS_ConfigBO WIS_ConfigBO = new WIS_ConfigBO();
             string proc1 = "USP_SEL_SMS_CONFIG";
 
-            cmd = new OracleCommand(proc1, cnn);
+            cmd = new SqlCommand(proc1, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr1 = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr1 = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             WIS_ConfigBO WIS_ConfigSMSBO = null;
             // EmailTemplateList EmailTemplateListobj = new EmailTemplateList();
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_BusinessObjects;
 using WIS_BusinessObjects.Collections;
@@ -13,8 +13,8 @@ namespace WIS_DataAccess
   public  class ParameterDAL
     {
         string connStr = ConfigurationManager.ConnectionStrings["UETCL_WIS"].ConnectionString; //AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
         /// <summary>
         /// To fetch details
@@ -23,14 +23,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ParameterList GetOptionAvailable()
         {
-            OracleConnection con = new OracleConnection(ConfigurationManager.ConnectionStrings["UETCL_WIS"].ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["UETCL_WIS"].ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_OPTIONS";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ParameterBO objcountBO = null;
             ParameterList objcountlist = new ParameterList();
 
@@ -55,17 +55,17 @@ namespace WIS_DataAccess
         {
             ParameterList objParameterList = null;
 
-            using (cnn = new OracleConnection(connStr))
+            using (cnn = new SqlConnection(connStr))
             {
-                using (cmd = new OracleCommand("USP_MST_GET_PARAMETERS", cnn))
+                using (cmd = new SqlCommand("USP_MST_GET_PARAMETERS", cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add("OPTIONAVAILABLEID_", AvailableOptionID);
-                    cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("OPTIONAVAILABLEID_", AvailableOptionID);
+                    // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
                     cmd.Connection.Open();
 
-                    OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                    SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                     ParameterBO objParameterBO = null;
                     objParameterList = new ParameterList();
@@ -97,17 +97,17 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            using (cnn = new OracleConnection(connStr))
+            using (cnn = new SqlConnection(connStr))
             {
-                using (cmd = new OracleCommand("USP_MST_INS_PARAMETER", cnn))
+                using (cmd = new SqlCommand("USP_MST_INS_PARAMETER", cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection.Open();
 
-                    cmd.Parameters.Add("AvailableOptionsID_", objParameterBO.AvailableOptionsID);
-                    cmd.Parameters.Add("ParameterName_", objParameterBO.ParameterName);
-                    cmd.Parameters.Add("CREATEDBY_", objParameterBO.CreatedBy);
-                    cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("AvailableOptionsID_", objParameterBO.AvailableOptionsID);
+                    cmd.Parameters.AddWithValue("ParameterName_", objParameterBO.ParameterName);
+                    cmd.Parameters.AddWithValue("CREATEDBY_", objParameterBO.CreatedBy);
+                    cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                     cmd.ExecuteNonQuery();
 
                     if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -129,18 +129,18 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            using (cnn = new OracleConnection(connStr))
+            using (cnn = new SqlConnection(connStr))
             {
-                using (cmd = new OracleCommand("USP_MST_UPD_PARAMETER", cnn))
+                using (cmd = new SqlCommand("USP_MST_UPD_PARAMETER", cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection.Open();
 
-                    cmd.Parameters.Add("ParameterID_", objParameterBO.ParameterID);
-                    cmd.Parameters.Add("AvailableOptionsID_", objParameterBO.AvailableOptionsID);
-                    cmd.Parameters.Add("ParameterName_", objParameterBO.ParameterName);
-                    cmd.Parameters.Add("UPDATEDBY_", objParameterBO.UpdatedBy);
-                    cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("ParameterID_", objParameterBO.ParameterID);
+                    cmd.Parameters.AddWithValue("AvailableOptionsID_", objParameterBO.AvailableOptionsID);
+                    cmd.Parameters.AddWithValue("ParameterName_", objParameterBO.ParameterName);
+                    cmd.Parameters.AddWithValue("UPDATEDBY_", objParameterBO.UpdatedBy);
+                    cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                     cmd.ExecuteNonQuery();
 
                     if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -162,15 +162,15 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            using (cnn = new OracleConnection(connStr))
+            using (cnn = new SqlConnection(connStr))
             {
-                using (cmd = new OracleCommand("USP_MST_DEL_PARAMETER", cnn))
+                using (cmd = new SqlCommand("USP_MST_DEL_PARAMETER", cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection.Open();
 
-                    cmd.Parameters.Add("parameterID_", parameterID);
-                    cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("parameterID_", parameterID);
+                    cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                     cmd.ExecuteNonQuery();
 
                     if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -194,18 +194,18 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            using (cnn = new OracleConnection(connStr))
+            using (cnn = new SqlConnection(connStr))
             {
-                using (cmd = new OracleCommand("USP_MST_OBS_PARAMETER", cnn))
+                using (cmd = new SqlCommand("USP_MST_OBS_PARAMETER", cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection.Open();
 
-                    cmd.Parameters.Add("parameterID_", parameterID);
-                    cmd.Parameters.Add("ISDELETED_", isDeleted);
-                    cmd.Parameters.Add("UPDATEDBY_", updatedBy);
+                    cmd.Parameters.AddWithValue("parameterID_", parameterID);
+                    cmd.Parameters.AddWithValue("ISDELETED_", isDeleted);
+                    cmd.Parameters.AddWithValue("UPDATEDBY_", updatedBy);
 
-                    cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                     cmd.ExecuteNonQuery();
 
                     if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -227,18 +227,18 @@ namespace WIS_DataAccess
         {
             proc = "USP_MST_GET_PARAMETERBYID";
 
-            cnn = new OracleConnection(connStr);
+            cnn = new SqlConnection(connStr);
             ParameterBO ParameterBOobj = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("parameterID_", parameterID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("parameterID_", parameterID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
                 {
                     ParameterBOobj = new ParameterBO();

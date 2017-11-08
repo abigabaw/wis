@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -8,8 +8,8 @@ namespace WIS_DataAccess
     public class PAP_LivelihoodDAL
     {
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
 
         /// <summary>
@@ -20,20 +20,20 @@ namespace WIS_DataAccess
         public PAP_LivelihoodList GetLivelihoodItemsByID(int householdID)
         {
             proc = "USP_TRN_GET_LIVELIHOODITEMS";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             PAP_LivelihoodList LivelihoodItems = new PAP_LivelihoodList();
             PAP_LivelihoodBO objLivelihood = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HOUSEHOLDID_", householdID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HOUSEHOLDID_", householdID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -63,20 +63,20 @@ namespace WIS_DataAccess
         /// <param name="LivelihoodItems"></param>
         public void UpdateLivelihood(PAP_LivelihoodList LivelihoodItems)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_UPD_LIVELIHOOD";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("LIVELIHOOD_ITEMID_", "");
-            cmd.Parameters.Add("HOUSEHOLDID_","");
-            cmd.Parameters.Add("CASH_", "");
-            cmd.Parameters.Add("INKIND_", "");
-            cmd.Parameters.Add("CREATEDBY_", "");
-            cmd.Parameters.Add("UPDATEDBY_", "");
+            cmd.Parameters.AddWithValue("LIVELIHOOD_ITEMID_", "");
+            cmd.Parameters.AddWithValue("HOUSEHOLDID_","");
+            cmd.Parameters.AddWithValue("CASH_", "");
+            cmd.Parameters.AddWithValue("INKIND_", "");
+            cmd.Parameters.AddWithValue("CREATEDBY_", "");
+            cmd.Parameters.AddWithValue("UPDATEDBY_", "");
 
             foreach (PAP_LivelihoodBO objLivelihood in LivelihoodItems)
             {

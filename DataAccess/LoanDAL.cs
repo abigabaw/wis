@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -14,23 +14,23 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public LoanList GetLoan(string EncumbrancepurposeName)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_ENCUMBRANCEPURPOSE";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
             if (EncumbrancepurposeName.ToString() == "")
             {
-                cmd.Parameters.Add("@EncumbrancepurposeNameIN", DBNull.Value);
+                cmd.Parameters.AddWithValue("@EncumbrancepurposeNameIN", DBNull.Value);
             }
             else
             {
-                cmd.Parameters.Add("@EncumbrancepurposeNameIN", EncumbrancepurposeName.ToString());
+                cmd.Parameters.AddWithValue("@EncumbrancepurposeNameIN", EncumbrancepurposeName.ToString());
             }
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             LoanBO objLoan = null;
             LoanList Loan = new LoanList();
             while (dr.Read())
@@ -54,16 +54,16 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_MST_INS_ENCUMBRANCEPURPOSE", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_MST_INS_ENCUMBRANCEPURPOSE", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("@ENCUMBRANCEPURPOSENameIN", objLoan.Encumbrancepurpose);
-            myCommand.Parameters.Add("@ISDELETEDIN", "False");
-            myCommand.Parameters.Add("@USERIDIN", objLoan.CreatedBy);
-            myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("@ENCUMBRANCEPURPOSENameIN", objLoan.Encumbrancepurpose);
+            myCommand.Parameters.AddWithValue("@ISDELETEDIN", "False");
+            myCommand.Parameters.AddWithValue("@USERIDIN", objLoan.CreatedBy);
+            myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             myConnection.Open();
             myCommand.ExecuteNonQuery();
@@ -80,13 +80,13 @@ namespace WIS_DataAccess
         //{
         //    int result = 0;
 
-        //    OracleConnection myConnection;
-        //    OracleCommand myCommand;
-        //    myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-        //    myCommand = new OracleCommand("USP_MST_DEL_ENCUMBRANCEPURPOSE", myConnection);
+        //    SqlConnection myConnection;
+        //    SqlCommand myCommand;
+        //    myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+        //    myCommand = new SqlCommand("USP_MST_DEL_ENCUMBRANCEPURPOSE", myConnection);
         //    myCommand.Connection = myConnection;
         //    myCommand.CommandType = CommandType.StoredProcedure;
-        //    myCommand.Parameters.Add("@ENCUMBRANCEPURPOSEIDIN", EncumbrancepurposeId);
+        //    myCommand.Parameters.AddWithValue("@ENCUMBRANCEPURPOSEIDIN", EncumbrancepurposeId);
 
         //    myConnection.Open();
         //    result = myCommand.ExecuteNonQuery();
@@ -102,18 +102,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteLoan(int EncumbrancepurposeId)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DEL_ENCUMBRANCEPURPOSE", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DEL_ENCUMBRANCEPURPOSE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("ENCUMBRANCEPURPOSEIDIN", EncumbrancepurposeId);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("ENCUMBRANCEPURPOSEIDIN", EncumbrancepurposeId);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -148,17 +148,17 @@ namespace WIS_DataAccess
         public string UpdateLoan(LoanBO objLoan)
         {
             string result = "";
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_MST_UPD_ENCUMBRANCEPURPOSE", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_MST_UPD_ENCUMBRANCEPURPOSE", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("@ENCUMBRANCEPURPOSEIDIN", objLoan.EncumbranceId);
-            myCommand.Parameters.Add("@ENCUMBRANCEPURPOSENameIN", objLoan.Encumbrancepurpose);
-            myCommand.Parameters.Add("@ISDELETEDIN", "False");
-            myCommand.Parameters.Add("@USERIDIN", objLoan.UpdatedBy);
-            myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("@ENCUMBRANCEPURPOSEIDIN", objLoan.EncumbranceId);
+            myCommand.Parameters.AddWithValue("@ENCUMBRANCEPURPOSENameIN", objLoan.Encumbrancepurpose);
+            myCommand.Parameters.AddWithValue("@ISDELETEDIN", "False");
+            myCommand.Parameters.AddWithValue("@USERIDIN", objLoan.UpdatedBy);
+            myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             myConnection.Open();
             myCommand.ExecuteNonQuery();
@@ -178,15 +178,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public LoanBO GetLoanByLoanID(int EncumbranceId)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_ENCPURPOSEBYID";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@EncumbranceIDIN", EncumbranceId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("@EncumbranceIDIN", EncumbranceId);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             LoanBO obLoan = null;
             while (dr.Read())
             {
@@ -201,18 +201,18 @@ namespace WIS_DataAccess
         //newly added
         public string ObsoleteLoan(int EncumbrancepurposeId, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBS_ENCUMBRANCEPURPOSE", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBS_ENCUMBRANCEPURPOSE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("ENCUMBRANCEPURPOSEIDIN", EncumbrancepurposeId);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("ENCUMBRANCEPURPOSEIDIN", EncumbrancepurposeId);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -8,8 +8,8 @@ namespace WIS_DataAccess
     public class PAP_StakeholderDAL
     {
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
         /// <summary>
         /// To Get Stake holder By ID
@@ -19,19 +19,19 @@ namespace WIS_DataAccess
         public PAP_StakeholderBO GetStakeholderByID(int householdID)
         {
             proc = "USP_TRN_GET_STAKEHOLDERBYID";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             PAP_StakeholderBO objStakeholder = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HOUSEHOLDID_", householdID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HOUSEHOLDID_", householdID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -69,52 +69,52 @@ namespace WIS_DataAccess
         /// <param name="objStakeholder"></param>
         public void UpdateStakeholder(PAP_StakeholderBO objStakeholder)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_UPD_STAKEHOLDER";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("STAKEHOLDERID_", objStakeholder.StakeHolderID);
-            cmd.Parameters.Add("HOUSEHOLDID_", objStakeholder.HouseHoldID);
-            cmd.Parameters.Add("STAKEHOLDERNAME_", objStakeholder.StakeholderName);
+            cmd.Parameters.AddWithValue("STAKEHOLDERID_", objStakeholder.StakeHolderID);
+            cmd.Parameters.AddWithValue("HOUSEHOLDID_", objStakeholder.HouseHoldID);
+            cmd.Parameters.AddWithValue("STAKEHOLDERNAME_", objStakeholder.StakeholderName);
             if (objStakeholder.Representation != "0")
-                cmd.Parameters.Add("REPRESENTATION_", objStakeholder.Representation);
+                cmd.Parameters.AddWithValue("REPRESENTATION_", objStakeholder.Representation);
             else
-                cmd.Parameters.Add("REPRESENTATION_",DBNull.Value);
+                cmd.Parameters.AddWithValue("REPRESENTATION_",DBNull.Value);
 
             if (objStakeholder.ResidentialAddress.Trim().Length > 1000)
-                cmd.Parameters.Add("RESIDENTIALADDRESS_", objStakeholder.ResidentialAddress.Substring(0, 1000));
+                cmd.Parameters.AddWithValue("RESIDENTIALADDRESS_", objStakeholder.ResidentialAddress.Substring(0, 1000));
             else
-                cmd.Parameters.Add("RESIDENTIALADDRESS_", objStakeholder.ResidentialAddress);
+                cmd.Parameters.AddWithValue("RESIDENTIALADDRESS_", objStakeholder.ResidentialAddress);
 
             if (objStakeholder.PostalAddress.Trim().Length > 1000)
-                cmd.Parameters.Add("POSTALADDRESS_", objStakeholder.PostalAddress.Substring(0, 1000));
+                cmd.Parameters.AddWithValue("POSTALADDRESS_", objStakeholder.PostalAddress.Substring(0, 1000));
             else
-                cmd.Parameters.Add("POSTALADDRESS_", objStakeholder.PostalAddress);
+                cmd.Parameters.AddWithValue("POSTALADDRESS_", objStakeholder.PostalAddress);
 
-            cmd.Parameters.Add("TELEPHONENO_", objStakeholder.TelephoneNo);
+            cmd.Parameters.AddWithValue("TELEPHONENO_", objStakeholder.TelephoneNo);
 
             if (objStakeholder.DateOfSurvey != null && objStakeholder.DateOfSurvey != DateTime.MinValue)
-                cmd.Parameters.Add("DATEOFSURVEY_", objStakeholder.DateOfSurvey.ToString(UtilBO.DateFormatDB));
+                cmd.Parameters.AddWithValue("DATEOFSURVEY_", objStakeholder.DateOfSurvey.ToString(UtilBO.DateFormatDB));
             else
-                cmd.Parameters.Add("DATEOFSURVEY_", DBNull.Value);
+                cmd.Parameters.AddWithValue("DATEOFSURVEY_", DBNull.Value);
             
-            cmd.Parameters.Add("DISTRICT_", objStakeholder.District);
-            cmd.Parameters.Add("COUNTY_", objStakeholder.County);
-            cmd.Parameters.Add("SUBCOUNTY_", objStakeholder.Subcounty);
-            cmd.Parameters.Add("PARISH_", objStakeholder.Parish);
-            cmd.Parameters.Add("VILLAGE_", objStakeholder.Village);
+            cmd.Parameters.AddWithValue("DISTRICT_", objStakeholder.District);
+            cmd.Parameters.AddWithValue("COUNTY_", objStakeholder.County);
+            cmd.Parameters.AddWithValue("SUBCOUNTY_", objStakeholder.Subcounty);
+            cmd.Parameters.AddWithValue("PARISH_", objStakeholder.Parish);
+            cmd.Parameters.AddWithValue("VILLAGE_", objStakeholder.Village);
 
             if (objStakeholder.SegmentID > 0)
-                cmd.Parameters.Add("SEGMENTID_", objStakeholder.SegmentID);
+                cmd.Parameters.AddWithValue("SEGMENTID_", objStakeholder.SegmentID);
             else
-                cmd.Parameters.Add("SEGMENTID_", DBNull.Value);
+                cmd.Parameters.AddWithValue("SEGMENTID_", DBNull.Value);
 
-            cmd.Parameters.Add("CREATEDBY_", objStakeholder.CreatedBy);
-            cmd.Parameters.Add("UPDATEDBY_", objStakeholder.UpdatedBy);
+            cmd.Parameters.AddWithValue("CREATEDBY_", objStakeholder.CreatedBy);
+            cmd.Parameters.AddWithValue("UPDATEDBY_", objStakeholder.UpdatedBy);
 
             cmd.ExecuteNonQuery();
             cmd.Connection.Close();

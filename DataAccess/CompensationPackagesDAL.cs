@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 
@@ -11,8 +11,8 @@ namespace WIS_DataAccess
     {
         #region Declaration Section
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
         #endregion
 
@@ -41,20 +41,20 @@ namespace WIS_DataAccess
         public CompensationPackagesList GetComponestionbyId(int HHID)
         {
             proc = "USP_MST_SEL_COM_PACK";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             CompensationPackagesBO objCOMPACK = null;
 
             CompensationPackagesList COMPACKList = new CompensationPackagesList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("HHID_", HHID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", HHID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -98,25 +98,25 @@ namespace WIS_DataAccess
         public CompensationPackagesList GetComponestion(int householdID, int PackageCat, int USERID)
         {
             proc = "USP_MST_SEL_COM_PACK_ITEM";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             CompensationPackagesBO objCOMPACK = null;
 
             CompensationPackagesList COMPACKList = new CompensationPackagesList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("PackageCat_", PackageCat);
-            cmd.Parameters.Add("HHID_", householdID);
-            cmd.Parameters.Add("USERID_", USERID);
+            cmd.Parameters.AddWithValue("PackageCat_", PackageCat);
+            cmd.Parameters.AddWithValue("HHID_", householdID);
+            cmd.Parameters.AddWithValue("USERID_", USERID);
 
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -158,16 +158,16 @@ namespace WIS_DataAccess
         public int UpdateApprovalStatus(CompensationPackagesBO objCompensationPackagesBO)
         {
             int returnResult;
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_UPD_GRIEAPPROVAL", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_UPD_GRIEAPPROVAL", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("HHID_", objCompensationPackagesBO.HHID);
-                dcmd.Parameters.Add("DocumentCode_", objCompensationPackagesBO.DocumentCode);
+                dcmd.Parameters.AddWithValue("HHID_", objCompensationPackagesBO.HHID);
+                dcmd.Parameters.AddWithValue("DocumentCode_", objCompensationPackagesBO.DocumentCode);
 
                 returnResult = dcmd.ExecuteNonQuery();
 
@@ -194,23 +194,23 @@ namespace WIS_DataAccess
         public CompensationPackagesList GetComponestionbyHHId(int householdID)
         {
             proc = "USP_MST_SELCOMPKGAPP";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             CompensationPackagesBO objCOMPACK = null;
 
             CompensationPackagesList COMPACKList = new CompensationPackagesList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            // cmd.Parameters.Add("PackageCat_", PackageCat);
-            cmd.Parameters.Add("HHID_", householdID);
+            // cmd.Parameters.AddWithValue("PackageCat_", PackageCat);
+            cmd.Parameters.AddWithValue("HHID_", householdID);
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -249,21 +249,21 @@ namespace WIS_DataAccess
         public int SaveApprovalComments(CompensationPackagesBO objCOMPPACKBO)
         {
             int returnResult;
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_APP_PKGDOCUMENT", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_APP_PKGDOCUMENT", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("HHID_", objCOMPPACKBO.HHID);
-                dcmd.Parameters.Add("APPROVERCOMMENTS_", objCOMPPACKBO.ApprovalComents);
-                dcmd.Parameters.Add("REVIEWEDBY_", objCOMPPACKBO.UserID);
-                dcmd.Parameters.Add("APPROVAL_LEVEL", objCOMPPACKBO.ApprovalLevel);
-                dcmd.Parameters.Add("DOCUMENTCODE", objCOMPPACKBO.DocumentCode);
-                dcmd.Parameters.Add("PROJECTID", objCOMPPACKBO.ProjectID);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("HHID_", objCOMPPACKBO.HHID);
+                dcmd.Parameters.AddWithValue("APPROVERCOMMENTS_", objCOMPPACKBO.ApprovalComents);
+                dcmd.Parameters.AddWithValue("REVIEWEDBY_", objCOMPPACKBO.UserID);
+                dcmd.Parameters.AddWithValue("APPROVAL_LEVEL", objCOMPPACKBO.ApprovalLevel);
+                dcmd.Parameters.AddWithValue("DOCUMENTCODE", objCOMPPACKBO.DocumentCode);
+                dcmd.Parameters.AddWithValue("PROJECTID", objCOMPPACKBO.ProjectID);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 returnResult = dcmd.ExecuteNonQuery();
 
             }
@@ -289,26 +289,26 @@ namespace WIS_DataAccess
         public CompensationPackagesList getApproverReviewComments(CompensationPackagesBO pCompensationPackagesBO)
         {
             proc = "USP_TRN_GET_REV_COMMENTS";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             CompensationPackagesBO oCompensationPackagesBO = null;
 
             CompensationPackagesList oCompensationPackagesList = new CompensationPackagesList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("DocumentCode_", pCompensationPackagesBO.DocumentCode);
-            cmd.Parameters.Add("HHID_", pCompensationPackagesBO.HHID);
-            cmd.Parameters.Add("ApprovalLevel_", pCompensationPackagesBO.ApprovalLevel);
-            cmd.Parameters.Add("UserID_", pCompensationPackagesBO.UserID);
-            cmd.Parameters.Add("ProjectID_", pCompensationPackagesBO.ProjectID);
+            cmd.Parameters.AddWithValue("DocumentCode_", pCompensationPackagesBO.DocumentCode);
+            cmd.Parameters.AddWithValue("HHID_", pCompensationPackagesBO.HHID);
+            cmd.Parameters.AddWithValue("ApprovalLevel_", pCompensationPackagesBO.ApprovalLevel);
+            cmd.Parameters.AddWithValue("UserID_", pCompensationPackagesBO.UserID);
+            cmd.Parameters.AddWithValue("ProjectID_", pCompensationPackagesBO.ProjectID);
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -346,26 +346,26 @@ namespace WIS_DataAccess
         public CompensationPackagesBO getapprovalComments(CompensationPackagesBO objCOMPPACKBO)
         {
             proc = "USP_TRN_GET_PKGAPPCOMMENTS";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             CompensationPackagesBO objCOMPACK = null;
 
             CompensationPackagesList COMPACKList = new CompensationPackagesList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("DocumentCode_", objCOMPPACKBO.DocumentCode);
-            cmd.Parameters.Add("HHID_", objCOMPPACKBO.HHID);
-            cmd.Parameters.Add("ApprovalLevel_", objCOMPPACKBO.ApprovalLevel);
-            cmd.Parameters.Add("UserID_", objCOMPPACKBO.UserID);
-            cmd.Parameters.Add("ProjectID_", objCOMPPACKBO.ProjectID);
+            cmd.Parameters.AddWithValue("DocumentCode_", objCOMPPACKBO.DocumentCode);
+            cmd.Parameters.AddWithValue("HHID_", objCOMPPACKBO.HHID);
+            cmd.Parameters.AddWithValue("ApprovalLevel_", objCOMPPACKBO.ApprovalLevel);
+            cmd.Parameters.AddWithValue("UserID_", objCOMPPACKBO.UserID);
+            cmd.Parameters.AddWithValue("ProjectID_", objCOMPPACKBO.ProjectID);
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -396,21 +396,21 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CompensationPackagesBO getpreComments(CompensationPackagesBO cmppkgBo)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GETPRINTCOUNT";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("DocumentCode_", cmppkgBo.DocumentCode);
-            cmd.Parameters.Add("HHID_", cmppkgBo.HHID);
-            cmd.Parameters.Add("UserID_", cmppkgBo.UserID);
-            cmd.Parameters.Add("ProjectID_", cmppkgBo.ProjectID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("DocumentCode_", cmppkgBo.DocumentCode);
+            cmd.Parameters.AddWithValue("HHID_", cmppkgBo.HHID);
+            cmd.Parameters.AddWithValue("UserID_", cmppkgBo.UserID);
+            cmd.Parameters.AddWithValue("ProjectID_", cmppkgBo.ProjectID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CompensationPackagesBO objCMPPACK = null;
             CompensationPackagesList COMPACKList = new CompensationPackagesList();
 
@@ -435,20 +435,20 @@ namespace WIS_DataAccess
         public int SavereprintComments(CompensationPackagesBO cmppkgBo)
         {
             int returnResult;
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_INS_PKGPRINTDOC", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_INS_PKGPRINTDOC", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("HHID_", cmppkgBo.HHID);
-                dcmd.Parameters.Add("DOCUMENTCODE", cmppkgBo.DocumentCode);
-                dcmd.Parameters.Add("REVIEWEDBY_", cmppkgBo.UserID);
-                dcmd.Parameters.Add("APPROVERCOMMENTS_", cmppkgBo.ApprovalComents);
-                dcmd.Parameters.Add("PROJECTID", cmppkgBo.ProjectID);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("HHID_", cmppkgBo.HHID);
+                dcmd.Parameters.AddWithValue("DOCUMENTCODE", cmppkgBo.DocumentCode);
+                dcmd.Parameters.AddWithValue("REVIEWEDBY_", cmppkgBo.UserID);
+                dcmd.Parameters.AddWithValue("APPROVERCOMMENTS_", cmppkgBo.ApprovalComents);
+                dcmd.Parameters.AddWithValue("PROJECTID", cmppkgBo.ProjectID);
+                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 returnResult = dcmd.ExecuteNonQuery();
 
             }
@@ -475,18 +475,18 @@ namespace WIS_DataAccess
         /// <param name="HHID"></param>
         public void UpdateDocReadStatus(int DocItemId, string Status, int UID, int HHID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_INS_PKGREADSTATUS", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_INS_PKGREADSTATUS", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("DocItemId_", DocItemId);
-                dcmd.Parameters.Add("HHID_", HHID);
-                dcmd.Parameters.Add("USERID_", UID);
-                dcmd.Parameters.Add("Status_", Status);
+                dcmd.Parameters.AddWithValue("DocItemId_", DocItemId);
+                dcmd.Parameters.AddWithValue("HHID_", HHID);
+                dcmd.Parameters.AddWithValue("USERID_", UID);
+                dcmd.Parameters.AddWithValue("Status_", Status);
                 dcmd.ExecuteNonQuery();
 
             }
@@ -505,19 +505,19 @@ namespace WIS_DataAccess
         public CompensationPackagesList getprintComments(int Hhid)
         {
             CompensationPackagesList COMPACKList = new CompensationPackagesList();
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             
             string proc = "USP_TRN_GET_PRINTPKGCOMMENTS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure; 
-            cmd.Parameters.Add("HHID_", Hhid);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", Hhid);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
              try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 CompensationPackagesBO cmppkgBo;
                 while (dr.Read())
                 {

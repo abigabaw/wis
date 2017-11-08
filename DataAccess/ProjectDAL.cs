@@ -47,7 +47,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("projectStatus_", projectStatus);
             cmd.Parameters.AddWithValue("userID_", userID);
 
-           // cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+           // // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
@@ -99,7 +99,7 @@ namespace WIS_DataAccess
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("userID_", userID);
-                 //   cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+                 //   // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
                     try
                     {
@@ -205,7 +205,7 @@ namespace WIS_DataAccess
 
             cmd.Parameters.AddWithValue("projectID_", projectID);
 
-          //  cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+          //  // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
@@ -404,7 +404,7 @@ namespace WIS_DataAccess
 
             cmd.Parameters.AddWithValue("GEOGRAPHICALID_", GEOGRAPHICALID);
 
-            //cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
@@ -456,7 +456,7 @@ namespace WIS_DataAccess
             cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("projectID_", projectID);
-          //  cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+          //  // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
@@ -503,7 +503,7 @@ namespace WIS_DataAccess
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("geographicalid_", projectID);
-               // myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+               // myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -554,7 +554,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("projectID_", objFin.ProjectID);
             cmd.Parameters.AddWithValue("financierName_", objFin.FinancierName);
             cmd.Parameters.AddWithValue("createdBy_", objFin.CreatedBy);
-           // cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+           // cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             cmd.Parameters.AddWithValue("FINANCECONDITIONID", objFin.FINANCECONDITIONID);
             cmd.Parameters.AddWithValue("FINANCENATUREID", objFin.FINANCENATUREID);
             cmd.Parameters.AddWithValue("FINANCEREASONID", objFin.FINANCEREASONID);
@@ -586,7 +586,7 @@ namespace WIS_DataAccess
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("projectID_", projectID);
-           // cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+           // // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
@@ -633,7 +633,7 @@ namespace WIS_DataAccess
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("financierID_", financierID);
-           // cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+           // // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
@@ -680,7 +680,7 @@ namespace WIS_DataAccess
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("@F_FINANCIERID", ProjectFinanceID);
-            //    myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            //    myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -727,7 +727,7 @@ namespace WIS_DataAccess
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("@F_FINANCIERID", ProjectFinanceID);
                 myCommand.Parameters.AddWithValue("@isdeleted_", ISDELETED);
-             //   myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+             //   myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -768,7 +768,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("financierID_", objFin.FinancierID);
             cmd.Parameters.AddWithValue("financierName_", objFin.FinancierName);
             cmd.Parameters.AddWithValue("updatedBy", objFin.UpdatedBy);
-          //  cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+          //  cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             cmd.Parameters.AddWithValue("F_FINANCECONDITIONID", objFin.FINANCECONDITIONID);
             cmd.Parameters.AddWithValue("F_FINANCENATUREID", objFin.FINANCENATUREID);
             cmd.Parameters.AddWithValue("F_FINANCEREASONID", objFin.FINANCEREASONID);
@@ -805,7 +805,7 @@ namespace WIS_DataAccess
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("projectid_", ProjectId);
-           // cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+           // // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
@@ -898,7 +898,7 @@ namespace WIS_DataAccess
             cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("projectsegmentid_", ProjectSegmentId);
-           //    cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+           //    // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
@@ -1002,7 +1002,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("isdeleted_", oProjectSegment.IsDeleted);
             cmd.Parameters.AddWithValue("USERID_", oProjectSegment.CreatedBy);
             cmd.Parameters.AddWithValue("ValueofHouse_", oProjectSegment.Valueofhouse);
-          //  cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+          //  cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -1045,7 +1045,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("isdeleted_", oProjectSegment.IsDeleted);
             cmd.Parameters.AddWithValue("USERID_", oProjectSegment.CreatedBy);
             cmd.Parameters.AddWithValue("ValueofHouse_", oProjectSegment.Valueofhouse);
-          //  cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+          //  cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -1075,7 +1075,7 @@ namespace WIS_DataAccess
             cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-        //    cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+        //    // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
@@ -1121,7 +1121,7 @@ namespace WIS_DataAccess
             cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-      //      cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+      //      // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
@@ -1172,7 +1172,7 @@ namespace WIS_DataAccess
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("factorid_", FactorId);
-    //        cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+    //        // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
@@ -1221,7 +1221,7 @@ namespace WIS_DataAccess
             cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-   //         cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+   //         // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
@@ -1303,7 +1303,7 @@ namespace WIS_DataAccess
 
             cmd.Parameters.AddWithValue("ROUTEID_", routeID);
             cmd.Parameters.AddWithValue("CRITERIAID_", criteriaID);
-        //    cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+        //    // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
@@ -1351,7 +1351,7 @@ namespace WIS_DataAccess
             cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("ProjectID_", ProjectID);
-       //     cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+       //     // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
@@ -1408,7 +1408,7 @@ namespace WIS_DataAccess
             cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
            cmd.Parameters.AddWithValue("ProjectIdIN_", ObjProjectBO.ProjectID);
-          //  cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+          //  // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ProjectBO objProjectBO = null;
@@ -1441,7 +1441,7 @@ namespace WIS_DataAccess
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                 //   cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+                 //   // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
                     try
                     {
@@ -1486,7 +1486,7 @@ namespace WIS_DataAccess
 
             cmd.Parameters.AddWithValue("RPT_ID_", reportID);
 
-         //   cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+         //   // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {

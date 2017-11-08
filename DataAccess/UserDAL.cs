@@ -36,7 +36,7 @@ namespace WIS_DataAccess
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("roleid_", oUser.RoleID);
             cmd.Parameters.AddWithValue("username_", strUser);
-           // cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+           // // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
@@ -106,7 +106,7 @@ namespace WIS_DataAccess
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("roleid_", oUser.RoleID);
             cmd.Parameters.AddWithValue("username_", strUser);
-          //  cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+          //  // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
@@ -272,7 +272,7 @@ namespace WIS_DataAccess
             cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("userID_", UserID);
-           // cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+           // // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 

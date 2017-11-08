@@ -24,7 +24,7 @@ namespace WIS_DataAccess
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("UserName_", username);
             cmd.Parameters.AddWithValue("Pwd_", password);
-           // cmd.Parameters.AddWithValue("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           // //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);

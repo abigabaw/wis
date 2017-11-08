@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -14,23 +14,23 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public TenureStructureList GetTenureStructures(string TenureStructureName)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_TENURESTRUCTURES";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
             if (TenureStructureName.ToString() == "")
             {
-                cmd.Parameters.Add("@TenureStructureNameIN",  DBNull.Value);
+                cmd.Parameters.AddWithValue("@TenureStructureNameIN",  DBNull.Value);
             }
             else
             {
-                cmd.Parameters.Add("@TenureStructureNameIN", TenureStructureName.ToString());
+                cmd.Parameters.AddWithValue("@TenureStructureNameIN", TenureStructureName.ToString());
             }
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             TenureStructureBO objTenureStructre = null;
             TenureStructureList TenureStructure = new TenureStructureList();
             while (dr.Read())
@@ -53,23 +53,23 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public TenureStructureList GetAllTenureStructures(string TenureStructureName)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_ALTENURESTRUCTURES";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
             if (TenureStructureName.ToString() == "")
             {
-                cmd.Parameters.Add("@TenureStructureNameIN", DBNull.Value);
+                cmd.Parameters.AddWithValue("@TenureStructureNameIN", DBNull.Value);
             }
             else
             {
-                cmd.Parameters.Add("@TenureStructureNameIN", TenureStructureName.ToString());
+                cmd.Parameters.AddWithValue("@TenureStructureNameIN", TenureStructureName.ToString());
             }
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             TenureStructureBO objTenureStructre = null;
             TenureStructureList TenureStructure = new TenureStructureList();
             while (dr.Read())
@@ -94,16 +94,16 @@ namespace WIS_DataAccess
         {
             string result = "";
             
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_MST_INS_TENURESTRUCTURE", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_MST_INS_TENURESTRUCTURE", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("@TenureStructureNameIN", objTenureStructure.Str_Tenure);
-            myCommand.Parameters.Add("@ISDELETEDIN", "False");
-            myCommand.Parameters.Add("@USERIDIN", objTenureStructure.CreatedBy);
-            myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("@TenureStructureNameIN", objTenureStructure.Str_Tenure);
+            myCommand.Parameters.AddWithValue("@ISDELETEDIN", "False");
+            myCommand.Parameters.AddWithValue("@USERIDIN", objTenureStructure.CreatedBy);
+            myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             myConnection.Open();
             myCommand.ExecuteNonQuery();
@@ -121,13 +121,13 @@ namespace WIS_DataAccess
         //{
         //    int result = 0;
         //    {
-        //        OracleConnection myConnection;
-        //        OracleCommand myCommand;
-        //        myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-        //        myCommand = new OracleCommand("USP_MST_DEL_TENURESTRUCTURE", myConnection);
+        //        SqlConnection myConnection;
+        //        SqlCommand myCommand;
+        //        myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+        //        myCommand = new SqlCommand("USP_MST_DEL_TENURESTRUCTURE", myConnection);
         //        myCommand.Connection = myConnection;
         //        myCommand.CommandType = CommandType.StoredProcedure;
-        //        myCommand.Parameters.Add("@TenureStructureIDIN",TenureStructureId);
+        //        myCommand.Parameters.AddWithValue("@TenureStructureIDIN",TenureStructureId);
         //        myConnection.Open();
         //        result = myCommand.ExecuteNonQuery();
         //        myConnection.Close();
@@ -142,18 +142,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteTenureStructure(int TenureStructureId)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DEL_TENURESTRUCTURE", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DEL_TENURESTRUCTURE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("TenureStructureIDIN", TenureStructureId);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("TenureStructureIDIN", TenureStructureId);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -183,18 +183,18 @@ namespace WIS_DataAccess
         //To Obsolete Tenure Structure
         public string ObsoleteTenureStructure(int TenureStructureId, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBS_TENURESTRUCTURE", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBS_TENURESTRUCTURE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("TenureStructureIDIN", TenureStructureId);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("TenureStructureIDIN", TenureStructureId);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -223,17 +223,17 @@ namespace WIS_DataAccess
         {
             string result = "";
             
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_MST_UPD_TENURESTRUCTURE", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_MST_UPD_TENURESTRUCTURE", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("@TenureStructureIDIN", objTenureStructure.Str_TenureId);
-            myCommand.Parameters.Add("@TenureStructureNameIN", objTenureStructure.Str_Tenure);
-            myCommand.Parameters.Add("@ISDELETEDIN", "False");
-            myCommand.Parameters.Add("@USERIDIN", objTenureStructure.UpdatedBy);
-            myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("@TenureStructureIDIN", objTenureStructure.Str_TenureId);
+            myCommand.Parameters.AddWithValue("@TenureStructureNameIN", objTenureStructure.Str_Tenure);
+            myCommand.Parameters.AddWithValue("@ISDELETEDIN", "False");
+            myCommand.Parameters.AddWithValue("@USERIDIN", objTenureStructure.UpdatedBy);
+            myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             myConnection.Open();
             myCommand.ExecuteNonQuery();
@@ -253,15 +253,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public TenureStructureBO GetTenureStructureItem(int TenureStructureID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_STRTNRBYSTRTNRID";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@TenureStructureIDIN", TenureStructureID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("@TenureStructureIDIN", TenureStructureID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             TenureStructureBO obTenureStructure = null;
             while (dr.Read())
             {

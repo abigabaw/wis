@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WIS_BusinessObjects;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 
 namespace WIS_DataAccess
 {
     public class SharedAuthorizationDAL
     {
-        OracleConnection cnn = null;
-        OracleCommand cmd = null;
+        SqlConnection cnn = null;
+        SqlCommand cmd = null;
 
         /// <summary>
         /// To Add Temporary Authorization
@@ -22,22 +22,22 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            using (cnn = new OracleConnection(AppConfiguration.ConnectionString))
+            using (cnn = new SqlConnection(AppConfiguration.ConnectionString))
             {
-                using (cmd = new OracleCommand("USP_TRN_INS_SHARED_WORKFLOW", cnn))
+                using (cmd = new SqlCommand("USP_TRN_INS_SHARED_WORKFLOW", cnn))
                 {
                     cmd.Connection = cnn;
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add("WrkFlw_SharedId_", pSharedAuth.WorkFlowSharedId);
-                    cmd.Parameters.Add("ModuleId_", pSharedAuth.ModuleId);
-                    cmd.Parameters.Add("WorkFlowId_", pSharedAuth.WorkFlowId);
-                    cmd.Parameters.Add("ProjectId_", pSharedAuth.ProjectId);
-                    cmd.Parameters.Add("AuthoriserId_", pSharedAuth.AuthoriserId);
-                    cmd.Parameters.Add("Remarks_", pSharedAuth.Remarks);
-                    cmd.Parameters.Add("AssignedTo_", pSharedAuth.AssignedToId);
-                    cmd.Parameters.Add("UserId_", pSharedAuth.CreatedBy);
-                    //   cmd.Parameters.Add("CREATEDBY_", pSharedAuth.Createdby);
-                    cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("WrkFlw_SharedId_", pSharedAuth.WorkFlowSharedId);
+                    cmd.Parameters.AddWithValue("ModuleId_", pSharedAuth.ModuleId);
+                    cmd.Parameters.AddWithValue("WorkFlowId_", pSharedAuth.WorkFlowId);
+                    cmd.Parameters.AddWithValue("ProjectId_", pSharedAuth.ProjectId);
+                    cmd.Parameters.AddWithValue("AuthoriserId_", pSharedAuth.AuthoriserId);
+                    cmd.Parameters.AddWithValue("Remarks_", pSharedAuth.Remarks);
+                    cmd.Parameters.AddWithValue("AssignedTo_", pSharedAuth.AssignedToId);
+                    cmd.Parameters.AddWithValue("UserId_", pSharedAuth.CreatedBy);
+                    //   cmd.Parameters.AddWithValue("CREATEDBY_", pSharedAuth.Createdby);
+                    cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                     cnn.Open();
                     cmd.ExecuteNonQuery();
@@ -62,19 +62,19 @@ namespace WIS_DataAccess
             SharedAuthorizationBO pSharedAuth = null;
             SharedAuthorizationList SharedAuthList = null;
 
-            using (cnn = new OracleConnection(AppConfiguration.ConnectionString))
+            using (cnn = new SqlConnection(AppConfiguration.ConnectionString))
             {
-                using (cmd = new OracleCommand("USP_TRN_GET_SHARED_WORKFLOW", cnn))
+                using (cmd = new SqlCommand("USP_TRN_GET_SHARED_WORKFLOW", cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add("AuthoriserId_", AuthorisedId);
-                    cmd.Parameters.Add("PROJECTID_", ProjectID);
-                    cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("AuthoriserId_", AuthorisedId);
+                    cmd.Parameters.AddWithValue("PROJECTID_", ProjectID);
+                    // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
                     SharedAuthList = new SharedAuthorizationList();
                     try
                     {
                         cmd.Connection.Open();
-                        using (OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                        using (SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
                         {
                             while (dr.Read())
                             {
@@ -125,19 +125,19 @@ namespace WIS_DataAccess
             SharedAuthorizationBO pSharedAuth = null;
             //   TemporaryAuthorizationList AuthList = null;
 
-            using (cnn = new OracleConnection(AppConfiguration.ConnectionString))
+            using (cnn = new SqlConnection(AppConfiguration.ConnectionString))
             {
-                using (cmd = new OracleCommand("USP_TRN_GET_SHARED_WRKFLW_BYID", cnn))
+                using (cmd = new SqlCommand("USP_TRN_GET_SHARED_WRKFLW_BYID", cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add("WRKFLW_SHAREDID_", WorkFlowSharedId);
-                   // cmd.Parameters.Add("projectid_", WorkFlowSharedId);
-                    cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("WRKFLW_SHAREDID_", WorkFlowSharedId);
+                   // cmd.Parameters.AddWithValue("projectid_", WorkFlowSharedId);
+                    // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
                     // AuthList = new TemporaryAuthorizationList();
                     try
                     {
                         cmd.Connection.Open();
-                        using (OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                        using (SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
                         {
                             while (dr.Read())
                             {
@@ -206,18 +206,18 @@ namespace WIS_DataAccess
         /// <param name="APPROVALTEMPAUTHORISERID"></param>
         public void DeleteSharedAuthorizationsByID(int WorkFlowSharedId)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_TRN_DEL_SHARED_WORKFLOW", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_TRN_DEL_SHARED_WORKFLOW", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("WrkFlw_SharedId_", WorkFlowSharedId);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("WrkFlw_SharedId_", WorkFlowSharedId);
+                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
             }
@@ -240,18 +240,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteTempAuthorizationsByID(int APPROVALTEMPAUTHORISERID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             //try
             //{
-            //    myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            //    myCommand = new OracleCommand("USP_MST_OBS_TEMPAUTHBYID", myConnection);
+            //    myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            //    myCommand = new SqlCommand("USP_MST_OBS_TEMPAUTHBYID", myConnection);
             //    myCommand.Connection = myConnection;
             //    myCommand.CommandType = CommandType.StoredProcedure;
-            //    myCommand.Parameters.Add("APPROVALTEMPAUTHORISERID_", APPROVALTEMPAUTHORISERID);
-            //    myCommand.Parameters.Add("isdeleted_", IsDeleted);
-            //    myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            //    myCommand.Parameters.AddWithValue("APPROVALTEMPAUTHORISERID_", APPROVALTEMPAUTHORISERID);
+            //    myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+            //    myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             //    myConnection.Open();
             //    myCommand.ExecuteNonQuery();
             //    if (myCommand.Parameters["errorMessage_"].Value != null)
