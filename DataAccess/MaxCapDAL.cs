@@ -106,7 +106,7 @@ namespace WIS_DataAccess
                   cmd.Parameters.AddWithValue("PROJECTID_", objMaxCapBO.ProjectID);                   
                   //cmd.Parameters.AddWithValue("MAXCAPID_", objMaxCapBO.MaxCapID);
                   cmd.Parameters.AddWithValue("CREATEDBY_", objMaxCapBO.CreatedBy);
-                  cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                  /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                   cmd.ExecuteNonQuery();
 
                   if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -139,7 +139,7 @@ namespace WIS_DataAccess
                   cmd.Parameters.AddWithValue("MAXCAPVAL_", objMaxCapBO.MaxCapVal);
                   cmd.Parameters.AddWithValue("PROJECTID_", objMaxCapBO.ProjectID);
                   cmd.Parameters.AddWithValue("UPDATEDBY_", objMaxCapBO.UpdatedBy);
-                  cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                  /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                   cmd.ExecuteNonQuery();
 
                   if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -168,7 +168,7 @@ namespace WIS_DataAccess
                   cmd.Connection.Open();
 
                   cmd.Parameters.AddWithValue("MAXCAPID_", maxCapID);
-                  cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                  /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                   cmd.ExecuteNonQuery();
 
                   if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -202,7 +202,7 @@ namespace WIS_DataAccess
                   cmd.Parameters.AddWithValue("ISDELETED_", isDeleted);
                   cmd.Parameters.AddWithValue("UPDATEDBY_", updatedBy);
 
-                  cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                  /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                   cmd.ExecuteNonQuery();
 
                   if (cmd.Parameters["ERRORMESSAGE_"].Value != null)

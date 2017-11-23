@@ -32,7 +32,7 @@ namespace WIS_DataAccess
                 dcmd.Parameters.AddWithValue("GOALNARRATIVE_", objMNEGoalEvaluationBO.GoalNarrative);
                 dcmd.Parameters.AddWithValue("ISDELETED_", objMNEGoalEvaluationBO.IsDeleted);
                 dcmd.Parameters.AddWithValue("CREATEDBY_", objMNEGoalEvaluationBO.CreatedBy);
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
 
                 if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -159,7 +159,7 @@ namespace WIS_DataAccess
                 dcmd.Parameters.AddWithValue("GOALDESCRIPTION_", objMNEGoalEvaluationBO.GoalDescription);
                 dcmd.Parameters.AddWithValue("GOALNARRATIVE_", objMNEGoalEvaluationBO.GoalNarrative);
                 dcmd.Parameters.AddWithValue("UPDATEBY_", objMNEGoalEvaluationBO.UpdatedBy);
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
 
                 if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -198,7 +198,7 @@ namespace WIS_DataAccess
                 cmd = new SqlCommand(proc, cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("EVALUATIONID_", EvaluationID);
-                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 cmd.Connection.Open();
 
                 cmd.ExecuteNonQuery();

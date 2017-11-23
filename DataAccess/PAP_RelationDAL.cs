@@ -61,7 +61,7 @@ namespace WIS_DataAccess
                 cmd.Parameters.AddWithValue("SCH_DRP_REASONID_", DBNull.Value);
 
             cmd.Parameters.AddWithValue("CREATEDBY_", objRelation.CreatedBy);
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -122,7 +122,7 @@ namespace WIS_DataAccess
                 cmd.Parameters.AddWithValue("SCH_DRP_REASONID_", DBNull.Value);
 
             cmd.Parameters.AddWithValue("UPDATEDBY_", objRelation.UpdatedBy);
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -150,7 +150,7 @@ namespace WIS_DataAccess
             cmd.Connection.Open();
 
             cmd.Parameters.AddWithValue("PAP_HH_RELATIONID_", relationID);
-            //cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            ///* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
             //if (cmd.Parameters["errorMessage_"].Value != null)
              //   result = cmd.Parameters["errorMessage_"].Value.ToString();
@@ -337,7 +337,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("RELATEDTO_", objAffLandUser.RelatedTo);
             cmd.Parameters.AddWithValue("TIMEONLAND_", objAffLandUser.TimeOnLand);
             cmd.Parameters.AddWithValue("CREATEDBY_", objAffLandUser.CreatedBy);
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -371,7 +371,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("RELATEDTO_", objAffLandUser.RelatedTo);
             cmd.Parameters.AddWithValue("TIMEONLAND_", objAffLandUser.TimeOnLand);
             cmd.Parameters.AddWithValue("UPDATEDBY_", objAffLandUser.UpdatedBy);
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 

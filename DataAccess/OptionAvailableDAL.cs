@@ -59,7 +59,7 @@ namespace WIS_DataAccess
                 dcmd.Parameters.AddWithValue("OPTIONAVAILABLE_", objoptionavail.OptionAvailable);
                 dcmd.Parameters.AddWithValue("CREATEDBY", objoptionavail.UserID);
 
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -197,7 +197,7 @@ namespace WIS_DataAccess
                 dcmd.Parameters.AddWithValue("UpdatedBY", objoptionavail.UserID);
                 //return dcmd.ExecuteNonQuery();
 
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -240,7 +240,7 @@ namespace WIS_DataAccess
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("ID_", optionID);
 
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -289,7 +289,7 @@ namespace WIS_DataAccess
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("Id_", ID);
                 myCommand.Parameters.AddWithValue("isdeleted_", Isdeleted);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

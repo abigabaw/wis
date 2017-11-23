@@ -109,7 +109,7 @@ namespace WIS_DataAccess
                 }
                 myCommand.Parameters.AddWithValue("@ISDELETEDIN", "False");
                 myCommand.Parameters.AddWithValue("@USERIDIN", objRole.CreatedBy);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
 
@@ -142,7 +142,7 @@ namespace WIS_DataAccess
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("@RoleId_", (float)roleId);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -189,7 +189,7 @@ namespace WIS_DataAccess
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("@RoleId_", roleId);
                 myCommand.Parameters.AddWithValue("@isdeleted_", IsDeleted);
-               // myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+               // /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                // if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -236,7 +236,7 @@ namespace WIS_DataAccess
                 }                                      
                 myCommand.Parameters.AddWithValue("@ISDELETEDIN", "False");
                 myCommand.Parameters.AddWithValue("@USERIDIN", objRole.UpdatedBy);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 
                 myCommand.ExecuteNonQuery();

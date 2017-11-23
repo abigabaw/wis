@@ -503,7 +503,7 @@ namespace WIS_DataAccess
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("geographicalid_", projectID);
-               // myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+               // /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -554,7 +554,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("projectID_", objFin.ProjectID);
             cmd.Parameters.AddWithValue("financierName_", objFin.FinancierName);
             cmd.Parameters.AddWithValue("createdBy_", objFin.CreatedBy);
-           // cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+           // /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.Parameters.AddWithValue("FINANCECONDITIONID", objFin.FINANCECONDITIONID);
             cmd.Parameters.AddWithValue("FINANCENATUREID", objFin.FINANCENATUREID);
             cmd.Parameters.AddWithValue("FINANCEREASONID", objFin.FINANCEREASONID);
@@ -680,7 +680,7 @@ namespace WIS_DataAccess
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("@F_FINANCIERID", ProjectFinanceID);
-            //    myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            //    /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -727,7 +727,7 @@ namespace WIS_DataAccess
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("@F_FINANCIERID", ProjectFinanceID);
                 myCommand.Parameters.AddWithValue("@isdeleted_", ISDELETED);
-             //   myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+             //   /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -768,7 +768,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("financierID_", objFin.FinancierID);
             cmd.Parameters.AddWithValue("financierName_", objFin.FinancierName);
             cmd.Parameters.AddWithValue("updatedBy", objFin.UpdatedBy);
-          //  cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+          //  /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.Parameters.AddWithValue("F_FINANCECONDITIONID", objFin.FINANCECONDITIONID);
             cmd.Parameters.AddWithValue("F_FINANCENATUREID", objFin.FINANCENATUREID);
             cmd.Parameters.AddWithValue("F_FINANCEREASONID", objFin.FINANCEREASONID);
@@ -1002,7 +1002,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("isdeleted_", oProjectSegment.IsDeleted);
             cmd.Parameters.AddWithValue("USERID_", oProjectSegment.CreatedBy);
             cmd.Parameters.AddWithValue("ValueofHouse_", oProjectSegment.Valueofhouse);
-          //  cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+          //  /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -1045,7 +1045,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("isdeleted_", oProjectSegment.IsDeleted);
             cmd.Parameters.AddWithValue("USERID_", oProjectSegment.CreatedBy);
             cmd.Parameters.AddWithValue("ValueofHouse_", oProjectSegment.Valueofhouse);
-          //  cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+          //  /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["errorMessage_"].Value != null)

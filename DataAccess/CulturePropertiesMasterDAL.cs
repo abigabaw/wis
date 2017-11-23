@@ -153,7 +153,7 @@ namespace WIS_DataAccess
                 dcmd.Parameters.AddWithValue("UPDATEDBY_", CulturePropertiesMasterBObj.UpdatedBy);
                 //return dcmd.ExecuteNonQuery();
 
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -195,7 +195,7 @@ namespace WIS_DataAccess
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("CULTUREPROPTYPEID_", CulturePropID);
-                //myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                ///* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myCommand.Parameters.AddWithValue("ErrorMessage", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
@@ -242,7 +242,7 @@ namespace WIS_DataAccess
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("CULTUREPROPTYPEID_", CulturePropTypeID);
                 myCommand.Parameters.AddWithValue("ISDELETED_", Isdeleted);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

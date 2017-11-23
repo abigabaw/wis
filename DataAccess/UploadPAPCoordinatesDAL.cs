@@ -92,7 +92,7 @@ namespace WIS_DataAccess
             myCommand.Parameters.AddWithValue("WL_LATITUDE_", "");
             myCommand.Parameters.AddWithValue("WL_LONGITUDE_", "");
             myCommand.Parameters.AddWithValue("USERID_", "");
-            myCommand.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             myConnection.Open();
             for (int i = 0; i < list1.Count; i++)
             {
@@ -200,7 +200,7 @@ namespace WIS_DataAccess
             myCommand.Parameters.AddWithValue("WL_LATITUDE_", "");
             myCommand.Parameters.AddWithValue("WL_LONGITUDE_", "");
             myCommand.Parameters.AddWithValue("USERID_", "");
-            myCommand.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             myConnection.Open();
             for (int i = 0; i < list1.Count; i++)
             {
@@ -243,7 +243,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("WL_Long_", oUploadPAPCoordinatesBO.WL_LONGITUDE);
 
             cmd.Parameters.AddWithValue("USERID_", oUploadPAPCoordinatesBO.CreatedBy);
-            cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -279,7 +279,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("WL_Long_", oUploadPAPCoordinatesBO.WL_LONGITUDE);
 
             cmd.Parameters.AddWithValue("USERID_", oUploadPAPCoordinatesBO.UpdatedBy);
-            cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["ERRORMESSAGE_"].Value != null)

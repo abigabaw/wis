@@ -68,7 +68,7 @@ namespace WIS_DataAccess
                     dcmd.Parameters.AddWithValue("PAPCPPHOTO_", DBNull.Value);
              
 
-                //dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                ///* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
 
                 return dcmd.ExecuteNonQuery();

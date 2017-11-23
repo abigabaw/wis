@@ -30,7 +30,7 @@ namespace WIS_DataAccess
                 dcmd.Parameters.AddWithValue("CREATEDBY", PositionBOObj.UserID);
                 //return dcmd.ExecuteNonQuery();
 
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -144,7 +144,7 @@ namespace WIS_DataAccess
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("POSITIONID_", PositionID);
                 myCommand.Parameters.AddWithValue("ISDELETED_", PositionIsDeleted);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -186,7 +186,7 @@ namespace WIS_DataAccess
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("POSITION_", PositionID);
                
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -287,7 +287,7 @@ namespace WIS_DataAccess
                 dcmd.Parameters.AddWithValue("UpdatedBY", PositionBOObj.UserID);
                 //return dcmd.ExecuteNonQuery();
 
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 

@@ -33,7 +33,7 @@ namespace WIS_DataAccess
            cmd.Connection.Open();
            cmd.Parameters.AddWithValue("LIV_BUD_CATEGORYNAME_", LivBudgCategoryBOobj.LIV_BUD_CATEGORYNAME);
            cmd.Parameters.AddWithValue("CREATEDBY_", LivBudgCategoryBOobj.CREATEDBY);
-           cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+           /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
            cmd.ExecuteNonQuery();
 
            if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -62,7 +62,7 @@ namespace WIS_DataAccess
            cmd.Parameters.AddWithValue("LIV_BUD_CATEGID_", LivBudgCategoryBOobj.lIV_BUD_CATEGID);
            cmd.Parameters.AddWithValue("LIV_BUD_CATEGORYNAME_", LivBudgCategoryBOobj.LIV_BUD_CATEGORYNAME);
            cmd.Parameters.AddWithValue("UPDATEDBY_", LivBudgCategoryBOobj.UPDATEDBY);
-           cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+           /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
            cmd.ExecuteNonQuery();
 
            if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -126,7 +126,7 @@ namespace WIS_DataAccess
            cmd.Connection.Open();
 
            cmd.Parameters.AddWithValue("LIV_BUD_CATEGID_", livBudgCatgId);
-           cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+           /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
            cmd.ExecuteNonQuery();
 
            if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -157,7 +157,7 @@ namespace WIS_DataAccess
            cmd.Parameters.AddWithValue("LIV_BUD_CATEGID_", livBudgCatgId);
            cmd.Parameters.AddWithValue("UPDATEDBY_", updatedBy);
            cmd.Parameters.AddWithValue("ISDELETED_", isDeleted);
-           cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+           /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
            cmd.ExecuteNonQuery();
 
            if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -223,7 +223,7 @@ namespace WIS_DataAccess
            cmd.Parameters.AddWithValue("LIV_BUD_ITEMNAME_", LivBudgItemBOobj.LIV_BUD_ITEMNAME);
            cmd.Parameters.AddWithValue("LIV_BUD_ITEMDESC_", LivBudgItemBOobj.LIV_BUD_ITEMDESC);
            cmd.Parameters.AddWithValue("CREATEDBY_", LivBudgItemBOobj.CREATEDBY);
-           cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+           /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
            cmd.ExecuteNonQuery();
 
            if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -254,7 +254,7 @@ namespace WIS_DataAccess
            cmd.Parameters.AddWithValue("LIV_BUD_ITEMNAME_", LivBudgItemBOobj.LIV_BUD_ITEMNAME);
            cmd.Parameters.AddWithValue("LIV_BUD_ITEMDESC_", LivBudgItemBOobj.LIV_BUD_ITEMDESC);
            cmd.Parameters.AddWithValue("UPDATEDBY_", LivBudgItemBOobj.UPDATEDBY);
-           cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+           /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
            cmd.ExecuteNonQuery();
 
            if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -281,7 +281,7 @@ namespace WIS_DataAccess
            cmd.Connection.Open();
 
            cmd.Parameters.AddWithValue("LIV_BUD_ITEMID_", ItemId);
-           cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+           /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
            cmd.ExecuteNonQuery();
 
            if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -312,7 +312,7 @@ namespace WIS_DataAccess
            cmd.Parameters.AddWithValue("LIV_BUD_ITEMID_", ItemId);
            cmd.Parameters.AddWithValue("UPDATEDBY_", updatedBy);
            cmd.Parameters.AddWithValue("ISDELETED_", isDeleted);
-           cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+           /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
            cmd.ExecuteNonQuery();
 
            if (cmd.Parameters["ERRORMESSAGE_"].Value != null)

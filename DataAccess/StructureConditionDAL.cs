@@ -187,7 +187,7 @@ namespace WIS_DataAccess
 
             cmd.Parameters.AddWithValue("isdeleted_", oStructureCondition.IsDeleted);
             cmd.Parameters.AddWithValue("createdby_", oStructureCondition.CreatedBy);
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -217,7 +217,7 @@ namespace WIS_DataAccess
 
             cmd.Parameters.AddWithValue("updatedby_", oStructureCondition.CreatedBy);
 
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
@@ -243,7 +243,7 @@ namespace WIS_DataAccess
             cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("str_conditionid_", StructureConditionID_);
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
@@ -274,7 +274,7 @@ namespace WIS_DataAccess
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("str_conditionid_", StructureConditionID);
                 myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

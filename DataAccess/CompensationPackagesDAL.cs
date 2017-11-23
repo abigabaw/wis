@@ -263,7 +263,7 @@ namespace WIS_DataAccess
                 dcmd.Parameters.AddWithValue("APPROVAL_LEVEL", objCOMPPACKBO.ApprovalLevel);
                 dcmd.Parameters.AddWithValue("DOCUMENTCODE", objCOMPPACKBO.DocumentCode);
                 dcmd.Parameters.AddWithValue("PROJECTID", objCOMPPACKBO.ProjectID);
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 returnResult = dcmd.ExecuteNonQuery();
 
             }
@@ -448,7 +448,7 @@ namespace WIS_DataAccess
                 dcmd.Parameters.AddWithValue("REVIEWEDBY_", cmppkgBo.UserID);
                 dcmd.Parameters.AddWithValue("APPROVERCOMMENTS_", cmppkgBo.ApprovalComents);
                 dcmd.Parameters.AddWithValue("PROJECTID", cmppkgBo.ProjectID);
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 returnResult = dcmd.ExecuteNonQuery();
 
             }

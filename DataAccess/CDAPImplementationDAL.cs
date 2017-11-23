@@ -36,7 +36,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("PROJECTID_", objCDAPImplementationBO.ProjectedId);
             cmd.Parameters.AddWithValue("UPDATEDBY_", objCDAPImplementationBO.Updatedby);
             cmd.Parameters.AddWithValue("EXPENDITURE_", objCDAPImplementationBO.EXPENDITURE);
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             
             cmd.ExecuteNonQuery();
             if (cmd.Parameters["errorMessage_"].Value != null)

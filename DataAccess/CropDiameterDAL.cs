@@ -25,7 +25,7 @@ namespace WIS_DataAccess
             {
                 dcmd.Parameters.AddWithValue("CROPDIAMETER_", objCropDiameter.CROPDIAMETER);
                 dcmd.Parameters.AddWithValue("CreatedBY", objCropDiameter.UserID);
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
 
                 if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -120,7 +120,7 @@ namespace WIS_DataAccess
                 cmd = new SqlCommand(proc, cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("CROPDIAMETERID_", CROPDIAMETERID);
-                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 cmd.Connection.Open();
 
                 cmd.ExecuteNonQuery();
@@ -162,7 +162,7 @@ namespace WIS_DataAccess
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("CROPDIAMETERID_", CROPDIAMETERID);
                 cmd.Parameters.AddWithValue("isdeleted_", IsDeleted);
-                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 cmd.Connection.Open();
 
                 cmd.ExecuteNonQuery();
@@ -229,7 +229,7 @@ namespace WIS_DataAccess
                 dcmd.Parameters.AddWithValue("CROPDIAMETER_", objCropDiameter.CROPDIAMETER);
                 dcmd.Parameters.AddWithValue("CROPDIAMETERID_", objCropDiameter.CROPDIAMETERID);
                 dcmd.Parameters.AddWithValue("UpdatedBY", objCropDiameter.UserID);
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
                 if (dcmd.Parameters["errorMessage_"].Value != null)

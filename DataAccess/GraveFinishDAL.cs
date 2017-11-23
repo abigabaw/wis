@@ -121,7 +121,7 @@ namespace WIS_DataAccess
 
             cmd.Parameters.AddWithValue("ISDELETEDIN", objGF.IsDeleted);
             cmd.Parameters.AddWithValue("CREATEDBY", objGF.CreatedBy);
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
@@ -164,7 +164,7 @@ namespace WIS_DataAccess
                 myCommand.Connection = con;
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("GRV_FINISHID", graveID);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 con.Open();
                 myCommand.ExecuteNonQuery();
 
@@ -195,7 +195,7 @@ namespace WIS_DataAccess
 
             cmd.Parameters.AddWithValue("UPDATEDBY", objGF.CreatedBy);
 
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
@@ -250,7 +250,7 @@ namespace WIS_DataAccess
 
                 myCommand.Parameters.AddWithValue("grv_finishid_", FloorTypeID);
                 myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();

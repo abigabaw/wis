@@ -220,7 +220,7 @@ namespace WIS_DataAccess
                 oCmd.Parameters.AddWithValue("createdby_", oLivelihoodRestBudgetBO.CreatedBy);
 
                 oCmd.Parameters.AddWithValue("liv_res_budgIDD_", SqlDbType.Decimal).Direction = ParameterDirection.Output;
-                oCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = oCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
                 oCmd.ExecuteNonQuery();
@@ -309,7 +309,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("UpdatedBy_", oLivelihoodRestBudgetBO.UpdatedBy);
 
             cmd.Parameters.AddWithValue("liv_res_budgIDD_", SqlDbType.Decimal).Direction = ParameterDirection.Output;
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
            // //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             //cmd.ExecuteNonQuery();
@@ -325,7 +325,7 @@ namespace WIS_DataAccess
             //else
             //    resultArray[1] = string.Empty;
 
-            //cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            ///* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             try
             {
                 cmd.ExecuteNonQuery();

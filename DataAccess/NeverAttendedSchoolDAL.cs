@@ -29,7 +29,7 @@ namespace WIS_DataAccess
                 dcmd.Parameters.AddWithValue("DESCRIPTION_", NeverAttendedSchoolBOObj.DESCRIPTION);
                 //dcmd.Parameters.AddWithValue("ISDELETED", NeverAttendedSchoolBOObj.IsDeleted);
                 dcmd.Parameters.AddWithValue("CREATEDBY_", NeverAttendedSchoolBOObj.CreatedBy);
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 //return dcmd.ExecuteNonQuery();
                 dcmd.ExecuteNonQuery();
@@ -274,7 +274,7 @@ namespace WIS_DataAccess
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("NVRATTSCHREASONID", NASchoolID);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -321,7 +321,7 @@ namespace WIS_DataAccess
                 dcmd.Parameters.AddWithValue("NVRATTSCHREASON", NeverAttendedSchoolBOObj.NVR_ATT_SCH_REASON);
                 dcmd.Parameters.AddWithValue("DESCPT", NeverAttendedSchoolBOObj.DESCRIPTION);
                 dcmd.Parameters.AddWithValue("UPDTBY", NeverAttendedSchoolBOObj.UpdatedBy);
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 //return dcmd.ExecuteNonQuery();
 
                 dcmd.ExecuteNonQuery();
@@ -364,7 +364,7 @@ namespace WIS_DataAccess
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("NVRATTSCHREASONID", NASchoolID);
                 myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

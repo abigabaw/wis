@@ -34,7 +34,7 @@ namespace WIS_DataAccess
 
                     cmd.Parameters.AddWithValue("percent_", objPercent.Percent);
                     cmd.Parameters.AddWithValue("createdBy_", objPercent.CreatedBy);
-                    cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                    /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                     cmd.ExecuteNonQuery();
 
                     if (cmd.Parameters["errorMessage_"].Value != null)
@@ -65,7 +65,7 @@ namespace WIS_DataAccess
                     cmd.Parameters.AddWithValue("percent_", objPercent.Percent);
                     cmd.Parameters.AddWithValue("updatedBy_", objPercent.UpdatedBy);
 
-                    cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                    /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                     cmd.ExecuteNonQuery();
 
                     if (cmd.Parameters["errorMessage_"].Value != null)

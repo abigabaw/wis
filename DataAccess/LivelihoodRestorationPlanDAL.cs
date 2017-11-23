@@ -252,7 +252,7 @@ namespace WIS_DataAccess
 
                 oCmd.Parameters.AddWithValue("isdeleted_", oLiveRestPlanBO.IsDeleted);
                 oCmd.Parameters.AddWithValue("createdby_", oLiveRestPlanBO.CreatedBy);
-                oCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = oCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
                 oCmd.ExecuteNonQuery();
@@ -308,7 +308,7 @@ namespace WIS_DataAccess
 
                 oCmd.Parameters.AddWithValue("isdeleted_", oLiveRestPlanBO.IsDeleted);
                 oCmd.Parameters.AddWithValue("createdby_", oLiveRestPlanBO.CreatedBy);
-                oCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = oCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
                 oCmd.ExecuteNonQuery();
@@ -350,7 +350,7 @@ namespace WIS_DataAccess
             {
                 oCmd.Parameters.AddWithValue("Liv_Rest_PlanID_", LiveRestPlanId);
 
-                oCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = oCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
                 oCmd.ExecuteNonQuery();
@@ -400,7 +400,7 @@ namespace WIS_DataAccess
 
                 oCmd.Parameters.AddWithValue("isdeleted_", oLiveRestPlanBO.IsDeleted);
                 oCmd.Parameters.AddWithValue("createdby_", oLiveRestPlanBO.CreatedBy);
-                oCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = oCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
                 oCmd.ExecuteNonQuery();
@@ -441,7 +441,7 @@ namespace WIS_DataAccess
             try
             {
                 oCmd.Parameters.AddWithValue("liv_rest_recdid_", ReceivedId);
-                oCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = oCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 oCmd.ExecuteNonQuery();
 
@@ -496,7 +496,7 @@ namespace WIS_DataAccess
         //    cmd.Parameters.AddWithValue("requeststatus_", oLiveRestPlanBO.RequestStatus);
         //    cmd.Parameters.AddWithValue("updatedby_", oLiveRestPlanBO.UpdatedBy);           
 
-        //    cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+        //    /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
         //    try
         //    {
         //        cmd.ExecuteNonQuery();

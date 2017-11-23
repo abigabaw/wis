@@ -201,7 +201,7 @@ namespace WIS_DataAccess
             oUser.ErrorMessage = null;
 
 
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
@@ -239,7 +239,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("updatedby_", oUser.CreatedBy);
             cmd.Parameters.AddWithValue("updateddate_", oUser.CreatedDate);
 
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             try
             {
                 cmd.ExecuteNonQuery();
@@ -329,7 +329,7 @@ namespace WIS_DataAccess
                 cmd = new SqlCommand(proc, cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("userid_", UserID);
-                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 cnn.Open();
                 cmd.ExecuteNonQuery();
                 if (cmd.Parameters["errorMessage_"].Value != null)
@@ -376,7 +376,7 @@ namespace WIS_DataAccess
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("userid_", UserID);
                 cmd.Parameters.AddWithValue("@isdeleted_", IsDeleted);
-                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 cnn.Open();
                 cmd.ExecuteNonQuery();
                 if (cmd.Parameters["errorMessage_"].Value != null)

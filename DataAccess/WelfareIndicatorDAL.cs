@@ -36,7 +36,7 @@ namespace WIS_DataAccess
                     dcmd.Parameters.AddWithValue("ASSOCIATEDWITH_", DBNull.Value);
 
                 dcmd.Parameters.AddWithValue("CREATEDBY_", objWelfareIndicatorBO.UserID);
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
 
                 if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -161,7 +161,7 @@ namespace WIS_DataAccess
                     dcmd.Parameters.AddWithValue("ASSOCIATEDWITH_", DBNull.Value);
 
                 dcmd.Parameters.AddWithValue("UPDATEDBY_", objWelfareIndicatorBO.UserID);
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -201,7 +201,7 @@ namespace WIS_DataAccess
                 cmd = new SqlCommand(proc, cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("WLF_INDICATORID_", Wlf_indicatorID);
-                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 cmd.Connection.Open();
 
                 cmd.ExecuteNonQuery();
@@ -251,7 +251,7 @@ namespace WIS_DataAccess
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("WLF_INDICATORID_", Wlf_indicatorID);
                 cmd.Parameters.AddWithValue("ISDELETED_", IsDeleted);
-                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 cmd.Connection.Open();
                 cmd.ExecuteNonQuery();
                 if (cmd.Parameters["errorMessage_"].Value != null)

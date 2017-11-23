@@ -37,7 +37,7 @@ namespace WIS_DataAccess
                     cmd.Parameters.AddWithValue("AssignedTo_", pSharedAuth.AssignedToId);
                     cmd.Parameters.AddWithValue("UserId_", pSharedAuth.CreatedBy);
                     //   cmd.Parameters.AddWithValue("CREATEDBY_", pSharedAuth.Createdby);
-                    cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                    /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                     cnn.Open();
                     cmd.ExecuteNonQuery();
@@ -217,7 +217,7 @@ namespace WIS_DataAccess
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("WrkFlw_SharedId_", WorkFlowSharedId);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
             }
@@ -251,7 +251,7 @@ namespace WIS_DataAccess
             //    myCommand.CommandType = CommandType.StoredProcedure;
             //    myCommand.Parameters.AddWithValue("APPROVALTEMPAUTHORISERID_", APPROVALTEMPAUTHORISERID);
             //    myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
-            //    myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            //    /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             //    myConnection.Open();
             //    myCommand.ExecuteNonQuery();
             //    if (myCommand.Parameters["errorMessage_"].Value != null)

@@ -100,7 +100,7 @@ namespace WIS_DataAccess
                 myCommand.Parameters.AddWithValue("@USERIDIN", objDisease.CreatedBy);
                 myConnection.Open();
                 //result = myCommand.ExecuteNonQuery();
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 myCommand.ExecuteNonQuery();
 
@@ -133,7 +133,7 @@ namespace WIS_DataAccess
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("DiseaseIDIN", DiseaseID);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -179,8 +179,11 @@ namespace WIS_DataAccess
                 myCommand.Parameters.AddWithValue("@ISDELETEDIN", "False");
                 myCommand.Parameters.AddWithValue("@USERIDIN", objDisease.UpdatedBy);                
                 myConnection.Open();
-                //result = myCommand.ExecuteNonQuery();
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            //result = myCommand.ExecuteNonQuery();
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/
+            SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar);
+            outputValue.Size=200;
+            outputValue.Direction = ParameterDirection.Output;
 
                 myCommand.ExecuteNonQuery();
 
@@ -212,7 +215,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 obDisease = new DiseaseBO();
-                obDisease.DiseaseID = dr.GetInt32(dr.GetOrdinal("DiseaseId"));
+                obDisease.DiseaseID = (int)dr.GetDecimal(dr.GetOrdinal("DiseaseId"));
                 obDisease.DiseaseName = dr.GetString(dr.GetOrdinal("DiseaseName"));                
             }
             dr.Close();
@@ -238,7 +241,7 @@ namespace WIS_DataAccess
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("DISEASEID_", DiSEASEID);
                 myCommand.Parameters.AddWithValue("@isdeleted_", IsDeleted);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

@@ -28,7 +28,7 @@ namespace WIS_DataAccess
                 dcmd.Parameters.AddWithValue("p_WAYLEAVEMEASUREMENT", TypeOfLineBOobj.Wayleavemeasurement);
                 dcmd.Parameters.AddWithValue("p_RIGHTOFWAYMEASUREMENT", TypeOfLineBOobj.Rightofwaymeasurement);
                 dcmd.Parameters.AddWithValue("p_CREATEDBY", TypeOfLineBOobj.Createdby);
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -103,7 +103,7 @@ namespace WIS_DataAccess
             try
             {
                 dCmd.Parameters.AddWithValue("p_linetypeid", LineTypeID);
-                dCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dCmd.ExecuteNonQuery();
                 if (dCmd.Parameters["errorMessage_"].Value != null)
@@ -206,7 +206,7 @@ namespace WIS_DataAccess
                 dCmd.Parameters.AddWithValue("p_WAYLEAVEMEASUREMENT", TypeOfLineBOobj.Wayleavemeasurement);
                 dCmd.Parameters.AddWithValue("p_RIGHTOFWAYMEASUREMENT", TypeOfLineBOobj.Rightofwaymeasurement);
                 dCmd.Parameters.AddWithValue("p_UPDATEDBY", TypeOfLineBOobj.Createdby);
-                dCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 dCmd.ExecuteNonQuery();
 
                 if (dCmd.Parameters["errorMessage_"].Value != null)
@@ -247,7 +247,7 @@ namespace WIS_DataAccess
                 myCommand.Parameters.AddWithValue("p_LINETYPEID", lineTypeID);
                 myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
                 myCommand.Parameters.AddWithValue("updatedBy_", updatedBy);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

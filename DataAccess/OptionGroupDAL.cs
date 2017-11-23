@@ -28,7 +28,7 @@ namespace WIS_DataAccess
             {
                 dcmd.Parameters.AddWithValue("OPTIONGROUP_", objOptionGroupBO.OptionGroupName);
                 dcmd.Parameters.AddWithValue("CREATEDBY_", objOptionGroupBO.UserID);
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
 
                 if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -122,7 +122,7 @@ namespace WIS_DataAccess
                 dcmd.Parameters.AddWithValue("OPTIONGROUPID_", objOptionGroupBO.OptionGroupID);
                 dcmd.Parameters.AddWithValue("OPTIONGROUP_", objOptionGroupBO.OptionGroupName);
                 dcmd.Parameters.AddWithValue("UPDATEDBY_", objOptionGroupBO.UserID);
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -200,7 +200,7 @@ namespace WIS_DataAccess
                 cmd = new SqlCommand(proc, cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("OPTIONGROUPID_", OptionGroupID);
-                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 cmd.Connection.Open();
 
                 cmd.ExecuteNonQuery();
@@ -243,7 +243,7 @@ namespace WIS_DataAccess
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("OPTIONGROUPID_", OptionGroupID);
                 cmd.Parameters.AddWithValue("ISDELETED_", IsDeleted);
-                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 cmd.Connection.Open();
 
                 cmd.ExecuteNonQuery();

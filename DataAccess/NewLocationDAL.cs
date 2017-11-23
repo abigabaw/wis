@@ -96,7 +96,7 @@ namespace WIS_DataAccess
 
             cmd.Parameters.AddWithValue("isdeleted_", oNewLocationBO.IsDeleted);
             cmd.Parameters.AddWithValue("createdby_", oNewLocationBO.CreatedBy);
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["errorMessage_"].Value != null)

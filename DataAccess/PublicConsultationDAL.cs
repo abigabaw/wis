@@ -44,7 +44,7 @@ namespace WIS_DataAccess
                 dcmd.Parameters.AddWithValue("REMEDIES_", oBO.Remedies);
                 dcmd.Parameters.AddWithValue("OFFICERINCHARGE_", oBO.OfficerIncharge);
                 dcmd.Parameters.AddWithValue("CREATEDBY_", oBO.CreatedBy);
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                  dcmd.ExecuteNonQuery();
 
@@ -210,7 +210,7 @@ namespace WIS_DataAccess
                 dcmd.Parameters.AddWithValue("OFFICERINCHARGE_", oBO.OfficerIncharge);
 
                 dcmd.Parameters.AddWithValue("updatedby_", oBO.UpdatedBy);
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
                 String result = dcmd.Parameters["errorMessage_"].Value.ToString();

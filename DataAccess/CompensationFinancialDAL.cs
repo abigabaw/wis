@@ -73,7 +73,7 @@ namespace WIS_DataAccess
             //COMMON SECTION
             cmd.Parameters.AddWithValue("isdeleted_", oCompensationFinancial.IsDeleted);
             cmd.Parameters.AddWithValue("createdby_", oCompensationFinancial.CreatedBy);
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -120,7 +120,7 @@ namespace WIS_DataAccess
                 cmd.Parameters.AddWithValue("deliverydate_", oCompensationFinancial.DeliveryDate);
 
             cmd.Parameters.AddWithValue("createdby_", oCompensationFinancial.CreatedBy);
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
@@ -260,7 +260,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("resinkindcompensation_", objCompensationFinancial.ResInKindCompensation);
 
             cmd.Parameters.AddWithValue("updatedby", objCompensationFinancial.UpdatedBy);
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             try
             {
                 cmd.ExecuteNonQuery();

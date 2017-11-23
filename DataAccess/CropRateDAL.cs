@@ -94,7 +94,7 @@ namespace WIS_DataAccess
             myCommand.Parameters.AddWithValue("CROPDESCRIPTIONID_", objCRBO.CropDescriptionID);
             myCommand.Parameters.AddWithValue("CROPRATE_", objCRBO.CropRate);
             myCommand.Parameters.AddWithValue("CREATEDBY_", objCRBO.CreatedBy);
-            myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             con.Open();
             myCommand.ExecuteNonQuery();
@@ -123,7 +123,7 @@ namespace WIS_DataAccess
                 myCommand.Connection = con;
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("CROPRATEID", cropRateID);                              
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 con.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -168,7 +168,7 @@ namespace WIS_DataAccess
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("CROPRATEID_", cropRateID);
                 myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -206,7 +206,7 @@ namespace WIS_DataAccess
             myCommand.Parameters.AddWithValue("CROPDESCRIPTIONID_", objCRBO.CropDescriptionID);
             myCommand.Parameters.AddWithValue("CROPRATE", objCRBO.CropRate);
             myCommand.Parameters.AddWithValue("UPDATEDBY", objCRBO.UpdatedBy);
-            myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             con.Open();
             myCommand.ExecuteNonQuery();
 

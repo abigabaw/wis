@@ -27,7 +27,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("LANDCOMPENSATION_", objOptionGroupParametersBO.LandCompensation);
             cmd.Parameters.AddWithValue("HOUSECOMPENSATION_", objOptionGroupParametersBO.HouseCompensation);
              cmd.Parameters.AddWithValue("CREATEDBY_", objOptionGroupParametersBO.Createdby);
-           cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+           /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -127,7 +127,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("landCompen_", objOptionGroupParametersBO.LandCompensation);
             cmd.Parameters.AddWithValue("HouseCompen_", objOptionGroupParametersBO.HouseCompensation);
             cmd.Parameters.AddWithValue("updatedBy_", objOptionGroupParametersBO.UpdatedBy);
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -151,7 +151,7 @@ namespace WIS_DataAccess
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("ParamID_", paramID);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

@@ -37,7 +37,7 @@ namespace WIS_DataAccess
             myCommand.Parameters.AddWithValue("SUBCOUNTY_", objSurvey.Subcounty);
             myCommand.Parameters.AddWithValue("VILLAGE_", objSurvey.Village);
             myCommand.Parameters.AddWithValue("UPDATEDBY_", objSurvey.UpdatedBy);
-            myCommand.Parameters.AddWithValue("errormessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             myConnection.Open();
             myCommand.ExecuteNonQuery();
             if (myCommand.Parameters["errormessage_"].Value != null)
@@ -301,7 +301,7 @@ namespace WIS_DataAccess
             myCommand.Parameters.AddWithValue("WLLANDVALUE_", objAffectedAcreageValuation.Wllandvalue);
             myCommand.Parameters.AddWithValue("UPDATEDBY_", objAffectedAcreageValuation.UpdatedBy);
             myCommand.Parameters.AddWithValue("Class_", objAffectedAcreageValuation.LocClassification);
-            myCommand.Parameters.AddWithValue("errormessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             myConnection.Open();
             myCommand.ExecuteNonQuery();
             if (myCommand.Parameters["errormessage_"].Value != null)

@@ -26,7 +26,7 @@ namespace WIS_DataAccess
             {
                 dcmd.Parameters.AddWithValue("p_FENCEDESCRIPTION", FenceDescriptionBOobj.FenceDescription);
                 dcmd.Parameters.AddWithValue("p_CREATEDBY", FenceDescriptionBOobj.Createdby);
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
                 if (dcmd.Parameters["errorMessage_"].Value != null)
                     returnResult = dcmd.Parameters["errorMessage_"].Value.ToString();
@@ -135,7 +135,7 @@ namespace WIS_DataAccess
 
                 myCommand.Parameters.AddWithValue("fenceid_", FloorTypeID);
                 myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
@@ -170,7 +170,7 @@ namespace WIS_DataAccess
             try
             {
                 dCmd.Parameters.AddWithValue("p_fenceid", FenceID);
-                dCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 dCmd.ExecuteNonQuery();
 
                 if (dCmd.Parameters["errorMessage_"].Value != null)
@@ -267,7 +267,7 @@ namespace WIS_DataAccess
                 dCmd.Parameters.AddWithValue("p_FENCEID", FenceID);
                 dCmd.Parameters.AddWithValue("p_FENCEDESCRIPTION", FenceDescriptionBOobj.FenceDescription);
                 dCmd.Parameters.AddWithValue("p_UPDATEDBY", FenceDescriptionBOobj.Createdby);
-                dCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 dCmd.ExecuteNonQuery();
 
                 if (dCmd.Parameters["errorMessage_"].Value != null)

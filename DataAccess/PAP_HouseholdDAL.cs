@@ -256,7 +256,7 @@ namespace WIS_DataAccess
             myCommand.Parameters.AddWithValue("@LANDCOMPENSATION_", objHouseHold.LandCompensation);
             myCommand.Parameters.AddWithValue("@HOUSECOMPENSATION_", objHouseHold.HouseCompensation);
             myCommand.Parameters.AddWithValue("@LANDPER_", objHouseHold.PercentageOccupied);
-            myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             myConnection.Open();
             myCommand.ExecuteNonQuery();
@@ -289,7 +289,7 @@ namespace WIS_DataAccess
             myCommand.Parameters.AddWithValue("@OPTIONGROUPID_", objHouseHold.OptiongroupId);
             myCommand.Parameters.AddWithValue("@HHID_", objHouseHold.HhId);
             myCommand.Parameters.AddWithValue("@CREATEDBY_", objHouseHold.CreatedBy);
-            myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             myConnection.Open();
             myCommand.ExecuteNonQuery();
 

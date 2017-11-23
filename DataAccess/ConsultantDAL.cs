@@ -107,7 +107,7 @@ namespace WIS_DataAccess
             myCommand.Parameters.AddWithValue("EMAILADDRESS_", objCon.EmailAddress);
             myCommand.Parameters.AddWithValue("ISDELETEDIN_", "False");
             myCommand.Parameters.AddWithValue("CREATEDBY_", objCon.CreatedBy);
-            myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             con.Open();
             myCommand.ExecuteNonQuery();

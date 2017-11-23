@@ -387,7 +387,7 @@ namespace WIS_DataAccess
                 oCmd.Parameters.AddWithValue("isdeleted_", oCompPayementBO.IsDeleted);
                 oCmd.Parameters.AddWithValue("createdby_", oCompPayementBO.CreatedBy);
 
-                oCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = oCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 oCmd.Parameters.AddWithValue("cmp_paymentidout_", SqlDbType.Decimal).Direction = ParameterDirection.Output;
 
                 oCmd.ExecuteNonQuery();
@@ -458,7 +458,7 @@ namespace WIS_DataAccess
                 oCmd.Parameters.AddWithValue("isdeleted_", oCompPayementBO.IsDeleted);
                 oCmd.Parameters.AddWithValue("updatedby_", oCompPayementBO.UpdatedBy);
 
-                oCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = oCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 oCmd.ExecuteNonQuery();
 
@@ -507,7 +507,7 @@ namespace WIS_DataAccess
                     oCmd.Parameters.AddWithValue("resinkindcompensation_", oCompensationFinancialBO.ResInKindCompensation);
                 oCmd.Parameters.AddWithValue("updatedby_", oCompensationFinancialBO.UpdatedBy);
 
-                oCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = oCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 oCmd.ExecuteNonQuery(); //Executing Query
 
@@ -880,7 +880,7 @@ namespace WIS_DataAccess
                 oCmd.Parameters.AddWithValue("compensationtype_", PaymentStatus);
                 //oCmd.Parameters.AddWithValue("modeofpaymentid_", oCompPayementBO.ModeOfPaymentId);
 
-                oCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = oCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 oCmd.ExecuteNonQuery();
 

@@ -503,7 +503,7 @@ namespace WIS_DataAccess
                 if (ElementID != 0) { dcmd.Parameters.AddWithValue("ElementID_", ElementID); }
                 else { dcmd.Parameters.AddWithValue("ElementID_", "0"); }
 
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
                 if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -846,7 +846,7 @@ namespace WIS_DataAccess
                 if (ElementID != 0) { dcmd.Parameters.AddWithValue("ElementID_", ElementID); }
                 else { dcmd.Parameters.AddWithValue("ElementID_", "0"); }
 
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
                 if (dcmd.Parameters["errorMessage_"].Value != null)

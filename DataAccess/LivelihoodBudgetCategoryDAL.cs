@@ -118,7 +118,7 @@ namespace WIS_DataAccess
                 oCmd.Parameters.AddWithValue("createdby_", oBatchBO.CreatedBy);
 
                 oCmd.Parameters.AddWithValue("getBatchNo_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
-                oCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                o/* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;* / SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 // Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
                 //oCmd.ExecuteNonQuery();
@@ -190,7 +190,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("requeststatus_", oBatchBO.RequestStatus);
             cmd.Parameters.AddWithValue("updatedby_", oBatchBO.UpdatedBy);           
 
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;* / SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             try
             {
                 cmd.ExecuteNonQuery();

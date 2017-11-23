@@ -30,7 +30,7 @@ namespace WIS_DataAccess
                  dcmd.Parameters.AddWithValue("DISPUTE_DETAILS", Neighbourobj.DISPUTE_DETAILS);
                 dcmd.Parameters.AddWithValue("CREATEDBY", Neighbourobj.CREATEDBY1);
                 dcmd.Parameters.AddWithValue("N_HHID", Neighbourobj.HHID1);
-                dcmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
 
                 if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -179,7 +179,7 @@ namespace WIS_DataAccess
                dcmd.Parameters.AddWithValue("N_BOUNDARY_DISPUTE", Neighbourobj.BOUNDARY_DISPUTE);
                dcmd.Parameters.AddWithValue("N_DISPUTE_DETAILS", Neighbourobj.DISPUTE_DETAILS);
                dcmd.Parameters.AddWithValue("N_UPDATEDBY", Neighbourobj.CREATEDBY1);
-               dcmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+               /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                dcmd.ExecuteNonQuery();
 

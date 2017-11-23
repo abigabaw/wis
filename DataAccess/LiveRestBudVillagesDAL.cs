@@ -142,7 +142,7 @@ namespace WIS_DataAccess
                 oCmd.Parameters.AddWithValue("CreatedBy_", oLiveRestBudVillagesBO.CreatedBy);
                 oCmd.Parameters.AddWithValue("IsDeleted_", oLiveRestBudVillagesBO.IsDeleted);
 
-                oCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = oCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 oCmd.ExecuteNonQuery();
 
@@ -206,7 +206,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("updatedby_", oLiveRestBudVillagesBO.CreatedBy);
             cmd.Parameters.AddWithValue("IsDeleted_", oLiveRestBudVillagesBO.IsDeleted);
 
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             try
             {
                 cmd.ExecuteNonQuery();

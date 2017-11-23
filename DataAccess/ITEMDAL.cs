@@ -105,7 +105,7 @@ namespace WIS_DataAccess
             cmd.Connection.Open();
             cmd.Parameters.AddWithValue("CDAP_CATEGORYNAME_", objCDAPBudgetMasterBO.CategoryName);
             cmd.Parameters.AddWithValue("CREATEDBY_", objCDAPBudgetMasterBO.CreatedBy);
-            cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -134,7 +134,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("CDAP_CATEGORYID_", objCDAPBudgetMasterBO.CategoryID);
             cmd.Parameters.AddWithValue("CDAP_CATEGORYNAME_", objCDAPBudgetMasterBO.CategoryName);
             cmd.Parameters.AddWithValue("UPDATEDBY_", objCDAPBudgetMasterBO.UpdatedBy);
-            cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -161,7 +161,7 @@ namespace WIS_DataAccess
             cmd.Connection.Open();
 
             cmd.Parameters.AddWithValue("CDAP_CATEGORYID_", categoryID);
-            cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -192,7 +192,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("CDAP_CATEGORYID_", categoryID);
             cmd.Parameters.AddWithValue("UPDATEDBY_", updatedBy);
             cmd.Parameters.AddWithValue("ISDELETED_", isDeleted);
-            cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -296,7 +296,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("CDAP_CATEGORYID_", objCDAPBudgetMasterBO.CategoryID);
             cmd.Parameters.AddWithValue("CDAP_SUBCATEGORYNAME_", objCDAPBudgetMasterBO.SubCategoryName);
             cmd.Parameters.AddWithValue("CREATEDBY_", objCDAPBudgetMasterBO.CreatedBy);
-            cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -326,7 +326,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("CDAP_CATEGORYID_", objCDAPBudgetMasterBO.CategoryID);
             cmd.Parameters.AddWithValue("CDAP_SUBCATEGORYNAME_", objCDAPBudgetMasterBO.SubCategoryName);
             cmd.Parameters.AddWithValue("UPDATEDBY_", objCDAPBudgetMasterBO.UpdatedBy);
-            cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -353,7 +353,7 @@ namespace WIS_DataAccess
             cmd.Connection.Open();
 
             cmd.Parameters.AddWithValue("CDAP_SUBCATEGORYID_", subcategoryID);
-            cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -384,7 +384,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("CDAP_SUBCATEGORYID_", subcategoryID);
             cmd.Parameters.AddWithValue("UPDATEDBY_", updatedBy);
             cmd.Parameters.AddWithValue("ISDELETED_", isDeleted);
-            cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["ERRORMESSAGE_"].Value != null)

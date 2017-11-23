@@ -148,7 +148,7 @@ namespace WIS_DataAccess
                dcmd.Parameters.AddWithValue("COP_MECHANISMID_", Majorshockobj.COP_MECHANISMID1);
                dcmd.Parameters.AddWithValue("SUPPORTID_", Majorshockobj.SUPPORTID1);
                dcmd.Parameters.AddWithValue("CREATEDBY_", Majorshockobj.CREATEDBY1);
-               dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+               /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                dcmd.ExecuteNonQuery();
 
@@ -294,7 +294,7 @@ namespace WIS_DataAccess
                dcmd.Parameters.AddWithValue("S_COP_MECHANISMID", Majorshockobj.COP_MECHANISMID1);
                dcmd.Parameters.AddWithValue("S_SUPPORTID", Majorshockobj.SUPPORTID1);
                dcmd.Parameters.AddWithValue("S_UPDATEDBY", Majorshockobj.CREATEDBY1);
-               dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+               /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                dcmd.ExecuteNonQuery();
 
                if (dcmd.Parameters["errorMessage_"].Value != null)

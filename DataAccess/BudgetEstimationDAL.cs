@@ -125,7 +125,7 @@ namespace WIS_DataAccess
                 dcmd.Parameters.AddWithValue("UserID_", objBudgetEstimation.UserID);
                 dcmd.Parameters.AddWithValue("CurrencyID_", objBudgetEstimation.CurrencyID);
                 dcmd.Parameters.AddWithValue("AccountNo_", objBudgetEstimation.AccountNo);
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
                 if (dcmd.Parameters["errorMessage_"].Value != null)
                     returnResult = dcmd.Parameters["errorMessage_"].Value.ToString();
@@ -164,7 +164,7 @@ namespace WIS_DataAccess
             {
                 dcmd.Parameters.AddWithValue("CategoryName_", objNEWCategory.CategoryName);
                 dcmd.Parameters.AddWithValue("UserID_", objNEWCategory.UserID);
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -206,7 +206,7 @@ namespace WIS_DataAccess
                 dcmd.Parameters.AddWithValue("SUBCategoryName_", objNEWsubCategory.SubCategoryName);
                 dcmd.Parameters.AddWithValue("CategoryID_", objNEWsubCategory.CategoryID);
                 dcmd.Parameters.AddWithValue("UserID_", objNEWsubCategory.UserID);
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 
                 dcmd.ExecuteNonQuery();
 
@@ -346,7 +346,7 @@ namespace WIS_DataAccess
                 cmd = new SqlCommand(proc, cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("BudgetEstimationID_", BudgetEstimationID);
-                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 cmd.Connection.Open();
                 cmd.ExecuteNonQuery();
                 if (cmd.Parameters["errorMessage_"].Value != null)
@@ -391,7 +391,7 @@ namespace WIS_DataAccess
                 dcmd.Parameters.AddWithValue("UserID_", objBudgetEstimation.UserID);
                 dcmd.Parameters.AddWithValue("CurrencyID_", objBudgetEstimation.CurrencyID);
                 dcmd.Parameters.AddWithValue("AccountNo_", objBudgetEstimation.AccountNo);
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
                 if (dcmd.Parameters["errorMessage_"].Value != null)
                     returnResult = dcmd.Parameters["errorMessage_"].Value.ToString();

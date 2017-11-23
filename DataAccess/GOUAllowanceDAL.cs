@@ -27,7 +27,7 @@ namespace WIS_DataAccess
                 dcmd.Parameters.AddWithValue("p_GOUALLOWANCECATEGORY", GOUAllowanceBOobj.GOUAllowanceCategory);
                 dcmd.Parameters.AddWithValue("p_GOUALLOWANCEVALUE", GOUAllowanceBOobj.GOUAllowanceValue);
                 dcmd.Parameters.AddWithValue("p_CREATEDBY", GOUAllowanceBOobj.Createdby);
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 //return dcmd.ExecuteNonQuery();
 
                 dcmd.ExecuteNonQuery();
@@ -184,7 +184,7 @@ namespace WIS_DataAccess
                 dCmd.Parameters.AddWithValue("p_GOUALLOWANCECATEGORY", GOUAllowanceBOobj.GOUAllowanceCategory);
                 dCmd.Parameters.AddWithValue("p_GOUALLOWANCEVALUE", GOUAllowanceBOobj.GOUAllowanceValue);
                 dCmd.Parameters.AddWithValue("p_CREATEDBY", GOUAllowanceBOobj.Createdby);
-                dCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 //return dCmd.ExecuteNonQuery();
 
                 dCmd.ExecuteNonQuery();
@@ -226,7 +226,7 @@ namespace WIS_DataAccess
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("p_SCH_DRP_REASONID", reasonid);
                 myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -281,7 +281,7 @@ namespace WIS_DataAccess
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("p_GOUALLOWANCECATEGORYID", reasonid);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

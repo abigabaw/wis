@@ -27,7 +27,7 @@ namespace WIS_DataAccess
                 cmd.Parameters.AddWithValue("S_DESCRIPTION", CurrentSchoolStatusBOObj.Description);
                 cmd.Parameters.AddWithValue("S_CREATEDBY", CurrentSchoolStatusBOObj.Createdby);
 
-                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 cmd.ExecuteNonQuery();
 
                 if (cmd.Parameters["errorMessage_"].Value != null)
@@ -213,7 +213,7 @@ namespace WIS_DataAccess
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("S_CUR_SCH_STATUSID", CurrentSchoolStatusID);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -261,7 +261,7 @@ namespace WIS_DataAccess
                 dcmd.Parameters.AddWithValue("S_DESCRIPTION", CurrentSchoolStatusBOObj.Description);
                 dcmd.Parameters.AddWithValue("S_UPDATEDBY", CurrentSchoolStatusBOObj.Createdby);
 
-                dcmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
 
                 if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -323,30 +323,36 @@ namespace WIS_DataAccess
             SqlConnection myConnection = null;
             SqlCommand myCommand = null;
             string result = string.Empty;
-            try
-            {
+          //  try
+          //  {
                 myConnection = new SqlConnection(AppConfiguration.ConnectionString);
                 myCommand = new SqlCommand("USP_MST_OBSOLETECHOOLSTATUS", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("S_CUR_SCH_STATUSID", CurrentSchoolStatusID);
                 myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
-                myConnection.Open();
+            // myCommand.Parameters.AddWithValue("errorMessage_"). .Direction = ParameterDirection.InputOutput;
+            SqlParameter parmOUT = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar);
+            parmOUT.Size=200;
+            parmOUT.Direction = ParameterDirection.Output;
+           // myCommand.Parameters.AddWithValue("errorMessage_", parmOUT);
+           // cmd.ExecuteNonQuery();
+           // int returnVALUE = (int)cmd.Parameters["@return"].Value;
+            myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
                     result = myCommand.Parameters["errorMessage_"].Value.ToString();
-            }
+          /*  }
             catch (Exception ex)
             {
                 throw ex;
             }
             finally
-            {
+            {*/
                 myCommand.Dispose();
                 myConnection.Close();
                 myConnection.Dispose();
-            }
+          //  }
 
             return result;
         }

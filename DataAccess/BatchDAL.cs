@@ -406,7 +406,7 @@ namespace WIS_DataAccess
             //cmd.Parameters.AddWithValue("HHID_", oBatchBO.HHID);
 
             cmd.Parameters.AddWithValue("AmountMessage_", SqlDbType.Decimal).Direction = ParameterDirection.Output;
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
@@ -719,7 +719,7 @@ namespace WIS_DataAccess
                 oCmd.Parameters.AddWithValue("createdby_", oBatchBO.CreatedBy);
 
                 oCmd.Parameters.AddWithValue("getBatchNo_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
-                oCmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = oCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                // // Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
                 SqlDataReader oDataReader = oCmd.ExecuteReader();
@@ -811,7 +811,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("requeststatus_", oBatchBO.RequestStatus);
             cmd.Parameters.AddWithValue("updatedby_", oBatchBO.UpdatedBy);           
 
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             try
             {
                 cmd.ExecuteNonQuery();
@@ -849,7 +849,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("PaymentRequestId_", PaymentRequestId);
             cmd.Parameters.AddWithValue("HHID_", HHID);
 
-           // cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+           // /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             try
             {
                 cmd.ExecuteNonQuery();
@@ -888,7 +888,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("CMP_BATCHNO_", BatchNo);
             cmd.Parameters.AddWithValue("UPDATEDBY_", UserId);
 
-            cmd.Parameters.AddWithValue("ERRORMESSAGE_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             try
             {
                 cmd.ExecuteNonQuery();

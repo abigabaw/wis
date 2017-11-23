@@ -110,7 +110,7 @@ namespace WIS_DataAccess
             myCommand.Parameters.AddWithValue("PLOTLATITUDEIN", "");
             myCommand.Parameters.AddWithValue("PLOTLONGITUDEIN", "");
             myCommand.Parameters.AddWithValue("PAP_UIDIN", "");
-            myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             myConnection.Open();
             int CountSuccess = 0, CountFail = 0;
@@ -250,7 +250,7 @@ namespace WIS_DataAccess
             //myCommand.Parameters.AddWithValue("literacylevelidIN", objAddPAP.CreatedBy);
             //myCommand.Parameters.AddWithValue("occupationidIN", objAddPAP.CreatedBy);
             //myCommand.Parameters.AddWithValue("papstatusidIN", objAddPAP.CreatedBy);
-            myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             myConnection.Open();
             myCommand.ExecuteNonQuery();
@@ -303,7 +303,7 @@ namespace WIS_DataAccess
             //myCommand.Parameters.AddWithValue("literacylevelidIN", objAddPAP.CreatedBy);
             //myCommand.Parameters.AddWithValue("occupationidIN", objAddPAP.CreatedBy);
             //myCommand.Parameters.AddWithValue("papstatusidIN", objAddPAP.CreatedBy);
-            myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             myConnection.Open();
             myCommand.ExecuteNonQuery();
@@ -337,7 +337,7 @@ namespace WIS_DataAccess
             {
                 myCommand.Parameters.AddWithValue("HHIDIN", PAPID);
                 myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -375,7 +375,7 @@ namespace WIS_DataAccess
             try
             {
                 myCommand.Parameters.AddWithValue("HHIDIN", PAPID);
-                myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

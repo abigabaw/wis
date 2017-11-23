@@ -227,7 +227,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("EXPENSEAMOUNT_", objExpense.EXPENSEAMOUNT);
             cmd.Parameters.AddWithValue("DATEOFEXPENSE_", objExpense.DATEOFEXPENSE.ToString(UtilBO.DateFormatDBFull));
             cmd.Parameters.AddWithValue("CREATEDBY_", objExpense.UPDATEDBY);
-            //cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            ///* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             //if (cmd.Parameters["errorMessage_"].Value != null)
@@ -307,7 +307,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("EXPENSEAMOUNT_", objExpense.EXPENSEAMOUNT);
             cmd.Parameters.AddWithValue("DATEOFEXPENSE_", objExpense.DATEOFEXPENSE.ToString(UtilBO.DateFormatDBFull));
             cmd.Parameters.AddWithValue("UPDATEDBY_", objExpense.UPDATEDBY);
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -336,7 +336,7 @@ namespace WIS_DataAccess
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
                 myCommand.Parameters.AddWithValue("EXPENSEID_", EXPENSEID);
-                //myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                ///* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 //if (myCommand.Parameters["errorMessage_"].Value != null)

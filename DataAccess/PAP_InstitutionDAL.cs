@@ -67,7 +67,7 @@ namespace WIS_DataAccess
                     cmd.Parameters.AddWithValue("@DETAILSCAPTUREDDATEIN", Convert.ToDateTime(objInstitution.CapturedDate).ToString(UtilBO.DateFormatDB));
                 else
                     cmd.Parameters.AddWithValue("@DETAILSCAPTUREDDATEIN", DBNull.Value);
-                cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 cnn.Open();
                 cmd.ExecuteNonQuery();
 

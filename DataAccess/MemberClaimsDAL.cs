@@ -142,7 +142,7 @@ namespace WIS_DataAccess
                     myCommand.Parameters.AddWithValue("OTHEREASEMENT_", MCBO.OTHEREASEMENT);
                     myCommand.Parameters.AddWithValue("OTHEREASEMENTDETAILS_", MCBO.OTHEREASEMENTDETAILS);
                     myCommand.Parameters.AddWithValue("CREATEDBY_", MCBO.CreatedBy);
-                    myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+                    /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                     con.Open();
                     result = myCommand.ExecuteNonQuery();
                     if (myCommand.Parameters["errorMessage_"].Value != null)

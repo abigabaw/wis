@@ -196,7 +196,7 @@ namespace WIS_DataAccess
             //Common Parameters
             cmd.Parameters.AddWithValue("isdeleted_", oLiveRestItemsBO.IsDeleted);
             cmd.Parameters.AddWithValue("createdby_", oLiveRestItemsBO.CreatedBy);
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
@@ -227,7 +227,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("Liv_Rest_ItemName_", oLiveRestItemsBO.Liv_Rest_ItemName);
             //Common Parameters
             cmd.Parameters.AddWithValue("updatedby_", oLiveRestItemsBO.UpdatedBy);
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
@@ -256,7 +256,7 @@ namespace WIS_DataAccess
 
             cmd.Parameters.AddWithValue("Liv_Rest_ItemID_", LiveRestItemID);
             //Common Parameters
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
@@ -287,7 +287,7 @@ namespace WIS_DataAccess
             cmd.Parameters.AddWithValue("Liv_Rest_ItemID_", LiveRestItemID);
             cmd.Parameters.AddWithValue("IsDeleted_", IsDeleted);
             //Common Parameters
-            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
