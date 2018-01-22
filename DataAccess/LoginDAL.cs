@@ -53,5 +53,47 @@ namespace WIS_DataAccess
 
             return Loginobj;
         }
+
+        //Edwin: 22/01/2018 - Global Password
+        public LoginBO DBAuth(string username, string password)
+        {
+            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            OracleCommand cmd;
+
+            string proc = "USP_MST_AUTHENTICATION_";
+
+            cmd = new OracleCommand(proc, cnn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("UserName_", username);
+            cmd.Parameters.Add("Pwd_", password);
+            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+
+            cmd.Connection.Open();
+            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            LoginBO Loginobj = null;
+
+            try
+            {
+
+                while (dr.Read())
+                {
+                    Loginobj = new LoginBO();
+
+                    if (!dr.IsDBNull(dr.GetOrdinal("USERID"))) Loginobj.UserID = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("USERID")));
+                    if (!dr.IsDBNull(dr.GetOrdinal("USERNAME"))) Loginobj.USERNAME = dr.GetString(dr.GetOrdinal("USERNAME"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("PWD"))) Loginobj.PASSWORD = dr.GetString(dr.GetOrdinal("PWD"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("DISPLAYNAME"))) Loginobj.DisplayName = dr.GetString(dr.GetOrdinal("DISPLAYNAME"));
+                }
+
+                dr.Close();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Loginobj;
+        } //End: Edwin
+
     }
 }

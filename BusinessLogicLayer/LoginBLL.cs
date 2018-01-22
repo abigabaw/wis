@@ -15,5 +15,12 @@ namespace WIS_BusinessLogic
             LoginDAL LoginDALObj = new LoginDAL();
             return LoginDALObj.Authentication(username, password);
         }
+
+        //Edwin: 22/01/2018 - Global Password
+        public LoginBO DBAuth(string username, string password)
+        {
+            LoginDAL LoginDALObj = new LoginDAL();
+            return LoginDALObj.Authentication(username, password);
+        }
     }
 }

@@ -35,6 +35,9 @@ namespace WIS_BusinessObjects
                 UserName = value;
             }
         }
+
+        
+
         public string PASSWORD
         {
             get
