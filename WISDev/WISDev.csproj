@@ -4282,6 +4282,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="IMAGE\HelpDocuments\WIS-online-HELp.chm" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\Profile1.pubxml" />
     <None Include="REPORTS\AffectedLandsizeperresidencestatus.rpt" />
     <None Include="REPORTS\Approvals.rpt" />
