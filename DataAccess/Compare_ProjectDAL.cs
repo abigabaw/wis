@@ -29,7 +29,7 @@ namespace WIS_DataAccess
            while (dr.Read())
            {
                ObjPc = new Compare_projectBO();
-               ObjPc.ProjectID = (Convert.ToInt32(dr.GetValue(dr.GetOrdinal("PROJECTID"))));
+               ObjPc.ProjectID = (int)dr.GetDecimal(dr.GetOrdinal("PROJECTID"));
                ObjPc.ProjectName = dr.GetValue(dr.GetOrdinal("PROJECTNAME")).ToString();
 
 
@@ -64,14 +64,14 @@ namespace WIS_DataAccess
            while (dr.Read())
            {
                objPRJBO = new Compare_projectBO();
-               objPRJBO.ProjectID = (Convert.ToInt32(dr.GetValue(dr.GetOrdinal("PROJECTID"))));
+               objPRJBO.ProjectID = (int)dr.GetDecimal(dr.GetOrdinal("PROJECTID"));
                objPRJBO.ProjectName = dr.GetValue(dr.GetOrdinal("projectcode")).ToString();
-               objPRJBO.TotalestBudget = (Convert.ToDecimal(dr.GetValue(dr.GetOrdinal("TOTALESTBUDGET"))));
-               objPRJBO.Option1 = (Convert.ToInt32(dr.GetValue(dr.GetOrdinal("Option1"))));
-               objPRJBO.Option2 = (Convert.ToInt32(dr.GetValue(dr.GetOrdinal("Option2"))));
-               objPRJBO.Option3 = (Convert.ToInt32(dr.GetValue(dr.GetOrdinal("Option3"))));
-               objPRJBO.Option4 = (Convert.ToInt32(dr.GetValue(dr.GetOrdinal("Option4"))));
-               objPRJBO.Option5 = (Convert.ToInt32(dr.GetValue(dr.GetOrdinal("Option5"))));
+               objPRJBO.TotalestBudget = dr.GetDecimal(dr.GetOrdinal("TOTALESTBUDGET"));
+               objPRJBO.Option1 = dr.GetInt32(dr.GetOrdinal("Option1"));
+               objPRJBO.Option2 = dr.GetInt32(dr.GetOrdinal("Option2"));
+               objPRJBO.Option3 = dr.GetInt32(dr.GetOrdinal("Option3"));
+               objPRJBO.Option4 = dr.GetInt32(dr.GetOrdinal("Option4"));
+               objPRJBO.Option5 = dr.GetInt32(dr.GetOrdinal("Option5"));
                
 
                objPRJList.Add(objPRJBO);

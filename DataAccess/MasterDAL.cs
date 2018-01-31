@@ -30,7 +30,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 obMaster = new DistrictBO();
-                obMaster.DistrictID = dr.GetInt32(dr.GetOrdinal("DISTRICTID"));
+                obMaster.DistrictID = (int)dr.GetDecimal(dr.GetOrdinal("DISTRICTID"));
                 obMaster.DistrictName = dr.GetString(dr.GetOrdinal("DISTRICTNAME"));
                 Master.Add(obMaster);
             }
@@ -58,7 +58,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 obMaster = new CountyBO();
-                obMaster.CountyID = dr.GetInt32(dr.GetOrdinal("COUNTYID"));
+                obMaster.CountyID = (int)dr.GetDecimal(dr.GetOrdinal("COUNTYID"));
                 obMaster.CountyName = dr.GetString(dr.GetOrdinal("COUNTYNAME"));
                 Master.Add(obMaster);
             }
@@ -86,7 +86,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 obMaster = new SubCountyBO();
-                obMaster.SubCountyID = dr.GetInt32(dr.GetOrdinal("SUBCOUNTYID"));
+                obMaster.SubCountyID = (int)dr.GetDecimal(dr.GetOrdinal("SUBCOUNTYID"));
                 obMaster.SubCountyName = dr.GetString(dr.GetOrdinal("SUBCOUNTYNAME"));
                 Master.Add(obMaster);
             }
@@ -115,7 +115,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 obMaster = new ParishBO();
-                obMaster.ParishId = dr.GetInt32(dr.GetOrdinal("ID"));
+                obMaster.ParishId = (int)dr.GetDecimal(dr.GetOrdinal("ID"));
                 obMaster.ParishName = dr.GetString(dr.GetOrdinal("Name"));
 
                 Master.Add(obMaster);
@@ -145,7 +145,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 obMaster = new VillageBO();
-                obMaster.VillageID = dr.GetInt32(dr.GetOrdinal("VILLAGEID"));
+                obMaster.VillageID = (int)dr.GetDecimal(dr.GetOrdinal("VILLAGEID"));
                 obMaster.VillageName = dr.GetString(dr.GetOrdinal("VILLAGENAME"));
                 Master.Add(obMaster);
             }
@@ -171,7 +171,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 obMaster = new ReligionBO();
-                if (!dr.IsDBNull(dr.GetOrdinal("ID"))) obMaster.ReligionID = dr.GetInt32(dr.GetOrdinal("ID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("ID"))) obMaster.ReligionID = (int)dr.GetDecimal(dr.GetOrdinal("ID"));
                 if (!dr.IsDBNull(dr.GetOrdinal("Name"))) obMaster.ReligionName = dr.GetString(dr.GetOrdinal("Name"));
                 Master.Add(obMaster);
             }
@@ -197,7 +197,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 obMaster = new OptionGroupBO();
-                obMaster.OptionGroupID = dr.GetInt32(dr.GetOrdinal("ID"));
+                obMaster.OptionGroupID = (int)dr.GetDecimal(dr.GetOrdinal("ID"));
                 obMaster.OptionGroupName = dr.GetString(dr.GetOrdinal("Name"));
                 Master.Add(obMaster);
             }
@@ -223,7 +223,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 obProprietor = new ProprietorBO();
-                obProprietor.ProprietorID = dr.GetInt32(dr.GetOrdinal("ID"));
+                obProprietor.ProprietorID = (int)dr.GetDecimal(dr.GetOrdinal("ID"));
                 obProprietor.ProprietorName = dr.GetString(dr.GetOrdinal("Name"));
                 Proprietor.Add(obProprietor);
             }
@@ -277,7 +277,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 objCurrencyBO = new CurrencyBO();
-                objCurrencyBO.CurrencyID = dr.GetInt16(dr.GetOrdinal("CURRENCYID"));
+                objCurrencyBO.CurrencyID = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("CURRENCYID")));
                 objCurrencyBO.CurrencyCode = dr.GetString(dr.GetOrdinal("CURRENCYCODE"));
                 Currency.Add(objCurrencyBO);
             }
@@ -303,7 +303,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 obMaster = new RepresentationBO();
-                if (!dr.IsDBNull(dr.GetOrdinal("ID"))) obMaster.RepresentationID = dr.GetInt32(dr.GetOrdinal("ID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("ID"))) obMaster.RepresentationID = (int)dr.GetDecimal(dr.GetOrdinal("ID"));
                 if (!dr.IsDBNull(dr.GetOrdinal("Name"))) obMaster.RepresentationName = dr.GetString(dr.GetOrdinal("Name"));
                 Master.Add(obMaster);
             }

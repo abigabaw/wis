@@ -33,7 +33,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 objCon = new ConsultantBO();
-                 objCon.ConsultID = (Convert.ToInt32(dr.GetValue(dr.GetOrdinal("CONSULTANTID"))));
+                 objCon.ConsultID = (int)dr.GetDecimal(dr.GetOrdinal("CONSULTANTID"));
                  objCon.ConsultName = dr.GetValue(dr.GetOrdinal("CONSULTANTNAME")).ToString();
                  objCon.ConsultType = dr.GetValue(dr.GetOrdinal("CONSULTATIONTYPE")).ToString();
                  objCon.ConPerson = dr.GetValue(dr.GetOrdinal("CONTACTPERSON")).ToString();
@@ -69,7 +69,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 objCon = new ConsultantBO();
-                objCon.ConsultID = (Convert.ToInt32(dr.GetValue(dr.GetOrdinal("CONSULTANTID"))));
+                objCon.ConsultID = (int)dr.GetDecimal(dr.GetOrdinal("CONSULTANTID"));
                 objCon.ConsultName = dr.GetValue(dr.GetOrdinal("CONSULTANTNAME")).ToString();
                 objCon.ConsultType = dr.GetValue(dr.GetOrdinal("CONSULTATIONTYPE")).ToString();
                 objCon.ConPerson = dr.GetValue(dr.GetOrdinal("CONTACTPERSON")).ToString();

@@ -238,9 +238,9 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 WorkFlowObj = new WorkFlowBO();
-                if (!dr.IsDBNull(dr.GetOrdinal("WORKFLOWDEFINITIONID"))) WorkFlowObj.WorkFlowDefID = dr.GetInt32(dr.GetOrdinal("WORKFLOWDEFINITIONID"));
-                if (!dr.IsDBNull(dr.GetOrdinal("MODULEID"))) WorkFlowObj.ModuleID = dr.GetInt32(dr.GetOrdinal("MODULEID"));
-                if (!dr.IsDBNull(dr.GetOrdinal("WORKFLOWITEMID"))) WorkFlowObj.WorkflowID = dr.GetInt32(dr.GetOrdinal("WORKFLOWITEMID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("WORKFLOWDEFINITIONID"))) WorkFlowObj.WorkFlowDefID = (int)dr.GetDecimal(dr.GetOrdinal("WORKFLOWDEFINITIONID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("MODULEID"))) WorkFlowObj.ModuleID = (int)dr.GetDecimal(dr.GetOrdinal("MODULEID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("WORKFLOWITEMID"))) WorkFlowObj.WorkflowID = (int)dr.GetDecimal(dr.GetOrdinal("WORKFLOWITEMID"));
 
                 WorkFlowList.Add(WorkFlowObj);
 
@@ -314,21 +314,21 @@ namespace WIS_DataAccess
 
                 objWorkFlow = new WorkFlowBO();
 
-                if (!dr.IsDBNull(dr.GetOrdinal("WORKFLOWDEFINITIONID"))) objWorkFlow.WorkFlowDefID = dr.GetInt32(dr.GetOrdinal("WORKFLOWDEFINITIONID"));
-                if (!dr.IsDBNull(dr.GetOrdinal("PROJECTID"))) objWorkFlow.ProjectID = dr.GetInt32(dr.GetOrdinal("PROJECTID"));
-                if (!dr.IsDBNull(dr.GetOrdinal("MODULEID"))) objWorkFlow.ModuleID = dr.GetInt32(dr.GetOrdinal("MODULEID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("WORKFLOWDEFINITIONID"))) objWorkFlow.WorkFlowDefID = (int)dr.GetDecimal(dr.GetOrdinal("WORKFLOWDEFINITIONID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("PROJECTID"))) objWorkFlow.ProjectID = (int)dr.GetDecimal(dr.GetOrdinal("PROJECTID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("MODULEID"))) objWorkFlow.ModuleID = (int)dr.GetDecimal(dr.GetOrdinal("MODULEID"));
                 if (!dr.IsDBNull(dr.GetOrdinal("MODULENAME"))) objWorkFlow.ModuleName = dr.GetString(dr.GetOrdinal("MODULENAME"));
 
-                if (!dr.IsDBNull(dr.GetOrdinal("WORKFLOWITEMID"))) objWorkFlow.WorkflowID = dr.GetInt32(dr.GetOrdinal("WORKFLOWITEMID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("WORKFLOWITEMID"))) objWorkFlow.WorkflowID = (int)dr.GetDecimal(dr.GetOrdinal("WORKFLOWITEMID"));
                 if (!dr.IsDBNull(dr.GetOrdinal("DESCRIPTION"))) objWorkFlow.WorkflowName = dr.GetString(dr.GetOrdinal("DESCRIPTION"));
 
-                if (!dr.IsDBNull(dr.GetOrdinal("HIGHERAUTHORITY"))) objWorkFlow.HigherAuthorityID = dr.GetInt32(dr.GetOrdinal("HIGHERAUTHORITY"));
+                if (!dr.IsDBNull(dr.GetOrdinal("HIGHERAUTHORITY"))) objWorkFlow.HigherAuthorityID = (int)dr.GetDecimal(dr.GetOrdinal("HIGHERAUTHORITY"));
 
                 if (!dr.IsDBNull(dr.GetOrdinal("UserName"))) objWorkFlow.UserName = dr.GetString(dr.GetOrdinal("UserName"));
 
                 if (!dr.IsDBNull(dr.GetOrdinal("TRIGGERTYPE"))) objWorkFlow.Trigger = dr.GetString(dr.GetOrdinal("TRIGGERTYPE"));
 
-                if (!dr.IsDBNull(dr.GetOrdinal("TRIGGERPERIOD"))) objWorkFlow.AfterDays = dr.GetInt32(dr.GetOrdinal("TRIGGERPERIOD"));
+                if (!dr.IsDBNull(dr.GetOrdinal("TRIGGERPERIOD"))) objWorkFlow.AfterDays = (int)dr.GetDecimal(dr.GetOrdinal("TRIGGERPERIOD"));
 
                 WorkFlowList.Add(objWorkFlow);
             }
@@ -457,9 +457,9 @@ namespace WIS_DataAccess
             {
                 WorkFlowObj = new WorkFlowBO();
 
-                if (!dr.IsDBNull(dr.GetOrdinal("WORKFLOWDEFINITIONID"))) WorkFlowObj.WorkFlowDefID = dr.GetInt32(dr.GetOrdinal("WORKFLOWDEFINITIONID"));
-                if (!dr.IsDBNull(dr.GetOrdinal("MODULEID"))) WorkFlowObj.ModuleID = dr.GetInt32(dr.GetOrdinal("MODULEID"));
-                if (!dr.IsDBNull(dr.GetOrdinal("WORKFLOWITEMID"))) WorkFlowObj.WorkflowID = dr.GetInt32(dr.GetOrdinal("WORKFLOWITEMID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("WORKFLOWDEFINITIONID"))) WorkFlowObj.WorkFlowDefID = (int)dr.GetDecimal(dr.GetOrdinal("WORKFLOWDEFINITIONID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("MODULEID"))) WorkFlowObj.ModuleID = (int)dr.GetDecimal(dr.GetOrdinal("MODULEID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("WORKFLOWITEMID"))) WorkFlowObj.WorkflowID = (int)dr.GetDecimal(dr.GetOrdinal("WORKFLOWITEMID"));
 
                 WorkFlowList.Add(WorkFlowObj);
 

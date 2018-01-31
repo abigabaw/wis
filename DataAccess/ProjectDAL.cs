@@ -32,7 +32,10 @@ namespace WIS_DataAccess
             cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.AddWithValue("projectName_", projectName);
+            if (projectName != "")
+                cmd.Parameters.AddWithValue("projectName_", projectName);
+            else
+                cmd.Parameters.AddWithValue("projectName_", DBNull.Value);
 
             if (projectStartDate != "")
                 cmd.Parameters.AddWithValue("projectStartDate_", Convert.ToDateTime(projectStartDate).ToString(UtilBO.DateFormatDB));
@@ -44,7 +47,11 @@ namespace WIS_DataAccess
             else
                 cmd.Parameters.AddWithValue("projectEndDate_", DBNull.Value);
 
-            cmd.Parameters.AddWithValue("projectStatus_", projectStatus);
+            if (projectStatus != "")
+                cmd.Parameters.AddWithValue("projectStatus_", projectStatus);
+            else
+                cmd.Parameters.AddWithValue("projectStatus_", DBNull.Value);
+
             cmd.Parameters.AddWithValue("userID_", userID);
 
            // // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
@@ -58,14 +65,14 @@ namespace WIS_DataAccess
                 {
                     oProject = new ProjectBO();
 
-                    if (!dr.IsDBNull(dr.GetOrdinal("ProjectID"))) oProject.ProjectID = dr.GetInt32(dr.GetOrdinal("ProjectID"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("ProjectID"))) oProject.ProjectID = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("ProjectID")));
                     if (!dr.IsDBNull(dr.GetOrdinal("ProjectCode"))) oProject.ProjectCode = dr.GetString(dr.GetOrdinal("ProjectCode"));
                     if (!dr.IsDBNull(dr.GetOrdinal("ProjectName"))) oProject.ProjectName = dr.GetString(dr.GetOrdinal("ProjectName"));
                     if (!dr.IsDBNull(dr.GetOrdinal("ProjectStartDate"))) oProject.ProjectStartDate = dr.GetDateTime(dr.GetOrdinal("ProjectStartDate"));
                     if (!dr.IsDBNull(dr.GetOrdinal("ProjectEndDate"))) oProject.ProjectEndDate = dr.GetDateTime(dr.GetOrdinal("ProjectEndDate"));
                     if (!dr.IsDBNull(dr.GetOrdinal("ProjectStatus"))) oProject.ProjectStatus = dr.GetString(dr.GetOrdinal("ProjectStatus"));
                     if (!dr.IsDBNull(dr.GetOrdinal("FROZEN"))) oProject.Frozen = dr.GetString(dr.GetOrdinal("FROZEN"));
-                    if (!dr.IsDBNull(dr.GetOrdinal("RouteCount"))) oProject.RouteCount = dr.GetInt32(dr.GetOrdinal("RouteCount"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("RouteCount"))) oProject.RouteCount = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("RouteCount")));
 
                     Projects.Add(oProject);
                 }
@@ -110,7 +117,7 @@ namespace WIS_DataAccess
                         {
                             oProject = new ProjectBO();
 
-                            if (!dr.IsDBNull(dr.GetOrdinal("ProjectID"))) oProject.ProjectID = dr.GetInt32(dr.GetOrdinal("ProjectID"));
+                            if (!dr.IsDBNull(dr.GetOrdinal("ProjectID"))) oProject.ProjectID = (int)dr.GetDecimal(dr.GetOrdinal("ProjectID"));
                             if (!dr.IsDBNull(dr.GetOrdinal("ProjectCode"))) oProject.ProjectCode = dr.GetString(dr.GetOrdinal("ProjectCode"));
                             if (!dr.IsDBNull(dr.GetOrdinal("ProjectName"))) oProject.ProjectName = dr.GetString(dr.GetOrdinal("ProjectName"));
 
@@ -216,7 +223,7 @@ namespace WIS_DataAccess
                 {
                     oProject = new ProjectBO();
 
-                    if (!dr.IsDBNull(dr.GetOrdinal("ProjectID"))) oProject.ProjectID = dr.GetInt32(dr.GetOrdinal("ProjectID"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("ProjectID"))) oProject.ProjectID = (int)dr.GetDecimal(dr.GetOrdinal("ProjectID"));
                     if (!dr.IsDBNull(dr.GetOrdinal("ProjectCode"))) oProject.ProjectCode = dr.GetString(dr.GetOrdinal("ProjectCode"));
                     if (!dr.IsDBNull(dr.GetOrdinal("ProjectName"))) oProject.ProjectName = dr.GetString(dr.GetOrdinal("ProjectName"));
                     if (!dr.IsDBNull(dr.GetOrdinal("Objective"))) oProject.Objective = dr.GetString(dr.GetOrdinal("Objective"));
@@ -231,11 +238,11 @@ namespace WIS_DataAccess
                         else
                             oProject.IsDeleted = true;
                     }
-                    if (!dr.IsDBNull(dr.GetOrdinal("CreatedBy"))) oProject.CreatedBy = dr.GetInt32(dr.GetOrdinal("CreatedBy"));
-                    if (!dr.IsDBNull(dr.GetOrdinal("UpdatedBy"))) oProject.UpdatedBy = dr.GetInt32(dr.GetOrdinal("UpdatedBy"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("CreatedBy"))) oProject.CreatedBy = (int)dr.GetDecimal(dr.GetOrdinal("CreatedBy"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("UpdatedBy"))) oProject.UpdatedBy = (int)dr.GetDecimal(dr.GetOrdinal("UpdatedBy"));
                     if (!dr.IsDBNull(dr.GetOrdinal("CreatedDate"))) oProject.CreatedDate = dr.GetDateTime(dr.GetOrdinal("CreatedDate"));
                     if (!dr.IsDBNull(dr.GetOrdinal("UpdatedDate"))) oProject.UpdatedDate = dr.GetDateTime(dr.GetOrdinal("UpdatedDate"));
-                    if (!dr.IsDBNull(dr.GetOrdinal("budgetcurrency"))) oProject.BudgetCurrency = dr.GetInt32(dr.GetOrdinal("budgetcurrency"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("budgetcurrency"))) oProject.BudgetCurrency = (int)dr.GetDecimal(dr.GetOrdinal("budgetcurrency"));
                     if (!dr.IsDBNull(dr.GetOrdinal("labourcost"))) oProject.Labourcost = dr.GetDecimal(dr.GetOrdinal("labourcost"));
                     if (!dr.IsDBNull(dr.GetOrdinal("BUILDINGMATCOST"))) oProject.BUILDINGMATCOST = dr.GetDecimal(dr.GetOrdinal("BUILDINGMATCOST"));
                     if (!dr.IsDBNull(dr.GetOrdinal("USHVALUE"))) oProject.Dollervalue = dr.GetDecimal(dr.GetOrdinal("USHVALUE"));
@@ -817,7 +824,7 @@ namespace WIS_DataAccess
                     objProjectSegment = new SegmentBO();
 
                     if (!dr.IsDBNull(dr.GetOrdinal("ProjectSegmentID")))
-                        objProjectSegment.ProjectSegmentID = dr.GetInt32(dr.GetOrdinal("ProjectSegmentID"));
+                        objProjectSegment.ProjectSegmentID = (int)dr.GetDecimal(dr.GetOrdinal("ProjectSegmentID"));
 
                     if (!dr.IsDBNull(dr.GetOrdinal("SegmentName")))
                         objProjectSegment.SegmentName = dr.GetString(dr.GetOrdinal("SegmentName"));
@@ -826,7 +833,7 @@ namespace WIS_DataAccess
                         objProjectSegment.RouteLength = dr.GetString(dr.GetOrdinal("ROUTELENGTH"));
 
                     if (!dr.IsDBNull(dr.GetOrdinal("LINETYPEID")))
-                        objProjectSegment.LineTypeID = dr.GetInt32(dr.GetOrdinal("LINETYPEID"));
+                        objProjectSegment.LineTypeID = (int)dr.GetDecimal(dr.GetOrdinal("LINETYPEID"));
 
                     if (!dr.IsDBNull(dr.GetOrdinal("TYPEOFLINE")))
                         objProjectSegment.TypeofLine = dr.GetString(dr.GetOrdinal("TYPEOFLINE"));
@@ -852,7 +859,7 @@ namespace WIS_DataAccess
                     }
                     if (!dr.IsDBNull(dr.GetOrdinal("BANKID")))
                     {
-                        objProjectSegment.Bankid = dr.GetInt32(dr.GetOrdinal("BANKID"));
+                        objProjectSegment.Bankid = (int)dr.GetDecimal(dr.GetOrdinal("BANKID"));
                     }
                     if (!dr.IsDBNull(dr.GetOrdinal("BankName")))
                     {
