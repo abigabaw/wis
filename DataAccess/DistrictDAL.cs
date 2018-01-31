@@ -36,7 +36,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 objDisBO = new DistrictBO();
-                if (!dr.IsDBNull(dr.GetOrdinal("DISTRICTID"))) objDisBO.DistrictID = dr.GetInt32(dr.GetOrdinal("DISTRICTID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("DISTRICTID"))) objDisBO.DistrictID = (int)dr.GetDecimal(dr.GetOrdinal("DISTRICTID"));
               //  objDisBO.DistrictID = (Convert.ToInt32(dr.GetValue(dr.GetOrdinal("DISTRICTID"))));
                 if (!dr.IsDBNull(dr.GetOrdinal("DISTRICTNAME"))) objDisBO.DistrictName = dr.GetValue(dr.GetOrdinal("DISTRICTNAME")).ToString();
                 objDislist.Add(objDisBO);
@@ -231,7 +231,7 @@ namespace WIS_DataAccess
                 {
                     DistrictBOobj = new DistrictBO();
 
-                    if (!dr.IsDBNull(dr.GetOrdinal("DISTRICTID"))) DistrictBOobj.DistrictID = dr.GetInt32(dr.GetOrdinal("DISTRICTID"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("DISTRICTID"))) DistrictBOobj.DistrictID = (int)dr.GetDecimal(dr.GetOrdinal("DISTRICTID"));
                     if (!dr.IsDBNull(dr.GetOrdinal("DISTRICTNAME"))) DistrictBOobj.DistrictName = dr.GetString(dr.GetOrdinal("DISTRICTNAME"));
                 }
                 dr.Close();
@@ -276,7 +276,7 @@ namespace WIS_DataAccess
                         {
                             objDisBO = new DistrictBO();
 
-                            if (!dr.IsDBNull(dr.GetOrdinal("DISTRICTID"))) objDisBO.DistrictID = dr.GetInt32(dr.GetOrdinal("DISTRICTID"));
+                            if (!dr.IsDBNull(dr.GetOrdinal("DISTRICTID"))) objDisBO.DistrictID = (int)dr.GetDecimal(dr.GetOrdinal("DISTRICTID"));
                             if (!dr.IsDBNull(dr.GetOrdinal("DISTRICTNAME"))) objDisBO.DistrictName = dr.GetString(dr.GetOrdinal("DISTRICTNAME"));
                             if (!dr.IsDBNull(dr.GetOrdinal("ISDELETED"))) objDisBO.IsDeleted = dr.GetString(dr.GetOrdinal("ISDELETED"));
 

@@ -118,26 +118,24 @@ namespace WIS_DataAccess
                     objUser = new UserBO();
                     //objRole = new Role();
                     if (ColumnExists(dr, "UserID") && !dr.IsDBNull(dr.GetOrdinal("UserID")))
-                        objUser.UserID = dr.GetInt32(dr.GetOrdinal("UserID"));
+                        objUser.UserID = (int)dr.GetDecimal(dr.GetOrdinal("UserID"));
                     if (ColumnExists(dr, "UserName") && !dr.IsDBNull(dr.GetOrdinal("UserName")))
                         objUser.UserName = dr.GetString(dr.GetOrdinal("UserName"));
                     if (ColumnExists(dr, "EmailID") && !dr.IsDBNull(dr.GetOrdinal("EmailID")))
                         objUser.EmailID = dr.GetString(dr.GetOrdinal("EmailID"));
                     if (ColumnExists(dr, "RoleID") && !dr.IsDBNull(dr.GetOrdinal("RoleID")))
-                        objUser.RoleID = dr.GetInt32(dr.GetOrdinal("RoleID"));
+                        objUser.RoleID = (int)dr.GetDecimal(dr.GetOrdinal("RoleID"));
                     //Role Name need to be Assigned
                     if (ColumnExists(dr, "rolename") && !dr.IsDBNull(dr.GetOrdinal("rolename")))
-                    {
                         objUser.RoleName = dr.GetString(dr.GetOrdinal("rolename"));
-                    }
 
                     if (ColumnExists(dr, "CellNumber") && !dr.IsDBNull(dr.GetOrdinal("CellNumber")))
                         objUser.CellNumber = dr.GetString(dr.GetOrdinal("CellNumber"));
                     if (ColumnExists(dr, "DisplayName") && !dr.IsDBNull(dr.GetOrdinal("DisplayName")))
                         objUser.DisplayName = dr.GetString(dr.GetOrdinal("DisplayName"));
-
                     if (ColumnExists(dr, "IsDeleted") && !dr.IsDBNull(dr.GetOrdinal("IsDeleted")))
                         objUser.IsDeleted = dr.GetString(dr.GetOrdinal("IsDeleted"));
+
                     Users.Add(objUser);
                 }
 

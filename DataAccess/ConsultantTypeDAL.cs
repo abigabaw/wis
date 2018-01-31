@@ -60,7 +60,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 objTypeBO = new ConsultantTypeBO();
-                objTypeBO.ConsultantTypeID = dr.GetInt32(dr.GetOrdinal("CONSULTANTTYPEID"));
+                objTypeBO.ConsultantTypeID = (int)dr.GetDecimal(dr.GetOrdinal("CONSULTANTTYPEID"));
                 objTypeBO.ConsultantType = dr.GetString(dr.GetOrdinal("CONSULTANTTYPE"));
                 objConsultantTypes.Add(objTypeBO);
             }

@@ -28,7 +28,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 ObjPP = new ProjectPersonalBO();
-                ObjPP.UserID = (Convert.ToInt32(dr.GetValue(dr.GetOrdinal("USERID"))));
+                ObjPP.UserID = (int)dr.GetDecimal(dr.GetOrdinal("USERID"));
                 ObjPP.Username = dr.GetValue(dr.GetOrdinal("USERNAME")).ToString();
                 
                 ObjPPList.Add(ObjPP);
@@ -101,7 +101,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 objPP = new ProjectPersonalBO();
-                objPP.UserID = dr.GetInt32(dr.GetOrdinal("USERID"));
+                objPP.UserID = (int)dr.GetDecimal(dr.GetOrdinal("USERID"));
                 objPP.Username = dr.GetValue(dr.GetOrdinal("USERNAME")).ToString();
                 objPPList.Add(objPP);
             }
@@ -175,7 +175,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 objPP = new ProjectPersonalBO();
-                objPP.UserID = dr.GetInt32(dr.GetOrdinal("USERID"));
+                objPP.UserID = (int)dr.GetDecimal(dr.GetOrdinal("USERID"));
                 objPP.Username = dr.GetValue(dr.GetOrdinal("USERNAME")).ToString();
                 objPPList.Add(objPP);
             }
@@ -204,7 +204,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 objPP = new ProjectPersonalBO();
-                objPP.UserID = dr.GetInt32(dr.GetOrdinal("USERID"));
+                objPP.UserID = (int)dr.GetDecimal(dr.GetOrdinal("USERID"));
                 objPP.Username = dr.GetValue(dr.GetOrdinal("USERNAME")).ToString();
                 objPPList.Add(objPP);
             }

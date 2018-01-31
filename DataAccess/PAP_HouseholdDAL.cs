@@ -27,21 +27,21 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 objTrn_Pap_HouseHold = new PAP_HouseholdBO();
-                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objTrn_Pap_HouseHold.HhId = dr.GetInt32(dr.GetOrdinal("HHID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objTrn_Pap_HouseHold.HhId = (int)dr.GetDecimal(dr.GetOrdinal("HHID"));
                 if (!dr.IsDBNull(dr.GetOrdinal("PAP_UID"))) objTrn_Pap_HouseHold.Pap_UId = dr.GetString(dr.GetOrdinal("PAP_UID"));
-                if (!dr.IsDBNull(dr.GetOrdinal("PROJECTID"))) objTrn_Pap_HouseHold.ProjectedId = dr.GetInt32(dr.GetOrdinal("PROJECTID"));
-                if (!dr.IsDBNull(dr.GetOrdinal("OPTIONGROUPID"))) objTrn_Pap_HouseHold.OptiongroupId = dr.GetInt32(dr.GetOrdinal("OPTIONGROUPID"));
-                if (!dr.IsDBNull(dr.GetOrdinal("RELIGIONID"))) objTrn_Pap_HouseHold.ReligionId = dr.GetInt32(dr.GetOrdinal("RELIGIONID"));
-                if (!dr.IsDBNull(dr.GetOrdinal("OCCUPATIONID"))) objTrn_Pap_HouseHold.OccupationId = dr.GetInt32(dr.GetOrdinal("OCCUPATIONID"));
-                if (!dr.IsDBNull(dr.GetOrdinal("PAPSTATUSID"))) objTrn_Pap_HouseHold.PapstatusId = dr.GetInt32(dr.GetOrdinal("PAPSTATUSID"));
-                if (!dr.IsDBNull(dr.GetOrdinal("LITERACYLEVELID"))) objTrn_Pap_HouseHold.LiteracyCycleId = dr.GetInt32(dr.GetOrdinal("LITERACYLEVELID"));
-                if (!dr.IsDBNull(dr.GetOrdinal("UPDATEDBY"))) objTrn_Pap_HouseHold.UpdatedBy = dr.GetInt32(dr.GetOrdinal("UPDATEDBY"));
+                if (!dr.IsDBNull(dr.GetOrdinal("PROJECTID"))) objTrn_Pap_HouseHold.ProjectedId = (int)dr.GetDecimal(dr.GetOrdinal("PROJECTID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("OPTIONGROUPID"))) objTrn_Pap_HouseHold.OptiongroupId = (int)dr.GetDecimal(dr.GetOrdinal("OPTIONGROUPID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("RELIGIONID"))) objTrn_Pap_HouseHold.ReligionId = (int)dr.GetDecimal(dr.GetOrdinal("RELIGIONID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("OCCUPATIONID"))) objTrn_Pap_HouseHold.OccupationId = (int)dr.GetDecimal(dr.GetOrdinal("OCCUPATIONID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("PAPSTATUSID"))) objTrn_Pap_HouseHold.PapstatusId = (int)dr.GetDecimal(dr.GetOrdinal("PAPSTATUSID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("LITERACYLEVELID"))) objTrn_Pap_HouseHold.LiteracyCycleId = (int)dr.GetDecimal(dr.GetOrdinal("LITERACYLEVELID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("UPDATEDBY"))) objTrn_Pap_HouseHold.UpdatedBy = (int)dr.GetDecimal(dr.GetOrdinal("UPDATEDBY"));
                 if (!dr.IsDBNull(dr.GetOrdinal("INSTITUTIONNAME"))) objTrn_Pap_HouseHold.InstitutionName = dr.GetString(dr.GetOrdinal("INSTITUTIONNAME"));
-                if (!dr.IsDBNull(dr.GetOrdinal("NOOFPLOTS"))) objTrn_Pap_HouseHold.Noofplots = dr.GetInt32(dr.GetOrdinal("NOOFPLOTS"));
+                if (!dr.IsDBNull(dr.GetOrdinal("NOOFPLOTS"))) objTrn_Pap_HouseHold.Noofplots = (int)dr.GetDecimal(dr.GetOrdinal("NOOFPLOTS"));
                 if (!dr.IsDBNull(dr.GetOrdinal("SURNAME"))) objTrn_Pap_HouseHold.Surname = dr.GetString(dr.GetOrdinal("SURNAME"));
                 if (!dr.IsDBNull(dr.GetOrdinal("FIRSTNAME"))) objTrn_Pap_HouseHold.Firstname = dr.GetString(dr.GetOrdinal("FIRSTNAME"));
                 if (!dr.IsDBNull(dr.GetOrdinal("OTHERNAME"))) objTrn_Pap_HouseHold.Othername = dr.GetString(dr.GetOrdinal("OTHERNAME"));
-                if (!dr.IsDBNull(dr.GetOrdinal("POSITIONID"))) objTrn_Pap_HouseHold.PositionId = dr.GetInt32(dr.GetOrdinal("POSITIONID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("POSITIONID"))) objTrn_Pap_HouseHold.PositionId = (int)dr.GetDecimal(dr.GetOrdinal("POSITIONID"));
                 if (!dr.IsDBNull(dr.GetOrdinal("CONTACTPHONE1"))) objTrn_Pap_HouseHold.Contactphone1 = dr.GetString(dr.GetOrdinal("CONTACTPHONE1"));
                 if (!dr.IsDBNull(dr.GetOrdinal("CONTACTPHONE2"))) objTrn_Pap_HouseHold.Contactphone2 = dr.GetString(dr.GetOrdinal("CONTACTPHONE2"));
                 if (!dr.IsDBNull(dr.GetOrdinal("PAPTYPE"))) objTrn_Pap_HouseHold.Paptype = dr.GetString(dr.GetOrdinal("PAPTYPE"));
@@ -66,12 +66,12 @@ namespace WIS_DataAccess
                 if (!dr.IsDBNull(dr.GetOrdinal("WHICHPARENTALIVE"))) objTrn_Pap_HouseHold.Whichparentalive = dr.GetString(dr.GetOrdinal("WHICHPARENTALIVE"));
                 if (!dr.IsDBNull(dr.GetOrdinal("WHEREPARENTSLIVE"))) objTrn_Pap_HouseHold.Whereparentslive = dr.GetString(dr.GetOrdinal("WHEREPARENTSLIVE"));
                 if (!dr.IsDBNull(dr.GetOrdinal("HASIDENTIFICATIONCARD"))) objTrn_Pap_HouseHold.Isidentificationcard = dr.GetString(dr.GetOrdinal("HASIDENTIFICATIONCARD"));
-                if (!dr.IsDBNull(dr.GetOrdinal("CARDTYPE"))) objTrn_Pap_HouseHold.Cardtype = Convert.ToString(dr.GetInt32(dr.GetOrdinal("CARDTYPE")));
+                if (!dr.IsDBNull(dr.GetOrdinal("CARDTYPE"))) objTrn_Pap_HouseHold.Cardtype = Convert.ToString((int)dr.GetDecimal(dr.GetOrdinal("CARDTYPE")));
                 if (!dr.IsDBNull(dr.GetOrdinal("CARDNUMBER"))) objTrn_Pap_HouseHold.CardNo = dr.GetString(dr.GetOrdinal("CARDNUMBER"));
                 if (!dr.IsDBNull(dr.GetOrdinal("NAMEONCARD"))) objTrn_Pap_HouseHold.NameonCard = dr.GetString(dr.GetOrdinal("NAMEONCARD"));
                 if (!dr.IsDBNull(dr.GetOrdinal("ADDRESSONCARD"))) objTrn_Pap_HouseHold.AddressonCard = dr.GetString(dr.GetOrdinal("ADDRESSONCARD"));
                 if (!dr.IsDBNull(dr.GetOrdinal("MARITALSTATUS"))) objTrn_Pap_HouseHold.MaritalStatus = dr.GetString(dr.GetOrdinal("MARITALSTATUS"));
-                if (!dr.IsDBNull(dr.GetOrdinal("NOOFSPOUSES"))) objTrn_Pap_HouseHold.NoofSpouse = dr.GetInt32(dr.GetOrdinal("NOOFSPOUSES"));
+                if (!dr.IsDBNull(dr.GetOrdinal("NOOFSPOUSES"))) objTrn_Pap_HouseHold.NoofSpouse = (int)dr.GetDecimal(dr.GetOrdinal("NOOFSPOUSES"));
                 if (!dr.IsDBNull(dr.GetOrdinal("TRIBE"))) objTrn_Pap_HouseHold.Tribe = dr.GetString(dr.GetOrdinal("TRIBE"));
                 if (!dr.IsDBNull(dr.GetOrdinal("CLAN"))) objTrn_Pap_HouseHold.Clan = dr.GetString(dr.GetOrdinal("CLAN"));
                 if (!dr.IsDBNull(dr.GetOrdinal("ISDELETED"))) objTrn_Pap_HouseHold.Isdeleted = dr.GetString(dr.GetOrdinal("ISDELETED"));
@@ -117,7 +117,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 objTrn_Pap_HouseHold = new PAP_HouseholdBO();
-                if (!dr.IsDBNull(dr.GetOrdinal("OPTIONGROUPID"))) objTrn_Pap_HouseHold.OptiongroupId = dr.GetInt32(dr.GetOrdinal("OPTIONGROUPID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("OPTIONGROUPID"))) objTrn_Pap_HouseHold.OptiongroupId = (int)dr.GetDecimal(dr.GetOrdinal("OPTIONGROUPID"));
                 res = objTrn_Pap_HouseHold.OptiongroupId;
             }
             dr.Close();
@@ -140,7 +140,7 @@ namespace WIS_DataAccess
                 objTrn_Pap_HouseHold = new PAP_HouseholdBO();
                 //if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objTrn_Pap_HouseHold.HhId = dr.GetInt32(dr.GetOrdinal("HHID"));
                 if (!dr.IsDBNull(dr.GetOrdinal("COMMENTS"))) objTrn_Pap_HouseHold.Comments = dr.GetString(dr.GetOrdinal("COMMENTS"));
-                if (!dr.IsDBNull(dr.GetOrdinal("OPTIONGROUPID"))) objTrn_Pap_HouseHold.OptiongroupId = dr.GetInt32(dr.GetOrdinal("OPTIONGROUPID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("OPTIONGROUPID"))) objTrn_Pap_HouseHold.OptiongroupId = (int)dr.GetDecimal(dr.GetOrdinal("OPTIONGROUPID"));
             }
             return objTrn_Pap_HouseHold;
         }
@@ -387,12 +387,12 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 objPAP = new Trn_Pap_HouseHoldBO();
-                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objPAP.HhId = dr.GetInt32(dr.GetOrdinal("HHID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objPAP.HhId = (int)dr.GetDecimal(dr.GetOrdinal("HHID"));
                 if (!dr.IsDBNull(dr.GetOrdinal("PAP_UID"))) objPAP.Papuid = dr.GetString(dr.GetOrdinal("PAP_UID"));
                 //id
                 //code
                 //name 
-                if (!dr.IsDBNull(dr.GetOrdinal("ProjectID"))) objPAP.ProjectedId = dr.GetInt32(dr.GetOrdinal("ProjectID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("ProjectID"))) objPAP.ProjectedId = (int)dr.GetDecimal(dr.GetOrdinal("ProjectID"));
                 if (!dr.IsDBNull(dr.GetOrdinal("ProjectCode"))) objPAP.ProjectCode = dr.GetString(dr.GetOrdinal("ProjectCode"));
                 if (!dr.IsDBNull(dr.GetOrdinal("ProjectName"))) objPAP.ProjectName = dr.GetString(dr.GetOrdinal("ProjectName"));
                 if (!dr.IsDBNull(dr.GetOrdinal("PAPNAME"))) objPAP.PapName = dr.GetString(dr.GetOrdinal("PAPNAME"));
@@ -472,7 +472,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 objPAP = new Trn_Pap_HouseHoldBO();
-                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objPAP.HhId = dr.GetInt32(dr.GetOrdinal("HHID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objPAP.HhId = (int)dr.GetDecimal(dr.GetOrdinal("HHID"));
                 if (!dr.IsDBNull(dr.GetOrdinal("PAP_UID"))) objPAP.Papuid = dr.GetString(dr.GetOrdinal("PAP_UID"));
 
                 if (!dr.IsDBNull(dr.GetOrdinal("PAPNAME"))) objPAP.PapName = dr.GetString(dr.GetOrdinal("PAPNAME"));
@@ -543,7 +543,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 objPAP = new Trn_Pap_HouseHoldBO();
-                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objPAP.HhId = dr.GetInt32(dr.GetOrdinal("HHID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objPAP.HhId = (int)dr.GetDecimal(dr.GetOrdinal("HHID"));
 
                 if (!dr.IsDBNull(dr.GetOrdinal("PAPNAME"))) objPAP.PapName = dr.GetString(dr.GetOrdinal("PAPNAME"));
                 if (!dr.IsDBNull(dr.GetOrdinal("PAPTYPE"))) objPAP.PapType = dr.GetString(dr.GetOrdinal("PAPTYPE"));
@@ -628,7 +628,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 objPAP = new Trn_Pap_HouseHoldBO();
-                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objPAP.HhId = dr.GetInt32(dr.GetOrdinal("HHID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objPAP.HhId = (int)dr.GetDecimal(dr.GetOrdinal("HHID"));
 
                 if (!dr.IsDBNull(dr.GetOrdinal("surname"))) objPAP.Surname = dr.GetString(dr.GetOrdinal("surname"));
                 if (!dr.IsDBNull(dr.GetOrdinal("firstname"))) objPAP.Firstname = dr.GetString(dr.GetOrdinal("firstname"));
@@ -725,7 +725,7 @@ namespace WIS_DataAccess
                 while (dr.Read())
                 {
                     objTrn_Pap_HouseHold = new PAP_HouseholdBO();
-                    if (!dr.IsDBNull(dr.GetOrdinal("STATUSID"))) objTrn_Pap_HouseHold.DisclosureStatus = dr.GetInt32(dr.GetOrdinal("STATUSID"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("STATUSID"))) objTrn_Pap_HouseHold.DisclosureStatus = (int)dr.GetDecimal(dr.GetOrdinal("STATUSID"));
                 }
             }
             else if (objHouseHold.PageCode == "CRGRA")
@@ -733,7 +733,7 @@ namespace WIS_DataAccess
                 while (dr.Read())
                 {
                     objTrn_Pap_HouseHold = new PAP_HouseholdBO();
-                    if (!dr.IsDBNull(dr.GetOrdinal("STATUSID"))) objTrn_Pap_HouseHold.GrievanceStatus = dr.GetInt32(dr.GetOrdinal("STATUSID"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("STATUSID"))) objTrn_Pap_HouseHold.GrievanceStatus = (int)dr.GetDecimal(dr.GetOrdinal("STATUSID"));
                 }
             }
             else if (objHouseHold.PageCode == "CRFND")
@@ -741,7 +741,7 @@ namespace WIS_DataAccess
                 while (dr.Read())
                 {
                     objTrn_Pap_HouseHold = new PAP_HouseholdBO();
-                    if (!dr.IsDBNull(dr.GetOrdinal("STATUSID"))) objTrn_Pap_HouseHold.PaymentStatus = dr.GetInt32(dr.GetOrdinal("STATUSID"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("STATUSID"))) objTrn_Pap_HouseHold.PaymentStatus = (int)dr.GetDecimal(dr.GetOrdinal("STATUSID"));
                 }
             }
             else
@@ -749,7 +749,7 @@ namespace WIS_DataAccess
                 while (dr.Read())
                 {
                     objTrn_Pap_HouseHold = new PAP_HouseholdBO();
-                    if (!dr.IsDBNull(dr.GetOrdinal("STATUSID"))) objTrn_Pap_HouseHold.ApproverStatus = dr.GetInt32(dr.GetOrdinal("STATUSID"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("STATUSID"))) objTrn_Pap_HouseHold.ApproverStatus = (int)dr.GetDecimal(dr.GetOrdinal("STATUSID"));
                 }
             }
                     
@@ -906,7 +906,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 objPAP = new Trn_Pap_HouseHoldBO();
-                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objPAP.HhId = dr.GetInt32(dr.GetOrdinal("HHID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objPAP.HhId = (int)dr.GetDecimal(dr.GetOrdinal("HHID"));
 
                 if (!dr.IsDBNull(dr.GetOrdinal("surname"))) objPAP.Surname = dr.GetString(dr.GetOrdinal("surname"));
                 if (!dr.IsDBNull(dr.GetOrdinal("firstname"))) objPAP.Firstname = dr.GetString(dr.GetOrdinal("firstname"));
