@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 
@@ -16,19 +16,19 @@ namespace WIS_DataAccess
        public string Insert(NatureofFinancingBO BOobj)
        {
            string returnResult = string.Empty;
-           OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+           SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
            cnn.Open();
-           OracleCommand dcmd = new OracleCommand("USP_MST_INS_NATUR_FINANCE", cnn);
+           SqlCommand dcmd = new SqlCommand("USP_MST_INS_NATUR_FINANCE", cnn);
            dcmd.CommandType = CommandType.StoredProcedure;
            int count = Convert.ToInt32(dcmd.CommandType);
 
            try
            {
-               dcmd.Parameters.Add("F_FINANCENATURE", BOobj.FINANCENATURE);
-               dcmd.Parameters.Add("CREATEDBY", BOobj.CREATEDBY);
+               dcmd.Parameters.AddWithValue("F_FINANCENATURE", BOobj.FINANCENATURE);
+               dcmd.Parameters.AddWithValue("CREATEDBY", BOobj.CREATEDBY);
                //return dcmd.ExecuteNonQuery();
 
-               dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+               /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                dcmd.ExecuteNonQuery();
 
@@ -56,17 +56,17 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public NatureofFinancingList GetAllNatureFinance()
        {
-           OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-           OracleCommand cmd;
+           SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+           SqlCommand cmd;
 
            string proc = "USP_TRN_GET_ALLNATURFIN";
 
-           cmd = new OracleCommand(proc, cnn);
+           cmd = new SqlCommand(proc, cnn);
            cmd.CommandType = CommandType.StoredProcedure;
-           cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
            cmd.Connection.Open();
-           OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+           SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
            NatureofFinancingBO Boobj = null;
            NatureofFinancingList Listobj = new NatureofFinancingList();
 
@@ -95,25 +95,25 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public NatureofFinancingList GetnatureAllfinance(string financeNature)
        {
-           OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-           OracleCommand cmd;
+           SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+           SqlCommand cmd;
 
            string proc = "USP_MST_GETALL_FIN_NATURE";
 
-           cmd = new OracleCommand(proc, cnn);
+           cmd = new SqlCommand(proc, cnn);
            cmd.CommandType = CommandType.StoredProcedure;
            if (financeNature.ToString() == "")
            {
-               cmd.Parameters.Add("@FINANCENATURE_", DBNull.Value);
+               cmd.Parameters.AddWithValue("@FINANCENATURE_", DBNull.Value);
            }
            else
            {
-               cmd.Parameters.Add("@FINANCENATURE_", financeNature.ToString());
+               cmd.Parameters.AddWithValue("@FINANCENATURE_", financeNature.ToString());
            }
-           cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
            cmd.Connection.Open();
-           OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+           SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
            NatureofFinancingBO Boobj = null;
            NatureofFinancingList Listobj = new NatureofFinancingList();
 
@@ -141,17 +141,17 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public NatureofFinancingList GetNatureOfFinance()
        {
-           OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-           OracleCommand cmd;
+           SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+           SqlCommand cmd;
 
-           string proc = " USP_MST_GET_NATURE_FIN";
+           string proc = "USP_MST_GET_NATURE_FIN";
 
-           cmd = new OracleCommand(proc, cnn);
+           cmd = new SqlCommand(proc, cnn);
            cmd.CommandType = CommandType.StoredProcedure;
-           cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
            cmd.Connection.Open();
-           OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+           SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
            NatureofFinancingBO Boobj = null;
            NatureofFinancingList Listobj = new NatureofFinancingList();
 
@@ -181,19 +181,19 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public string ObsoleteFcond(int FNatureId, string ISDELETED)
        {
-           OracleConnection myConnection = null;
-           OracleCommand myCommand = null;
+           SqlConnection myConnection = null;
+           SqlCommand myCommand = null;
            string result = string.Empty;
            try
            {
 
-               myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-               myCommand = new OracleCommand("USP_MST_OBSOLETE_NATUR_FIN", myConnection);
+               myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+               myCommand = new SqlCommand("USP_MST_OBSOLETE_NATUR_FIN", myConnection);
                myCommand.Connection = myConnection;
                myCommand.CommandType = CommandType.StoredProcedure;
-               myCommand.Parameters.Add("@F_FINANCENATUREID", FNatureId);
-               myCommand.Parameters.Add("@isdeleted_", ISDELETED);
-               myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+               myCommand.Parameters.AddWithValue("@F_FINANCENATUREID", FNatureId);
+               myCommand.Parameters.AddWithValue("@isdeleted_", ISDELETED);
+               /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                myConnection.Open();
                myCommand.ExecuteNonQuery();
                if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -221,19 +221,19 @@ namespace WIS_DataAccess
        public string Update(NatureofFinancingBO BOobj)
        {
            string returnResult = string.Empty;
-           OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+           SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
            cnn.Open();
-           OracleCommand dcmd = new OracleCommand("USP_MST_UPD_NATURE_FIN", cnn);
+           SqlCommand dcmd = new SqlCommand("USP_MST_UPD_NATURE_FIN", cnn);
            dcmd.CommandType = CommandType.StoredProcedure;
            int count = Convert.ToInt32(dcmd.CommandType);
 
            try
            {
-               dcmd.Parameters.Add("F_FINANCENATUREID", BOobj.FINANCENATUREID);
-               dcmd.Parameters.Add("F_FINANCENATURE", BOobj.FINANCENATURE);
-               dcmd.Parameters.Add("F_UPDATEDBY", BOobj.CREATEDBY);
+               dcmd.Parameters.AddWithValue("F_FINANCENATUREID", BOobj.FINANCENATUREID);
+               dcmd.Parameters.AddWithValue("F_FINANCENATURE", BOobj.FINANCENATURE);
+               dcmd.Parameters.AddWithValue("F_UPDATEDBY", BOobj.CREATEDBY);
                //return dcmd.ExecuteNonQuery();
-               dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+               /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                dcmd.ExecuteNonQuery();
 
@@ -263,19 +263,19 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public NatureofFinancingBO GetNatureFinanceID(int NatureFinanceID)
        {
-           OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-           OracleCommand cmd;
+           SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+           SqlCommand cmd;
 
            string proc = "USP_MST_GET_NATUR_FIN";
 
-           cmd = new OracleCommand(proc, cnn);
+           cmd = new SqlCommand(proc, cnn);
            cmd.CommandType = CommandType.StoredProcedure;
-           cmd.Parameters.Add("F_FINANCENATUREID", NatureFinanceID);
-           cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           cmd.Parameters.AddWithValue("F_FINANCENATUREID", NatureFinanceID);
+           // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
            cmd.Connection.Open();
 
-           OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+           SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
            NatureofFinancingBO Boobj = null;
            NatureofFinancingList Listobj = new NatureofFinancingList();
 
@@ -301,20 +301,20 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public string DeleteNatureFinance(int NatureFinanceID)
        {
-           OracleConnection myConnection = null;
-           OracleCommand myCommand = null;
+           SqlConnection myConnection = null;
+           SqlCommand myCommand = null;
 
            string result = string.Empty;
            
            try
            {
 
-               myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-               myCommand = new OracleCommand("USP_MST_DEL_NATUR_FIN", myConnection);
+               myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+               myCommand = new SqlCommand("USP_MST_DEL_NATUR_FIN", myConnection);
                myCommand.Connection = myConnection;
                myCommand.CommandType = CommandType.StoredProcedure;
-               myCommand.Parameters.Add("@F_FINANCENATUREID", NatureFinanceID);
-               myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+               myCommand.Parameters.AddWithValue("@F_FINANCENATUREID", NatureFinanceID);
+               /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                myConnection.Open();
                myCommand.ExecuteNonQuery();
                if (myCommand.Parameters["errorMessage_"].Value != null)

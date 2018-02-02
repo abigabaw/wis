@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data.OleDb;
 using WIS_BusinessObjects;
 
@@ -79,38 +79,38 @@ namespace WIS_DataAccess
             string fPaps = string.Empty;
             string PapName = string.Empty, InstituteName = string.Empty;
 
-            OracleConnection myConnection;
-            OracleCommand myCommand;
+            SqlConnection myConnection;
+            SqlCommand myCommand;
 
          
 
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_TRN_INS_PAPHOUSEHOLD", myConnection);
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_TRN_INS_PAPHOUSEHOLD", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
 
-            myCommand.Parameters.Add("PROJECTIDIN", "");
-            myCommand.Parameters.Add("SurnameIN", "");
-            myCommand.Parameters.Add("FirstnameIN", "");
-            myCommand.Parameters.Add("OthernameIN", "");
-            myCommand.Parameters.Add("PAPNAMEIN", "");
-            myCommand.Parameters.Add("INSTITUTION_", "");
-            myCommand.Parameters.Add("PAPTYPE_", "");
-            myCommand.Parameters.Add("PLOTREFERENCEIN", "");
-            myCommand.Parameters.Add("DESIGNATIONIN", "");
-            myCommand.Parameters.Add("DISTRICTIN", "");
-            myCommand.Parameters.Add("COUNTYIN", "");
-            myCommand.Parameters.Add("SUBCOUNTYIN", "");
-            myCommand.Parameters.Add("PARISHIN", "");
-            myCommand.Parameters.Add("VILLAGEIN", "");
-            myCommand.Parameters.Add("RIGHTWAYIN", "");
-            myCommand.Parameters.Add("WAYLEAVESIN", "");
-            myCommand.Parameters.Add("ISDELETEDIN", "");
-            myCommand.Parameters.Add("USERIDIN", "");
-            myCommand.Parameters.Add("PLOTLATITUDEIN", "");
-            myCommand.Parameters.Add("PLOTLONGITUDEIN", "");
-            myCommand.Parameters.Add("PAP_UIDIN", "");
-            myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("PROJECTIDIN", "");
+            myCommand.Parameters.AddWithValue("SurnameIN", "");
+            myCommand.Parameters.AddWithValue("FirstnameIN", "");
+            myCommand.Parameters.AddWithValue("OthernameIN", "");
+            myCommand.Parameters.AddWithValue("PAPNAMEIN", "");
+            myCommand.Parameters.AddWithValue("INSTITUTION_", "");
+            myCommand.Parameters.AddWithValue("PAPTYPE_", "");
+            myCommand.Parameters.AddWithValue("PLOTREFERENCEIN", "");
+            myCommand.Parameters.AddWithValue("DESIGNATIONIN", "");
+            myCommand.Parameters.AddWithValue("DISTRICTIN", "");
+            myCommand.Parameters.AddWithValue("COUNTYIN", "");
+            myCommand.Parameters.AddWithValue("SUBCOUNTYIN", "");
+            myCommand.Parameters.AddWithValue("PARISHIN", "");
+            myCommand.Parameters.AddWithValue("VILLAGEIN", "");
+            myCommand.Parameters.AddWithValue("RIGHTWAYIN", "");
+            myCommand.Parameters.AddWithValue("WAYLEAVESIN", "");
+            myCommand.Parameters.AddWithValue("ISDELETEDIN", "");
+            myCommand.Parameters.AddWithValue("USERIDIN", "");
+            myCommand.Parameters.AddWithValue("PLOTLATITUDEIN", "");
+            myCommand.Parameters.AddWithValue("PLOTLONGITUDEIN", "");
+            myCommand.Parameters.AddWithValue("PAP_UIDIN", "");
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             myConnection.Open();
             int CountSuccess = 0, CountFail = 0;
@@ -218,39 +218,39 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_TRN_INS_PAPHOUSEHOLD", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_TRN_INS_PAPHOUSEHOLD", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("PROJECTIDIN", objAddPAP.ProjectID);
-            myCommand.Parameters.Add("SurnameIN", objAddPAP.Surname);
-            myCommand.Parameters.Add("FirstnameIN", objAddPAP.Firstname);
-            myCommand.Parameters.Add("OthernameIN", objAddPAP.Othername);
-            myCommand.Parameters.Add("PAPNAMEIN", objAddPAP.Pap);
-            myCommand.Parameters.Add("INSTITUTION_", objAddPAP.Institution);
-            myCommand.Parameters.Add("PAPTYPE_", objAddPAP.PapType);
-            myCommand.Parameters.Add("PLOTREFERENCEIN", objAddPAP.Plot_ref);
-            myCommand.Parameters.Add("DESIGNATIONIN", objAddPAP.Designation);
-            myCommand.Parameters.Add("DISTRICTIN", objAddPAP.District);
-            myCommand.Parameters.Add("COUNTYIN", objAddPAP.County);
-            myCommand.Parameters.Add("SUBCOUNTYIN", objAddPAP.SubCounty);
-            myCommand.Parameters.Add("PARISHIN", objAddPAP.Parish);
-            myCommand.Parameters.Add("VILLAGEIN", objAddPAP.Village);
-            myCommand.Parameters.Add("RIGHTWAYIN", objAddPAP.Right_of_way);
-            myCommand.Parameters.Add("WAYLEAVESIN", objAddPAP.Wayleaves);
-            myCommand.Parameters.Add("ISDELETEDIN", "False");
-            myCommand.Parameters.Add("USERIDIN", objAddPAP.CreatedBy);
-            myCommand.Parameters.Add("PLOTLATITUDEIN", objAddPAP.Plotlatitude);
-            myCommand.Parameters.Add("PLOTLONGITUDEIN", objAddPAP.Plotlongitude);
-            myCommand.Parameters.Add("PAP_UIDIN", objAddPAP.Papuid);
-            //myCommand.Parameters.Add("RELIGIONIDIN", objAddPAP.CreatedBy);
-            //myCommand.Parameters.Add("optiongroupidIN", objAddPAP.CreatedBy);
-            //myCommand.Parameters.Add("literacylevelidIN", objAddPAP.CreatedBy);
-            //myCommand.Parameters.Add("occupationidIN", objAddPAP.CreatedBy);
-            //myCommand.Parameters.Add("papstatusidIN", objAddPAP.CreatedBy);
-            myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("PROJECTIDIN", objAddPAP.ProjectID);
+            myCommand.Parameters.AddWithValue("SurnameIN", objAddPAP.Surname);
+            myCommand.Parameters.AddWithValue("FirstnameIN", objAddPAP.Firstname);
+            myCommand.Parameters.AddWithValue("OthernameIN", objAddPAP.Othername);
+            myCommand.Parameters.AddWithValue("PAPNAMEIN", objAddPAP.Pap);
+            myCommand.Parameters.AddWithValue("INSTITUTION_", objAddPAP.Institution);
+            myCommand.Parameters.AddWithValue("PAPTYPE_", objAddPAP.PapType);
+            myCommand.Parameters.AddWithValue("PLOTREFERENCEIN", objAddPAP.Plot_ref);
+            myCommand.Parameters.AddWithValue("DESIGNATIONIN", objAddPAP.Designation);
+            myCommand.Parameters.AddWithValue("DISTRICTIN", objAddPAP.District);
+            myCommand.Parameters.AddWithValue("COUNTYIN", objAddPAP.County);
+            myCommand.Parameters.AddWithValue("SUBCOUNTYIN", objAddPAP.SubCounty);
+            myCommand.Parameters.AddWithValue("PARISHIN", objAddPAP.Parish);
+            myCommand.Parameters.AddWithValue("VILLAGEIN", objAddPAP.Village);
+            myCommand.Parameters.AddWithValue("RIGHTWAYIN", objAddPAP.Right_of_way);
+            myCommand.Parameters.AddWithValue("WAYLEAVESIN", objAddPAP.Wayleaves);
+            myCommand.Parameters.AddWithValue("ISDELETEDIN", "False");
+            myCommand.Parameters.AddWithValue("USERIDIN", objAddPAP.CreatedBy);
+            myCommand.Parameters.AddWithValue("PLOTLATITUDEIN", objAddPAP.Plotlatitude);
+            myCommand.Parameters.AddWithValue("PLOTLONGITUDEIN", objAddPAP.Plotlongitude);
+            myCommand.Parameters.AddWithValue("PAP_UIDIN", objAddPAP.Papuid);
+            //myCommand.Parameters.AddWithValue("RELIGIONIDIN", objAddPAP.CreatedBy);
+            //myCommand.Parameters.AddWithValue("optiongroupidIN", objAddPAP.CreatedBy);
+            //myCommand.Parameters.AddWithValue("literacylevelidIN", objAddPAP.CreatedBy);
+            //myCommand.Parameters.AddWithValue("occupationidIN", objAddPAP.CreatedBy);
+            //myCommand.Parameters.AddWithValue("papstatusidIN", objAddPAP.CreatedBy);
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             myConnection.Open();
             myCommand.ExecuteNonQuery();
@@ -273,37 +273,37 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_TRN_UPD_PAPHOUSEHOLD", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_TRN_UPD_PAPHOUSEHOLD", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("HHIDIN", objHouseholdPAP.HhId);
-            myCommand.Parameters.Add("PROJECTIDIN", objHouseholdPAP.ProjectedId);
-            myCommand.Parameters.Add("SurnameIN", objHouseholdPAP.Surname);
-            myCommand.Parameters.Add("FirstnameIN", objHouseholdPAP.Firstname);
-            myCommand.Parameters.Add("OthernameIN", objHouseholdPAP.Othername);
-            myCommand.Parameters.Add("PAPNAMEIN", objHouseholdPAP.PapName);
-            myCommand.Parameters.Add("PLOTREFERENCEIN", objHouseholdPAP.PlotReference);
-            myCommand.Parameters.Add("DESIGNATIONIN", objHouseholdPAP.Designation);
-            myCommand.Parameters.Add("DISTRICTIN", objHouseholdPAP.District);
-            myCommand.Parameters.Add("COUNTYIN", objHouseholdPAP.County);
-            myCommand.Parameters.Add("SUBCOUNTYIN", objHouseholdPAP.SubCounty);
-            myCommand.Parameters.Add("PARISHIN", objHouseholdPAP.Parish);
-            myCommand.Parameters.Add("VILLAGEIN", objHouseholdPAP.Village);
-            myCommand.Parameters.Add("RIGHTWAYIN", objHouseholdPAP.Rightofway);
-            myCommand.Parameters.Add("WAYLEAVESIN", objHouseholdPAP.Wayleaves);
-            myCommand.Parameters.Add("USERIDIN", objHouseholdPAP.UpdatedBy);
-            myCommand.Parameters.Add("PLOTLATITUDEIN", objHouseholdPAP.Plotlatitude);
-            myCommand.Parameters.Add("PLOTLONGITUDEIN", objHouseholdPAP.Plotlongitude);
-            myCommand.Parameters.Add("PAP_UIDIN", objHouseholdPAP.Papuid);
-            //myCommand.Parameters.Add("RELIGIONIDIN", objAddPAP.CreatedBy);
-            //myCommand.Parameters.Add("optiongroupidIN", objAddPAP.CreatedBy);
-            //myCommand.Parameters.Add("literacylevelidIN", objAddPAP.CreatedBy);
-            //myCommand.Parameters.Add("occupationidIN", objAddPAP.CreatedBy);
-            //myCommand.Parameters.Add("papstatusidIN", objAddPAP.CreatedBy);
-            myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("HHIDIN", objHouseholdPAP.HhId);
+            myCommand.Parameters.AddWithValue("PROJECTIDIN", objHouseholdPAP.ProjectedId);
+            myCommand.Parameters.AddWithValue("SurnameIN", objHouseholdPAP.Surname);
+            myCommand.Parameters.AddWithValue("FirstnameIN", objHouseholdPAP.Firstname);
+            myCommand.Parameters.AddWithValue("OthernameIN", objHouseholdPAP.Othername);
+            myCommand.Parameters.AddWithValue("PAPNAMEIN", objHouseholdPAP.PapName);
+            myCommand.Parameters.AddWithValue("PLOTREFERENCEIN", objHouseholdPAP.PlotReference);
+            myCommand.Parameters.AddWithValue("DESIGNATIONIN", objHouseholdPAP.Designation);
+            myCommand.Parameters.AddWithValue("DISTRICTIN", objHouseholdPAP.District);
+            myCommand.Parameters.AddWithValue("COUNTYIN", objHouseholdPAP.County);
+            myCommand.Parameters.AddWithValue("SUBCOUNTYIN", objHouseholdPAP.SubCounty);
+            myCommand.Parameters.AddWithValue("PARISHIN", objHouseholdPAP.Parish);
+            myCommand.Parameters.AddWithValue("VILLAGEIN", objHouseholdPAP.Village);
+            myCommand.Parameters.AddWithValue("RIGHTWAYIN", objHouseholdPAP.Rightofway);
+            myCommand.Parameters.AddWithValue("WAYLEAVESIN", objHouseholdPAP.Wayleaves);
+            myCommand.Parameters.AddWithValue("USERIDIN", objHouseholdPAP.UpdatedBy);
+            myCommand.Parameters.AddWithValue("PLOTLATITUDEIN", objHouseholdPAP.Plotlatitude);
+            myCommand.Parameters.AddWithValue("PLOTLONGITUDEIN", objHouseholdPAP.Plotlongitude);
+            myCommand.Parameters.AddWithValue("PAP_UIDIN", objHouseholdPAP.Papuid);
+            //myCommand.Parameters.AddWithValue("RELIGIONIDIN", objAddPAP.CreatedBy);
+            //myCommand.Parameters.AddWithValue("optiongroupidIN", objAddPAP.CreatedBy);
+            //myCommand.Parameters.AddWithValue("literacylevelidIN", objAddPAP.CreatedBy);
+            //myCommand.Parameters.AddWithValue("occupationidIN", objAddPAP.CreatedBy);
+            //myCommand.Parameters.AddWithValue("papstatusidIN", objAddPAP.CreatedBy);
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             myConnection.Open();
             myCommand.ExecuteNonQuery();
@@ -327,17 +327,17 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_TRN_OBS_PAPHOUSEHOLD", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_TRN_OBS_PAPHOUSEHOLD", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
             try
             {
-                myCommand.Parameters.Add("HHIDIN", PAPID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("HHIDIN", PAPID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -366,16 +366,16 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_TRN_DEL_PAPHOUSEHOLD", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_TRN_DEL_PAPHOUSEHOLD", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
             try
             {
-                myCommand.Parameters.Add("HHIDIN", PAPID);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("HHIDIN", PAPID);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -8,8 +8,8 @@ namespace WIS_DataAccess
     public class PAP_HealthDAL
     {
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
 
         #region "Disability"
@@ -21,21 +21,21 @@ namespace WIS_DataAccess
         public PAP_DisabilityList GetDisabilities(int householdID)
         {
             proc = "USP_TRN_GET_PAPDISABILITIES";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             PAP_DisabilityBO objDisability = null;
             PAP_DisabilityList Disabilities = new PAP_DisabilityList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HHID_", householdID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", householdID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -70,19 +70,19 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_INS_PAPDISABILITY";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("HHID_", objDisability.HouseholdID);
-            cmd.Parameters.Add("DISABILITYID_", objDisability.DisabilityID);
-            cmd.Parameters.Add("HEALTHCARENEEDED_", objDisability.HealthCareNeeded);
-            cmd.Parameters.Add("createdBy_", objDisability.CreatedBy);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", objDisability.HouseholdID);
+            cmd.Parameters.AddWithValue("DISABILITYID_", objDisability.DisabilityID);
+            cmd.Parameters.AddWithValue("HEALTHCARENEEDED_", objDisability.HealthCareNeeded);
+            cmd.Parameters.AddWithValue("createdBy_", objDisability.CreatedBy);
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -103,20 +103,20 @@ namespace WIS_DataAccess
         public PAP_DisabilityBO GetDisabilityByID(int PAPDisabilityID)
         {
             proc = "USP_TRN_GET_PAPDISABILITYBYID";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             PAP_DisabilityBO objDisability = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("PAP_DISABILITYID_", PAPDisabilityID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PAP_DISABILITYID_", PAPDisabilityID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -145,20 +145,20 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_UPD_PAPDISABILITY";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("PAP_DISABILITYID_", objDisability.PAPDisabilityID);
-            cmd.Parameters.Add("HHID_", objDisability.HouseholdID);
-            cmd.Parameters.Add("DISABILITYID_", objDisability.DisabilityID);
-            cmd.Parameters.Add("HEALTHCARENEEDED_", objDisability.HealthCareNeeded);
-            cmd.Parameters.Add("UPDATEDBY_", objDisability.UpdatedBy);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PAP_DISABILITYID_", objDisability.PAPDisabilityID);
+            cmd.Parameters.AddWithValue("HHID_", objDisability.HouseholdID);
+            cmd.Parameters.AddWithValue("DISABILITYID_", objDisability.DisabilityID);
+            cmd.Parameters.AddWithValue("HEALTHCARENEEDED_", objDisability.HealthCareNeeded);
+            cmd.Parameters.AddWithValue("UPDATEDBY_", objDisability.UpdatedBy);
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
@@ -179,19 +179,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteDisability(int disabilityID, string IsDeleted, int updatedBy)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETE_DISABILITY", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETE_DISABILITY", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("DISABILITYID_", disabilityID);
-                myCommand.Parameters.Add("ISDELETED_", IsDeleted);
-                myCommand.Parameters.Add("UPDATEDBY_", updatedBy);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("DISABILITYID_", disabilityID);
+                myCommand.Parameters.AddWithValue("ISDELETED_", IsDeleted);
+                myCommand.Parameters.AddWithValue("UPDATEDBY_", updatedBy);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -217,17 +217,17 @@ namespace WIS_DataAccess
         /// <param name="disabilityID"></param>
         public void DeleteDisability(int disabilityID)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_DEL_PAPDISABILITY";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
             try
             {
                 cmd.Connection.Open();
-                cmd.Parameters.Add("PAP_DISABILITYID_", disabilityID);
+                cmd.Parameters.AddWithValue("PAP_DISABILITYID_", disabilityID);
                 cmd.ExecuteNonQuery();                
             }
             catch (Exception ex)
@@ -250,16 +250,16 @@ namespace WIS_DataAccess
         public PAP_HealthBO GetHealthInfoByID(int householdID)
         {
             proc = "USP_TRN_GET_PAPHEALTH";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             PAP_HealthBO objPAPHealth = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HHID_", householdID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", householdID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
-            OracleDataReader dr = null;
+            SqlDataReader dr = null;
             try
             {
                 cmd.Connection.Open();
@@ -303,28 +303,28 @@ namespace WIS_DataAccess
         /// <param name="objPAPHealth"></param>
         public void UpdateHealthInfo(PAP_HealthBO objPAPHealth)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_UPD_PAPHEALTH";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("HHID_", objPAPHealth.HouseholdID);
-            cmd.Parameters.Add("NEARESETHEALTHCENTRE_", objPAPHealth.NearestHealthCentre);
-            cmd.Parameters.Add("DISTANCETOHEALTHCENTRE_", objPAPHealth.DistanceToHealthCentre);
-            cmd.Parameters.Add("USEDBYFAMILY_", objPAPHealth.UsedByFamily);
-            cmd.Parameters.Add("NONUSEREASON_", objPAPHealth.NonUseReason);
-            cmd.Parameters.Add("NOOFBIRTH_", objPAPHealth.NoOfBirth);
-            cmd.Parameters.Add("NOOFDEATH_", objPAPHealth.NoOfDeath);
-            cmd.Parameters.Add("REASONFORDEATH_", objPAPHealth.ReasonForDeath);
-            cmd.Parameters.Add("COMMONDISEASES_", objPAPHealth.CommonDiseases);
-            cmd.Parameters.Add("PRACTICEFAMILYPLANNING_", objPAPHealth.PracticeFamilyPlanning);
-            cmd.Parameters.Add("HEARDOFAIDS_", objPAPHealth.HeardOfAIDS);
-            cmd.Parameters.Add("HOWCONTRACTED_", objPAPHealth.HowContracted);
-            cmd.Parameters.Add("HOWAVOIDED_", objPAPHealth.HowAvoided);
-            cmd.Parameters.Add("UPDATEDBY_", objPAPHealth.UpdatedBy);
+            cmd.Parameters.AddWithValue("HHID_", objPAPHealth.HouseholdID);
+            cmd.Parameters.AddWithValue("NEARESETHEALTHCENTRE_", objPAPHealth.NearestHealthCentre);
+            cmd.Parameters.AddWithValue("DISTANCETOHEALTHCENTRE_", objPAPHealth.DistanceToHealthCentre);
+            cmd.Parameters.AddWithValue("USEDBYFAMILY_", objPAPHealth.UsedByFamily);
+            cmd.Parameters.AddWithValue("NONUSEREASON_", objPAPHealth.NonUseReason);
+            cmd.Parameters.AddWithValue("NOOFBIRTH_", objPAPHealth.NoOfBirth);
+            cmd.Parameters.AddWithValue("NOOFDEATH_", objPAPHealth.NoOfDeath);
+            cmd.Parameters.AddWithValue("REASONFORDEATH_", objPAPHealth.ReasonForDeath);
+            cmd.Parameters.AddWithValue("COMMONDISEASES_", objPAPHealth.CommonDiseases);
+            cmd.Parameters.AddWithValue("PRACTICEFAMILYPLANNING_", objPAPHealth.PracticeFamilyPlanning);
+            cmd.Parameters.AddWithValue("HEARDOFAIDS_", objPAPHealth.HeardOfAIDS);
+            cmd.Parameters.AddWithValue("HOWCONTRACTED_", objPAPHealth.HowContracted);
+            cmd.Parameters.AddWithValue("HOWAVOIDED_", objPAPHealth.HowAvoided);
+            cmd.Parameters.AddWithValue("UPDATEDBY_", objPAPHealth.UpdatedBy);
             cmd.ExecuteNonQuery();
            
             cmd.Connection.Close();

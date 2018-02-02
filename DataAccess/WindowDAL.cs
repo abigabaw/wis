@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -9,8 +9,8 @@ namespace WIS_DataAccess
     {
         #region Declaration Section
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
         #endregion
 
@@ -22,20 +22,20 @@ namespace WIS_DataAccess
         public WindowTypeList GetAllWindowType()
         {
             proc = "USP_MST_GET_ALLWINDOW";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             WindowTypeBO objWindowType = null;
 
             WindowTypeList lstWindowTypeList = new WindowTypeList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -67,20 +67,20 @@ namespace WIS_DataAccess
         public WindowTypeList GetWindowType()
         {
             proc = "USP_MST_GET_WINDOW";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             WindowTypeBO objWindowType = null;
             
             WindowTypeList lstWindowTypeList = new WindowTypeList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
           
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -112,18 +112,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public WindowTypeBO GetWindowTypeById(int WindowTypeID)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_MST_GET_WINDOW_BYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Windowid_", WindowTypeID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("Windowid_", WindowTypeID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             WindowTypeBO objWindowType = null;
 
 
@@ -170,19 +170,19 @@ namespace WIS_DataAccess
         public string SaveWindowType(WindowTypeBO oWindowType)
         {
             string returnResult;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_MST_INS_Window";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("Windowtype_", oWindowType.WindowTypeName);
+            cmd.Parameters.AddWithValue("Windowtype_", oWindowType.WindowTypeName);
 
-            cmd.Parameters.Add("isdeleted_", oWindowType.IsDeleted);
-            cmd.Parameters.Add("createdby_", oWindowType.UserID);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("isdeleted_", oWindowType.IsDeleted);
+            cmd.Parameters.AddWithValue("createdby_", oWindowType.UserID);
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
             if (cmd.Parameters["errorMessage_"].Value != null)
                 returnResult = cmd.Parameters["errorMessage_"].Value.ToString();
@@ -200,19 +200,19 @@ namespace WIS_DataAccess
         public string UpdateWindowType(WindowTypeBO oWindowType)
         {
             string returnResult;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_MST_UPD_Window";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            cmd.Parameters.Add("Windowid_", oWindowType.WindowTypeID);
-            cmd.Parameters.Add("WindowType_", oWindowType.WindowTypeName);
+            cmd.Parameters.AddWithValue("Windowid_", oWindowType.WindowTypeID);
+            cmd.Parameters.AddWithValue("WindowType_", oWindowType.WindowTypeName);
 
-            cmd.Parameters.Add("updatedby_", oWindowType.UserID);
+            cmd.Parameters.AddWithValue("updatedby_", oWindowType.UserID);
 
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
@@ -226,14 +226,14 @@ namespace WIS_DataAccess
     
         //public int DeleteWindowType(int WindowTypeID_,int UserID_)
         //{
-        //    cnn = new OracleConnection(con);
+        //    cnn = new SqlConnection(con);
 
         //    proc = "USP_MST_DEL_Window";
 
-        //    cmd = new OracleCommand(proc, cnn);
+        //    cmd = new SqlCommand(proc, cnn);
         //    cmd.CommandType = CommandType.StoredProcedure;
-        //    cmd.Parameters.Add("Windowid_", WindowTypeID_);
-        //    cmd.Parameters.Add("updatedby_", UserID_);
+        //    cmd.Parameters.AddWithValue("Windowid_", WindowTypeID_);
+        //    cmd.Parameters.AddWithValue("updatedby_", UserID_);
 
         //    cmd.Connection.Open();
 
@@ -249,15 +249,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteWindowType(WindowTypeBO oWindowType)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string retrunResult = string.Empty;
             proc = "USP_MST_DEL_Window";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Windowid_", oWindowType.WindowTypeID);
-           // cmd.Parameters.Add("updatedby_", oWindowType.UserID);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("Windowid_", oWindowType.WindowTypeID);
+           // cmd.Parameters.AddWithValue("updatedby_", oWindowType.UserID);
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
             cmd.ExecuteNonQuery();
@@ -276,19 +276,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteFloorTypeDAL(int FloorTypeID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETE_WINDOW", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETE_WINDOW", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
 
-                myCommand.Parameters.Add("Windowid_", FloorTypeID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("Windowid_", FloorTypeID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();

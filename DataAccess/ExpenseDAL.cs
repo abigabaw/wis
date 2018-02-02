@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data.OleDb;
 using WIS_BusinessObjects;
 
@@ -10,8 +10,8 @@ namespace WIS_DataAccess
     {
 
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
         /// <summary>
         /// Excel Data Import into Grid
@@ -59,18 +59,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public object GetExpenseDataForACC(int ProjectID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_PROJ_EXPENSEACC";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("PROJECTID_", ProjectID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PROJECTID_", ProjectID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             ExpenseBO ExpenseBOobj = null;
             ExpenseList ExpenseListobj = new ExpenseList();
@@ -100,18 +100,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public object GetAllExpenseData(int ProjectID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_PROJ_EXPENSE";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("PROJECTID_", ProjectID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PROJECTID_", ProjectID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             ExpenseBO ExpenseBOobj = null;
             ExpenseList ExpenseListobj = new ExpenseList();
@@ -144,33 +144,33 @@ namespace WIS_DataAccess
         public DataTable savedata(DataTable dtExpen, int ProjectID, string uID)
         {
             ExpenseBO objExpenseBO = null;
-            OracleConnection myConnection = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection myConnection = new SqlConnection(AppConfiguration.ConnectionString);
             myConnection.Open();
 
-            OracleCommand myCommand;
-            OracleCommand cmd;
+            SqlCommand myCommand;
+            SqlCommand cmd;
 
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
 
 
-            //cmd = new OracleCommand("USP_TRN_DEL_PROJ_EXPENSE", myConnection);
+            //cmd = new SqlCommand("USP_TRN_DEL_PROJ_EXPENSE", myConnection);
             //cmd.Connection = myConnection;
             //cmd.CommandType = CommandType.StoredProcedure;
-            //cmd.Parameters.Add("PROJECTID_", ProjectID);
+            //cmd.Parameters.AddWithValue("PROJECTID_", ProjectID);
             //myConnection.Open();
             //cmd.ExecuteNonQuery();
             //myConnection.Close();
 
-            myCommand = new OracleCommand("USP_TRN_INS_PROJ_EXPENSE", myConnection);
+            myCommand = new SqlCommand("USP_TRN_INS_PROJ_EXPENSE", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
 
-            myCommand.Parameters.Add("PROJECTID_", "");
-            myCommand.Parameters.Add("EXPENSETYPE_", "");
-            myCommand.Parameters.Add("ACCOUNTCODE_", "");
-            myCommand.Parameters.Add("EXPENSEAMOUNT_", "");
-            myCommand.Parameters.Add("DATEOFEXPENSE_", "");
-            myCommand.Parameters.Add("CREATEDBY_", "");
+            myCommand.Parameters.AddWithValue("PROJECTID_", "");
+            myCommand.Parameters.AddWithValue("EXPENSETYPE_", "");
+            myCommand.Parameters.AddWithValue("ACCOUNTCODE_", "");
+            myCommand.Parameters.AddWithValue("EXPENSEAMOUNT_", "");
+            myCommand.Parameters.AddWithValue("DATEOFEXPENSE_", "");
+            myCommand.Parameters.AddWithValue("CREATEDBY_", "");
 
             myConnection.Open();
 
@@ -213,21 +213,21 @@ namespace WIS_DataAccess
 
         public string AddExpense(ExpenseBO objExpense)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnResult = string.Empty;
             proc = "USP_TRN_INS_PROJ_EXPENSE";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("PROJECTID_", objExpense.PROJECTID);
-            cmd.Parameters.Add("EXPENSETYPE_", objExpense.EXPENSETYPE);
-            cmd.Parameters.Add("ACCOUNTCODE_", objExpense.ACCOUNTCODE);
-            cmd.Parameters.Add("EXPENSEAMOUNT_", objExpense.EXPENSEAMOUNT);
-            cmd.Parameters.Add("DATEOFEXPENSE_", objExpense.DATEOFEXPENSE.ToString(UtilBO.DateFormatDBFull));
-            cmd.Parameters.Add("CREATEDBY_", objExpense.UPDATEDBY);
-            //cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PROJECTID_", objExpense.PROJECTID);
+            cmd.Parameters.AddWithValue("EXPENSETYPE_", objExpense.EXPENSETYPE);
+            cmd.Parameters.AddWithValue("ACCOUNTCODE_", objExpense.ACCOUNTCODE);
+            cmd.Parameters.AddWithValue("EXPENSEAMOUNT_", objExpense.EXPENSEAMOUNT);
+            cmd.Parameters.AddWithValue("DATEOFEXPENSE_", objExpense.DATEOFEXPENSE.ToString(UtilBO.DateFormatDBFull));
+            cmd.Parameters.AddWithValue("CREATEDBY_", objExpense.UPDATEDBY);
+            ///* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             //if (cmd.Parameters["errorMessage_"].Value != null)
@@ -246,20 +246,20 @@ namespace WIS_DataAccess
         public ExpenseBO GetExpenseByID(int EXPENSEID)
         {
             proc = "USP_TRN_GET_PROJ_EXPENSEBYID";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             ExpenseBO ExpenseBOobj = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("EXPENSEID_", EXPENSEID);
+            cmd.Parameters.AddWithValue("EXPENSEID_", EXPENSEID);
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -291,23 +291,23 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string UpdateBank(ExpenseBO objExpense)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnResult = string.Empty;
 
             proc = "USP_TRN_UPD_PROJ_EXPENSE";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("EXPENSEID_", objExpense.PROJECTEXPENSEID);
-            cmd.Parameters.Add("PROJECTID_", objExpense.PROJECTID);
-            cmd.Parameters.Add("EXPENSETYPE_", objExpense.EXPENSETYPE);
-            cmd.Parameters.Add("ACCOUNTCODE_", objExpense.ACCOUNTCODE);
-            cmd.Parameters.Add("EXPENSEAMOUNT_", objExpense.EXPENSEAMOUNT);
-            cmd.Parameters.Add("DATEOFEXPENSE_", objExpense.DATEOFEXPENSE.ToString(UtilBO.DateFormatDBFull));
-            cmd.Parameters.Add("UPDATEDBY_", objExpense.UPDATEDBY);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("EXPENSEID_", objExpense.PROJECTEXPENSEID);
+            cmd.Parameters.AddWithValue("PROJECTID_", objExpense.PROJECTID);
+            cmd.Parameters.AddWithValue("EXPENSETYPE_", objExpense.EXPENSETYPE);
+            cmd.Parameters.AddWithValue("ACCOUNTCODE_", objExpense.ACCOUNTCODE);
+            cmd.Parameters.AddWithValue("EXPENSEAMOUNT_", objExpense.EXPENSEAMOUNT);
+            cmd.Parameters.AddWithValue("DATEOFEXPENSE_", objExpense.DATEOFEXPENSE.ToString(UtilBO.DateFormatDBFull));
+            cmd.Parameters.AddWithValue("UPDATEDBY_", objExpense.UPDATEDBY);
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -325,18 +325,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteExpense(int EXPENSEID)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_TRN_DEL_PROJ_EXPENSE", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_TRN_DEL_PROJ_EXPENSE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("EXPENSEID_", EXPENSEID);
-                //myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("EXPENSEID_", EXPENSEID);
+                ///* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 //if (myCommand.Parameters["errorMessage_"].Value != null)

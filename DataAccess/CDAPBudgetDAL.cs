@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WIS_BusinessObjects;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 
 namespace WIS_DataAccess
@@ -11,8 +11,8 @@ namespace WIS_DataAccess
     public class CDAPBudgetDAL
     {
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
         /// <summary>
         /// To Add CDAP Budget into database
@@ -21,21 +21,21 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string AddCDAPBudget(CDAPBudgetBO objCDAPBudgetBO)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnResult = "";
             proc = "USP_TRN_CDAP_BUDG";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            cmd.Parameters.Add("@CDAP_BUDGID_", objCDAPBudgetBO.Cdap_budgid);
-            cmd.Parameters.Add("@CDAP_CATEGORYID_", objCDAPBudgetBO.Cdap_categoryid);
-            cmd.Parameters.Add("@CDAP_SUBCATEGORYID_", objCDAPBudgetBO.Cdap_subcategoryid);
-            cmd.Parameters.Add("@UNIT_", objCDAPBudgetBO.Unit);
-            cmd.Parameters.Add("@QUANTITY_", objCDAPBudgetBO.Quantity);
-            cmd.Parameters.Add("@RATEPERUNIT_", objCDAPBudgetBO.Rateperunit);
-            cmd.Parameters.Add("@UPDATEDBY_", objCDAPBudgetBO.UpdatedBy);
-            cmd.Parameters.Add("ProjectID_", objCDAPBudgetBO.ProjectID);
-            cmd.Parameters.Add("@errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("@CDAP_BUDGID_", objCDAPBudgetBO.Cdap_budgid);
+            cmd.Parameters.AddWithValue("@CDAP_CATEGORYID_", objCDAPBudgetBO.Cdap_categoryid);
+            cmd.Parameters.AddWithValue("@CDAP_SUBCATEGORYID_", objCDAPBudgetBO.Cdap_subcategoryid);
+            cmd.Parameters.AddWithValue("@UNIT_", objCDAPBudgetBO.Unit);
+            cmd.Parameters.AddWithValue("@QUANTITY_", objCDAPBudgetBO.Quantity);
+            cmd.Parameters.AddWithValue("@RATEPERUNIT_", objCDAPBudgetBO.Rateperunit);
+            cmd.Parameters.AddWithValue("@UPDATEDBY_", objCDAPBudgetBO.UpdatedBy);
+            cmd.Parameters.AddWithValue("ProjectID_", objCDAPBudgetBO.ProjectID);
+            cmd.Parameters.AddWithValue("@errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
             if (cmd.Parameters["@errorMessage_"].Value != null)
                 returnResult = cmd.Parameters["@errorMessage_"].Value.ToString();
@@ -50,16 +50,16 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CDAPBudgetList GetCDAPBudget(int ProjectID, string Status)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_GET_TRN_CDAP_BUDG";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("PROJECTID_", ProjectID);
-            cmd.Parameters.Add("Status_", Status);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PROJECTID_", ProjectID);
+            cmd.Parameters.AddWithValue("Status_", Status);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CDAPBudgetBO objCDAPBudgetBO = null;
             CDAPBudgetList CDAPBudget = new CDAPBudgetList();
             while (dr.Read())
@@ -84,15 +84,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CDAPBudgetBO GetCDAPBudgetItem(int cdap_budgid)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_GET_TRN_CDAP_BUDGBYID";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@CDAP_BUDGID_", cdap_budgid);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("@CDAP_BUDGID_", cdap_budgid);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CDAPBudgetBO obCDAPBudgetBO = null;
             while (dr.Read())
             {
@@ -114,13 +114,13 @@ namespace WIS_DataAccess
         public int DeleteCDAPBudget(int cdap_budgid)
         {
             int result = 0;
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_DEL_TRN_CDAP_BUDG", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_DEL_TRN_CDAP_BUDG", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("@cdap_budgid_", cdap_budgid);
+            myCommand.Parameters.AddWithValue("@cdap_budgid_", cdap_budgid);
             myConnection.Open();
             result = myCommand.ExecuteNonQuery();
             myConnection.Close();
@@ -133,13 +133,13 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int SendforApproval(int projectID)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             int returnResult;
             proc = "USP_TRN_UPD_CDAPBUDGETSTATUS";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            cmd.Parameters.Add("PROJECTID_", projectID);
+            cmd.Parameters.AddWithValue("PROJECTID_", projectID);
             returnResult = cmd.ExecuteNonQuery();
             cmd.Connection.Close();
             return returnResult;

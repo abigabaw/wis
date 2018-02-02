@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data;
 using System.Configuration;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 
@@ -25,18 +25,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public LivelihoodRestorationList GetLivelihoodRestorationPlan(int LocationId)
         {
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_PAP_LIV_REST_PLAN";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("liv_rest_locationid_", LocationId);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("liv_rest_locationid_", LocationId);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             LivelihoodRestorationBO objLivelihoodRestorationBO = null;
             LivelihoodRestorationList oLivelihoodRestorationList = new LivelihoodRestorationList();
 
@@ -58,18 +58,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public LivelihoodRestorationBO GetLivelihoodRestorationPlanById(int LivRestPlanId)
         {
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_PAPLIVRESTPLANBYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Liv_Rest_PlanID_", LivRestPlanId);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("Liv_Rest_PlanID_", LivRestPlanId);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             LivelihoodRestorationBO objLivelihoodRestorationBO = null;
             LivelihoodRestorationList oLivelihoodRestorationList = new LivelihoodRestorationList();
             objLivelihoodRestorationBO = new LivelihoodRestorationBO();
@@ -91,18 +91,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public LivelihoodRestorationList GetLivelihoodRestReceivedByPlanId(int LivRestPlanId)
         {
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_PAP_LIV_REST_RECEI";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Liv_Rest_PlanID_", LivRestPlanId);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("Liv_Rest_PlanID_", LivRestPlanId);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             LivelihoodRestorationBO objLivelihoodRestorationBO = null;
             LivelihoodRestorationList oLivelihoodRestorationList = new LivelihoodRestorationList();
             objLivelihoodRestorationBO = new LivelihoodRestorationBO();
@@ -123,18 +123,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public LivelihoodRestorationBO GetItemReceivedByPlanId(int LivReceivedId)
         {
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_PAP_RECEIVED_BYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("liv_rest_recdid_", LivReceivedId);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("liv_rest_recdid_", LivReceivedId);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             LivelihoodRestorationBO objLivelihoodRestorationBO = null;
             LivelihoodRestorationList oLivelihoodRestorationList = new LivelihoodRestorationList();
             objLivelihoodRestorationBO = new LivelihoodRestorationBO();
@@ -225,35 +225,35 @@ namespace WIS_DataAccess
             string returnResult = string.Empty;
             LivelihoodRestorationBO ooLiveRestPlanBO = new LivelihoodRestorationBO();//For Storing & Returning Result as Object
 
-            OracleConnection OCon = new OracleConnection(con);
+            SqlConnection OCon = new SqlConnection(con);
             OCon.Open();
-            OracleCommand oCmd = new OracleCommand("USP_TRN_INS_PAP_LIV_REST_PLAN", OCon);
+            SqlCommand oCmd = new SqlCommand("USP_TRN_INS_PAP_LIV_REST_PLAN", OCon);
             oCmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(oCmd.CommandType);
 
             try
             {
-                oCmd.Parameters.Add("Liv_Rest_PlanID_", oLiveRestPlanBO.Liv_Rest_PlanID);
-                oCmd.Parameters.Add("Liv_Rest_LocationID_", oLiveRestPlanBO.Liv_Rest_LocationID);
-                oCmd.Parameters.Add("Liv_Rest_ItemID_", oLiveRestPlanBO.Liv_Rest_ItemID);
-                oCmd.Parameters.Add("UnitID_", oLiveRestPlanBO.UnitID);
-                oCmd.Parameters.Add("Planned_", oLiveRestPlanBO.Planned);
+                oCmd.Parameters.AddWithValue("Liv_Rest_PlanID_", oLiveRestPlanBO.Liv_Rest_PlanID);
+                oCmd.Parameters.AddWithValue("Liv_Rest_LocationID_", oLiveRestPlanBO.Liv_Rest_LocationID);
+                oCmd.Parameters.AddWithValue("Liv_Rest_ItemID_", oLiveRestPlanBO.Liv_Rest_ItemID);
+                oCmd.Parameters.AddWithValue("UnitID_", oLiveRestPlanBO.UnitID);
+                oCmd.Parameters.AddWithValue("Planned_", oLiveRestPlanBO.Planned);
                 if (oLiveRestPlanBO.PlannedDate != DateTime.MinValue)
-                    oCmd.Parameters.Add("PlannedDate_", oLiveRestPlanBO.PlannedDate);
+                    oCmd.Parameters.AddWithValue("PlannedDate_", oLiveRestPlanBO.PlannedDate);
                 else
-                    oCmd.Parameters.Add("PlannedDate_", DBNull.Value);
+                    oCmd.Parameters.AddWithValue("PlannedDate_", DBNull.Value);
 
-                oCmd.Parameters.Add("Received_", oLiveRestPlanBO.Received);
+                oCmd.Parameters.AddWithValue("Received_", oLiveRestPlanBO.Received);
                 
                 if (oLiveRestPlanBO.UnitPrice != 0)
-                    oCmd.Parameters.Add("UnitPrice_", oLiveRestPlanBO.UnitPrice);
+                    oCmd.Parameters.AddWithValue("UnitPrice_", oLiveRestPlanBO.UnitPrice);
                 else
-                    oCmd.Parameters.Add("UnitPrice_", DBNull.Value);
+                    oCmd.Parameters.AddWithValue("UnitPrice_", DBNull.Value);
 
-                oCmd.Parameters.Add("isdeleted_", oLiveRestPlanBO.IsDeleted);
-                oCmd.Parameters.Add("createdby_", oLiveRestPlanBO.CreatedBy);
-                oCmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
-                //oCmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                oCmd.Parameters.AddWithValue("isdeleted_", oLiveRestPlanBO.IsDeleted);
+                oCmd.Parameters.AddWithValue("createdby_", oLiveRestPlanBO.CreatedBy);
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = oCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
+                //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
                 oCmd.ExecuteNonQuery();
 
@@ -284,32 +284,32 @@ namespace WIS_DataAccess
             string returnResult = string.Empty;
             LivelihoodRestorationBO ooLiveRestPlanBO = new LivelihoodRestorationBO();//For Storing & Returning Result as Object
 
-            OracleConnection OCon = new OracleConnection(con);
+            SqlConnection OCon = new SqlConnection(con);
             OCon.Open();
-            OracleCommand oCmd = new OracleCommand("USP_TRN_CMP_ADDLivelihoodRestorationPlan", OCon);
+            SqlCommand oCmd = new SqlCommand("USP_TRN_CMP_ADDLivelihoodRestorationPlan", OCon);
             oCmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(oCmd.CommandType);
 
             try
             {
-                oCmd.Parameters.Add("Liv_Rest_PlanID_", oLiveRestPlanBO.Liv_Rest_PlanID);
-                oCmd.Parameters.Add("Liv_Rest_LocationID_", oLiveRestPlanBO.Liv_Rest_LocationID);
+                oCmd.Parameters.AddWithValue("Liv_Rest_PlanID_", oLiveRestPlanBO.Liv_Rest_PlanID);
+                oCmd.Parameters.AddWithValue("Liv_Rest_LocationID_", oLiveRestPlanBO.Liv_Rest_LocationID);
 
-                //oCmd.Parameters.Add("hhid_", oLiveRestPlanBO.HHID);
-                oCmd.Parameters.Add("Liv_Rest_ItemID_", oLiveRestPlanBO.Liv_Rest_ItemID);
-                oCmd.Parameters.Add("UnitID_", oLiveRestPlanBO.UnitID);
-                oCmd.Parameters.Add("Planned_", oLiveRestPlanBO.Planned);
+                //oCmd.Parameters.AddWithValue("hhid_", oLiveRestPlanBO.HHID);
+                oCmd.Parameters.AddWithValue("Liv_Rest_ItemID_", oLiveRestPlanBO.Liv_Rest_ItemID);
+                oCmd.Parameters.AddWithValue("UnitID_", oLiveRestPlanBO.UnitID);
+                oCmd.Parameters.AddWithValue("Planned_", oLiveRestPlanBO.Planned);
                 if (oLiveRestPlanBO.PlannedDate!=DateTime.MinValue)
-                    oCmd.Parameters.Add("PlannedDate_", oLiveRestPlanBO.PlannedDate);
+                    oCmd.Parameters.AddWithValue("PlannedDate_", oLiveRestPlanBO.PlannedDate);
                 else
-                    oCmd.Parameters.Add("PlannedDate_", DBNull.Value);
-                oCmd.Parameters.Add("Received_", oLiveRestPlanBO.Received);
-                //oCmd.Parameters.Add("UnitPrice_", oLiveRestPlanBO.UnitPrice);
+                    oCmd.Parameters.AddWithValue("PlannedDate_", DBNull.Value);
+                oCmd.Parameters.AddWithValue("Received_", oLiveRestPlanBO.Received);
+                //oCmd.Parameters.AddWithValue("UnitPrice_", oLiveRestPlanBO.UnitPrice);
 
-                oCmd.Parameters.Add("isdeleted_", oLiveRestPlanBO.IsDeleted);
-                oCmd.Parameters.Add("createdby_", oLiveRestPlanBO.CreatedBy);
-                oCmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
-                //oCmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                oCmd.Parameters.AddWithValue("isdeleted_", oLiveRestPlanBO.IsDeleted);
+                oCmd.Parameters.AddWithValue("createdby_", oLiveRestPlanBO.CreatedBy);
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = oCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
+                //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
                 oCmd.ExecuteNonQuery();
 
@@ -340,18 +340,18 @@ namespace WIS_DataAccess
             string returnResult = string.Empty;
             LivelihoodRestorationBO ooLiveRestPlanBO = new LivelihoodRestorationBO();//For Storing & Returning Result as Object
 
-            OracleConnection OCon = new OracleConnection(con);
+            SqlConnection OCon = new SqlConnection(con);
             OCon.Open();
-            OracleCommand oCmd = new OracleCommand("USP_TRN_DEL_PAP_LIV_REST_PLAN", OCon);
+            SqlCommand oCmd = new SqlCommand("USP_TRN_DEL_PAP_LIV_REST_PLAN", OCon);
             oCmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(oCmd.CommandType);
 
             try
             {
-                oCmd.Parameters.Add("Liv_Rest_PlanID_", LiveRestPlanId);
+                oCmd.Parameters.AddWithValue("Liv_Rest_PlanID_", LiveRestPlanId);
 
-                oCmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
-                //oCmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = oCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
+                //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
                 oCmd.ExecuteNonQuery();
 
@@ -382,26 +382,26 @@ namespace WIS_DataAccess
             string returnResult = string.Empty;
             LivelihoodRestorationBO ooLiveRestPlanBO = new LivelihoodRestorationBO();//For Storing & Returning Result as Object
 
-            OracleConnection OCon = new OracleConnection(con);
+            SqlConnection OCon = new SqlConnection(con);
             OCon.Open();
-            OracleCommand oCmd = new OracleCommand("USP_TRN_INS_PAP_LIV_REST_RECEI", OCon);
+            SqlCommand oCmd = new SqlCommand("USP_TRN_INS_PAP_LIV_REST_RECEI", OCon);
             oCmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(oCmd.CommandType);
 
             try
             {
-                oCmd.Parameters.Add("liv_rest_recdid_", oLiveRestPlanBO.Liv_Rest_RecdID);
-                oCmd.Parameters.Add("liv_rest_planid_", oLiveRestPlanBO.Liv_Rest_PlanID);
-                //oCmd.Parameters.Add("Liv_Rest_ItemID_", oLiveRestPlanBO.Liv_Rest_ItemID);
-                //oCmd.Parameters.Add("UnitID_", oLiveRestPlanBO.UnitID);
-                //oCmd.Parameters.Add("Planned_", oLiveRestPlanBO.Planned);
-                oCmd.Parameters.Add("datereceived_", oLiveRestPlanBO.ReceivedDate);
-                oCmd.Parameters.Add("Received_", oLiveRestPlanBO.Received);
+                oCmd.Parameters.AddWithValue("liv_rest_recdid_", oLiveRestPlanBO.Liv_Rest_RecdID);
+                oCmd.Parameters.AddWithValue("liv_rest_planid_", oLiveRestPlanBO.Liv_Rest_PlanID);
+                //oCmd.Parameters.AddWithValue("Liv_Rest_ItemID_", oLiveRestPlanBO.Liv_Rest_ItemID);
+                //oCmd.Parameters.AddWithValue("UnitID_", oLiveRestPlanBO.UnitID);
+                //oCmd.Parameters.AddWithValue("Planned_", oLiveRestPlanBO.Planned);
+                oCmd.Parameters.AddWithValue("datereceived_", oLiveRestPlanBO.ReceivedDate);
+                oCmd.Parameters.AddWithValue("Received_", oLiveRestPlanBO.Received);
 
-                oCmd.Parameters.Add("isdeleted_", oLiveRestPlanBO.IsDeleted);
-                oCmd.Parameters.Add("createdby_", oLiveRestPlanBO.CreatedBy);
-                oCmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
-                //oCmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                oCmd.Parameters.AddWithValue("isdeleted_", oLiveRestPlanBO.IsDeleted);
+                oCmd.Parameters.AddWithValue("createdby_", oLiveRestPlanBO.CreatedBy);
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = oCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
+                //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
                 oCmd.ExecuteNonQuery();
 
@@ -432,16 +432,16 @@ namespace WIS_DataAccess
             string returnResult = string.Empty;
             LivelihoodRestorationBO ooLiveRestPlanBO = new LivelihoodRestorationBO();//For Storing & Returning Result as Object
 
-            OracleConnection OCon = new OracleConnection(con);
+            SqlConnection OCon = new SqlConnection(con);
             OCon.Open();
-            OracleCommand oCmd = new OracleCommand("USP_TRN_DEL_PAP_LIV_REST_RECEI", OCon);
+            SqlCommand oCmd = new SqlCommand("USP_TRN_DEL_PAP_LIV_REST_RECEI", OCon);
             oCmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(oCmd.CommandType);
 
             try
             {
-                oCmd.Parameters.Add("liv_rest_recdid_", ReceivedId);
-                oCmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                oCmd.Parameters.AddWithValue("liv_rest_recdid_", ReceivedId);
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = oCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 oCmd.ExecuteNonQuery();
 
@@ -466,14 +466,14 @@ namespace WIS_DataAccess
 
         //public int DeletePaymentRequest(int PaymentRequestId)
         //{
-        //    cnn = new OracleConnection(con);
+        //    cnn = new SqlConnection(con);
 
         //    proc = "USP_TRN_CMP_DEL_SUBMIT_PAYMENT";
 
-        //    cmd = new OracleCommand(proc, cnn);
+        //    cmd = new SqlCommand(proc, cnn);
         //    cmd.CommandType = CommandType.StoredProcedure;
-        //    cmd.Parameters.Add("payt_requestid_", PaymentRequestId);
-        //    //cmd.Parameters.Add("Sp_recordset", OracleDbType.Int32).Direction = ParameterDirection.Output;
+        //    cmd.Parameters.AddWithValue("payt_requestid_", PaymentRequestId);
+        //    //cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.Int).Direction = ParameterDirection.Output;
 
         //    cmd.Connection.Open();
 
@@ -485,18 +485,18 @@ namespace WIS_DataAccess
         //public string UpdatePaymentRequest(LivelihoodRestorationBO oLiveRestPlanBO)
         //{
         //    string returnResult = string.Empty;
-        //    cnn = new OracleConnection(con);
+        //    cnn = new SqlConnection(con);
 
         //    proc = "USP_TRN_CMP_UPD_SUBMIT_PAYMENT";
 
-        //    cmd = new OracleCommand(proc, cnn);
+        //    cmd = new SqlCommand(proc, cnn);
         //    cmd.CommandType = CommandType.StoredProcedure;
         //    cmd.Connection.Open();
-        //    cmd.Parameters.Add("payt_requestid_", oLiveRestPlanBO.Payt_RequestID);
-        //    cmd.Parameters.Add("requeststatus_", oLiveRestPlanBO.RequestStatus);
-        //    cmd.Parameters.Add("updatedby_", oLiveRestPlanBO.UpdatedBy);           
+        //    cmd.Parameters.AddWithValue("payt_requestid_", oLiveRestPlanBO.Payt_RequestID);
+        //    cmd.Parameters.AddWithValue("requeststatus_", oLiveRestPlanBO.RequestStatus);
+        //    cmd.Parameters.AddWithValue("updatedby_", oLiveRestPlanBO.UpdatedBy);           
 
-        //    cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 100).Direction = ParameterDirection.Output;
+        //    /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
         //    try
         //    {
         //        cmd.ExecuteNonQuery();
@@ -518,19 +518,19 @@ namespace WIS_DataAccess
 
         /*  public Concern GetConcernById(int ConcernID)
           {
-              OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-              OracleCommand cmd;
+              SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+              SqlCommand cmd;
 
               string proc = "USP_MST_GETSELECTCONCERN";
 
-              cmd = new OracleCommand(proc, cnn);
+              cmd = new SqlCommand(proc, cnn);
               cmd.CommandType = CommandType.StoredProcedure;
-              cmd.Parameters.Add("ConcernID_", ConcernID);
-              cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+              cmd.Parameters.AddWithValue("ConcernID_", ConcernID);
+              // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
               cmd.Connection.Open();
 
-              OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+              SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
               BO.Concern ConcernObj = null;
               BO.ConcernList Users = new BO.ConcernList();
 

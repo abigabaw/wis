@@ -5,7 +5,7 @@ using System.Text;
 using System.Data;
 using System.Data.OleDb;
 using WIS_BusinessObjects;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 
 namespace WIS_DataAccess
 {
@@ -59,17 +59,17 @@ namespace WIS_DataAccess
         public string SaveExcelData(UploadPAPCoordinatesList list1, string uID)
         {
             string result = string.Empty;
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            //myConnection = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            //myConnection = new SqlConnection(AppConfiguration.ConnectionString);
 
             ////del
             //if (list1.Count > 0)
             //{
-            //    myCommand = new OracleCommand("USP_TRN_DEL_PAP_COORDINATES", myConnection);
+            //    myCommand = new SqlCommand("USP_TRN_DEL_PAP_COORDINATES", myConnection);
             //    myCommand.Connection = myConnection;
             //    myCommand.CommandType = CommandType.StoredProcedure;
-            //    myCommand.Parameters.Add("HHID_", list1[0].HHID);
+            //    myCommand.Parameters.AddWithValue("HHID_", list1[0].HHID);
             //    myConnection.Open();
             //    myCommand.ExecuteNonQuery();
             //    myCommand.Dispose();
@@ -78,21 +78,21 @@ namespace WIS_DataAccess
             //}
             //end
             //insert
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_TRN_INS_PAP_COORDINATES", myConnection);
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_TRN_INS_PAP_COORDINATES", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("HHID_", "");
-            myCommand.Parameters.Add("ROW_X_", "");
-            myCommand.Parameters.Add("ROW_Y_", "");
-            myCommand.Parameters.Add("ROW_LATITUDE_", "");
-            myCommand.Parameters.Add("ROW_LONGITUDE_", "");
-            myCommand.Parameters.Add("WL_X_", "");
-            myCommand.Parameters.Add("WL_Y_", "");
-            myCommand.Parameters.Add("WL_LATITUDE_", "");
-            myCommand.Parameters.Add("WL_LONGITUDE_", "");
-            myCommand.Parameters.Add("USERID_", "");
-            myCommand.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("HHID_", "");
+            myCommand.Parameters.AddWithValue("ROW_X_", "");
+            myCommand.Parameters.AddWithValue("ROW_Y_", "");
+            myCommand.Parameters.AddWithValue("ROW_LATITUDE_", "");
+            myCommand.Parameters.AddWithValue("ROW_LONGITUDE_", "");
+            myCommand.Parameters.AddWithValue("WL_X_", "");
+            myCommand.Parameters.AddWithValue("WL_Y_", "");
+            myCommand.Parameters.AddWithValue("WL_LATITUDE_", "");
+            myCommand.Parameters.AddWithValue("WL_LONGITUDE_", "");
+            myCommand.Parameters.AddWithValue("USERID_", "");
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             myConnection.Open();
             for (int i = 0; i < list1.Count; i++)
             {
@@ -120,19 +120,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public UploadPAPCoordinatesList GetAllPapCoordinatesData(int HHID, int PID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_PAP_COORDINATES";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("HHID_", HHID);
-            cmd.Parameters.Add("PROJECTID_", PID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", HHID);
+            cmd.Parameters.AddWithValue("PROJECTID_", PID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             UploadPAPCoordinatesBO UploadPAPCoordinatesBOobj = null;
             UploadPAPCoordinatesList UploadPAPCoordinatesListobj = new UploadPAPCoordinatesList();
@@ -167,17 +167,17 @@ namespace WIS_DataAccess
         public string SaveExcelDataForAllPaps(UploadPAPCoordinatesList list1, string uID)
         {
             string result = string.Empty;
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            //myConnection = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            //myConnection = new SqlConnection(AppConfiguration.ConnectionString);
 
             ////del
             //if (list1.Count > 0)
             //{
-            //    myCommand = new OracleCommand("USP_TRN_DEL_PAP_COORDINATES", myConnection);
+            //    myCommand = new SqlCommand("USP_TRN_DEL_PAP_COORDINATES", myConnection);
             //    myCommand.Connection = myConnection;
             //    myCommand.CommandType = CommandType.StoredProcedure;
-            //    myCommand.Parameters.Add("HHID_", list1[0].HHID);
+            //    myCommand.Parameters.AddWithValue("HHID_", list1[0].HHID);
             //    myConnection.Open();
             //    myCommand.ExecuteNonQuery();
             //    myCommand.Dispose();
@@ -186,21 +186,21 @@ namespace WIS_DataAccess
             //}
             //end
             //insert
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_TRN_INS_PAP_COORDINATES", myConnection);
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_TRN_INS_PAP_COORDINATES", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("HHID_", "");
-            myCommand.Parameters.Add("ROW_X_", "");
-            myCommand.Parameters.Add("ROW_Y_", "");
-            myCommand.Parameters.Add("ROW_LATITUDE_", "");
-            myCommand.Parameters.Add("ROW_LONGITUDE_", "");
-            myCommand.Parameters.Add("WL_X_", "");
-            myCommand.Parameters.Add("WL_Y_", "");
-            myCommand.Parameters.Add("WL_LATITUDE_", "");
-            myCommand.Parameters.Add("WL_LONGITUDE_", "");
-            myCommand.Parameters.Add("USERID_", "");
-            myCommand.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("HHID_", "");
+            myCommand.Parameters.AddWithValue("ROW_X_", "");
+            myCommand.Parameters.AddWithValue("ROW_Y_", "");
+            myCommand.Parameters.AddWithValue("ROW_LATITUDE_", "");
+            myCommand.Parameters.AddWithValue("ROW_LONGITUDE_", "");
+            myCommand.Parameters.AddWithValue("WL_X_", "");
+            myCommand.Parameters.AddWithValue("WL_Y_", "");
+            myCommand.Parameters.AddWithValue("WL_LATITUDE_", "");
+            myCommand.Parameters.AddWithValue("WL_LONGITUDE_", "");
+            myCommand.Parameters.AddWithValue("USERID_", "");
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             myConnection.Open();
             for (int i = 0; i < list1.Count; i++)
             {
@@ -225,25 +225,25 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_INS_PAP_COORDINATES";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            cmd.Parameters.Add("HHID_", oUploadPAPCoordinatesBO.HHID);
-            cmd.Parameters.Add("ROW_X_", oUploadPAPCoordinatesBO.ROW_X);
-            cmd.Parameters.Add("ROW_Y_", oUploadPAPCoordinatesBO.ROW_Y);
-            cmd.Parameters.Add("ROW_Lat_", oUploadPAPCoordinatesBO.ROW_LATITUDE);
-            cmd.Parameters.Add("ROW_Long_", oUploadPAPCoordinatesBO.ROW_LONGITUDE);
-            cmd.Parameters.Add("WL_X_", oUploadPAPCoordinatesBO.WL_X);
-            cmd.Parameters.Add("WL_Y_", oUploadPAPCoordinatesBO.WL_Y);
-            cmd.Parameters.Add("WL_Lat_", oUploadPAPCoordinatesBO.WL_LATITUDE);
-            cmd.Parameters.Add("WL_Long_", oUploadPAPCoordinatesBO.WL_LONGITUDE);
+            cmd.Parameters.AddWithValue("HHID_", oUploadPAPCoordinatesBO.HHID);
+            cmd.Parameters.AddWithValue("ROW_X_", oUploadPAPCoordinatesBO.ROW_X);
+            cmd.Parameters.AddWithValue("ROW_Y_", oUploadPAPCoordinatesBO.ROW_Y);
+            cmd.Parameters.AddWithValue("ROW_Lat_", oUploadPAPCoordinatesBO.ROW_LATITUDE);
+            cmd.Parameters.AddWithValue("ROW_Long_", oUploadPAPCoordinatesBO.ROW_LONGITUDE);
+            cmd.Parameters.AddWithValue("WL_X_", oUploadPAPCoordinatesBO.WL_X);
+            cmd.Parameters.AddWithValue("WL_Y_", oUploadPAPCoordinatesBO.WL_Y);
+            cmd.Parameters.AddWithValue("WL_Lat_", oUploadPAPCoordinatesBO.WL_LATITUDE);
+            cmd.Parameters.AddWithValue("WL_Long_", oUploadPAPCoordinatesBO.WL_LONGITUDE);
 
-            cmd.Parameters.Add("USERID_", oUploadPAPCoordinatesBO.CreatedBy);
-            cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("USERID_", oUploadPAPCoordinatesBO.CreatedBy);
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -260,26 +260,26 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_UPD_PAP_COORDINATES";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            cmd.Parameters.Add("ID_", oUploadPAPCoordinatesBO.Id);
-            cmd.Parameters.Add("HHID_", oUploadPAPCoordinatesBO.HHID);
-            cmd.Parameters.Add("ROW_X_", oUploadPAPCoordinatesBO.ROW_X);
-            cmd.Parameters.Add("ROW_Y_", oUploadPAPCoordinatesBO.ROW_Y);
-            cmd.Parameters.Add("ROW_Lat_", oUploadPAPCoordinatesBO.ROW_LATITUDE);
-            cmd.Parameters.Add("ROW_Long_", oUploadPAPCoordinatesBO.ROW_LONGITUDE);
-            cmd.Parameters.Add("WL_X_", oUploadPAPCoordinatesBO.WL_X);
-            cmd.Parameters.Add("WL_Y_", oUploadPAPCoordinatesBO.WL_Y);
-            cmd.Parameters.Add("WL_Lat_", oUploadPAPCoordinatesBO.WL_LATITUDE);
-            cmd.Parameters.Add("WL_Long_", oUploadPAPCoordinatesBO.WL_LONGITUDE);
+            cmd.Parameters.AddWithValue("ID_", oUploadPAPCoordinatesBO.Id);
+            cmd.Parameters.AddWithValue("HHID_", oUploadPAPCoordinatesBO.HHID);
+            cmd.Parameters.AddWithValue("ROW_X_", oUploadPAPCoordinatesBO.ROW_X);
+            cmd.Parameters.AddWithValue("ROW_Y_", oUploadPAPCoordinatesBO.ROW_Y);
+            cmd.Parameters.AddWithValue("ROW_Lat_", oUploadPAPCoordinatesBO.ROW_LATITUDE);
+            cmd.Parameters.AddWithValue("ROW_Long_", oUploadPAPCoordinatesBO.ROW_LONGITUDE);
+            cmd.Parameters.AddWithValue("WL_X_", oUploadPAPCoordinatesBO.WL_X);
+            cmd.Parameters.AddWithValue("WL_Y_", oUploadPAPCoordinatesBO.WL_Y);
+            cmd.Parameters.AddWithValue("WL_Lat_", oUploadPAPCoordinatesBO.WL_LATITUDE);
+            cmd.Parameters.AddWithValue("WL_Long_", oUploadPAPCoordinatesBO.WL_LONGITUDE);
 
-            cmd.Parameters.Add("USERID_", oUploadPAPCoordinatesBO.UpdatedBy);
-            cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("USERID_", oUploadPAPCoordinatesBO.UpdatedBy);
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -295,14 +295,14 @@ namespace WIS_DataAccess
         public void DeletePapCoordinates(int ID)
         {
             string result = string.Empty;
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
 
-            myCommand = new OracleCommand("USP_TRN_DEL_PAP_COORDINATES", myConnection);
+            myCommand = new SqlCommand("USP_TRN_DEL_PAP_COORDINATES", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("ID_", ID);
+            myCommand.Parameters.AddWithValue("ID_", ID);
             myConnection.Open();
             myCommand.ExecuteNonQuery();
             myCommand.Dispose();
@@ -312,18 +312,18 @@ namespace WIS_DataAccess
 
         public UploadPAPCoordinatesBO GetPapCoordinatesDataByID(int ID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_PAP_COORDINATESID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ID_", ID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ID_", ID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             UploadPAPCoordinatesBO UploadPAPCoordinatesBOobj = null;
             UploadPAPCoordinatesList UploadPAPCoordinatesListobj = new UploadPAPCoordinatesList();

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Data;
-using System.Configuration;
-using System.Data.SqlClient;
-using Oracle.DataAccess.Client;
 using WIS_BusinessObjects;
-
+using System.Data.SqlClient;
 
 namespace WIS_DataAccess
 {
@@ -18,7 +15,7 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public LoginBO Authentication(string username, string password)
         {
-            SqlConnection cnn = new SqlConnection(ConfigurationManager.ConnectionStrings["UETCL_WIS_SQL"].ToString());
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             SqlCommand cmd;
 
             string proc = "USP_MST_AUTHENTICATION";
@@ -27,7 +24,48 @@ namespace WIS_DataAccess
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("UserName_", username);
             cmd.Parameters.AddWithValue("Pwd_", password);
-            // cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           // //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
+
+            cmd.Connection.Open();
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            LoginBO Loginobj = null;
+
+            try
+            {
+
+                while (dr.Read())
+                {
+                    Loginobj = new LoginBO();
+
+                    if (!dr.IsDBNull(dr.GetOrdinal("USERID"))) Loginobj.UserID = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("USERID")));
+                    if (!dr.IsDBNull(dr.GetOrdinal("USERNAME"))) Loginobj.USERNAME = dr.GetString(dr.GetOrdinal("USERNAME")) ;
+                    if (!dr.IsDBNull(dr.GetOrdinal("PWD"))) Loginobj.PASSWORD = dr.GetString(dr.GetOrdinal("PWD"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("DISPLAYNAME"))) Loginobj.DisplayName = dr.GetString(dr.GetOrdinal("DISPLAYNAME"));
+                }
+
+                dr.Close();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Loginobj;
+        }
+
+        //Edwin: 22/01/2018 - Global Password
+        public LoginBO DBAuth(string username, string password)
+        {
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
+
+            string proc = "USP_MST_AUTHENTICATION_";
+
+            cmd = new SqlCommand(proc, cnn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("UserName_", username);
+            cmd.Parameters.AddWithValue("Pwd_", password);
+            // //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
@@ -54,6 +92,7 @@ namespace WIS_DataAccess
             }
 
             return Loginobj;
-        }
+        } //End: Edwin
+
     }
 }

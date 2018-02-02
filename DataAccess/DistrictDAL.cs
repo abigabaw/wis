@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_BusinessObjects;
 
@@ -11,8 +11,8 @@ namespace WIS_DataAccess
     public class DistrictDAL
     {
         string connStr = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
         /// <summary>
         /// To fetch details from database
@@ -20,23 +20,23 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public DistrictList GetDistrict()
         {
-            cnn = new OracleConnection(connStr);
+            cnn = new SqlConnection(connStr);
 
             string proc = "USP_MST_GET_DISTRICT";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
            
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             DistrictBO  objDisBO = null;
             DistrictList objDislist = new DistrictList();
 
             while (dr.Read())
             {
                 objDisBO = new DistrictBO();
-                if (!dr.IsDBNull(dr.GetOrdinal("DISTRICTID"))) objDisBO.DistrictID = dr.GetInt32(dr.GetOrdinal("DISTRICTID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("DISTRICTID"))) objDisBO.DistrictID = (int)dr.GetDecimal(dr.GetOrdinal("DISTRICTID"));
               //  objDisBO.DistrictID = (Convert.ToInt32(dr.GetValue(dr.GetOrdinal("DISTRICTID"))));
                 if (!dr.IsDBNull(dr.GetOrdinal("DISTRICTNAME"))) objDisBO.DistrictName = dr.GetValue(dr.GetOrdinal("DISTRICTNAME")).ToString();
                 objDislist.Add(objDisBO);
@@ -53,16 +53,16 @@ namespace WIS_DataAccess
         {
             DistrictList objDislist = null;
 
-            using (cnn = new OracleConnection(connStr))
+            using (cnn = new SqlConnection(connStr))
             {
-                using (cmd = new OracleCommand("USP_MST_GET_DISTRICT_ALL", cnn))
+                using (cmd = new SqlCommand("USP_MST_GET_DISTRICT_ALL", cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;                    
 
-                    cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                    // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
                     cmd.Connection.Open();
 
-                    OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                    SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                     DistrictBO objDisBO = null;
                     objDislist = new DistrictList();
@@ -92,16 +92,16 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            using (cnn = new OracleConnection(connStr))
+            using (cnn = new SqlConnection(connStr))
             {
-                using (cmd = new OracleCommand("USP_MST_INS_DISTRICT", cnn))
+                using (cmd = new SqlCommand("USP_MST_INS_DISTRICT", cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection.Open();
 
-                    cmd.Parameters.Add("DISTRICTNAME_", objDistrictBO.DistrictName);
-                    cmd.Parameters.Add("CREATEDBY_", objDistrictBO.CreatedBy);
-                    cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("DISTRICTNAME_", objDistrictBO.DistrictName);
+                    cmd.Parameters.AddWithValue("CREATEDBY_", objDistrictBO.CreatedBy);
+                    /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                     cmd.ExecuteNonQuery();
 
                     if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -122,17 +122,17 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            using (cnn = new OracleConnection(connStr))
+            using (cnn = new SqlConnection(connStr))
             {
-                using (cmd = new OracleCommand("USP_MST_UPD_DISTRICT", cnn))
+                using (cmd = new SqlCommand("USP_MST_UPD_DISTRICT", cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection.Open();
 
-                    cmd.Parameters.Add("DISTRICTID_", objDistrictBO.DistrictID);
-                    cmd.Parameters.Add("DISTRICTNAME_", objDistrictBO.DistrictName);
-                    cmd.Parameters.Add("UPDATEDBY_", objDistrictBO.UpdatedBy);
-                    cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("DISTRICTID_", objDistrictBO.DistrictID);
+                    cmd.Parameters.AddWithValue("DISTRICTNAME_", objDistrictBO.DistrictName);
+                    cmd.Parameters.AddWithValue("UPDATEDBY_", objDistrictBO.UpdatedBy);
+                    /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                     cmd.ExecuteNonQuery();
 
                     if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -153,15 +153,15 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            using (cnn = new OracleConnection(connStr))
+            using (cnn = new SqlConnection(connStr))
             {
-                using (cmd = new OracleCommand("USP_MST_DEL_DISTRICT", cnn))
+                using (cmd = new SqlCommand("USP_MST_DEL_DISTRICT", cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection.Open();
 
-                    cmd.Parameters.Add("DISTRICTID_", districtID);
-                    cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("DISTRICTID_", districtID);
+                    /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                     cmd.ExecuteNonQuery();
 
                     if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -184,17 +184,17 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            using (cnn = new OracleConnection(connStr))
+            using (cnn = new SqlConnection(connStr))
             {
-                using (cmd = new OracleCommand("USP_MST_OBS_DISTRICT", cnn))
+                using (cmd = new SqlCommand("USP_MST_OBS_DISTRICT", cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection.Open();
 
-                    cmd.Parameters.Add("DISTRICTID_", districtID);
-                    cmd.Parameters.Add("UPDATEDBY_", updatedBy);
-                    cmd.Parameters.Add("ISDELETED_", isDeleted);
-                    cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("DISTRICTID_", districtID);
+                    cmd.Parameters.AddWithValue("UPDATEDBY_", updatedBy);
+                    cmd.Parameters.AddWithValue("ISDELETED_", isDeleted);
+                    /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                     cmd.ExecuteNonQuery();
 
                     if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -215,23 +215,23 @@ namespace WIS_DataAccess
         {
             proc = "USP_MST_GET_DISTRICTBYID";
 
-            cnn = new OracleConnection(connStr);
+            cnn = new SqlConnection(connStr);
             DistrictBO DistrictBOobj = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("DISTRICTID_", DistrictId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("DISTRICTID_", DistrictId);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
                 {
                     DistrictBOobj = new DistrictBO();
 
-                    if (!dr.IsDBNull(dr.GetOrdinal("DISTRICTID"))) DistrictBOobj.DistrictID = dr.GetInt32(dr.GetOrdinal("DISTRICTID"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("DISTRICTID"))) DistrictBOobj.DistrictID = (int)dr.GetDecimal(dr.GetOrdinal("DISTRICTID"));
                     if (!dr.IsDBNull(dr.GetOrdinal("DISTRICTNAME"))) DistrictBOobj.DistrictName = dr.GetString(dr.GetOrdinal("DISTRICTNAME"));
                 }
                 dr.Close();
@@ -253,30 +253,30 @@ namespace WIS_DataAccess
             DistrictBO objDisBO = null;
             DistrictList objDislist = new DistrictList();
 
-            using (cnn = new OracleConnection(connStr))
+            using (cnn = new SqlConnection(connStr))
             {
-                using (cmd = new OracleCommand(proc, cnn))
+                using (cmd = new SqlCommand(proc, cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     if (districtname != "")
-                        cmd.Parameters.Add("DistrictName_", districtname);
+                        cmd.Parameters.AddWithValue("DistrictName_", districtname);
                     else
-                        cmd.Parameters.Add("DistrictName_", DBNull.Value);
+                        cmd.Parameters.AddWithValue("DistrictName_", DBNull.Value);
 
 
-                    cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                    // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
                     try
                     {
                         cmd.Connection.Open();
-                        OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                         while (dr.Read())
                         {
                             objDisBO = new DistrictBO();
 
-                            if (!dr.IsDBNull(dr.GetOrdinal("DISTRICTID"))) objDisBO.DistrictID = dr.GetInt32(dr.GetOrdinal("DISTRICTID"));
+                            if (!dr.IsDBNull(dr.GetOrdinal("DISTRICTID"))) objDisBO.DistrictID = (int)dr.GetDecimal(dr.GetOrdinal("DISTRICTID"));
                             if (!dr.IsDBNull(dr.GetOrdinal("DISTRICTNAME"))) objDisBO.DistrictName = dr.GetString(dr.GetOrdinal("DISTRICTNAME"));
                             if (!dr.IsDBNull(dr.GetOrdinal("ISDELETED"))) objDisBO.IsDeleted = dr.GetString(dr.GetOrdinal("ISDELETED"));
 

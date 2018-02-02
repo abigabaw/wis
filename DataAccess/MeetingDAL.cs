@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -13,14 +13,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public MeetingList getMEETINGPURPOSE()
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GET_NAME_MEETING";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             Meeting BOobj = null;
             MeetingList Listobj = new MeetingList();
 
@@ -44,28 +44,28 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int Insert(Meeting Meetingobj)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_INS_MEETING", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_INS_MEETING", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("HHID", Meetingobj.HHID);
-                dcmd.Parameters.Add("CULTURALPROPID", Meetingobj.CULTURALPROPID);
-                dcmd.Parameters.Add("MEETINGDATE", Meetingobj.MEETINGDATE);
-                dcmd.Parameters.Add("MEETINGLOCATION", Meetingobj.MEETINGLOCATION);
-                dcmd.Parameters.Add("MEETINGPURPOSEID", Meetingobj.MEETINGPURPOSEID);
-                dcmd.Parameters.Add("WITNESSNGO", Meetingobj.WITNESSNGO);
-                dcmd.Parameters.Add("OPINIONLEADER", Meetingobj.OPINIONLEADER);
-                dcmd.Parameters.Add("MINISTRYOFGLSD", Meetingobj.MINISTRYOFGLSD);
-                dcmd.Parameters.Add("AESREP", Meetingobj.AESREP);
-                dcmd.Parameters.Add("MOUSIGNED", Meetingobj.MOUSIGNED);
-                dcmd.Parameters.Add("MEETINGCOMMENTS", Meetingobj.MEETINGCOMMENTS);
+                dcmd.Parameters.AddWithValue("HHID", Meetingobj.HHID);
+                dcmd.Parameters.AddWithValue("CULTURALPROPID", Meetingobj.CULTURALPROPID);
+                dcmd.Parameters.AddWithValue("MEETINGDATE", Meetingobj.MEETINGDATE);
+                dcmd.Parameters.AddWithValue("MEETINGLOCATION", Meetingobj.MEETINGLOCATION);
+                dcmd.Parameters.AddWithValue("MEETINGPURPOSEID", Meetingobj.MEETINGPURPOSEID);
+                dcmd.Parameters.AddWithValue("WITNESSNGO", Meetingobj.WITNESSNGO);
+                dcmd.Parameters.AddWithValue("OPINIONLEADER", Meetingobj.OPINIONLEADER);
+                dcmd.Parameters.AddWithValue("MINISTRYOFGLSD", Meetingobj.MINISTRYOFGLSD);
+                dcmd.Parameters.AddWithValue("AESREP", Meetingobj.AESREP);
+                dcmd.Parameters.AddWithValue("MOUSIGNED", Meetingobj.MOUSIGNED);
+                dcmd.Parameters.AddWithValue("MEETINGCOMMENTS", Meetingobj.MEETINGCOMMENTS);
 
-                dcmd.Parameters.Add("ISDELETED", Meetingobj.ISDELETED);
-                dcmd.Parameters.Add("CREATEDBY", Meetingobj.CREATEDBY);
+                dcmd.Parameters.AddWithValue("ISDELETED", Meetingobj.ISDELETED);
+                dcmd.Parameters.AddWithValue("CREATEDBY", Meetingobj.CREATEDBY);
 
                 return dcmd.ExecuteNonQuery();
 
@@ -90,19 +90,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public MeetingList GetCulturePropertyMeetings(int culturalPropertyID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_SEL_MEETING";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("CULTURALPROPERTYID_", culturalPropertyID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CULTURALPROPERTYID_", culturalPropertyID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             Meeting Meetingobj = null;
             MeetingList Listobj = new MeetingList();
 
@@ -167,19 +167,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public Meeting GetMeetingData(int CULTURALMEETID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_MEETING";//"USP_TRN_GET_DAMAGE_CROPS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("M_CULTURALMEETID", CULTURALMEETID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("M_CULTURALMEETID", CULTURALMEETID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             Meeting Meetingobj = null;
             MeetingList Listobj = new MeetingList();
@@ -233,26 +233,26 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int UpdateMeeting(Meeting Meetingobj)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_UPD_MEETING", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_UPD_MEETING", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("M_CULTURALMEETID", Meetingobj.CULTURALMEETID);
-                dcmd.Parameters.Add("M_CULTURALPROPID", Meetingobj.CULTURALPROPID);
-                dcmd.Parameters.Add("M_MEETINGDATE", Meetingobj.MEETINGDATE);
-                dcmd.Parameters.Add("M_MEETINGLOCATION", Meetingobj.MEETINGLOCATION);
-                dcmd.Parameters.Add("M_MEETINGPURPOSEID", Meetingobj.MEETINGPURPOSEID);
-                dcmd.Parameters.Add("M_WITNESSNGO", Meetingobj.WITNESSNGO);
-                dcmd.Parameters.Add("M_OPINIONLEADER", Meetingobj.OPINIONLEADER);
-                dcmd.Parameters.Add("M_MINISTRYOFGLSD", Meetingobj.MINISTRYOFGLSD);
-                dcmd.Parameters.Add("M_AESREP", Meetingobj.AESREP);
-                dcmd.Parameters.Add("M_MOUSIGNED", Meetingobj.MOUSIGNED);
-                dcmd.Parameters.Add("M_MEETINGCOMMENTS", Meetingobj.MEETINGCOMMENTS);
-                dcmd.Parameters.Add("M_UPDATEDBY", Meetingobj.CREATEDBY);
+                dcmd.Parameters.AddWithValue("M_CULTURALMEETID", Meetingobj.CULTURALMEETID);
+                dcmd.Parameters.AddWithValue("M_CULTURALPROPID", Meetingobj.CULTURALPROPID);
+                dcmd.Parameters.AddWithValue("M_MEETINGDATE", Meetingobj.MEETINGDATE);
+                dcmd.Parameters.AddWithValue("M_MEETINGLOCATION", Meetingobj.MEETINGLOCATION);
+                dcmd.Parameters.AddWithValue("M_MEETINGPURPOSEID", Meetingobj.MEETINGPURPOSEID);
+                dcmd.Parameters.AddWithValue("M_WITNESSNGO", Meetingobj.WITNESSNGO);
+                dcmd.Parameters.AddWithValue("M_OPINIONLEADER", Meetingobj.OPINIONLEADER);
+                dcmd.Parameters.AddWithValue("M_MINISTRYOFGLSD", Meetingobj.MINISTRYOFGLSD);
+                dcmd.Parameters.AddWithValue("M_AESREP", Meetingobj.AESREP);
+                dcmd.Parameters.AddWithValue("M_MOUSIGNED", Meetingobj.MOUSIGNED);
+                dcmd.Parameters.AddWithValue("M_MEETINGCOMMENTS", Meetingobj.MEETINGCOMMENTS);
+                dcmd.Parameters.AddWithValue("M_UPDATEDBY", Meetingobj.CREATEDBY);
 
                 return dcmd.ExecuteNonQuery();
             }

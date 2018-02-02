@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -14,27 +14,27 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int Insert(Nego Negoobj)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_INSERT_NGO", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_INSERT_NGO", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("HHID", Negoobj.HHID);
-                dcmd.Parameters.Add("CULTURALPROPID", Negoobj.CULTURALPROPID);
-                dcmd.Parameters.Add("NEGO_APPOINTMENTDATE", Negoobj.NEGO_APPOINTMENTDATE);
-                dcmd.Parameters.Add("NEGO_VENUE", Negoobj.NEGO_VENUE);
-                dcmd.Parameters.Add("NEGO_DATE", Negoobj.NEGO_DATE);
+                dcmd.Parameters.AddWithValue("HHID", Negoobj.HHID);
+                dcmd.Parameters.AddWithValue("CULTURALPROPID", Negoobj.CULTURALPROPID);
+                dcmd.Parameters.AddWithValue("NEGO_APPOINTMENTDATE", Negoobj.NEGO_APPOINTMENTDATE);
+                dcmd.Parameters.AddWithValue("NEGO_VENUE", Negoobj.NEGO_VENUE);
+                dcmd.Parameters.AddWithValue("NEGO_DATE", Negoobj.NEGO_DATE);
 
                 if (Negoobj.NEGO_PROBLEMDESC.Trim().Length > 1000)
-                    dcmd.Parameters.Add("NEGO_PROBLEMDESC", Negoobj.NEGO_PROBLEMDESC.Substring(0, 1000));
+                    dcmd.Parameters.AddWithValue("NEGO_PROBLEMDESC", Negoobj.NEGO_PROBLEMDESC.Substring(0, 1000));
                 else
-                    dcmd.Parameters.Add("NEGO_PROBLEMDESC", Negoobj.NEGO_PROBLEMDESC);
+                    dcmd.Parameters.AddWithValue("NEGO_PROBLEMDESC", Negoobj.NEGO_PROBLEMDESC);
 
-                dcmd.Parameters.Add("ISDELETED", Negoobj.ISDELETED);
-                dcmd.Parameters.Add("CREATEDBY", Negoobj.CREATEDBY);
+                dcmd.Parameters.AddWithValue("ISDELETED", Negoobj.ISDELETED);
+                dcmd.Parameters.AddWithValue("CREATEDBY", Negoobj.CREATEDBY);
 
                 return dcmd.ExecuteNonQuery();
 
@@ -59,19 +59,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public NegoList GetNGODATA(int culturalPropertyID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_SEL_NGO";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("CULTURALPROPERTYID_", culturalPropertyID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CULTURALPROPERTYID_", culturalPropertyID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             Nego Ngoobj = null;
             NegoList Listobj = new NegoList();
 
@@ -111,19 +111,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public Nego GetData(int CULTURALNEGOID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_NGO";//"USP_TRN_GET_DAMAGE_CROPS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("N_CULTURALNEGOID", CULTURALNEGOID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("N_CULTURALNEGOID", CULTURALNEGOID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             Nego Ngoobj = null;
             NegoList Listobj = new NegoList();
@@ -169,26 +169,26 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int Update(Nego Negoobj)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_UPD_NGO", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_UPD_NGO", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                // dcmd.Parameters.Add("HHID", PermanentStructureobj.HouseholdID);
-                dcmd.Parameters.Add("N_CULTURALNEGOID", Negoobj.CULTURALNEGOID);
-                dcmd.Parameters.Add("N_CULTURALPROPID", Negoobj.CULTURALPROPID);
+                // dcmd.Parameters.AddWithValue("HHID", PermanentStructureobj.HouseholdID);
+                dcmd.Parameters.AddWithValue("N_CULTURALNEGOID", Negoobj.CULTURALNEGOID);
+                dcmd.Parameters.AddWithValue("N_CULTURALPROPID", Negoobj.CULTURALPROPID);
 
-                dcmd.Parameters.Add("N_NEGO_APPOINTMENTDATE", Negoobj.NEGO_APPOINTMENTDATE);
-                dcmd.Parameters.Add("N_NEGO_VENUE", Negoobj.NEGO_VENUE);
-                dcmd.Parameters.Add("N_NEGO_DATE", Negoobj.NEGO_DATE);
+                dcmd.Parameters.AddWithValue("N_NEGO_APPOINTMENTDATE", Negoobj.NEGO_APPOINTMENTDATE);
+                dcmd.Parameters.AddWithValue("N_NEGO_VENUE", Negoobj.NEGO_VENUE);
+                dcmd.Parameters.AddWithValue("N_NEGO_DATE", Negoobj.NEGO_DATE);
                 if (Negoobj.NEGO_PROBLEMDESC.Length > 1000)
-                    dcmd.Parameters.Add("N_NEGO_PROBLEMDESC", Negoobj.NEGO_PROBLEMDESC.Substring(0, 1000));
+                    dcmd.Parameters.AddWithValue("N_NEGO_PROBLEMDESC", Negoobj.NEGO_PROBLEMDESC.Substring(0, 1000));
                 else
-                    dcmd.Parameters.Add("N_NEGO_PROBLEMDESC", Negoobj.NEGO_PROBLEMDESC);
-                dcmd.Parameters.Add("N_UPDATEDBY", Negoobj.CREATEDBY);
+                    dcmd.Parameters.AddWithValue("N_NEGO_PROBLEMDESC", Negoobj.NEGO_PROBLEMDESC);
+                dcmd.Parameters.AddWithValue("N_UPDATEDBY", Negoobj.CREATEDBY);
                 return dcmd.ExecuteNonQuery();
             }
             catch (Exception ex)

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_DataAccess;
 using WIS_BusinessObjects;
 
@@ -11,14 +11,14 @@ namespace WIS_DataAccess
     {
        public GraveList GetGraveFinish()
            {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GET_GRAVEDATA";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             GraveBO BOobj = null;
             GraveList Listobj = new GraveList();
 
@@ -43,31 +43,31 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public int Insert(GraveBO GraveBOobj)
        {
-           OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+           SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
            cnn.Open();
-           OracleCommand dcmd = new OracleCommand("USP_TRN_INS_GRAVE", cnn);
+           SqlCommand dcmd = new SqlCommand("USP_TRN_INS_GRAVE", cnn);
            dcmd.CommandType = CommandType.StoredProcedure;
            int count = Convert.ToInt32(dcmd.CommandType);
 
            try
            {
-               dcmd.Parameters.Add("HHID", GraveBOobj.HouseholdID);
-             //  dcmd.Parameters.Add("GRV_FINISHID", GraveBOobj.Grv_finishid);
+               dcmd.Parameters.AddWithValue("HHID", GraveBOobj.HouseholdID);
+             //  dcmd.Parameters.AddWithValue("GRV_FINISHID", GraveBOobj.Grv_finishid);
 
                if (GraveBOobj.Grv_finishid > 0)
-                   dcmd.Parameters.Add("GRV_FINISHID", GraveBOobj.Grv_finishid);
+                   dcmd.Parameters.AddWithValue("GRV_FINISHID", GraveBOobj.Grv_finishid);
                else
-                   dcmd.Parameters.Add("GRV_FINISHID", DBNull.Value);
+                   dcmd.Parameters.AddWithValue("GRV_FINISHID", DBNull.Value);
                 
-               dcmd.Parameters.Add("OTHERGRAVEFINISH", GraveBOobj.Othergravefinish);
-               dcmd.Parameters.Add("GRV_DIMEN_LENGTH", GraveBOobj.Grv_dimen_length);
-               dcmd.Parameters.Add("GRV_DIMEN_WIDTH", GraveBOobj.Grv_dimen_width);
-               dcmd.Parameters.Add("DEPRECIATEDVALUE", GraveBOobj.Depreciatedvalue);
-               dcmd.Parameters.Add("CREATEDBY", GraveBOobj.CreatedBy);
+               dcmd.Parameters.AddWithValue("OTHERGRAVEFINISH", GraveBOobj.Othergravefinish);
+               dcmd.Parameters.AddWithValue("GRV_DIMEN_LENGTH", GraveBOobj.Grv_dimen_length);
+               dcmd.Parameters.AddWithValue("GRV_DIMEN_WIDTH", GraveBOobj.Grv_dimen_width);
+               dcmd.Parameters.AddWithValue("DEPRECIATEDVALUE", GraveBOobj.Depreciatedvalue);
+               dcmd.Parameters.AddWithValue("CREATEDBY", GraveBOobj.CreatedBy);
                if (GraveBOobj.Photo != null)
-                   dcmd.Parameters.Add("GRAVEPHOTO_", OracleDbType.Blob).Value = GraveBOobj.Photo;
+                   dcmd.Parameters.AddWithValue("GRAVEPHOTO_", SqlDbType.Image).Value = GraveBOobj.Photo;
                else
-                   dcmd.Parameters.Add("GRAVEPHOTO_", Oracle.DataAccess.Types.OracleBlob.Null);
+                   dcmd.Parameters.AddWithValue("GRAVEPHOTO_", DBNull.Value);
               
                return dcmd.ExecuteNonQuery();
 
@@ -91,19 +91,19 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public GraveList GetGravedata(int householdID)
        {
-           OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-           OracleCommand cmd;
+           SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+           SqlCommand cmd;
 
            string proc = "USP_TRN_SEL_GRAVE";
 
-           cmd = new OracleCommand(proc, cnn);
+           cmd = new SqlCommand(proc, cnn);
            cmd.CommandType = CommandType.StoredProcedure;
 
-           cmd.Parameters.Add("HHID_", householdID);
-           cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           cmd.Parameters.AddWithValue("HHID_", householdID);
+           //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
            cmd.Connection.Open();
-           OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+           SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
            GraveBO GraveBOobj = null;
            GraveList GraveListobj = new GraveList();
@@ -133,19 +133,19 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public GraveBO Getdatarow(int Pap_graveid)
        {
-           OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-           OracleCommand cmd;
+           SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+           SqlCommand cmd;
 
            string proc = "USP_TRN_GET_GRAVE";
 
-           cmd = new OracleCommand(proc, cnn);
+           cmd = new SqlCommand(proc, cnn);
            cmd.CommandType = CommandType.StoredProcedure;
-           cmd.Parameters.Add("G_PAP_GRAVEID", Pap_graveid);
-           cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           cmd.Parameters.AddWithValue("G_PAP_GRAVEID", Pap_graveid);
+           // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
            cmd.Connection.Open();
 
-           OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+           SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
            GraveBO GraveBOobj = null;
            GraveList GraveListobj = new GraveList();
          
@@ -183,26 +183,26 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public int EditGRAVE(GraveBO GraveBOobj)
        {
-           OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+           SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
            cnn.Open();
-           OracleCommand dcmd = new OracleCommand("USP_TRN_UPD_GRAVE", cnn);
+           SqlCommand dcmd = new SqlCommand("USP_TRN_UPD_GRAVE", cnn);
            dcmd.CommandType = CommandType.StoredProcedure;
            int count = Convert.ToInt32(dcmd.CommandType);
 
            try
            {
-               dcmd.Parameters.Add("HHID", GraveBOobj.HouseholdID);
-               dcmd.Parameters.Add("G_PAP_GRAVEID", GraveBOobj.Pap_graveid);
-               dcmd.Parameters.Add("G_GRV_FINISHID", GraveBOobj.Grv_finishid);
-               dcmd.Parameters.Add("G_OTHERGRAVEFINISH", GraveBOobj.Othergravefinish);
-               dcmd.Parameters.Add("G_GRV_DIMEN_LENGTH", GraveBOobj.Grv_dimen_length);
-               dcmd.Parameters.Add("G_GRV_DIMEN_WIDTH", GraveBOobj.Grv_dimen_width);
-               dcmd.Parameters.Add("G_DEPRECIATEDVALUE", GraveBOobj.Depreciatedvalue);
-               dcmd.Parameters.Add("G_UPDATEDBY", GraveBOobj.CreatedBy);
+               dcmd.Parameters.AddWithValue("HHID", GraveBOobj.HouseholdID);
+               dcmd.Parameters.AddWithValue("G_PAP_GRAVEID", GraveBOobj.Pap_graveid);
+               dcmd.Parameters.AddWithValue("G_GRV_FINISHID", GraveBOobj.Grv_finishid);
+               dcmd.Parameters.AddWithValue("G_OTHERGRAVEFINISH", GraveBOobj.Othergravefinish);
+               dcmd.Parameters.AddWithValue("G_GRV_DIMEN_LENGTH", GraveBOobj.Grv_dimen_length);
+               dcmd.Parameters.AddWithValue("G_GRV_DIMEN_WIDTH", GraveBOobj.Grv_dimen_width);
+               dcmd.Parameters.AddWithValue("G_DEPRECIATEDVALUE", GraveBOobj.Depreciatedvalue);
+               dcmd.Parameters.AddWithValue("G_UPDATEDBY", GraveBOobj.CreatedBy);
                if (GraveBOobj.Photo != null)
-                   dcmd.Parameters.Add("GRAVEPHOTO_", OracleDbType.Blob).Value = GraveBOobj.Photo;
+                   dcmd.Parameters.AddWithValue("GRAVEPHOTO_", SqlDbType.Image).Value = GraveBOobj.Photo;
                else
-                   dcmd.Parameters.Add("GRAVEPHOTO_", Oracle.DataAccess.Types.OracleBlob.Null);
+                   dcmd.Parameters.AddWithValue("GRAVEPHOTO_", DBNull.Value);
                                         
                return dcmd.ExecuteNonQuery();
            }
@@ -225,13 +225,13 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public int Delete(int Pap_graveid)
        {
-           OracleConnection conn = new OracleConnection(AppConfiguration.ConnectionString);
+           SqlConnection conn = new SqlConnection(AppConfiguration.ConnectionString);
            conn.Open();
-           OracleCommand dCmd = new OracleCommand("USP_TRN_DEL_GRAVE", conn);
+           SqlCommand dCmd = new SqlCommand("USP_TRN_DEL_GRAVE", conn);
            dCmd.CommandType = CommandType.StoredProcedure;
            try
            {
-               dCmd.Parameters.Add("PAP_GRAVEID_", Pap_graveid);
+               dCmd.Parameters.AddWithValue("PAP_GRAVEID_", Pap_graveid);
                return dCmd.ExecuteNonQuery();
            }
            catch (Exception ex)
@@ -257,15 +257,15 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public GraveBO ShowPAPGRAVE(int householdID, int PermanentStructureID)
        {
-           OracleConnection myConnection;
-           OracleCommand myCommand;
-           myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-           myCommand = new OracleCommand("USP_TRN_GET_GRAVE_PHOTO", myConnection);
+           SqlConnection myConnection;
+           SqlCommand myCommand;
+           myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+           myCommand = new SqlCommand("USP_TRN_GET_GRAVE_PHOTO", myConnection);
            myCommand.Connection = myConnection;
            myCommand.CommandType = CommandType.StoredProcedure;
-           myCommand.Parameters.Add("HHID_", householdID);
-           myCommand.Parameters.Add("PermanentStructureID_", PermanentStructureID);
-           myCommand.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           myCommand.Parameters.AddWithValue("HHID_", householdID);
+           myCommand.Parameters.AddWithValue("PermanentStructureID_", PermanentStructureID);
+           // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
            myCommand.Connection.Open();
            object img = myCommand.ExecuteScalar();

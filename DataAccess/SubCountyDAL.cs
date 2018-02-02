@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_BusinessObjects;
 
@@ -11,8 +11,8 @@ namespace WIS_DataAccess
   public  class SubCountyDAL
     {
         string connStr = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
 
       /// <summary>
@@ -22,15 +22,15 @@ namespace WIS_DataAccess
       /// <returns></returns>
       public SubCountyList GetSubCounty(string countyID)
       {
-          OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-          OracleCommand cmd;
+          SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+          SqlCommand cmd;
           string proc = "USP_MST_GET_SUBCOUNTY";
-          cmd = new OracleCommand(proc, con);
+          cmd = new SqlCommand(proc, con);
           cmd.CommandType = CommandType.StoredProcedure;
-          cmd.Parameters.Add("@CountyIDIN", countyID);
-          cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+          cmd.Parameters.AddWithValue("@CountyIDIN", countyID);
+          // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
           cmd.Connection.Open();
-          OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+          SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
           SubCountyBO objsubcountBO = null;
           SubCountyList objsubcountlist = new SubCountyList();
 
@@ -55,17 +55,17 @@ namespace WIS_DataAccess
       {
           SubCountyList objSubCountyList = null;
 
-          using (cnn = new OracleConnection(connStr))
+          using (cnn = new SqlConnection(connStr))
           {
-              using (cmd = new OracleCommand("USP_MST_GET_SUBCOUNTY_ALL", cnn))
+              using (cmd = new SqlCommand("USP_MST_GET_SUBCOUNTY_ALL", cnn))
               {
                   cmd.CommandType = CommandType.StoredProcedure;
 
-                  cmd.Parameters.Add("CountyIDIN", COUNTYID);
-                  cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                  cmd.Parameters.AddWithValue("CountyIDIN", COUNTYID);
+                  // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
                   cmd.Connection.Open();
 
-                  OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                  SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                   SubCountyBO objSubCountyBO = null;
                   objSubCountyList = new SubCountyList();
@@ -99,19 +99,19 @@ namespace WIS_DataAccess
       {
           string result = "";
 
-          using (cnn = new OracleConnection(connStr))
+          using (cnn = new SqlConnection(connStr))
           {
-              using (cmd = new OracleCommand("USP_MST_INS_SUBCOUNTY", cnn))
+              using (cmd = new SqlCommand("USP_MST_INS_SUBCOUNTY", cnn))
               {
                   cmd.CommandType = CommandType.StoredProcedure;
                   cmd.Connection.Open();
 
-                  //cmd.Parameters.Add("DISTRICTID_", objSubCountyBO.DistrictID);
-                  cmd.Parameters.Add("COUNTYID_", objSubCountyBO.CountyID);
-                  cmd.Parameters.Add("SUBCOUNTYNAME_", objSubCountyBO.SubCountyName);
+                  //cmd.Parameters.AddWithValue("DISTRICTID_", objSubCountyBO.DistrictID);
+                  cmd.Parameters.AddWithValue("COUNTYID_", objSubCountyBO.CountyID);
+                  cmd.Parameters.AddWithValue("SUBCOUNTYNAME_", objSubCountyBO.SubCountyName);
                  
-                  cmd.Parameters.Add("CREATEDBY_", objSubCountyBO.CreatedBy);
-                  cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                  cmd.Parameters.AddWithValue("CREATEDBY_", objSubCountyBO.CreatedBy);
+                  /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                   cmd.ExecuteNonQuery();
 
                   if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -133,18 +133,18 @@ namespace WIS_DataAccess
       {
           string result = "";
 
-          using (cnn = new OracleConnection(connStr))
+          using (cnn = new SqlConnection(connStr))
           {
-              using (cmd = new OracleCommand("USP_MST_UPD_SUBCOUNTY", cnn))
+              using (cmd = new SqlCommand("USP_MST_UPD_SUBCOUNTY", cnn))
               {
                   cmd.CommandType = CommandType.StoredProcedure;
                   cmd.Connection.Open();
 
-                  cmd.Parameters.Add("SUBCOUNTYID_", objSubCountyBO.SubCountyID);
-                  cmd.Parameters.Add("COUNTYID_", objSubCountyBO.CountyID);
-                  cmd.Parameters.Add("SUBCOUNTYNAME_", objSubCountyBO.SubCountyName);
-                  cmd.Parameters.Add("UPDATEDBY_", objSubCountyBO.CreatedBy);
-                  cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                  cmd.Parameters.AddWithValue("SUBCOUNTYID_", objSubCountyBO.SubCountyID);
+                  cmd.Parameters.AddWithValue("COUNTYID_", objSubCountyBO.CountyID);
+                  cmd.Parameters.AddWithValue("SUBCOUNTYNAME_", objSubCountyBO.SubCountyName);
+                  cmd.Parameters.AddWithValue("UPDATEDBY_", objSubCountyBO.CreatedBy);
+                  /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                   cmd.ExecuteNonQuery();
 
                   if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -166,15 +166,15 @@ namespace WIS_DataAccess
       {
           string result = "";
 
-          using (cnn = new OracleConnection(connStr))
+          using (cnn = new SqlConnection(connStr))
           {
-              using (cmd = new OracleCommand("USP_MST_DEL_SUBCOUNTY", cnn))
+              using (cmd = new SqlCommand("USP_MST_DEL_SUBCOUNTY", cnn))
               {
                   cmd.CommandType = CommandType.StoredProcedure;
                   cmd.Connection.Open();
 
-                  cmd.Parameters.Add("SUBCOUNTYID_", SUBCOUNTYID);
-                  cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                  cmd.Parameters.AddWithValue("SUBCOUNTYID_", SUBCOUNTYID);
+                  /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                   cmd.ExecuteNonQuery();
 
                   if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -196,18 +196,18 @@ namespace WIS_DataAccess
       {
           proc = "USP_MST_GET_SUBCOUNTYBYID";
 
-          cnn = new OracleConnection(connStr);
+          cnn = new SqlConnection(connStr);
           SubCountyBO SubCountyBOobj = null;
 
-          cmd = new OracleCommand(proc, cnn);
+          cmd = new SqlCommand(proc, cnn);
           cmd.CommandType = CommandType.StoredProcedure;
 
-          cmd.Parameters.Add("SUBCOUNTYID_", SUBCOUNTYID);
-          cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+          cmd.Parameters.AddWithValue("SUBCOUNTYID_", SUBCOUNTYID);
+          // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
           try
           {
               cmd.Connection.Open();
-              OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+              SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
               while (dr.Read())
               {
                   SubCountyBOobj = new SubCountyBO();
@@ -239,18 +239,18 @@ namespace WIS_DataAccess
       {
           string result = "";
 
-          using (cnn = new OracleConnection(connStr))
+          using (cnn = new SqlConnection(connStr))
           {
-              using (cmd = new OracleCommand("USP_MST_OBS_SUBCOUNTY", cnn))
+              using (cmd = new SqlCommand("USP_MST_OBS_SUBCOUNTY", cnn))
               {
                   cmd.CommandType = CommandType.StoredProcedure;
                   cmd.Connection.Open();
 
-                  cmd.Parameters.Add("SUBCOUNTYID_", SUBCOUNTYID);
-                  cmd.Parameters.Add("ISDELETED_", ISDELETED);
-                  cmd.Parameters.Add("UPDATEDBY_", UPDATEDBY);
+                  cmd.Parameters.AddWithValue("SUBCOUNTYID_", SUBCOUNTYID);
+                  cmd.Parameters.AddWithValue("ISDELETED_", ISDELETED);
+                  cmd.Parameters.AddWithValue("UPDATEDBY_", UPDATEDBY);
 
-                  cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                  /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                   cmd.ExecuteNonQuery();
 
                   if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -270,17 +270,17 @@ namespace WIS_DataAccess
       /// <returns></returns>
       public SubCountyList GetSubCounties(string subCounty)
       {
-          OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-          OracleCommand cmd;
+          SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+          SqlCommand cmd;
           string proc = "USP_MST_SER_SUBCOUNTYSEARCH";
-          cmd = new OracleCommand(proc, con);
+          cmd = new SqlCommand(proc, con);
           cmd.CommandType = CommandType.StoredProcedure;
-          cmd.Parameters.Add("SubCountyName_", subCounty);
-          //cmd.Parameters.Add("COUNTYID_", CountyID);
-          //cmd.Parameters.Add("SUBCOUNTYNAME_", subCounty);
-          cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+          cmd.Parameters.AddWithValue("SubCountyName_", subCounty);
+          //cmd.Parameters.AddWithValue("COUNTYID_", CountyID);
+          //cmd.Parameters.AddWithValue("SUBCOUNTYNAME_", subCounty);
+          // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
           cmd.Connection.Open();
-          OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+          SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
           SubCountyBO objsubcountBO = null;
           SubCountyList objsubcountlist = new SubCountyList();
 

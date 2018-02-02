@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_DataAccess;
 using WIS_BusinessObjects;
 
@@ -17,16 +17,16 @@ namespace WIS_DataAccess
         {
             String SqlQuery;
 
-            OracleConnection OraConnection = new OracleConnection(AppConfiguration.ConnectionString);
-          //  OracleCommand OraCommand;
+            SqlConnection OraConnection = new SqlConnection(AppConfiguration.ConnectionString);
+          //  SqlCommand OraCommand;
 
 
 
             SqlQuery = "SELECT shockid,shockexperienced from mst_shocksexperienced";
             //where  isdeleted = 'False'
 
-               OracleCommand OracleCommand = new OracleCommand(SqlQuery, OraConnection);
-            OracleDataAdapter dAd = new OracleDataAdapter(OracleCommand);
+               SqlCommand SqlCommand = new SqlCommand(SqlQuery, OraConnection);
+            SqlDataAdapter dAd = new SqlDataAdapter(SqlCommand);
             dAd.SelectCommand.CommandType = CommandType.Text;
             DataSet Ds = new DataSet();
         
@@ -57,16 +57,16 @@ namespace WIS_DataAccess
        {
            String SqlQuery;
 
-           OracleConnection OraConnection = new OracleConnection(AppConfiguration.ConnectionString);
-           //  OracleCommand OraCommand;
+           SqlConnection OraConnection = new SqlConnection(AppConfiguration.ConnectionString);
+           //  SqlCommand OraCommand;
 
 
 
            SqlQuery = "SELECT cop_mechanismid,cop_mechanism from mst_coping_mechanism  ";
            //where  isdeleted = 'False'
 
-           OracleCommand OracleCommand = new OracleCommand(SqlQuery, OraConnection);
-           OracleDataAdapter dAd = new OracleDataAdapter(OracleCommand);
+           SqlCommand SqlCommand = new SqlCommand(SqlQuery, OraConnection);
+           SqlDataAdapter dAd = new SqlDataAdapter(SqlCommand);
            dAd.SelectCommand.CommandType = CommandType.Text;
            DataSet Ds = new DataSet();
 
@@ -96,8 +96,8 @@ namespace WIS_DataAccess
        {
            String SqlQuery;
 
-           OracleConnection OraConnection = new OracleConnection(AppConfiguration.ConnectionString);
-           //  OracleCommand OraCommand;
+           SqlConnection OraConnection = new SqlConnection(AppConfiguration.ConnectionString);
+           //  SqlCommand OraCommand;
 
 
 
@@ -105,8 +105,8 @@ namespace WIS_DataAccess
              //where  isdeleted = 'false'
 
 
-           OracleCommand OracleCommand = new OracleCommand(SqlQuery, OraConnection);
-           OracleDataAdapter dAd = new OracleDataAdapter(OracleCommand);
+           SqlCommand SqlCommand = new SqlCommand(SqlQuery, OraConnection);
+           SqlDataAdapter dAd = new SqlDataAdapter(SqlCommand);
            dAd.SelectCommand.CommandType = CommandType.Text;
            DataSet Ds = new DataSet();
 
@@ -135,20 +135,20 @@ namespace WIS_DataAccess
        public string Insert(MajorshockBO Majorshockobj)
        {
            string resultMessage = string.Empty;
-           OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+           SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
            cnn.Open();
-           OracleCommand dcmd = new OracleCommand("USP_TRN_INS_M_SHOCK", cnn);
+           SqlCommand dcmd = new SqlCommand("USP_TRN_INS_M_SHOCK", cnn);
            dcmd.CommandType = CommandType.StoredProcedure;
            int count = Convert.ToInt32(dcmd.CommandType);
 
            try
            {
-              dcmd.Parameters.Add("HHID_", Majorshockobj.HHID1);
-               dcmd.Parameters.Add("SHOCKID_", Majorshockobj.SHOCKID1);
-               dcmd.Parameters.Add("COP_MECHANISMID_", Majorshockobj.COP_MECHANISMID1);
-               dcmd.Parameters.Add("SUPPORTID_", Majorshockobj.SUPPORTID1);
-               dcmd.Parameters.Add("CREATEDBY_", Majorshockobj.CREATEDBY1);
-               dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+              dcmd.Parameters.AddWithValue("HHID_", Majorshockobj.HHID1);
+               dcmd.Parameters.AddWithValue("SHOCKID_", Majorshockobj.SHOCKID1);
+               dcmd.Parameters.AddWithValue("COP_MECHANISMID_", Majorshockobj.COP_MECHANISMID1);
+               dcmd.Parameters.AddWithValue("SUPPORTID_", Majorshockobj.SUPPORTID1);
+               dcmd.Parameters.AddWithValue("CREATEDBY_", Majorshockobj.CREATEDBY1);
+               /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                dcmd.ExecuteNonQuery();
 
@@ -177,19 +177,19 @@ namespace WIS_DataAccess
       /// <returns></returns>
        public major_shockList GetMshock(int householdID)
        {
-           OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-           OracleCommand cmd;
+           SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+           SqlCommand cmd;
 
            string proc = "USP_TRN_SEL_SHOCK";
 
-           cmd = new OracleCommand(proc, cnn);
+           cmd = new SqlCommand(proc, cnn);
            cmd.CommandType = CommandType.StoredProcedure;
 
-           cmd.Parameters.Add("HHID_", householdID);
-           cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           cmd.Parameters.AddWithValue("HHID_", householdID);
+           //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
            cmd.Connection.Open();
-           OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+           SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
            MajorshockBO Majorshockobj = null;
            major_shockList major_shockListobj = new major_shockList();
@@ -217,19 +217,19 @@ namespace WIS_DataAccess
       /// <returns></returns>
        public MajorshockBO GetPapShochId(int PAP_SHOCKID1)
        {
-           OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-           OracleCommand cmd;
+           SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+           SqlCommand cmd;
 
            string proc = "USP_TRN_GET_SHOCK";
 
-           cmd = new OracleCommand(proc, cnn);
+           cmd = new SqlCommand(proc, cnn);
            cmd.CommandType = CommandType.StoredProcedure;
-           cmd.Parameters.Add("S_PAP_SHOCKID",PAP_SHOCKID1);
-           cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           cmd.Parameters.AddWithValue("S_PAP_SHOCKID",PAP_SHOCKID1);
+           // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
            cmd.Connection.Open();
 
-           OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+           SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
            MajorshockBO Majorshockobj = null;
            major_shockList major_shockListobj = new major_shockList();
 
@@ -281,20 +281,20 @@ namespace WIS_DataAccess
        public string EDITMshock(MajorshockBO Majorshockobj)
        {
            string resultMessage = string.Empty;
-           OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+           SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
            cnn.Open();
-           OracleCommand dcmd = new OracleCommand("USP_TRN_UPD_M_SHOCK", cnn);
+           SqlCommand dcmd = new SqlCommand("USP_TRN_UPD_M_SHOCK", cnn);
            dcmd.CommandType = CommandType.StoredProcedure;
            int count = Convert.ToInt32(dcmd.CommandType);
 
            try
            {
-               dcmd.Parameters.Add("S_PAP_SHOCKID", Majorshockobj.PAP_SHOCKID1);
-               dcmd.Parameters.Add("S_SHOCKID", Majorshockobj.SHOCKID1);
-               dcmd.Parameters.Add("S_COP_MECHANISMID", Majorshockobj.COP_MECHANISMID1);
-               dcmd.Parameters.Add("S_SUPPORTID", Majorshockobj.SUPPORTID1);
-               dcmd.Parameters.Add("S_UPDATEDBY", Majorshockobj.CREATEDBY1);
-               dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+               dcmd.Parameters.AddWithValue("S_PAP_SHOCKID", Majorshockobj.PAP_SHOCKID1);
+               dcmd.Parameters.AddWithValue("S_SHOCKID", Majorshockobj.SHOCKID1);
+               dcmd.Parameters.AddWithValue("S_COP_MECHANISMID", Majorshockobj.COP_MECHANISMID1);
+               dcmd.Parameters.AddWithValue("S_SUPPORTID", Majorshockobj.SUPPORTID1);
+               dcmd.Parameters.AddWithValue("S_UPDATEDBY", Majorshockobj.CREATEDBY1);
+               /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                dcmd.ExecuteNonQuery();
 
                if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -321,13 +321,13 @@ namespace WIS_DataAccess
       /// <returns></returns>
        public int Delete(int PAP_SHOCKID1)
        {
-           OracleConnection conn = new OracleConnection(AppConfiguration.ConnectionString);
+           SqlConnection conn = new SqlConnection(AppConfiguration.ConnectionString);
            conn.Open();
-           OracleCommand dCmd = new OracleCommand("USP_TRN_DEL_SHOCK", conn);
+           SqlCommand dCmd = new SqlCommand("USP_TRN_DEL_SHOCK", conn);
            dCmd.CommandType = CommandType.StoredProcedure;
            try
            {
-               dCmd.Parameters.Add("PAP_SHOCKID_", PAP_SHOCKID1);
+               dCmd.Parameters.AddWithValue("PAP_SHOCKID_", PAP_SHOCKID1);
                return dCmd.ExecuteNonQuery();
            }
            catch (Exception ex)

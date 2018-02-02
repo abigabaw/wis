@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -8,8 +8,8 @@ namespace WIS_DataAccess
     public class ProjectDAL
     {
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
 
         /// <summary>
@@ -24,48 +24,55 @@ namespace WIS_DataAccess
         public ProjectList GetProjects(string projectName, string projectStartDate, string projectEndDate, string projectStatus, int userID)
         {
             proc = "USP_TRN_GET_PROJECTS";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             ProjectBO oProject = null;
 
             ProjectList Projects = new ProjectList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("projectName_", projectName);
+            if (projectName != "")
+                cmd.Parameters.AddWithValue("projectName_", projectName);
+            else
+                cmd.Parameters.AddWithValue("projectName_", DBNull.Value);
 
             if (projectStartDate != "")
-                cmd.Parameters.Add("projectStartDate_", Convert.ToDateTime(projectStartDate).ToString(UtilBO.DateFormatDB));
+                cmd.Parameters.AddWithValue("projectStartDate_", Convert.ToDateTime(projectStartDate).ToString(UtilBO.DateFormatDB));
             else
-                cmd.Parameters.Add("projectStartDate_", DBNull.Value);
+                cmd.Parameters.AddWithValue("projectStartDate_", DBNull.Value);
 
             if (projectEndDate != "")
-                cmd.Parameters.Add("projectEndDate_", Convert.ToDateTime(projectEndDate).ToString(UtilBO.DateFormatDB));
+                cmd.Parameters.AddWithValue("projectEndDate_", Convert.ToDateTime(projectEndDate).ToString(UtilBO.DateFormatDB));
             else
-                cmd.Parameters.Add("projectEndDate_", DBNull.Value);
+                cmd.Parameters.AddWithValue("projectEndDate_", DBNull.Value);
 
-            cmd.Parameters.Add("projectStatus_", projectStatus);
-            cmd.Parameters.Add("userID_", userID);
+            if (projectStatus != "")
+                cmd.Parameters.AddWithValue("projectStatus_", projectStatus);
+            else
+                cmd.Parameters.AddWithValue("projectStatus_", DBNull.Value);
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("userID_", userID);
+
+           // // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
                     oProject = new ProjectBO();
 
-                    if (!dr.IsDBNull(dr.GetOrdinal("ProjectID"))) oProject.ProjectID = dr.GetInt32(dr.GetOrdinal("ProjectID"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("ProjectID"))) oProject.ProjectID = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("ProjectID")));
                     if (!dr.IsDBNull(dr.GetOrdinal("ProjectCode"))) oProject.ProjectCode = dr.GetString(dr.GetOrdinal("ProjectCode"));
                     if (!dr.IsDBNull(dr.GetOrdinal("ProjectName"))) oProject.ProjectName = dr.GetString(dr.GetOrdinal("ProjectName"));
                     if (!dr.IsDBNull(dr.GetOrdinal("ProjectStartDate"))) oProject.ProjectStartDate = dr.GetDateTime(dr.GetOrdinal("ProjectStartDate"));
                     if (!dr.IsDBNull(dr.GetOrdinal("ProjectEndDate"))) oProject.ProjectEndDate = dr.GetDateTime(dr.GetOrdinal("ProjectEndDate"));
                     if (!dr.IsDBNull(dr.GetOrdinal("ProjectStatus"))) oProject.ProjectStatus = dr.GetString(dr.GetOrdinal("ProjectStatus"));
                     if (!dr.IsDBNull(dr.GetOrdinal("FROZEN"))) oProject.Frozen = dr.GetString(dr.GetOrdinal("FROZEN"));
-                    if (!dr.IsDBNull(dr.GetOrdinal("RouteCount"))) oProject.RouteCount = dr.GetInt32(dr.GetOrdinal("RouteCount"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("RouteCount"))) oProject.RouteCount = Convert.ToInt32(dr.GetValue(dr.GetOrdinal("RouteCount")));
 
                     Projects.Add(oProject);
                 }
@@ -93,24 +100,24 @@ namespace WIS_DataAccess
 
             ProjectList Projects = new ProjectList();
 
-            using (cnn = new OracleConnection(con))
+            using (cnn = new SqlConnection(con))
             {
-                using (cmd = new OracleCommand(proc, cnn))
+                using (cmd = new SqlCommand(proc, cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add("userID_", userID);
-                    cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("userID_", userID);
+                 //   // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
                     try
                     {
                         cmd.Connection.Open();
-                        OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                         while (dr.Read())
                         {
                             oProject = new ProjectBO();
 
-                            if (!dr.IsDBNull(dr.GetOrdinal("ProjectID"))) oProject.ProjectID = dr.GetInt32(dr.GetOrdinal("ProjectID"));
+                            if (!dr.IsDBNull(dr.GetOrdinal("ProjectID"))) oProject.ProjectID = (int)dr.GetDecimal(dr.GetOrdinal("ProjectID"));
                             if (!dr.IsDBNull(dr.GetOrdinal("ProjectCode"))) oProject.ProjectCode = dr.GetString(dr.GetOrdinal("ProjectCode"));
                             if (!dr.IsDBNull(dr.GetOrdinal("ProjectName"))) oProject.ProjectName = dr.GetString(dr.GetOrdinal("ProjectName"));
 
@@ -138,42 +145,42 @@ namespace WIS_DataAccess
         {
             string[] result = { "0", "" };
 
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_INS_PROJECTDETAILS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("projectCode_", oProject.ProjectCode);
-            cmd.Parameters.Add("projectName_", oProject.ProjectName);
-            cmd.Parameters.Add("objective_", oProject.Objective);
+            cmd.Parameters.AddWithValue("projectCode_", oProject.ProjectCode);
+            cmd.Parameters.AddWithValue("projectName_", oProject.ProjectName);
+            cmd.Parameters.AddWithValue("objective_", oProject.Objective);
 
             if (oProject.ProjectStartDate != DateTime.MinValue)
-                cmd.Parameters.Add("projectStartDate_", oProject.ProjectStartDate.ToString(UtilBO.DateFormatDB));
+                cmd.Parameters.AddWithValue("projectStartDate_", oProject.ProjectStartDate.ToString(UtilBO.DateFormatDB));
             else
-                cmd.Parameters.Add("projectStartDate_", DBNull.Value);
+                cmd.Parameters.AddWithValue("projectStartDate_", DBNull.Value);
 
             if (oProject.ProjectEndDate != DateTime.MinValue)
-                cmd.Parameters.Add("projectEndDate_", oProject.ProjectEndDate.ToString(UtilBO.DateFormatDB));
+                cmd.Parameters.AddWithValue("projectEndDate_", oProject.ProjectEndDate.ToString(UtilBO.DateFormatDB));
             else
-                cmd.Parameters.Add("projectEndDate_", DBNull.Value);
+                cmd.Parameters.AddWithValue("projectEndDate_", DBNull.Value);
 
-            cmd.Parameters.Add("totalEstBudget_", oProject.TotalEstBudget);
-            cmd.Parameters.Add("projectStatus_", oProject.ProjectStatus);
-            cmd.Parameters.Add("createdBy_", oProject.CreatedBy);
-            cmd.Parameters.Add("budgetCurrency_", oProject.BudgetCurrency);
-            cmd.Parameters.Add("Labourcost_", oProject.Labourcost);
-            cmd.Parameters.Add("BUILDINGMATCOST_", oProject.BUILDINGMATCOST);
+            cmd.Parameters.AddWithValue("totalEstBudget_", oProject.TotalEstBudget);
+            cmd.Parameters.AddWithValue("projectStatus_", oProject.ProjectStatus);
+            cmd.Parameters.AddWithValue("createdBy_", oProject.CreatedBy);
+            cmd.Parameters.AddWithValue("budgetCurrency_", oProject.BudgetCurrency);
+            cmd.Parameters.AddWithValue("Labourcost_", oProject.Labourcost);
+            cmd.Parameters.AddWithValue("BUILDINGMATCOST_", oProject.BUILDINGMATCOST);
 
-            cmd.Parameters.Add("USHVALUE_", oProject.Dollervalue);
-            cmd.Parameters.Add("percentagePAP_", oProject.PercentageofPAP);
+            cmd.Parameters.AddWithValue("USHVALUE_", oProject.Dollervalue);
+            cmd.Parameters.AddWithValue("percentagePAP_", oProject.PercentageofPAP);
 
 
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.VarChar);//, 500).Direction = ParameterDirection.Output;
 
-            OracleParameter param = new OracleParameter("newProjectID", OracleDbType.Int32, ParameterDirection.Output);
+            SqlParameter param = new SqlParameter("newProjectID", SqlDbType.Int);//, ParameterDirection.Output);
             cmd.Parameters.Add(param);
             cmd.ExecuteNonQuery();
 
@@ -197,26 +204,26 @@ namespace WIS_DataAccess
         public ProjectBO GetProjectByProjectID(int projectID)
         {
             proc = "USP_TRN_GET_PROJECTBYPROJECTID";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             ProjectBO oProject = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("projectID_", projectID);
+            cmd.Parameters.AddWithValue("projectID_", projectID);
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+          //  // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
                     oProject = new ProjectBO();
 
-                    if (!dr.IsDBNull(dr.GetOrdinal("ProjectID"))) oProject.ProjectID = dr.GetInt32(dr.GetOrdinal("ProjectID"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("ProjectID"))) oProject.ProjectID = (int)dr.GetDecimal(dr.GetOrdinal("ProjectID"));
                     if (!dr.IsDBNull(dr.GetOrdinal("ProjectCode"))) oProject.ProjectCode = dr.GetString(dr.GetOrdinal("ProjectCode"));
                     if (!dr.IsDBNull(dr.GetOrdinal("ProjectName"))) oProject.ProjectName = dr.GetString(dr.GetOrdinal("ProjectName"));
                     if (!dr.IsDBNull(dr.GetOrdinal("Objective"))) oProject.Objective = dr.GetString(dr.GetOrdinal("Objective"));
@@ -231,11 +238,11 @@ namespace WIS_DataAccess
                         else
                             oProject.IsDeleted = true;
                     }
-                    if (!dr.IsDBNull(dr.GetOrdinal("CreatedBy"))) oProject.CreatedBy = dr.GetInt32(dr.GetOrdinal("CreatedBy"));
-                    if (!dr.IsDBNull(dr.GetOrdinal("UpdatedBy"))) oProject.UpdatedBy = dr.GetInt32(dr.GetOrdinal("UpdatedBy"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("CreatedBy"))) oProject.CreatedBy = (int)dr.GetDecimal(dr.GetOrdinal("CreatedBy"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("UpdatedBy"))) oProject.UpdatedBy = (int)dr.GetDecimal(dr.GetOrdinal("UpdatedBy"));
                     if (!dr.IsDBNull(dr.GetOrdinal("CreatedDate"))) oProject.CreatedDate = dr.GetDateTime(dr.GetOrdinal("CreatedDate"));
                     if (!dr.IsDBNull(dr.GetOrdinal("UpdatedDate"))) oProject.UpdatedDate = dr.GetDateTime(dr.GetOrdinal("UpdatedDate"));
-                    if (!dr.IsDBNull(dr.GetOrdinal("budgetcurrency"))) oProject.BudgetCurrency = dr.GetInt32(dr.GetOrdinal("budgetcurrency"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("budgetcurrency"))) oProject.BudgetCurrency = (int)dr.GetDecimal(dr.GetOrdinal("budgetcurrency"));
                     if (!dr.IsDBNull(dr.GetOrdinal("labourcost"))) oProject.Labourcost = dr.GetDecimal(dr.GetOrdinal("labourcost"));
                     if (!dr.IsDBNull(dr.GetOrdinal("BUILDINGMATCOST"))) oProject.BUILDINGMATCOST = dr.GetDecimal(dr.GetOrdinal("BUILDINGMATCOST"));
                     if (!dr.IsDBNull(dr.GetOrdinal("USHVALUE"))) oProject.Dollervalue = dr.GetDecimal(dr.GetOrdinal("USHVALUE"));
@@ -260,38 +267,38 @@ namespace WIS_DataAccess
         public string UpdateProject(ProjectBO oProject)
         {
             string result = "";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_UPD_PROJECTDETAILS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("projectID_", oProject.ProjectID);
-            cmd.Parameters.Add("projectCode_", oProject.ProjectCode);
-            cmd.Parameters.Add("projectName_", oProject.ProjectName);
-            cmd.Parameters.Add("objective_", oProject.Objective);
+            cmd.Parameters.AddWithValue("projectID_", oProject.ProjectID);
+            cmd.Parameters.AddWithValue("projectCode_", oProject.ProjectCode);
+            cmd.Parameters.AddWithValue("projectName_", oProject.ProjectName);
+            cmd.Parameters.AddWithValue("objective_", oProject.Objective);
 
             if (oProject.ProjectStartDate != DateTime.MinValue)
-                cmd.Parameters.Add("projectStartDate_", oProject.ProjectStartDate.ToString(UtilBO.DateFormatDB));
+                cmd.Parameters.AddWithValue("projectStartDate_", oProject.ProjectStartDate.ToString(UtilBO.DateFormatDB));
             else
-                cmd.Parameters.Add("projectStartDate_", DBNull.Value);
+                cmd.Parameters.AddWithValue("projectStartDate_", DBNull.Value);
 
             if (oProject.ProjectEndDate != DateTime.MinValue)
-                cmd.Parameters.Add("projectEndDate_", oProject.ProjectEndDate.ToString(UtilBO.DateFormatDB));
+                cmd.Parameters.AddWithValue("projectEndDate_", oProject.ProjectEndDate.ToString(UtilBO.DateFormatDB));
             else
-                cmd.Parameters.Add("projectEndDate_", DBNull.Value);
+                cmd.Parameters.AddWithValue("projectEndDate_", DBNull.Value);
 
-            cmd.Parameters.Add("totalEstBudget_", oProject.TotalEstBudget);
-            cmd.Parameters.Add("projectStatus_", oProject.ProjectStatus);
-            cmd.Parameters.Add("updatedBy_", oProject.UpdatedBy);
-            cmd.Parameters.Add("budgetCurrency_", oProject.BudgetCurrency);
-            cmd.Parameters.Add("LABOURCOST_", oProject.Labourcost);
-            cmd.Parameters.Add("BUILDINGMATCOST_", oProject.BUILDINGMATCOST);
-            cmd.Parameters.Add("USHVALUE_", oProject.Dollervalue);
-            cmd.Parameters.Add("percentagePAP_", oProject.PercentageofPAP);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("totalEstBudget_", oProject.TotalEstBudget);
+            cmd.Parameters.AddWithValue("projectStatus_", oProject.ProjectStatus);
+            cmd.Parameters.AddWithValue("updatedBy_", oProject.UpdatedBy);
+            cmd.Parameters.AddWithValue("budgetCurrency_", oProject.BudgetCurrency);
+            cmd.Parameters.AddWithValue("LABOURCOST_", oProject.Labourcost);
+            cmd.Parameters.AddWithValue("BUILDINGMATCOST_", oProject.BUILDINGMATCOST);
+            cmd.Parameters.AddWithValue("USHVALUE_", oProject.Dollervalue);
+            cmd.Parameters.AddWithValue("percentagePAP_", oProject.PercentageofPAP);
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.VarChar);//.Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
@@ -311,16 +318,16 @@ namespace WIS_DataAccess
         /// <param name="updatedBy"></param>
         public void FreezeProject(int projectID, int updatedBy)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_UPD_FREEZEPROJECT";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("projectID_", projectID);
-            cmd.Parameters.Add("updatedBy_", updatedBy);
+            cmd.Parameters.AddWithValue("projectID_", projectID);
+            cmd.Parameters.AddWithValue("updatedBy_", updatedBy);
 
             cmd.ExecuteNonQuery();
             cmd.Connection.Close();
@@ -334,24 +341,24 @@ namespace WIS_DataAccess
         public string UnfreezeProject(ProjectBO oProjectBO)//(int projectID, int updatedBy)
         {
             string result = string.Empty;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_UPD_UNFREEZEPROJECT";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("projectID_", oProjectBO.ProjectID);
-            cmd.Parameters.Add("updatedBy_", oProjectBO.UnfreezeBy);
+            cmd.Parameters.AddWithValue("projectID_", oProjectBO.ProjectID);
+            cmd.Parameters.AddWithValue("updatedBy_", oProjectBO.UnfreezeBy);
 
             if (oProjectBO.UnfreezeDate == DateTime.MinValue)
-                cmd.Parameters.Add("UnfreezeDate_", DBNull.Value);
+                cmd.Parameters.AddWithValue("UnfreezeDate_", DBNull.Value);
             else
-                cmd.Parameters.Add("UnfreezeDate_", oProjectBO.UnfreezeDate);
+                cmd.Parameters.AddWithValue("UnfreezeDate_", oProjectBO.UnfreezeDate);
 
-            cmd.Parameters.Add("UnfreezeComments_", oProjectBO.UnfreezeComments);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("UnfreezeComments_", oProjectBO.UnfreezeComments);
+            cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.VarChar);//, 500).Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
             cmd.Connection.Close();
@@ -370,19 +377,19 @@ namespace WIS_DataAccess
         /// <param name="oGeo"></param>
         public void AddProjectGeography(GeographyBO oGeo)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_UPD_PROJECTGEOGRAPHY";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("GEOGRAPHICALID_", oGeo.GeographicalID);
-            cmd.Parameters.Add("projectID_", oGeo.ProjectID);
-            cmd.Parameters.Add("generalDirection", oGeo.GeneralDirection);
-            cmd.Parameters.Add("keyFeatures", oGeo.KeyFeatures);
-            cmd.Parameters.Add("updatedBy_", oGeo.UpdatedBy);
+            cmd.Parameters.AddWithValue("GEOGRAPHICALID_", oGeo.GeographicalID);
+            cmd.Parameters.AddWithValue("projectID_", oGeo.ProjectID);
+            cmd.Parameters.AddWithValue("generalDirection", oGeo.GeneralDirection);
+            cmd.Parameters.AddWithValue("keyFeatures", oGeo.KeyFeatures);
+            cmd.Parameters.AddWithValue("updatedBy_", oGeo.UpdatedBy);
 
             cmd.ExecuteNonQuery();
             cmd.Connection.Close();
@@ -396,20 +403,20 @@ namespace WIS_DataAccess
         public GeographyBO GetProjectGeographyByProjectID(int GEOGRAPHICALID)
         {
             proc = "USP_TRN_GET_PROJGEOGBYPROJID";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             GeographyBO oGeo = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("GEOGRAPHICALID_", GEOGRAPHICALID);
+            cmd.Parameters.AddWithValue("GEOGRAPHICALID_", GEOGRAPHICALID);
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -449,17 +456,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ProjectGeoList GetAllProjectGeoDetails(int projectID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_PROGEO_GETALL";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("projectID_", projectID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("projectID_", projectID);
+          //  // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             GeographyBO GeographyBOObj = null;
             ProjectGeoList ProjectGeoListObj = new ProjectGeoList();
@@ -491,19 +498,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteProjGeo(int projectID)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_TRN_DEL_PROJGEO", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_TRN_DEL_PROJGEO", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("geographicalid_", projectID);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("geographicalid_", projectID);
+               // /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -543,21 +550,21 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_INS_PROJECTFINANCIER";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("projectID_", objFin.ProjectID);
-            cmd.Parameters.Add("financierName_", objFin.FinancierName);
-            cmd.Parameters.Add("createdBy_", objFin.CreatedBy);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
-            cmd.Parameters.Add("FINANCECONDITIONID", objFin.FINANCECONDITIONID);
-            cmd.Parameters.Add("FINANCENATUREID", objFin.FINANCENATUREID);
-            cmd.Parameters.Add("FINANCEREASONID", objFin.FINANCEREASONID);
+            cmd.Parameters.AddWithValue("projectID_", objFin.ProjectID);
+            cmd.Parameters.AddWithValue("financierName_", objFin.FinancierName);
+            cmd.Parameters.AddWithValue("createdBy_", objFin.CreatedBy);
+           // /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("FINANCECONDITIONID", objFin.FINANCECONDITIONID);
+            cmd.Parameters.AddWithValue("FINANCENATUREID", objFin.FINANCENATUREID);
+            cmd.Parameters.AddWithValue("FINANCEREASONID", objFin.FINANCEREASONID);
 
             cmd.ExecuteNonQuery();
 
@@ -577,21 +584,21 @@ namespace WIS_DataAccess
         public ProjectFinancierList GetProjectFinanciers(int projectID)
         {
             proc = "USP_TRN_GET_PROJFINANCIERS";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             FinancierBO objFinancier = null;
 
             ProjectFinancierList ProjectFinanciers = new ProjectFinancierList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("projectID_", projectID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("projectID_", projectID);
+           // // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -626,19 +633,19 @@ namespace WIS_DataAccess
         public FinancierBO GetProjectFinancierByID(int financierID)
         {
             proc = "USP_TRN_GET_PROJFINANCIERBYID";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             FinancierBO objFinancier = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("financierID_", financierID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("financierID_", financierID);
+           // // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -668,19 +675,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteProjectForFinance(int ProjectFinanceID)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_TRN_DEL_FINANCIER", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_TRN_DEL_FINANCIER", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("@F_FINANCIERID", ProjectFinanceID);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("@F_FINANCIERID", ProjectFinanceID);
+            //    /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -715,19 +722,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteProjectFinance(int ProjectFinanceID, string ISDELETED)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_OBSOLETE_PROJECT_FIN", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_OBSOLETE_PROJECT_FIN", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("@F_FINANCIERID", ProjectFinanceID);
-                myCommand.Parameters.Add("@isdeleted_", ISDELETED);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("@F_FINANCIERID", ProjectFinanceID);
+                myCommand.Parameters.AddWithValue("@isdeleted_", ISDELETED);
+             //   /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -756,22 +763,22 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_UPD_PROJECTFINANCIER";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("projectID_", objFin.ProjectID);
-            cmd.Parameters.Add("financierID_", objFin.FinancierID);
-            cmd.Parameters.Add("financierName_", objFin.FinancierName);
-            cmd.Parameters.Add("updatedBy", objFin.UpdatedBy);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
-            cmd.Parameters.Add("F_FINANCECONDITIONID", objFin.FINANCECONDITIONID);
-            cmd.Parameters.Add("F_FINANCENATUREID", objFin.FINANCENATUREID);
-            cmd.Parameters.Add("F_FINANCEREASONID", objFin.FINANCEREASONID);
+            cmd.Parameters.AddWithValue("projectID_", objFin.ProjectID);
+            cmd.Parameters.AddWithValue("financierID_", objFin.FinancierID);
+            cmd.Parameters.AddWithValue("financierName_", objFin.FinancierName);
+            cmd.Parameters.AddWithValue("updatedBy", objFin.UpdatedBy);
+          //  /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("F_FINANCECONDITIONID", objFin.FINANCECONDITIONID);
+            cmd.Parameters.AddWithValue("F_FINANCENATUREID", objFin.FINANCENATUREID);
+            cmd.Parameters.AddWithValue("F_FINANCEREASONID", objFin.FINANCEREASONID);
 
             cmd.ExecuteNonQuery();
 
@@ -795,29 +802,29 @@ namespace WIS_DataAccess
         public ProjectSegmentList GetProjectSegments(int ProjectId)
         {
             proc = "USP_TRN_GET_PROJECTSEGMENTS";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             SegmentBO objProjectSegment = null;
 
             ProjectSegmentList ProjectSegments = new ProjectSegmentList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("projectid_", ProjectId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("projectid_", ProjectId);
+           // // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
                     objProjectSegment = new SegmentBO();
 
                     if (!dr.IsDBNull(dr.GetOrdinal("ProjectSegmentID")))
-                        objProjectSegment.ProjectSegmentID = dr.GetInt32(dr.GetOrdinal("ProjectSegmentID"));
+                        objProjectSegment.ProjectSegmentID = (int)dr.GetDecimal(dr.GetOrdinal("ProjectSegmentID"));
 
                     if (!dr.IsDBNull(dr.GetOrdinal("SegmentName")))
                         objProjectSegment.SegmentName = dr.GetString(dr.GetOrdinal("SegmentName"));
@@ -826,7 +833,7 @@ namespace WIS_DataAccess
                         objProjectSegment.RouteLength = dr.GetString(dr.GetOrdinal("ROUTELENGTH"));
 
                     if (!dr.IsDBNull(dr.GetOrdinal("LINETYPEID")))
-                        objProjectSegment.LineTypeID = dr.GetInt32(dr.GetOrdinal("LINETYPEID"));
+                        objProjectSegment.LineTypeID = (int)dr.GetDecimal(dr.GetOrdinal("LINETYPEID"));
 
                     if (!dr.IsDBNull(dr.GetOrdinal("TYPEOFLINE")))
                         objProjectSegment.TypeofLine = dr.GetString(dr.GetOrdinal("TYPEOFLINE"));
@@ -852,7 +859,7 @@ namespace WIS_DataAccess
                     }
                     if (!dr.IsDBNull(dr.GetOrdinal("BANKID")))
                     {
-                        objProjectSegment.Bankid = dr.GetInt32(dr.GetOrdinal("BANKID"));
+                        objProjectSegment.Bankid = (int)dr.GetDecimal(dr.GetOrdinal("BANKID"));
                     }
                     if (!dr.IsDBNull(dr.GetOrdinal("BankName")))
                     {
@@ -889,21 +896,21 @@ namespace WIS_DataAccess
         public SegmentBO GetProjectSegmentByID(int ProjectSegmentId)
         {
             proc = "USP_TRN_GET_PROJSEGMENTS_BYID";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             SegmentBO objProjectSegment = null;
 
             ProjectSegmentList oProjectSegmentList = new ProjectSegmentList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("projectsegmentid_", ProjectSegmentId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("projectsegmentid_", ProjectSegmentId);
+           //    // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 objProjectSegment = new SegmentBO();
 
@@ -980,29 +987,29 @@ namespace WIS_DataAccess
         public string SaveProjectSegment(SegmentBO oProjectSegment)
         {
             string returnResult = string.Empty;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_INS_PROJECTSEGMENTS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("segmentname_", oProjectSegment.SegmentName);
-            cmd.Parameters.Add("projectid_", oProjectSegment.ProjectID);
-            cmd.Parameters.Add("routelength_", oProjectSegment.RouteLength);
-            cmd.Parameters.Add("linetypeid_", oProjectSegment.LineTypeID);
-            cmd.Parameters.Add("estbudget_", oProjectSegment.EstBudget);
-            cmd.Parameters.Add("implementationperiod_", oProjectSegment.ImplementationPeriod);
-            cmd.Parameters.Add("constrstartdate_", oProjectSegment.ConstrStartDate.ToString(UtilBO.DateFormatDB));
-            cmd.Parameters.Add("constrenddate_", oProjectSegment.ConstrEndDate.ToString(UtilBO.DateFormatDB));
-            cmd.Parameters.Add("funder_", oProjectSegment.Funder);
-            cmd.Parameters.Add("bankid_", oProjectSegment.Bankid);
+            cmd.Parameters.AddWithValue("segmentname_", oProjectSegment.SegmentName);
+            cmd.Parameters.AddWithValue("projectid_", oProjectSegment.ProjectID);
+            cmd.Parameters.AddWithValue("routelength_", oProjectSegment.RouteLength);
+            cmd.Parameters.AddWithValue("linetypeid_", oProjectSegment.LineTypeID);
+            cmd.Parameters.AddWithValue("estbudget_", oProjectSegment.EstBudget);
+            cmd.Parameters.AddWithValue("implementationperiod_", oProjectSegment.ImplementationPeriod);
+            cmd.Parameters.AddWithValue("constrstartdate_", oProjectSegment.ConstrStartDate.ToString(UtilBO.DateFormatDB));
+            cmd.Parameters.AddWithValue("constrenddate_", oProjectSegment.ConstrEndDate.ToString(UtilBO.DateFormatDB));
+            cmd.Parameters.AddWithValue("funder_", oProjectSegment.Funder);
+            cmd.Parameters.AddWithValue("bankid_", oProjectSegment.Bankid);
 
-            cmd.Parameters.Add("isdeleted_", oProjectSegment.IsDeleted);
-            cmd.Parameters.Add("USERID_", oProjectSegment.CreatedBy);
-            cmd.Parameters.Add("ValueofHouse_", oProjectSegment.Valueofhouse);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("isdeleted_", oProjectSegment.IsDeleted);
+            cmd.Parameters.AddWithValue("USERID_", oProjectSegment.CreatedBy);
+            cmd.Parameters.AddWithValue("ValueofHouse_", oProjectSegment.Valueofhouse);
+          //  /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -1021,31 +1028,31 @@ namespace WIS_DataAccess
         public string UpdateProjectSegment(SegmentBO oProjectSegment)
         {
             string returnResult = string.Empty;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_UPD_PROJECTSEGMENTS";
 
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("projectsegmentid_", oProjectSegment.ProjectSegmentID);
-            cmd.Parameters.Add("segmentname_", oProjectSegment.SegmentName);
-            cmd.Parameters.Add("projectid_", oProjectSegment.ProjectID);
-            cmd.Parameters.Add("routelength_", oProjectSegment.RouteLength);
-            cmd.Parameters.Add("linetypeid_", oProjectSegment.LineTypeID);
-            cmd.Parameters.Add("estbudget_", oProjectSegment.EstBudget);
-            cmd.Parameters.Add("implementationperiod_", oProjectSegment.ImplementationPeriod);
-            cmd.Parameters.Add("constrstartdate_", oProjectSegment.ConstrStartDate);
-            cmd.Parameters.Add("constrenddate_", oProjectSegment.ConstrEndDate);
-            cmd.Parameters.Add("funder_", oProjectSegment.Funder);
-            cmd.Parameters.Add("bankid_", oProjectSegment.Bankid);
+            cmd.Parameters.AddWithValue("projectsegmentid_", oProjectSegment.ProjectSegmentID);
+            cmd.Parameters.AddWithValue("segmentname_", oProjectSegment.SegmentName);
+            cmd.Parameters.AddWithValue("projectid_", oProjectSegment.ProjectID);
+            cmd.Parameters.AddWithValue("routelength_", oProjectSegment.RouteLength);
+            cmd.Parameters.AddWithValue("linetypeid_", oProjectSegment.LineTypeID);
+            cmd.Parameters.AddWithValue("estbudget_", oProjectSegment.EstBudget);
+            cmd.Parameters.AddWithValue("implementationperiod_", oProjectSegment.ImplementationPeriod);
+            cmd.Parameters.AddWithValue("constrstartdate_", oProjectSegment.ConstrStartDate);
+            cmd.Parameters.AddWithValue("constrenddate_", oProjectSegment.ConstrEndDate);
+            cmd.Parameters.AddWithValue("funder_", oProjectSegment.Funder);
+            cmd.Parameters.AddWithValue("bankid_", oProjectSegment.Bankid);
 
-            cmd.Parameters.Add("isdeleted_", oProjectSegment.IsDeleted);
-            cmd.Parameters.Add("USERID_", oProjectSegment.CreatedBy);
-            cmd.Parameters.Add("ValueofHouse_", oProjectSegment.Valueofhouse);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("isdeleted_", oProjectSegment.IsDeleted);
+            cmd.Parameters.AddWithValue("USERID_", oProjectSegment.CreatedBy);
+            cmd.Parameters.AddWithValue("ValueofHouse_", oProjectSegment.Valueofhouse);
+          //  /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -1066,21 +1073,21 @@ namespace WIS_DataAccess
         public RouteSelectionFactorsList GetRouteSelectionFactors()
         {
             proc = "USP_MST_GET_ROUTE_FACTOR";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             RouteSelectionFactorsBO oRouteSelectionFactors = null;
 
             RouteSelectionFactorsList lstRouteSelectionFactorsList = new RouteSelectionFactorsList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+        //    // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -1112,21 +1119,21 @@ namespace WIS_DataAccess
         public RouteSelectionCriteriaList GetRouteSelectionCriteria()
         {
             proc = "USP_MST_GET_ROUTE_CRITERIA";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             RouteSelectionCriteriaBO oRouteSelectionCriteria = null;
 
             RouteSelectionCriteriaList lstRouteSelectionCriteriaList = new RouteSelectionCriteriaList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+      //      // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -1162,22 +1169,22 @@ namespace WIS_DataAccess
         public RouteSelectionCriteriaList GetRouteSelectionCriteria_ByFactorId(int FactorId)
         {
             proc = "USP_MST_GET_ROUTE_CRITBYFACTID";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             RouteSelectionCriteriaBO oRouteSelectionCriteria = null;
 
             RouteSelectionCriteriaList lstRouteSelectionCriteriaList = new RouteSelectionCriteriaList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("factorid_", FactorId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("factorid_", FactorId);
+    //        // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -1212,21 +1219,21 @@ namespace WIS_DataAccess
         public RouteCriteriaScoreList GetRouteCriteriaScore()
         {
             proc = "USP_MST_GET_CRITERIA_SCORE";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             RouteCriteriaScoreBO oRouteCriteriaScore = null;
 
             RouteCriteriaScoreList lstRouteCriteriaScoreList = new RouteCriteriaScoreList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+   //         // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -1262,19 +1269,19 @@ namespace WIS_DataAccess
         {
             int returnResult;
 
-            using (cnn = new OracleConnection(con))
+            using (cnn = new SqlConnection(con))
             {
-                using (cmd = new OracleCommand("USP_TRN_INS_ROUTE_SCORE", cnn))
+                using (cmd = new SqlCommand("USP_TRN_INS_ROUTE_SCORE", cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection.Open();
 
-                    cmd.Parameters.Add("routeid_", oRouteScore.RouteId);
-                    cmd.Parameters.Add("criteriaid_", oRouteScore.CriteriaId);
-                    cmd.Parameters.Add("scoreid_", oRouteScore.ScoreId);
+                    cmd.Parameters.AddWithValue("routeid_", oRouteScore.RouteId);
+                    cmd.Parameters.AddWithValue("criteriaid_", oRouteScore.CriteriaId);
+                    cmd.Parameters.AddWithValue("scoreid_", oRouteScore.ScoreId);
 
-                    cmd.Parameters.Add("isdeleted_", oRouteScore.IsDeleted);
-                    cmd.Parameters.Add("USERID_", oRouteScore.UserId);
+                    cmd.Parameters.AddWithValue("isdeleted_", oRouteScore.IsDeleted);
+                    cmd.Parameters.AddWithValue("USERID_", oRouteScore.UserId);
 
                     returnResult = cmd.ExecuteNonQuery();
 
@@ -1294,21 +1301,21 @@ namespace WIS_DataAccess
         public RouteScoreBO GetRouteScore(int routeID, int criteriaID)
         {
             proc = "USP_TRN_GET_ROUTE_SCORE";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             RouteScoreBO oRouteScore = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("ROUTEID_", routeID);
-            cmd.Parameters.Add("CRITERIAID_", criteriaID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ROUTEID_", routeID);
+            cmd.Parameters.AddWithValue("CRITERIAID_", criteriaID);
+        //    // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -1344,19 +1351,19 @@ namespace WIS_DataAccess
         public RouteBO getTotalRouteScore(int ProjectID)
         {
             proc = "USP_TRN_GET_PROJROUTE_TOTSCORE";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             RouteBO oRouteBO = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ProjectID_", ProjectID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ProjectID_", ProjectID);
+       //     // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -1378,17 +1385,17 @@ namespace WIS_DataAccess
 
         public string SaveToalRouteScore(RouteBO oRouteBO)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnMessage = string.Empty;
 
             proc = "USP_TRN_UPD_PROJROUTE_TOTSCORE";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("RouteID_", oRouteBO.RouteID);
-            cmd.Parameters.Add("TotalRouteScore_", oRouteBO.TotalRouteScore);
+            cmd.Parameters.AddWithValue("RouteID_", oRouteBO.RouteID);
+            cmd.Parameters.AddWithValue("TotalRouteScore_", oRouteBO.TotalRouteScore);
 
             cmd.ExecuteNonQuery();
 
@@ -1402,15 +1409,15 @@ namespace WIS_DataAccess
         #region Frozen
         public ProjectBO getFrozen(ProjectBO ObjProjectBO)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_CHECKFROZEN";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ProjectIdIN_", ObjProjectBO.ProjectID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           cmd.Parameters.AddWithValue("ProjectIdIN_", ObjProjectBO.ProjectID);
+          //  // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ProjectBO objProjectBO = null;
             ProjectList ProjectList = new ProjectList();
             while (dr.Read())
@@ -1435,18 +1442,18 @@ namespace WIS_DataAccess
 
             ReportList Projects = new ReportList();
 
-            using (cnn = new OracleConnection(con))
+            using (cnn = new SqlConnection(con))
             {
-                using (cmd = new OracleCommand(proc, cnn))
+                using (cmd = new SqlCommand(proc, cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                 //   // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
                     try
                     {
                         cmd.Connection.Open();
-                        OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                         while (dr.Read())
                         {
@@ -1477,21 +1484,21 @@ namespace WIS_DataAccess
         public string GetLegacyReportByID(int reportID)
         {
             proc = "USP_TRN_GET_LEGACYRPTS_BYID";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string ReportName = "";
             //ProjectBO oReport = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("RPT_ID_", reportID);
+            cmd.Parameters.AddWithValue("RPT_ID_", reportID);
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+         //   // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 //oReport = new ProjectBO();
 

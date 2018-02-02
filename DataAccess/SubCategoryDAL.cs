@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 
@@ -16,21 +16,21 @@ namespace WIS_DataAccess
        public string Insert(SubCategoryBO SubCategoryBOobj)
         {
             string returnResult = string.Empty;
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_INS_SUB_CATG", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_INS_SUB_CATG", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("BGT_SUBCATEGORYNAME_", SubCategoryBOobj.BGT_SUBCATEGORYNAME);
-                dcmd.Parameters.Add("BGT_CATEGORYID_", SubCategoryBOobj.BGT_CATEGORYID);
-                dcmd.Parameters.Add("ACCOUNTCODE_", SubCategoryBOobj.ACCOUNTCODE);
-                dcmd.Parameters.Add("CREATEDBY", SubCategoryBOobj.CREATEDBY);
+                dcmd.Parameters.AddWithValue("BGT_SUBCATEGORYNAME_", SubCategoryBOobj.BGT_SUBCATEGORYNAME);
+                dcmd.Parameters.AddWithValue("BGT_CATEGORYID_", SubCategoryBOobj.BGT_CATEGORYID);
+                dcmd.Parameters.AddWithValue("ACCOUNTCODE_", SubCategoryBOobj.ACCOUNTCODE);
+                dcmd.Parameters.AddWithValue("CREATEDBY", SubCategoryBOobj.CREATEDBY);
 
 
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -60,21 +60,21 @@ namespace WIS_DataAccess
        public string Edit(SubCategoryBO SubCategoryBOobj)
         {
             string returnResult = string.Empty;
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_UPD_SUB_CATG", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_UPD_SUB_CATG", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("BGT_SUBCATEGORYNAME_", SubCategoryBOobj.BGT_SUBCATEGORYNAME);
+                dcmd.Parameters.AddWithValue("BGT_SUBCATEGORYNAME_", SubCategoryBOobj.BGT_SUBCATEGORYNAME);
                
-                dcmd.Parameters.Add("BGT_SUBCATEGORYID_", SubCategoryBOobj.BGT_SUBCATEGORYID);
-                dcmd.Parameters.Add("ACCOUNTCODE_", SubCategoryBOobj.ACCOUNTCODE);
-                dcmd.Parameters.Add("UPDATEDBY_", SubCategoryBOobj.CREATEDBY);
+                dcmd.Parameters.AddWithValue("BGT_SUBCATEGORYID_", SubCategoryBOobj.BGT_SUBCATEGORYID);
+                dcmd.Parameters.AddWithValue("ACCOUNTCODE_", SubCategoryBOobj.ACCOUNTCODE);
+                dcmd.Parameters.AddWithValue("UPDATEDBY_", SubCategoryBOobj.CREATEDBY);
                 //return dcmd.ExecuteNonQuery();
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -104,18 +104,18 @@ namespace WIS_DataAccess
        /// <returns></returns>
         public SubCategoryList GetALLSubCategory(int categoryID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETALL_SUB_CATG";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Bgt_categoryid_", categoryID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("Bgt_categoryid_", categoryID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             SubCategoryBO SubCategoryBOobj = null;
             SubCategoryList SubCategoryListobj = new SubCategoryList();
 
@@ -147,17 +147,17 @@ namespace WIS_DataAccess
        /// <returns></returns>
         public SubCategoryList GetSubCategory()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_SEL_SUB_CATG";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             SubCategoryBO SubCategoryBOobj = null;
             SubCategoryList SubCategoryListobj = new SubCategoryList();
 
@@ -184,19 +184,19 @@ namespace WIS_DataAccess
        /// <returns></returns>
         public SubCategoryBO GetSubCategoryById(int SubCATEGORYID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_SUB_CATG";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("BGT_SUBCATEGORYID_", SubCATEGORYID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("BGT_SUBCATEGORYID_", SubCATEGORYID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             SubCategoryBO SubCategoryBOobj = null;
             SubCategoryList SubCategoryListobj = new SubCategoryList();
 
@@ -244,19 +244,19 @@ namespace WIS_DataAccess
         public string DeleteSubCategory(int SubCATEGORYID)
         {
 
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DEL_SUB_CATG", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DEL_SUB_CATG", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("BGT_SUBCATEGORYID_", SubCATEGORYID);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("BGT_SUBCATEGORYID_", SubCATEGORYID);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -291,19 +291,19 @@ namespace WIS_DataAccess
        /// <returns></returns>
         public string ObsoleteSubCategory(int SubCATEGORYID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETE_SUB_CATG", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETE_SUB_CATG", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("BGT_SUBCATEGORYID_", SubCATEGORYID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("BGT_SUBCATEGORYID_", SubCATEGORYID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

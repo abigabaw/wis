@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data;
 using System.Configuration;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -13,8 +13,8 @@ namespace WIS_DataAccess
     {
         #region for Declination
         string con = WIS_DataAccess.AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
         #endregion
 
@@ -30,22 +30,22 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ConversationLogList GetSenderDetails(int projectID, string WorkFlowCode, string PageCode, string TrackHdrId)
         {
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_WORKFLO_SENDER_DETAILS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("WorkFlowCode_", WorkFlowCode);
-            cmd.Parameters.Add("ProjectID_", projectID);
-            cmd.Parameters.Add("PageCode_", PageCode);
-            cmd.Parameters.Add("TrackHdrId_", TrackHdrId);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("WorkFlowCode_", WorkFlowCode);
+            cmd.Parameters.AddWithValue("ProjectID_", projectID);
+            cmd.Parameters.AddWithValue("PageCode_", PageCode);
+            cmd.Parameters.AddWithValue("TrackHdrId_", TrackHdrId);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ConversationLogBO oConversationLogBO = null;
             ConversationLogList lstConversationLog = new ConversationLogList();
 
@@ -74,28 +74,28 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ConversationLogList GetApproverDetails(int projectID, string WorkFlowCode, string PageCode, string TrackHdrId, int BatchNo)
         {
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_WORK_APPROVED_DETAILS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("WorkFlowCode_", WorkFlowCode);
-            cmd.Parameters.Add("ProjectID_", projectID);
+            cmd.Parameters.AddWithValue("WorkFlowCode_", WorkFlowCode);
+            cmd.Parameters.AddWithValue("ProjectID_", projectID);
             if (PageCode == "")
             {
-                cmd.Parameters.Add("PageCode_", "RTA");
+                cmd.Parameters.AddWithValue("PageCode_", "RTA");
             }else{
-            cmd.Parameters.Add("PageCode_", PageCode);
+            cmd.Parameters.AddWithValue("PageCode_", PageCode);
             }
-            cmd.Parameters.Add("TrackHdrId_", TrackHdrId);
-            cmd.Parameters.Add("BatchNo_", BatchNo);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("TrackHdrId_", TrackHdrId);
+            cmd.Parameters.AddWithValue("BatchNo_", BatchNo);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ConversationLogBO oConversationLogBO = null;
             ConversationLogList lstConversationLog = new ConversationLogList();
 
@@ -259,19 +259,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ConversationLogList GetBatchComments(int BatchNo, int HHID)
         {
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_BATCHCOMMENTS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("BatchNo_", BatchNo);
-            cmd.Parameters.Add("HHID_", HHID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("BatchNo_", BatchNo);
+            cmd.Parameters.AddWithValue("HHID_", HHID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ConversationLogBO oConversationLogBO = null;
             ConversationLogList lstConversationLog = new ConversationLogList();
 

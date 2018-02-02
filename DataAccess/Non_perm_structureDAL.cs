@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 using WIS_DataAccess;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 
@@ -16,56 +16,56 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int Insert(NonPermanentStructureBO BOobj)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_INS_NPS", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_INS_NPS", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("HHID", BOobj.HouseholdID);
+                dcmd.Parameters.AddWithValue("HHID", BOobj.HouseholdID);
                 if (BOobj.StructureTypeID > 0)
-                    dcmd.Parameters.Add("STR_TYPEID", BOobj.StructureTypeID);
+                    dcmd.Parameters.AddWithValue("STR_TYPEID", BOobj.StructureTypeID);
                 else
-                    dcmd.Parameters.Add("STR_TYPEID", DBNull.Value);
+                    dcmd.Parameters.AddWithValue("STR_TYPEID", DBNull.Value);
 
-              dcmd.Parameters.Add("OTHERSTRUCTURETYPE", BOobj.OtherStructureType);
+              dcmd.Parameters.AddWithValue("OTHERSTRUCTURETYPE", BOobj.OtherStructureType);
 
                 if (BOobj.CategoryID > 0)
-                    dcmd.Parameters.Add("CATEGORYID", BOobj.CategoryID);
+                    dcmd.Parameters.AddWithValue("CATEGORYID", BOobj.CategoryID);
                 else
-                    dcmd.Parameters.Add("CATEGORYID", DBNull.Value);
+                    dcmd.Parameters.AddWithValue("CATEGORYID", DBNull.Value);
 
                 if (BOobj.StructureConditionID > 0)
-                    dcmd.Parameters.Add("STR_CONDITIONID", BOobj.StructureConditionID);
+                    dcmd.Parameters.AddWithValue("STR_CONDITIONID", BOobj.StructureConditionID);
                 else
-                    dcmd.Parameters.Add("STR_CONDITIONID", DBNull.Value);
+                    dcmd.Parameters.AddWithValue("STR_CONDITIONID", DBNull.Value);
                 
-               // dcmd.Parameters.Add("CATEGORYID", BOobj.CategoryID);
-               // dcmd.Parameters.Add("STR_CONDITIONID", BOobj.StructureConditionID);
-                dcmd.Parameters.Add("OWNER", BOobj.Owner);
-                dcmd.Parameters.Add("OWNERNAME", BOobj.OwnerName);
-                dcmd.Parameters.Add("OCCUPANT", BOobj.Occupant);
-                dcmd.Parameters.Add("OTHEROCCUPANTNAME", BOobj.OtherOccupantName);
+               // dcmd.Parameters.AddWithValue("CATEGORYID", BOobj.CategoryID);
+               // dcmd.Parameters.AddWithValue("STR_CONDITIONID", BOobj.StructureConditionID);
+                dcmd.Parameters.AddWithValue("OWNER", BOobj.Owner);
+                dcmd.Parameters.AddWithValue("OWNERNAME", BOobj.OwnerName);
+                dcmd.Parameters.AddWithValue("OCCUPANT", BOobj.Occupant);
+                dcmd.Parameters.AddWithValue("OTHEROCCUPANTNAME", BOobj.OtherOccupantName);
                 if (BOobj.OccupantStatusID > 0)
-                    dcmd.Parameters.Add("OCCUPANTSTATUSID", BOobj.OccupantStatusID);
+                    dcmd.Parameters.AddWithValue("OCCUPANTSTATUSID", BOobj.OccupantStatusID);
                 else
-                    dcmd.Parameters.Add("OCCUPANTSTATUSID", DBNull.Value);
+                    dcmd.Parameters.AddWithValue("OCCUPANTSTATUSID", DBNull.Value);
 
-                //dcmd.Parameters.Add("OCCUPANTSTATUSID", BOobj.OccupantStatusID);
-                dcmd.Parameters.Add("OTHEROCCUPANTSTATUS", BOobj.OtherOccupantStatus);
-                dcmd.Parameters.Add("DIMEN_LENGTH", BOobj.DimensionLength);
-                dcmd.Parameters.Add("DIMEN_WIDTH", BOobj.DimensionWidth);
-                dcmd.Parameters.Add("NOOFROOMS", BOobj.NoOfRooms);
-                dcmd.Parameters.Add("SURFACEAREA", BOobj.SurfaceArea);
-                dcmd.Parameters.Add("CREATEDBY", BOobj.CreatedBy);
+                //dcmd.Parameters.AddWithValue("OCCUPANTSTATUSID", BOobj.OccupantStatusID);
+                dcmd.Parameters.AddWithValue("OTHEROCCUPANTSTATUS", BOobj.OtherOccupantStatus);
+                dcmd.Parameters.AddWithValue("DIMEN_LENGTH", BOobj.DimensionLength);
+                dcmd.Parameters.AddWithValue("DIMEN_WIDTH", BOobj.DimensionWidth);
+                dcmd.Parameters.AddWithValue("NOOFROOMS", BOobj.NoOfRooms);
+                dcmd.Parameters.AddWithValue("SURFACEAREA", BOobj.SurfaceArea);
+                dcmd.Parameters.AddWithValue("CREATEDBY", BOobj.CreatedBy);
 
 
                 if (BOobj.Photo != null)
-                    dcmd.Parameters.Add(new OracleParameter("PAPNPPHOTO_", OracleDbType.Blob)).Value = BOobj.Photo;
+                    dcmd.Parameters.Add(new SqlParameter("PAPNPPHOTO_", SqlDbType.Image)).Value = BOobj.Photo;
                 else
-                    dcmd.Parameters.Add("PAPNPPHOTO_", Oracle.DataAccess.Types.OracleBlob.Null);
+                    dcmd.Parameters.AddWithValue("PAPNPPHOTO_", DBNull.Value);
 
                 return dcmd.ExecuteNonQuery();
 
@@ -90,19 +90,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public Non_perm_structureList GetNPS(int householdID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_SEL_NPS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HHID_", householdID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", householdID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             NonPermanentStructureBO BOobj1 = null;
             Non_perm_structureList Non_perm_structureListobj = new Non_perm_structureList();
@@ -130,30 +130,30 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int EditNPS(NonPermanentStructureBO BOobj)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_UPD_NPS", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_UPD_NPS", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("N_NONPERM_STRUCTUREID", BOobj.NonPermanentStructureID);
-                dcmd.Parameters.Add("N_STR_TYPEID", BOobj.StructureTypeID);
-                dcmd.Parameters.Add("N_CATEGORYID", BOobj.CategoryID);
-                dcmd.Parameters.Add("N_STR_CONDITIONID", BOobj.StructureConditionID);
-                dcmd.Parameters.Add("N_OTHERSTRUCTURETYPE", BOobj.OtherStructureType);
-                dcmd.Parameters.Add("N_OWNER", BOobj.Owner);
-                dcmd.Parameters.Add("N_OWNERNAME", BOobj.OwnerName);
-                dcmd.Parameters.Add("N_OCCUPANT", BOobj.Occupant);
-                dcmd.Parameters.Add("N_OTHEROCCUPANTNAME", BOobj.OtherOccupantName);
-                dcmd.Parameters.Add("N_OCCUPANTSTATUSID", BOobj.OccupantStatusID);
-                dcmd.Parameters.Add("N_OTHEROCCUPANTSTATUS", BOobj.OtherOccupantStatus);
-                dcmd.Parameters.Add("N_DIMEN_LENGTH", BOobj.DimensionLength);
-                dcmd.Parameters.Add("N_DIMEN_WIDTH", BOobj.DimensionWidth);
-                dcmd.Parameters.Add("N_NOOFROOMS", BOobj.NoOfRooms);
-                dcmd.Parameters.Add("N_SURFACEAREA", BOobj.SurfaceArea);
-                dcmd.Parameters.Add("N_UPDATEDBY", BOobj.CreatedBy);
+                dcmd.Parameters.AddWithValue("N_NONPERM_STRUCTUREID", BOobj.NonPermanentStructureID);
+                dcmd.Parameters.AddWithValue("N_STR_TYPEID", BOobj.StructureTypeID);
+                dcmd.Parameters.AddWithValue("N_CATEGORYID", BOobj.CategoryID);
+                dcmd.Parameters.AddWithValue("N_STR_CONDITIONID", BOobj.StructureConditionID);
+                dcmd.Parameters.AddWithValue("N_OTHERSTRUCTURETYPE", BOobj.OtherStructureType);
+                dcmd.Parameters.AddWithValue("N_OWNER", BOobj.Owner);
+                dcmd.Parameters.AddWithValue("N_OWNERNAME", BOobj.OwnerName);
+                dcmd.Parameters.AddWithValue("N_OCCUPANT", BOobj.Occupant);
+                dcmd.Parameters.AddWithValue("N_OTHEROCCUPANTNAME", BOobj.OtherOccupantName);
+                dcmd.Parameters.AddWithValue("N_OCCUPANTSTATUSID", BOobj.OccupantStatusID);
+                dcmd.Parameters.AddWithValue("N_OTHEROCCUPANTSTATUS", BOobj.OtherOccupantStatus);
+                dcmd.Parameters.AddWithValue("N_DIMEN_LENGTH", BOobj.DimensionLength);
+                dcmd.Parameters.AddWithValue("N_DIMEN_WIDTH", BOobj.DimensionWidth);
+                dcmd.Parameters.AddWithValue("N_NOOFROOMS", BOobj.NoOfRooms);
+                dcmd.Parameters.AddWithValue("N_SURFACEAREA", BOobj.SurfaceArea);
+                dcmd.Parameters.AddWithValue("N_UPDATEDBY", BOobj.CreatedBy);
                 return dcmd.ExecuteNonQuery();
             }
             catch
@@ -176,19 +176,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public NonPermanentStructureBO GetNPSId(int NonPermanentStructureID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_NPS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("S_NONPERM_STRUCTUREID", NonPermanentStructureID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("S_NONPERM_STRUCTUREID", NonPermanentStructureID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             NonPermanentStructureBO BOobj1 = null;
             Non_perm_structureList Non_perm_structureListobj = new Non_perm_structureList();
 
@@ -269,13 +269,13 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int Delete(string NonPermanentStructureID)
         {
-            OracleConnection conn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection conn = new SqlConnection(AppConfiguration.ConnectionString);
             conn.Open();
-            OracleCommand dCmd = new OracleCommand("USP_TRN_DEL_NPS", conn);
+            SqlCommand dCmd = new SqlCommand("USP_TRN_DEL_NPS", conn);
             dCmd.CommandType = CommandType.StoredProcedure;
             try
             {
-                dCmd.Parameters.Add("NONPERM_STRUCTUREID_", NonPermanentStructureID);
+                dCmd.Parameters.AddWithValue("NONPERM_STRUCTUREID_", NonPermanentStructureID);
                 return dCmd.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -299,17 +299,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int Updatephoto(NonPermanentStructureBO BOobj1)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_UPD_PHOTO_NPS", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_UPD_PHOTO_NPS", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
             try
             {
-                dcmd.Parameters.Add("N_NONPERM_STRUCTUREID", BOobj1.NonPermanentStructureID);
-                dcmd.Parameters.Add("N_HHID", BOobj1.HouseholdID);
-                dcmd.Parameters.Add(new OracleParameter("PAPPSPHOTO_", OracleDbType.Blob)).Value = BOobj1.Photo;   
-                dcmd.Parameters.Add("N_UPDATEDBY", BOobj1.UpdatedBy);
+                dcmd.Parameters.AddWithValue("N_NONPERM_STRUCTUREID", BOobj1.NonPermanentStructureID);
+                dcmd.Parameters.AddWithValue("N_HHID", BOobj1.HouseholdID);
+                dcmd.Parameters.Add(new SqlParameter("PAPPSPHOTO_", SqlDbType.Image)).Value = BOobj1.Photo;   
+                dcmd.Parameters.AddWithValue("N_UPDATEDBY", BOobj1.UpdatedBy);
 
                 return dcmd.ExecuteNonQuery();
             }
@@ -330,15 +330,15 @@ namespace WIS_DataAccess
         // to get Image File for DataBase
         public NonPermanentStructureBO ShowPAPNPBImage(int householdID, int PermanentStructureID)
         {
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_TRN_GET_PAPNPS_PHOTO", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_TRN_GET_PAPNPS_PHOTO", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("HHID_", householdID);
-            myCommand.Parameters.Add("PermanentStructureID_", PermanentStructureID);
-            myCommand.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("HHID_", householdID);
+            myCommand.Parameters.AddWithValue("PermanentStructureID_", PermanentStructureID);
+            // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             myCommand.Connection.Open();
             object img = myCommand.ExecuteScalar();

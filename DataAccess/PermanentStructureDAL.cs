@@ -1,5 +1,5 @@
 ﻿using System;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_BusinessObjects;
 
@@ -15,14 +15,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public PermanentStructureList GetOccupantstatus()
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GET_OCCUPANTSTATUSDATA";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             PermanentStructureBO BOobj = null;
             PermanentStructureList Listobj = new PermanentStructureList();
 
@@ -47,92 +47,92 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int Insert(PermanentStructureBO PermanentStructureobj)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();            
 
             try
             {               
-                    OracleCommand dcmd = new OracleCommand("USP_TRN_INS_PERMANENTSTRUCTURE", cnn);
+                    SqlCommand dcmd = new SqlCommand("USP_TRN_INS_PERMANENTSTRUCTURE", cnn);
                     dcmd.CommandType = CommandType.StoredProcedure;
                     int count = Convert.ToInt32(dcmd.CommandType);
 
-                    dcmd.Parameters.Add("HHID", PermanentStructureobj.HouseholdID);
+                    dcmd.Parameters.AddWithValue("HHID", PermanentStructureobj.HouseholdID);
 
-                    dcmd.Parameters.Add("PERMSTR_TYPEID", PermanentStructureobj.StructureType);
+                    dcmd.Parameters.AddWithValue("PERMSTR_TYPEID", PermanentStructureobj.StructureType);
 
                     if (PermanentStructureobj.StructureTypeID > 0)
-                        dcmd.Parameters.Add("STR_TYPEID", PermanentStructureobj.StructureTypeID);
+                        dcmd.Parameters.AddWithValue("STR_TYPEID", PermanentStructureobj.StructureTypeID);
                     else
-                        dcmd.Parameters.Add("STR_TYPEID", DBNull.Value);
+                        dcmd.Parameters.AddWithValue("STR_TYPEID", DBNull.Value);
 
-                    dcmd.Parameters.Add("OTHERSTRUCTURETYPE", PermanentStructureobj.OtherStructureType);
+                    dcmd.Parameters.AddWithValue("OTHERSTRUCTURETYPE", PermanentStructureobj.OtherStructureType);
 
                     if (PermanentStructureobj.RoofID > 0)
-                        dcmd.Parameters.Add("ROOFID", PermanentStructureobj.RoofID);
+                        dcmd.Parameters.AddWithValue("ROOFID", PermanentStructureobj.RoofID);
                     else
-                        dcmd.Parameters.Add("ROOFID", DBNull.Value);
+                        dcmd.Parameters.AddWithValue("ROOFID", DBNull.Value);
 
                     if (PermanentStructureobj.WallID > 0)
-                        dcmd.Parameters.Add("WALLID", PermanentStructureobj.WallID);
+                        dcmd.Parameters.AddWithValue("WALLID", PermanentStructureobj.WallID);
                     else
-                        dcmd.Parameters.Add("WALLID", DBNull.Value);
+                        dcmd.Parameters.AddWithValue("WALLID", DBNull.Value);
 
                     if (PermanentStructureobj.FloorID > 0)
-                        dcmd.Parameters.Add("FLOORID", PermanentStructureobj.FloorID);
+                        dcmd.Parameters.AddWithValue("FLOORID", PermanentStructureobj.FloorID);
                     else
-                        dcmd.Parameters.Add("FLOORID", DBNull.Value);
+                        dcmd.Parameters.AddWithValue("FLOORID", DBNull.Value);
 
                     if (PermanentStructureobj.WindowID > 0)
-                        dcmd.Parameters.Add("WINDOWID", PermanentStructureobj.WindowID);
+                        dcmd.Parameters.AddWithValue("WINDOWID", PermanentStructureobj.WindowID);
                     else
-                        dcmd.Parameters.Add("WINDOWID", DBNull.Value);
+                        dcmd.Parameters.AddWithValue("WINDOWID", DBNull.Value);
 
                     if (PermanentStructureobj.RoofConditionID > 0)
-                        dcmd.Parameters.Add("ROOFCONDITIONID", PermanentStructureobj.RoofConditionID);
+                        dcmd.Parameters.AddWithValue("ROOFCONDITIONID", PermanentStructureobj.RoofConditionID);
                     else
-                        dcmd.Parameters.Add("ROOFCONDITIONID", DBNull.Value);
+                        dcmd.Parameters.AddWithValue("ROOFCONDITIONID", DBNull.Value);
 
                     if (PermanentStructureobj.WallConditionID > 0)
-                        dcmd.Parameters.Add("WALLCONDITIONID", PermanentStructureobj.WallConditionID);
+                        dcmd.Parameters.AddWithValue("WALLCONDITIONID", PermanentStructureobj.WallConditionID);
                     else
-                        dcmd.Parameters.Add("WALLCONDITIONID", DBNull.Value);
+                        dcmd.Parameters.AddWithValue("WALLCONDITIONID", DBNull.Value);
 
                     if (PermanentStructureobj.FloorConditionID > 0)
-                        dcmd.Parameters.Add("FLOORCONDITIONID", PermanentStructureobj.FloorConditionID);
+                        dcmd.Parameters.AddWithValue("FLOORCONDITIONID", PermanentStructureobj.FloorConditionID);
                     else
-                        dcmd.Parameters.Add("FLOORCONDITIONID", DBNull.Value);
+                        dcmd.Parameters.AddWithValue("FLOORCONDITIONID", DBNull.Value);
 
                     if (PermanentStructureobj.WindowConditionID > 0)
-                        dcmd.Parameters.Add("WINDOWCONDITIONID", PermanentStructureobj.WindowConditionID);
+                        dcmd.Parameters.AddWithValue("WINDOWCONDITIONID", PermanentStructureobj.WindowConditionID);
                     else
-                        dcmd.Parameters.Add("WINDOWCONDITIONID", DBNull.Value);
+                        dcmd.Parameters.AddWithValue("WINDOWCONDITIONID", DBNull.Value);
 
-                    dcmd.Parameters.Add("OWNER", PermanentStructureobj.Owner);
-                    dcmd.Parameters.Add("OWNERNAME", PermanentStructureobj.OwnerName);
-                    dcmd.Parameters.Add("OCCUPANT", PermanentStructureobj.Occupant);
-                    dcmd.Parameters.Add("OTHEROCCUPANTNAME", PermanentStructureobj.OtherOccupantName);
+                    dcmd.Parameters.AddWithValue("OWNER", PermanentStructureobj.Owner);
+                    dcmd.Parameters.AddWithValue("OWNERNAME", PermanentStructureobj.OwnerName);
+                    dcmd.Parameters.AddWithValue("OCCUPANT", PermanentStructureobj.Occupant);
+                    dcmd.Parameters.AddWithValue("OTHEROCCUPANTNAME", PermanentStructureobj.OtherOccupantName);
 
                     if (PermanentStructureobj.OccupantStatusID > 0)
-                        dcmd.Parameters.Add("OCCUPANTSTATUSID", PermanentStructureobj.OccupantStatusID);
+                        dcmd.Parameters.AddWithValue("OCCUPANTSTATUSID", PermanentStructureobj.OccupantStatusID);
                     else
-                        dcmd.Parameters.Add("OCCUPANTSTATUSID", DBNull.Value);
+                        dcmd.Parameters.AddWithValue("OCCUPANTSTATUSID", DBNull.Value);
 
-                    dcmd.Parameters.Add("OTHEROCCUPANTSTATUS", PermanentStructureobj.OtherOccupantStatus);
-                    dcmd.Parameters.Add("DIMEN_LENGTH", PermanentStructureobj.DimensionLength);
-                    dcmd.Parameters.Add("DIMEN_WIDTH", PermanentStructureobj.DimensionWidth);
-                    dcmd.Parameters.Add("NOOFROOMS", PermanentStructureobj.NoOfRooms);
-                    dcmd.Parameters.Add("SURFACEAREA", PermanentStructureobj.SurfaceArea);
-                    dcmd.Parameters.Add("DEPRECIATEDVALUE", PermanentStructureobj.DepreciatedValue);
-                    dcmd.Parameters.Add("REPLACEMENTVALUE", PermanentStructureobj.ReplacementValue);
-                    dcmd.Parameters.Add("ADDITIONALCOMMENTS", PermanentStructureobj.AdditionalComments);
+                    dcmd.Parameters.AddWithValue("OTHEROCCUPANTSTATUS", PermanentStructureobj.OtherOccupantStatus);
+                    dcmd.Parameters.AddWithValue("DIMEN_LENGTH", PermanentStructureobj.DimensionLength);
+                    dcmd.Parameters.AddWithValue("DIMEN_WIDTH", PermanentStructureobj.DimensionWidth);
+                    dcmd.Parameters.AddWithValue("NOOFROOMS", PermanentStructureobj.NoOfRooms);
+                    dcmd.Parameters.AddWithValue("SURFACEAREA", PermanentStructureobj.SurfaceArea);
+                    dcmd.Parameters.AddWithValue("DEPRECIATEDVALUE", PermanentStructureobj.DepreciatedValue);
+                    dcmd.Parameters.AddWithValue("REPLACEMENTVALUE", PermanentStructureobj.ReplacementValue);
+                    dcmd.Parameters.AddWithValue("ADDITIONALCOMMENTS", PermanentStructureobj.AdditionalComments);
 
                     if (PermanentStructureobj.Photo != null)
-                        dcmd.Parameters.Add(new OracleParameter("PAPPSPHOTO_", OracleDbType.Blob)).Value = PermanentStructureobj.Photo;
+                        dcmd.Parameters.Add(new SqlParameter("PAPPSPHOTO_", SqlDbType.Image)).Value = PermanentStructureobj.Photo;
                     else
-                        dcmd.Parameters.Add("PAPPSPHOTO_", Oracle.DataAccess.Types.OracleBlob.Null);
+                        dcmd.Parameters.AddWithValue("PAPPSPHOTO_", DBNull.Value);
 
-                    dcmd.Parameters.Add("ISDELETED", PermanentStructureobj.IsDeleted);
-                    dcmd.Parameters.Add("CREATEDBY", PermanentStructureobj.CreatedBy);
+                    dcmd.Parameters.AddWithValue("ISDELETED", PermanentStructureobj.IsDeleted);
+                    dcmd.Parameters.AddWithValue("CREATEDBY", PermanentStructureobj.CreatedBy);
                     return dcmd.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -153,18 +153,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public PermanentStructureList GetPermanentStructure(string hhid)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_SEL_PERMANST";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("P_HHID", hhid);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("P_HHID", hhid);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
          
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             PermanentStructureBO PermanentStructureobj = null;
             PermanentStructureList Listobj = new PermanentStructureList();
 
@@ -221,19 +221,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public PermanentStructureBO GetSTRUCTUREID(int STRUCTUREID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_PERSTRC";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("P_PERM_STRUCTUREID", STRUCTUREID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("P_PERM_STRUCTUREID", STRUCTUREID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             PermanentStructureBO PermanentStructureobj = null;
             PermanentStructureList Listobj = new PermanentStructureList();
 
@@ -340,15 +340,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int DeletePermanentStruct(string structurId)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
 
             string proc = "USP_TRN_DEL_PERMSTR";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("P_PERM_STRUCTUREID", structurId);
+            cmd.Parameters.AddWithValue("P_PERM_STRUCTUREID", structurId);
             cmd.Connection.Open();
 
             int result = cmd.ExecuteNonQuery();
@@ -363,90 +363,90 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int Update(PermanentStructureBO PermanentStructureobj)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_UPD_PERMANTSTRUCT", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_UPD_PERMANTSTRUCT", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
             try
             {
-                dcmd.Parameters.Add("HHID_", PermanentStructureobj.HouseholdID);
-                dcmd.Parameters.Add("PERMSTR_TYPEID", PermanentStructureobj.StructureType);
-                dcmd.Parameters.Add("P_PERM_STRUCTUREID", PermanentStructureobj.PermanentStructureID);
-                dcmd.Parameters.Add("P_STR_TYPEID", PermanentStructureobj.StructureTypeID);
-                dcmd.Parameters.Add("P_OTHERSTRUCTURETYPE", PermanentStructureobj.OtherStructureType);
+                dcmd.Parameters.AddWithValue("HHID_", PermanentStructureobj.HouseholdID);
+                dcmd.Parameters.AddWithValue("PERMSTR_TYPEID", PermanentStructureobj.StructureType);
+                dcmd.Parameters.AddWithValue("P_PERM_STRUCTUREID", PermanentStructureobj.PermanentStructureID);
+                dcmd.Parameters.AddWithValue("P_STR_TYPEID", PermanentStructureobj.StructureTypeID);
+                dcmd.Parameters.AddWithValue("P_OTHERSTRUCTURETYPE", PermanentStructureobj.OtherStructureType);
 
                 if (PermanentStructureobj.RoofID > 0)
-                    dcmd.Parameters.Add("P_ROOFID", PermanentStructureobj.RoofID);
+                    dcmd.Parameters.AddWithValue("P_ROOFID", PermanentStructureobj.RoofID);
                 else
-                    dcmd.Parameters.Add("P_ROOFID", DBNull.Value);
+                    dcmd.Parameters.AddWithValue("P_ROOFID", DBNull.Value);
 
                 if (PermanentStructureobj.WallID > 0)
-                    dcmd.Parameters.Add("P_WALLID", PermanentStructureobj.WallID);
+                    dcmd.Parameters.AddWithValue("P_WALLID", PermanentStructureobj.WallID);
                 else
-                    dcmd.Parameters.Add("P_WALLID", DBNull.Value);
+                    dcmd.Parameters.AddWithValue("P_WALLID", DBNull.Value);
 
                 if (PermanentStructureobj.FloorID > 0)
-                    dcmd.Parameters.Add("P_FLOORID", PermanentStructureobj.FloorID);
+                    dcmd.Parameters.AddWithValue("P_FLOORID", PermanentStructureobj.FloorID);
                 else
-                    dcmd.Parameters.Add("P_FLOORID", DBNull.Value);
+                    dcmd.Parameters.AddWithValue("P_FLOORID", DBNull.Value);
 
                 if (PermanentStructureobj.WindowID > 0)
-                    dcmd.Parameters.Add("P_WINDOWID", PermanentStructureobj.WindowID);
+                    dcmd.Parameters.AddWithValue("P_WINDOWID", PermanentStructureobj.WindowID);
                 else
-                    dcmd.Parameters.Add("P_WINDOWID", DBNull.Value);
+                    dcmd.Parameters.AddWithValue("P_WINDOWID", DBNull.Value);
 
                 if (PermanentStructureobj.RoofConditionID > 0)
-                    dcmd.Parameters.Add("P_ROOFCONDITIONID", PermanentStructureobj.RoofConditionID);
+                    dcmd.Parameters.AddWithValue("P_ROOFCONDITIONID", PermanentStructureobj.RoofConditionID);
                 else
-                    dcmd.Parameters.Add("P_ROOFCONDITIONID", DBNull.Value);
+                    dcmd.Parameters.AddWithValue("P_ROOFCONDITIONID", DBNull.Value);
 
                 if (PermanentStructureobj.WallConditionID > 0)
-                    dcmd.Parameters.Add("P_WALLCONDITIONID", PermanentStructureobj.WallConditionID);
+                    dcmd.Parameters.AddWithValue("P_WALLCONDITIONID", PermanentStructureobj.WallConditionID);
                 else
-                    dcmd.Parameters.Add("P_WALLCONDITIONID", DBNull.Value);
+                    dcmd.Parameters.AddWithValue("P_WALLCONDITIONID", DBNull.Value);
 
                 if (PermanentStructureobj.FloorConditionID > 0)
-                    dcmd.Parameters.Add("P_FLOORCONDITIONID", PermanentStructureobj.FloorConditionID);
+                    dcmd.Parameters.AddWithValue("P_FLOORCONDITIONID", PermanentStructureobj.FloorConditionID);
                 else
-                    dcmd.Parameters.Add("P_FLOORCONDITIONID", DBNull.Value);
+                    dcmd.Parameters.AddWithValue("P_FLOORCONDITIONID", DBNull.Value);
 
                 if (PermanentStructureobj.WindowConditionID > 0)
-                    dcmd.Parameters.Add("P_WINDOWCONDITIONID", PermanentStructureobj.WindowConditionID);
+                    dcmd.Parameters.AddWithValue("P_WINDOWCONDITIONID", PermanentStructureobj.WindowConditionID);
                 else
-                    dcmd.Parameters.Add("P_WINDOWCONDITIONID", DBNull.Value);
+                    dcmd.Parameters.AddWithValue("P_WINDOWCONDITIONID", DBNull.Value);
 
-                //dcmd.Parameters.Add("P_ROOFID", PermanentStructureobj.RoofID);
-                //dcmd.Parameters.Add("P_WALLID", PermanentStructureobj.WallID);
-                //dcmd.Parameters.Add("P_FLOORID", PermanentStructureobj.FloorID);
-                //dcmd.Parameters.Add("P_WINDOWID", PermanentStructureobj.WindowID);
-                //dcmd.Parameters.Add("P_ROOFCONDITIONID", PermanentStructureobj.RoofConditionID);
-                //dcmd.Parameters.Add("P_WALLCONDITIONID", PermanentStructureobj.WallConditionID);
-                //dcmd.Parameters.Add("P_FLOORCONDITIONID", PermanentStructureobj.FloorConditionID);
-                //dcmd.Parameters.Add("P_WINDOWCONDITIONID", PermanentStructureobj.WindowConditionID);
-                dcmd.Parameters.Add("P_OWNER", PermanentStructureobj.Owner);
-                dcmd.Parameters.Add("P_OWNERNAME", PermanentStructureobj.OwnerName);
-                dcmd.Parameters.Add("P_OCCUPANT", PermanentStructureobj.Occupant);
-                dcmd.Parameters.Add("P_OTHEROCCUPANTNAME", PermanentStructureobj.OtherOccupantName);
+                //dcmd.Parameters.AddWithValue("P_ROOFID", PermanentStructureobj.RoofID);
+                //dcmd.Parameters.AddWithValue("P_WALLID", PermanentStructureobj.WallID);
+                //dcmd.Parameters.AddWithValue("P_FLOORID", PermanentStructureobj.FloorID);
+                //dcmd.Parameters.AddWithValue("P_WINDOWID", PermanentStructureobj.WindowID);
+                //dcmd.Parameters.AddWithValue("P_ROOFCONDITIONID", PermanentStructureobj.RoofConditionID);
+                //dcmd.Parameters.AddWithValue("P_WALLCONDITIONID", PermanentStructureobj.WallConditionID);
+                //dcmd.Parameters.AddWithValue("P_FLOORCONDITIONID", PermanentStructureobj.FloorConditionID);
+                //dcmd.Parameters.AddWithValue("P_WINDOWCONDITIONID", PermanentStructureobj.WindowConditionID);
+                dcmd.Parameters.AddWithValue("P_OWNER", PermanentStructureobj.Owner);
+                dcmd.Parameters.AddWithValue("P_OWNERNAME", PermanentStructureobj.OwnerName);
+                dcmd.Parameters.AddWithValue("P_OCCUPANT", PermanentStructureobj.Occupant);
+                dcmd.Parameters.AddWithValue("P_OTHEROCCUPANTNAME", PermanentStructureobj.OtherOccupantName);
 
                 if (PermanentStructureobj.OccupantStatusID > 0)
-                    dcmd.Parameters.Add("P_OCCUPANTSTATUSID", PermanentStructureobj.OccupantStatusID);
+                    dcmd.Parameters.AddWithValue("P_OCCUPANTSTATUSID", PermanentStructureobj.OccupantStatusID);
                 else
-                    dcmd.Parameters.Add("P_OCCUPANTSTATUSID", DBNull.Value);
+                    dcmd.Parameters.AddWithValue("P_OCCUPANTSTATUSID", DBNull.Value);
 
-                //dcmd.Parameters.Add("P_OCCUPANTSTATUSID", PermanentStructureobj.OccupantStatusID);
+                //dcmd.Parameters.AddWithValue("P_OCCUPANTSTATUSID", PermanentStructureobj.OccupantStatusID);
 
-                dcmd.Parameters.Add("P_OTHEROCCUPANTSTATUS", PermanentStructureobj.OtherOccupantStatus);
-                dcmd.Parameters.Add("P_DIMEN_LENGTH", PermanentStructureobj.DimensionLength);
-                dcmd.Parameters.Add("P_DIMEN_WIDTH", PermanentStructureobj.DimensionWidth);
-                dcmd.Parameters.Add("P_NOOFROOMS", PermanentStructureobj.NoOfRooms);
-                dcmd.Parameters.Add("P_SURFACEAREA", PermanentStructureobj.SurfaceArea);
-                dcmd.Parameters.Add("P_DEPRECIATEDVALUE", PermanentStructureobj.DepreciatedValue);
-                dcmd.Parameters.Add("P_REPLACEMENTVALUE", PermanentStructureobj.ReplacementValue);
-                dcmd.Parameters.Add("P_ADDITIONALCOMMENTS", PermanentStructureobj.AdditionalComments);
-                // dcmd.Parameters.Add("PAPPSPHOTO_", PermanentStructureobj.Photo); //save the photo in blob
-                //dcmd.Parameters.Add("ISDELETED", PermanentStructureobj.IsDeleted);
-                dcmd.Parameters.Add("P_UPDATEDBY", PermanentStructureobj.CreatedBy);
+                dcmd.Parameters.AddWithValue("P_OTHEROCCUPANTSTATUS", PermanentStructureobj.OtherOccupantStatus);
+                dcmd.Parameters.AddWithValue("P_DIMEN_LENGTH", PermanentStructureobj.DimensionLength);
+                dcmd.Parameters.AddWithValue("P_DIMEN_WIDTH", PermanentStructureobj.DimensionWidth);
+                dcmd.Parameters.AddWithValue("P_NOOFROOMS", PermanentStructureobj.NoOfRooms);
+                dcmd.Parameters.AddWithValue("P_SURFACEAREA", PermanentStructureobj.SurfaceArea);
+                dcmd.Parameters.AddWithValue("P_DEPRECIATEDVALUE", PermanentStructureobj.DepreciatedValue);
+                dcmd.Parameters.AddWithValue("P_REPLACEMENTVALUE", PermanentStructureobj.ReplacementValue);
+                dcmd.Parameters.AddWithValue("P_ADDITIONALCOMMENTS", PermanentStructureobj.AdditionalComments);
+                // dcmd.Parameters.AddWithValue("PAPPSPHOTO_", PermanentStructureobj.Photo); //save the photo in blob
+                //dcmd.Parameters.AddWithValue("ISDELETED", PermanentStructureobj.IsDeleted);
+                dcmd.Parameters.AddWithValue("P_UPDATEDBY", PermanentStructureobj.CreatedBy);
                 return dcmd.ExecuteNonQuery();
 
 
@@ -472,17 +472,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int Updatephoto(PermanentStructureBO PermanentStructureobj1)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_UPD_PHOTO_PERMSTRUCT", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_UPD_PHOTO_PERMSTRUCT", cnn);
                     dcmd.CommandType = CommandType.StoredProcedure;
                     int count = Convert.ToInt32(dcmd.CommandType);
             try
             {
-                dcmd.Parameters.Add("P_PERM_STRUCTUREID", PermanentStructureobj1.PermanentStructureID);
-                dcmd.Parameters.Add("P_HHID", PermanentStructureobj1.HouseholdID);
-                dcmd.Parameters.Add(new OracleParameter("PAPPSPHOTO_", OracleDbType.Blob)).Value = PermanentStructureobj1.Photo;
-                dcmd.Parameters.Add("P_UPDATEDBY", PermanentStructureobj1.UpdatedBy);
+                dcmd.Parameters.AddWithValue("P_PERM_STRUCTUREID", PermanentStructureobj1.PermanentStructureID);
+                dcmd.Parameters.AddWithValue("P_HHID", PermanentStructureobj1.HouseholdID);
+                dcmd.Parameters.Add(new SqlParameter("PAPPSPHOTO_", SqlDbType.Image)).Value = PermanentStructureobj1.Photo;
+                dcmd.Parameters.AddWithValue("P_UPDATEDBY", PermanentStructureobj1.UpdatedBy);
                  
                 return dcmd.ExecuteNonQuery();
             }
@@ -502,15 +502,15 @@ namespace WIS_DataAccess
         // to get Image File for DataBase
         public PermanentStructureBO GetPAPPSPhoto(int householdID, int PermanentStructureID)
         {
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_TRN_GET_PAPPS_PHOTO", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_TRN_GET_PAPPS_PHOTO", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("HHID_", householdID);
-            myCommand.Parameters.Add("PermanentStructureID_", PermanentStructureID);
-            myCommand.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("HHID_", householdID);
+            myCommand.Parameters.AddWithValue("PermanentStructureID_", PermanentStructureID);
+            // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             myCommand.Connection.Open();
             object img = myCommand.ExecuteScalar();

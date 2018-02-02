@@ -1,4 +1,4 @@
-﻿using Oracle.DataAccess.Client;
+﻿using System.Data.SqlClient;
 using WIS_BusinessObjects;
 using System.Data;
 
@@ -7,19 +7,19 @@ namespace WIS_DataAccess
    public class LCTRptDAL
     {
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
 
         public DistrictList LoadDistrictData()
         {
-            cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            cnn = new SqlConnection(AppConfiguration.ConnectionString);
             string proc = "USP_MST_GET_DISTRICT";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             DistrictBO obMaster = null;
             DistrictList Master = new DistrictList();
             while (dr.Read())
@@ -35,14 +35,14 @@ namespace WIS_DataAccess
 
         public CountyList LoadCountyData(string pDstrictId)
         {
-            cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            cnn = new SqlConnection(AppConfiguration.ConnectionString);
             string proc = "USP_MST_GET_COUNTY";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@DistrictIDIN", pDstrictId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("@DistrictIDIN", pDstrictId);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CountyBO obMaster = null;
             CountyList Master = new CountyList();
             while (dr.Read())
@@ -58,14 +58,14 @@ namespace WIS_DataAccess
 
         public SubCountyList LoadSubCountyData(string pCountyId)
         {
-            cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            cnn = new SqlConnection(AppConfiguration.ConnectionString);
             string proc = "USP_MST_GET_SUBCOUNTY";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@CountyIDIN", pCountyId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("@CountyIDIN", pCountyId);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             SubCountyBO obMaster = null;
             SubCountyList Master = new SubCountyList();
             while (dr.Read())
@@ -81,15 +81,15 @@ namespace WIS_DataAccess
 
         public ParishList LoadParishData(string pSubcountyId)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_PARISH";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("SUBCOUNTYID_", pSubcountyId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("SUBCOUNTYID_", pSubcountyId);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ParishBO obMaster = null;
             ParishList Master = new ParishList();
             while (dr.Read())
@@ -106,15 +106,15 @@ namespace WIS_DataAccess
 
         public VillageList LoadVillageData(string pSubcountyId)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_VILLAGE";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@SubcountyIDIN", pSubcountyId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("@SubcountyIDIN", pSubcountyId);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             VillageBO obMaster = null;
             VillageList Master = new VillageList();
             while (dr.Read())

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿
 using System.Configuration;
 
 namespace WIS_DataAccess
@@ -12,7 +9,7 @@ namespace WIS_DataAccess
         {
             get
             {
-                return ConfigurationManager.ConnectionStrings["UETCL_WIS"].ConnectionString;
+                return ConfigurationManager.ConnectionStrings["UETCL_WIS_SQL"].ConnectionString;
             }
         }
 

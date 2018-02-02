@@ -1,5 +1,5 @@
 ﻿using System;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_BusinessObjects;
 
@@ -11,19 +11,19 @@ namespace WIS_DataAccess
         {
             string returnResult = string.Empty;
 
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             con.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_INSERTLIVELIHOOD", con);
+            SqlCommand dcmd = new SqlCommand("USP_MST_INSERTLIVELIHOOD", con);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
             try
             {
-                dcmd.Parameters.Add("L_itemname", objLivelihood.ITEMNAME);
-                dcmd.Parameters.Add("L_createdby", objLivelihood.Createdby);
+                dcmd.Parameters.AddWithValue("L_itemname", objLivelihood.ITEMNAME);
+                dcmd.Parameters.AddWithValue("L_createdby", objLivelihood.Createdby);
 
                 //return dcmd.ExecuteNonQuery();
 
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -52,17 +52,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public LivelihoodList GetALLLivelihood()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETALL_LIVELIHOOD";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             LivelihoodBO objLivelihood = null;
             LivelihoodList Livelihoods = new LivelihoodList();
 
@@ -85,17 +85,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public LivelihoodList GetLivelihood()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETLIVELIHOOD";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             LivelihoodBO objLivelihood = null;
             LivelihoodList Livelihoods = new LivelihoodList();
 
@@ -122,18 +122,18 @@ namespace WIS_DataAccess
         {
             string returnResult = string.Empty;
 
-            OracleConnection conn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection conn = new SqlConnection(AppConfiguration.ConnectionString);
             conn.Open();
-            OracleCommand dCmd = new OracleCommand("USP_MST_UPDATELIVELIHOOD", conn);
+            SqlCommand dCmd = new SqlCommand("USP_MST_UPDATELIVELIHOOD", conn);
             dCmd.CommandType = CommandType.StoredProcedure;
             try
             {
-                dCmd.Parameters.Add("L_ITEMID", itemid);
-                dCmd.Parameters.Add("L_itemname", objLivelihood.ITEMNAME);
-                dCmd.Parameters.Add("L_createdby", objLivelihood.Createdby);
+                dCmd.Parameters.AddWithValue("L_ITEMID", itemid);
+                dCmd.Parameters.AddWithValue("L_itemname", objLivelihood.ITEMNAME);
+                dCmd.Parameters.AddWithValue("L_createdby", objLivelihood.Createdby);
                 //return dCmd.ExecuteNonQuery();
 
-                dCmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dCmd.ExecuteNonQuery();
 
@@ -162,19 +162,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteLivelihood(int itemid)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DELETELIVELIHOOD", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DELETELIVELIHOOD", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("@L_ITEMID", itemid);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("@L_ITEMID", itemid);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -201,13 +201,13 @@ namespace WIS_DataAccess
             return result;      
 
 
-            //OracleConnection conn = new OracleConnection(AppConfiguration.ConnectionString);
+            //SqlConnection conn = new SqlConnection(AppConfiguration.ConnectionString);
             //conn.Open();
-            //OracleCommand dCmd = new OracleCommand("USP_MST_DELETELIVELIHOOD", conn);
+            //SqlCommand dCmd = new SqlCommand("USP_MST_DELETELIVELIHOOD", conn);
             //dCmd.CommandType = CommandType.StoredProcedure;
             //try
             //{
-            //    dCmd.Parameters.Add("L_ITEMID",itemid );
+            //    dCmd.Parameters.AddWithValue("L_ITEMID",itemid );
             //    return dCmd.ExecuteNonQuery();
             //}
             //catch (Exception ex)
@@ -232,19 +232,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteLivelihood(int itemid, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETE_LIVELIHOOD", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETE_LIVELIHOOD", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("@ItemId_", itemid);
-                myCommand.Parameters.Add("@isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("@ItemId_", itemid);
+                myCommand.Parameters.AddWithValue("@isdeleted_", IsDeleted);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

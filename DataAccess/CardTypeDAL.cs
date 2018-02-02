@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -13,17 +13,17 @@ namespace WIS_DataAccess
         //get all data in mst_CardType table using USP_MST_SELECTCardType-SP
         public CardTypeList GetCardType()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_SELECTCardType";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CardTypeBO objCardType = null;
             CardTypeList CardType = new CardTypeList();
 
@@ -52,19 +52,19 @@ namespace WIS_DataAccess
         {
             string returnResult = string.Empty;
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_INSERTCardType", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_INSERTCardType", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("CardType_", objCardType.CardTypeName);
-                dcmd.Parameters.Add("CREATEDBY_", objCardType.UserID);
+                dcmd.Parameters.AddWithValue("CardType_", objCardType.CardTypeName);
+                dcmd.Parameters.AddWithValue("CREATEDBY_", objCardType.UserID);
                 //return dcmd.ExecuteNonQuery();
 
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -94,17 +94,17 @@ namespace WIS_DataAccess
         public CardTypeList GETALLCardType()
         {
             // used in Master page
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
-            string proc = " USP_MST_GETALLCardType";
+            string proc = "USP_MST_GETALLCardType";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CardTypeBO objCardType = null;
             CardTypeList CardType = new CardTypeList();
 
@@ -131,19 +131,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CardTypeBO GetCardTypeById(int CardTypeID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETSELECTCardType";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("CardTypeID_", CardTypeID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CardTypeID_", CardTypeID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CardTypeBO CardTypeObj = null;
             CardTypeList Users = new CardTypeList();
 
@@ -189,20 +189,20 @@ namespace WIS_DataAccess
         {
             string returnResult = string.Empty;
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_UPDATECCardType", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_UPDATECCardType", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("CardType_", objCardType.CardTypeName);
-                dcmd.Parameters.Add("CardTypeID_", objCardType.CardTypeID);
-                dcmd.Parameters.Add("UpdatedBY", objCardType.UserID);
+                dcmd.Parameters.AddWithValue("CardType_", objCardType.CardTypeName);
+                dcmd.Parameters.AddWithValue("CardTypeID_", objCardType.CardTypeID);
+                dcmd.Parameters.AddWithValue("UpdatedBY", objCardType.UserID);
                 //return dcmd.ExecuteNonQuery();
 
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -232,20 +232,20 @@ namespace WIS_DataAccess
         public string DeleteCardType(int CardTypeID)
         {
 
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DELETECardType", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DELETECardType", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("CardTypeID_", CardTypeID);
-                //myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("CardTypeID_", CardTypeID);
+                ///* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -271,19 +271,19 @@ namespace WIS_DataAccess
 
             return result;
 
-            //OracleConnection myConnection = null;
-            //OracleCommand myCommand = null;
+            //SqlConnection myConnection = null;
+            //SqlCommand myCommand = null;
 
             //string result = string.Empty;
             //try
             //{
 
-            //    myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            //    myCommand = new OracleCommand("USP_MST_DELETECardType", myConnection);
+            //    myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            //    myCommand = new SqlCommand("USP_MST_DELETECardType", myConnection);
             //    myCommand.Connection = myConnection;
             //    myCommand.CommandType = CommandType.StoredProcedure;
-            //    myCommand.Parameters.Add("@CardTypeID_", CardTypeID);
-            //    myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            //    myCommand.Parameters.AddWithValue("@CardTypeID_", CardTypeID);
+            //    /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             //    myConnection.Open();
             //    myCommand.ExecuteNonQuery();
             //    if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -308,15 +308,15 @@ namespace WIS_DataAccess
             //}
 
             //return result;  
-            //OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            //OracleCommand cmd;
+            //SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            //SqlCommand cmd;
 
 
             //string proc = "USP_MST_DELETECardType";
 
-            //cmd = new OracleCommand(proc, cnn);
+            //cmd = new SqlCommand(proc, cnn);
             //cmd.CommandType = CommandType.StoredProcedure;
-            //cmd.Parameters.Add("CardTypeID_", CardTypeID);
+            //cmd.Parameters.AddWithValue("CardTypeID_", CardTypeID);
             //cmd.Connection.Open();
 
             //int result = cmd.ExecuteNonQuery();
@@ -332,19 +332,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteCardType(int CardTypeID, string Isdeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETE_CardType", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETE_CardType", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("CardTypeId_", CardTypeID);
-                myCommand.Parameters.Add("isdeleted_", Isdeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("CardTypeId_", CardTypeID);
+                myCommand.Parameters.AddWithValue("isdeleted_", Isdeleted);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

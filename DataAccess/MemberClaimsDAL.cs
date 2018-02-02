@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_DataAccess;
 using WIS_BusinessObjects;
@@ -20,21 +20,21 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public MemberClaimsBO getMemberClaim(int HHID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_PAP_LND_RESPONDENT";
             MemberClaimsBO objMemberClaimsBO = null;
             try
             {
-                cmd = new OracleCommand(proc, cnn);
+                cmd = new SqlCommand(proc, cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("HHID_", HHID);
+                cmd.Parameters.AddWithValue("HHID_", HHID);
 
-                cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
               
                 BatchList oBatchList = new BatchList();
 
@@ -122,27 +122,27 @@ namespace WIS_DataAccess
         public string AddMember(MemberClaimsBO MCBO)
         {
             string returnResult = string.Empty;
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             int result = 0;
             {
                 try
                 {
-                    OracleCommand myCommand;
-                    myCommand = new OracleCommand("USP_TRN_INS_PAP_LND_RESPONDENT", con);
+                    SqlCommand myCommand;
+                    myCommand = new SqlCommand("USP_TRN_INS_PAP_LND_RESPONDENT", con);
                     myCommand.Connection = con;
                     myCommand.CommandType = CommandType.StoredProcedure;
-                    myCommand.Parameters.Add("LND_RESPONDENTID_", MCBO.LND_RESPONDENTID);
-                    myCommand.Parameters.Add("HHID_", MCBO.HHID);
-                    myCommand.Parameters.Add("HASCLAIM_", MCBO.HASCLAIM);
-                    myCommand.Parameters.Add("CLAIMDETAILS_", MCBO.CLAIMDETAILS);
-                    myCommand.Parameters.Add("OTHPEOPLEPICK_", MCBO.OTHPEOPLEPICK);
-                    myCommand.Parameters.Add("PICKFROMOTHPEOPLELAND_", MCBO.PICKFROMOTHPEOPLELAND);
-                    myCommand.Parameters.Add("OTHPEOPLEACCESSWATER_", MCBO.OTHPEOPLEACCESSWATER);
-                    myCommand.Parameters.Add("ACCESSWATERFRMOTHPEOPLE_", MCBO.ACCESSWATERFRMOTHPEOPLE);
-                    myCommand.Parameters.Add("OTHEREASEMENT_", MCBO.OTHEREASEMENT);
-                    myCommand.Parameters.Add("OTHEREASEMENTDETAILS_", MCBO.OTHEREASEMENTDETAILS);
-                    myCommand.Parameters.Add("CREATEDBY_", MCBO.CreatedBy);
-                    myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                    myCommand.Parameters.AddWithValue("LND_RESPONDENTID_", MCBO.LND_RESPONDENTID);
+                    myCommand.Parameters.AddWithValue("HHID_", MCBO.HHID);
+                    myCommand.Parameters.AddWithValue("HASCLAIM_", MCBO.HASCLAIM);
+                    myCommand.Parameters.AddWithValue("CLAIMDETAILS_", MCBO.CLAIMDETAILS);
+                    myCommand.Parameters.AddWithValue("OTHPEOPLEPICK_", MCBO.OTHPEOPLEPICK);
+                    myCommand.Parameters.AddWithValue("PICKFROMOTHPEOPLELAND_", MCBO.PICKFROMOTHPEOPLELAND);
+                    myCommand.Parameters.AddWithValue("OTHPEOPLEACCESSWATER_", MCBO.OTHPEOPLEACCESSWATER);
+                    myCommand.Parameters.AddWithValue("ACCESSWATERFRMOTHPEOPLE_", MCBO.ACCESSWATERFRMOTHPEOPLE);
+                    myCommand.Parameters.AddWithValue("OTHEREASEMENT_", MCBO.OTHEREASEMENT);
+                    myCommand.Parameters.AddWithValue("OTHEREASEMENTDETAILS_", MCBO.OTHEREASEMENTDETAILS);
+                    myCommand.Parameters.AddWithValue("CREATEDBY_", MCBO.CreatedBy);
+                    /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                     con.Open();
                     result = myCommand.ExecuteNonQuery();
                     if (myCommand.Parameters["errorMessage_"].Value != null)

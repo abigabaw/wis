@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WIS_BusinessObjects;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 
 namespace WIS_DataAccess
@@ -18,20 +18,20 @@ namespace WIS_DataAccess
         public string InsertMNEGoalEvalElements(MNEGoalEvalElementsBO objMNEGoalEvalElementsBO)
         {
             string result = "";
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_INS_MNEEVALELEMENTS", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_INS_MNEEVALELEMENTS", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("EVALUATIONID_", objMNEGoalEvalElementsBO.EvaluationID);
-                dcmd.Parameters.Add("GOAL_ELEMENTID_", objMNEGoalEvalElementsBO.Goal_elementID);
-                dcmd.Parameters.Add("EVALELEMENTDESCRIPTIONN_", objMNEGoalEvalElementsBO.Evalelementdescriptionn);
-                dcmd.Parameters.Add("ISDELETED_", objMNEGoalEvalElementsBO.Isdeleted);
-                dcmd.Parameters.Add("CREATEDBY_", objMNEGoalEvalElementsBO.Createdby);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("EVALUATIONID_", objMNEGoalEvalElementsBO.EvaluationID);
+                dcmd.Parameters.AddWithValue("GOAL_ELEMENTID_", objMNEGoalEvalElementsBO.Goal_elementID);
+                dcmd.Parameters.AddWithValue("EVALELEMENTDESCRIPTIONN_", objMNEGoalEvalElementsBO.Evalelementdescriptionn);
+                dcmd.Parameters.AddWithValue("ISDELETED_", objMNEGoalEvalElementsBO.Isdeleted);
+                dcmd.Parameters.AddWithValue("CREATEDBY_", objMNEGoalEvalElementsBO.Createdby);
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
 
                 if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -59,19 +59,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public MNEGoalEvalElementsList GetMNEGoalEvalElements(int EvaluationID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             MNEGoalEvalElementsBO objMNEGoalEvalElementsBO = null;
 
             string proc = "USP_GET_MNEEVALELEMENTS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("EVALUATIONID_", EvaluationID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("EVALUATIONID_", EvaluationID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             MNEGoalEvalElementsList MNEGoalEvalElements = new MNEGoalEvalElementsList();
 
@@ -100,19 +100,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public MNEGoalEvalElementsBO GetMNEGoalEvalElementsByID(int EvalelementID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_GET_MNEEVALELEMENTSBYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("EVALELEMENTID_", EvalelementID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("EVALELEMENTID_", EvalelementID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             MNEGoalEvalElementsBO objMNEGoalEvalElementsBO = new MNEGoalEvalElementsBO();
 
             while (dr.Read())
@@ -138,20 +138,20 @@ namespace WIS_DataAccess
         public string UpdateMNEGoalEvalElements(MNEGoalEvalElementsBO objMNEGoalEvalElementsBO)
         {
             string result = "";
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_UPD_MNEEVALELEMENTS", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_UPD_MNEEVALELEMENTS", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("EVALELEMENTID_", objMNEGoalEvalElementsBO.EvalelementID);
-                dcmd.Parameters.Add("EVALUATIONID_", objMNEGoalEvalElementsBO.EvaluationID);
-                dcmd.Parameters.Add("GOAL_ELEMENTID_", objMNEGoalEvalElementsBO.Goal_elementID);
-                dcmd.Parameters.Add("EVALELEMENTDESCRIPTIONN_", objMNEGoalEvalElementsBO.Evalelementdescriptionn);
-                dcmd.Parameters.Add("UPDATEBY_", objMNEGoalEvalElementsBO.Updatedby);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("EVALELEMENTID_", objMNEGoalEvalElementsBO.EvalelementID);
+                dcmd.Parameters.AddWithValue("EVALUATIONID_", objMNEGoalEvalElementsBO.EvaluationID);
+                dcmd.Parameters.AddWithValue("GOAL_ELEMENTID_", objMNEGoalEvalElementsBO.Goal_elementID);
+                dcmd.Parameters.AddWithValue("EVALELEMENTDESCRIPTIONN_", objMNEGoalEvalElementsBO.Evalelementdescriptionn);
+                dcmd.Parameters.AddWithValue("UPDATEBY_", objMNEGoalEvalElementsBO.Updatedby);
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
 
                 if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -179,18 +179,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteMNEGoalEvalElements(int EvalelementID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string result = string.Empty;
 
             try
             {
                 string proc = "USP_DEL_MNEEVALELEMENTS";
 
-                cmd = new OracleCommand(proc, cnn);
+                cmd = new SqlCommand(proc, cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("EVALELEMENTID_", EvalelementID);
-                cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("EVALELEMENTID_", EvalelementID);
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 cmd.Connection.Open();
 
                 cmd.ExecuteNonQuery();

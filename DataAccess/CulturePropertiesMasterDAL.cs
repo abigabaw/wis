@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
  
 namespace WIS_DataAccess
@@ -19,16 +19,16 @@ namespace WIS_DataAccess
         {
             string ErrorMessage=string.Empty;
             int CreatedBy = 0;
-            OracleConnection Conn=new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection Conn=new SqlConnection(AppConfiguration.ConnectionString);
             Conn.Open();
-            OracleCommand Cmd=new OracleCommand("USP_INS_MST_CULTUREPROPERTY",Conn);
+            SqlCommand Cmd=new SqlCommand("USP_INS_MST_CULTUREPROPERTY",Conn);
             Cmd.CommandType= CommandType.StoredProcedure;
             try
             {
                 CreatedBy=Convert.ToInt32(CulturePropertiesMasterBObj.CreatedBy);
-                Cmd.Parameters.Add("CultureProptype_",CulturePropertiesMasterBObj.CulturePropTypeName);
-                Cmd.Parameters.Add("CreatedBy_", CreatedBy);
-                Cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2,500).Direction=ParameterDirection.Output;
+                Cmd.Parameters.AddWithValue("CultureProptype_",CulturePropertiesMasterBObj.CulturePropTypeName);
+                Cmd.Parameters.AddWithValue("CreatedBy_", CreatedBy);
+                Cmd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction=ParameterDirection.Output;
                 Cmd.ExecuteNonQuery();
                 if(Cmd.Parameters["errorMessage_"].Value !=null)
                 {
@@ -60,15 +60,15 @@ namespace WIS_DataAccess
         {
             CulturePropTypeList CulturePropTypeListObj = new CulturePropTypeList();
             CulturePropertiesMasterBO CulturePropertiesMasterBObj = null;
-            OracleConnection Conn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection Conn = new SqlConnection(AppConfiguration.ConnectionString);
             Conn.Open();
-            OracleCommand Cmd = null;
+            SqlCommand Cmd = null;
             try
             {
-                Cmd = new OracleCommand("USP_SEL_MST_CULTUREPROPERTY", Conn);
+                Cmd = new SqlCommand("USP_SEL_MST_CULTUREPROPERTY", Conn);
                 Cmd.CommandType = CommandType.StoredProcedure;
-                Cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
-                OracleDataReader dr = Cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                // Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
+                SqlDataReader dr = Cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
                 {
                     CulturePropertiesMasterBObj = new CulturePropertiesMasterBO();
@@ -101,16 +101,16 @@ namespace WIS_DataAccess
         {
             CulturePropTypeList CulturePropTypeListObj = new CulturePropTypeList();
             CulturePropertiesMasterBO CulturePropertiesMasterBObj = null;
-            OracleConnection Conn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection Conn = new SqlConnection(AppConfiguration.ConnectionString);
             Conn.Open();
-            OracleCommand Cmd = null;
+            SqlCommand Cmd = null;
             try
             {
-                Cmd = new OracleCommand("USP_MST_GET_CULTUREPROPBYID", Conn);
+                Cmd = new SqlCommand("USP_MST_GET_CULTUREPROPBYID", Conn);
                 Cmd.CommandType = CommandType.StoredProcedure;
-                Cmd.Parameters.Add("CULTUREPROPTYPEID_", CulturePropID);
-                Cmd.Parameters.Add("Sp_RecordSet", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
-                OracleDataReader dr = Cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                Cmd.Parameters.AddWithValue("CULTUREPROPTYPEID_", CulturePropID);
+               // Cmd.Parameters.AddWithValue("Sp_RecordSet", SqlDbType.RefCursor).Direction = ParameterDirection.Output;
+                SqlDataReader dr = Cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
                 {
                     CulturePropertiesMasterBObj = new CulturePropertiesMasterBO();
@@ -140,20 +140,20 @@ namespace WIS_DataAccess
         {
             string returnResult = string.Empty;
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_UPD_CULTUREPROPTYPE", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_UPD_CULTUREPROPTYPE", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("CULTUREPROPTYPEID_", CulturePropertiesMasterBObj.CulturePropTypeID);
-                dcmd.Parameters.Add("CULTUREPROPTYPE_", CulturePropertiesMasterBObj.CulturePropTypeName);
-                dcmd.Parameters.Add("UPDATEDBY_", CulturePropertiesMasterBObj.UpdatedBy);
+                dcmd.Parameters.AddWithValue("CULTUREPROPTYPEID_", CulturePropertiesMasterBObj.CulturePropTypeID);
+                dcmd.Parameters.AddWithValue("CULTUREPROPTYPE_", CulturePropertiesMasterBObj.CulturePropTypeName);
+                dcmd.Parameters.AddWithValue("UPDATEDBY_", CulturePropertiesMasterBObj.UpdatedBy);
                 //return dcmd.ExecuteNonQuery();
 
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -183,20 +183,20 @@ namespace WIS_DataAccess
         public string DeleteCulturePropByID(int CulturePropID)
         {
 
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DEL_CULTUREPROPTYPE", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DEL_CULTUREPROPTYPE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("CULTUREPROPTYPEID_", CulturePropID);
-                //myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
-                myCommand.Parameters.Add("ErrorMessage", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("CULTUREPROPTYPEID_", CulturePropID);
+                ///* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("ErrorMessage", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["ErrorMessage"].Value != null)
@@ -230,19 +230,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteCulturePropType(int CulturePropTypeID, string Isdeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBS_CULTUREPROPTYPE", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBS_CULTUREPROPTYPE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("CULTUREPROPTYPEID_", CulturePropTypeID);
-                myCommand.Parameters.Add("ISDELETED_", Isdeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("CULTUREPROPTYPEID_", CulturePropTypeID);
+                myCommand.Parameters.AddWithValue("ISDELETED_", Isdeleted);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

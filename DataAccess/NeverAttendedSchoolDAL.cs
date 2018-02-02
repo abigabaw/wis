@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -16,20 +16,20 @@ namespace WIS_DataAccess
         public string InsertIntoNeverAttendedSchool(NeverAttendedSchoolBO NeverAttendedSchoolBOObj)
         {
             string returnResult = string.Empty;
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             con.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_INSERTNSSCHOOL", con);
+            SqlCommand dcmd = new SqlCommand("USP_MST_INSERTNSSCHOOL", con);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
                 //dcmd.Parameters.AddWithValue("NVR_ATT_SCH_REASONID", NeverAttendedSchoolBOObj.NVR_ATT_SCH_REASONID);
-                dcmd.Parameters.Add("NVR_ATT_SCH_REASON_", NeverAttendedSchoolBOObj.NVR_ATT_SCH_REASON);
-                dcmd.Parameters.Add("DESCRIPTION_", NeverAttendedSchoolBOObj.DESCRIPTION);
+                dcmd.Parameters.AddWithValue("NVR_ATT_SCH_REASON_", NeverAttendedSchoolBOObj.NVR_ATT_SCH_REASON);
+                dcmd.Parameters.AddWithValue("DESCRIPTION_", NeverAttendedSchoolBOObj.DESCRIPTION);
                 //dcmd.Parameters.AddWithValue("ISDELETED", NeverAttendedSchoolBOObj.IsDeleted);
-                dcmd.Parameters.Add("CREATEDBY_", NeverAttendedSchoolBOObj.CreatedBy);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 100).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("CREATEDBY_", NeverAttendedSchoolBOObj.CreatedBy);
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 //return dcmd.ExecuteNonQuery();
                 dcmd.ExecuteNonQuery();
@@ -61,24 +61,24 @@ namespace WIS_DataAccess
         //        NeverAttendedSchoolBO NeverAttendedSchoolBOObj = new NeverAttendedSchoolBO();
         //        List<NeverAttendedSchoolBO> ListNASchoolList = new List<NeverAttendedSchoolBO>();
 
-        //        //OracleConnection con = new OracleConnection(connStr);
+        //        //SqlConnection con = new SqlConnection(connStr);
         //        //con.Open();
-        //        //OracleCommand cmd = new OracleCommand("USP_MST_GETNASCHOOLDETAILS", con);
+        //        //SqlCommand cmd = new SqlCommand("USP_MST_GETNASCHOOLDETAILS", con);
         //        //cmd.CommandType = CommandType.StoredProcedure;
         //        //int count = Convert.ToInt32(cmd.CommandType);
 
-        //        OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-        //        OracleCommand cmd;
+        //        SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+        //        SqlCommand cmd;
 
-        //        string proc = " USP_MST_GETNASCHOOLDETAILS";
+        //        string proc = "USP_MST_GETNASCHOOLDETAILS";
 
-        //        cmd = new OracleCommand(proc, cnn);
+        //        cmd = new SqlCommand(proc, cnn);
         //        cmd.CommandType = CommandType.StoredProcedure;
-        //        cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+        //        // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
         //        cmd.Connection.Open();
 
-        //        OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+        //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             
                 
 
@@ -109,17 +109,17 @@ namespace WIS_DataAccess
         public NeverAttendedSchoolList FetchNeverAttendedSchool()
         {
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETNASCHOOLDETAILS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             NeverAttendedSchoolBO objNeverAttendedSchool = null;
             NeverAttendedSchoolList NeverAttendedSchoollist = new NeverAttendedSchoolList();
 
@@ -146,17 +146,17 @@ namespace WIS_DataAccess
         public NeverAttendedSchoolList GetAllNeverAttendedSchool()
         {
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETNASCHOOLDETAILSALL";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             NeverAttendedSchoolBO objNeverAttendedSchool = null;
             NeverAttendedSchoolList NeverAttendedSchoollist = new NeverAttendedSchoolList();
 
@@ -187,19 +187,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public NeverAttendedSchoolBO GetNASchoolById(int NASchoolID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETNASCHOOLDETAILSBYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("NVRATTSCHREASONID", NASchoolID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("NVRATTSCHREASONID", NASchoolID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             NeverAttendedSchoolBO NeverAttendedSchoolBOObj = null;
             NeverAttendedSchoolList NASchoolList = new NeverAttendedSchoolList();
 
@@ -240,15 +240,15 @@ namespace WIS_DataAccess
 
         //public int DeleteNASchoolById(int NASchoolID)
         //{
-        //    OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-        //    OracleCommand cmd;
+        //    SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+        //    SqlCommand cmd;
 
 
         //    string proc = "USP_DELETE_NASCHOOLID";
 
-        //    cmd = new OracleCommand(proc, cnn);
+        //    cmd = new SqlCommand(proc, cnn);
         //    cmd.CommandType = CommandType.StoredProcedure;
-        //    cmd.Parameters.Add("NVRATTSCHREASONID", NASchoolID);
+        //    cmd.Parameters.AddWithValue("NVRATTSCHREASONID", NASchoolID);
         //    cmd.Connection.Open();
 
         //    int result = cmd.ExecuteNonQuery();
@@ -263,18 +263,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteNASchoolById(int NASchoolID)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_DELETE_NASCHOOLID", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_DELETE_NASCHOOLID", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("NVRATTSCHREASONID", NASchoolID);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("NVRATTSCHREASONID", NASchoolID);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -309,19 +309,19 @@ namespace WIS_DataAccess
         public string EDITNASCHOOL(NeverAttendedSchoolBO NeverAttendedSchoolBOObj)
         {
             string returnResult = string.Empty;
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_UPDATENASCHOOL", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_UPDATENASCHOOL", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("NVRATTSCHREASONID", NeverAttendedSchoolBOObj.NVR_ATT_SCH_REASONID);
-                dcmd.Parameters.Add("NVRATTSCHREASON", NeverAttendedSchoolBOObj.NVR_ATT_SCH_REASON);
-                dcmd.Parameters.Add("DESCPT", NeverAttendedSchoolBOObj.DESCRIPTION);
-                dcmd.Parameters.Add("UPDTBY", NeverAttendedSchoolBOObj.UpdatedBy);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 100).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("NVRATTSCHREASONID", NeverAttendedSchoolBOObj.NVR_ATT_SCH_REASONID);
+                dcmd.Parameters.AddWithValue("NVRATTSCHREASON", NeverAttendedSchoolBOObj.NVR_ATT_SCH_REASON);
+                dcmd.Parameters.AddWithValue("DESCPT", NeverAttendedSchoolBOObj.DESCRIPTION);
+                dcmd.Parameters.AddWithValue("UPDTBY", NeverAttendedSchoolBOObj.UpdatedBy);
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 //return dcmd.ExecuteNonQuery();
 
                 dcmd.ExecuteNonQuery();
@@ -353,18 +353,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteNASchool(int NASchoolID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_OBSOLETE_NASCHOOLID", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_OBSOLETE_NASCHOOLID", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("NVRATTSCHREASONID", NASchoolID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("NVRATTSCHREASONID", NASchoolID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

@@ -198,7 +198,7 @@ namespace WIS
                     }
                 }
 
-                if (count == -1)
+                if (count > 0)
                 {
                     message = "Data saved successfully";
 

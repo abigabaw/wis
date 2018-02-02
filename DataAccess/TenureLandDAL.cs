@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -14,23 +14,23 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public TenureLandList GetTenureLand(string TenureLandName)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_LANDTENURE";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
             if (TenureLandName.ToString() == "")
             {
-                cmd.Parameters.Add("@LandTenureNameIN", DBNull.Value);
+                cmd.Parameters.AddWithValue("@LandTenureNameIN", DBNull.Value);
             }
             else
             {
-                cmd.Parameters.Add("@LandTenureNameIN", TenureLandName.ToString());
+                cmd.Parameters.AddWithValue("@LandTenureNameIN", TenureLandName.ToString());
             }
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             TenureLandBO objTenureLand = null;
             TenureLandList TenureLand = new TenureLandList();
             while (dr.Read())
@@ -54,16 +54,16 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_MST_INS_LANDTENURE", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_MST_INS_LANDTENURE", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("@LandTenureNameIN", objTenureLand.Lnd_Tenure);
-            myCommand.Parameters.Add("@ISDELETEDIN", "False");
-            myCommand.Parameters.Add("@USERIDIN", objTenureLand.CreatedBy);
-            myCommand.Parameters.Add("@errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("@LandTenureNameIN", objTenureLand.Lnd_Tenure);
+            myCommand.Parameters.AddWithValue("@ISDELETEDIN", "False");
+            myCommand.Parameters.AddWithValue("@USERIDIN", objTenureLand.CreatedBy);
+            myCommand.Parameters.AddWithValue("@errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             myConnection.Open();
             myCommand.ExecuteNonQuery();
@@ -80,13 +80,13 @@ namespace WIS_DataAccess
         //{
         //    int result = 0;
         //    {
-        //        OracleConnection myConnection;
-        //        OracleCommand myCommand;
-        //        myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-        //        myCommand = new OracleCommand("USP_MST_DEL_LANDTENURE", myConnection);
+        //        SqlConnection myConnection;
+        //        SqlCommand myCommand;
+        //        myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+        //        myCommand = new SqlCommand("USP_MST_DEL_LANDTENURE", myConnection);
         //        myCommand.Connection = myConnection;
         //        myCommand.CommandType = CommandType.StoredProcedure;
-        //        myCommand.Parameters.Add("@LandTenureIDIN", TenureLandId);
+        //        myCommand.Parameters.AddWithValue("@LandTenureIDIN", TenureLandId);
         //        myConnection.Open();
         //        result = myCommand.ExecuteNonQuery();
         //        myConnection.Close();
@@ -101,18 +101,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteTenureLand(int TenureLandId)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DEL_LANDTENURE", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DEL_LANDTENURE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("LandTenureIDIN", TenureLandId);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("LandTenureIDIN", TenureLandId);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -148,17 +148,17 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_MST_UPD_LANDTENURE", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_MST_UPD_LANDTENURE", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("@LandTenureIDIN", objTenureLand.Lnd_TenureId);
-            myCommand.Parameters.Add("@LandTenureNameIN", objTenureLand.Lnd_Tenure);
-            myCommand.Parameters.Add("@ISDELETEDIN", "False");
-            myCommand.Parameters.Add("@USERIDIN", objTenureLand.UpdatedBy);
-            myCommand.Parameters.Add("@errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("@LandTenureIDIN", objTenureLand.Lnd_TenureId);
+            myCommand.Parameters.AddWithValue("@LandTenureNameIN", objTenureLand.Lnd_Tenure);
+            myCommand.Parameters.AddWithValue("@ISDELETEDIN", "False");
+            myCommand.Parameters.AddWithValue("@USERIDIN", objTenureLand.UpdatedBy);
+            myCommand.Parameters.AddWithValue("@errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
             myConnection.Open();
             myCommand.ExecuteNonQuery();
@@ -177,15 +177,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public TenureLandBO GetTenureLandByTenureLand(int TenureLandID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_LANDTNRBYLANDTNRID";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@LandTenureIDIN", TenureLandID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("@LandTenureIDIN", TenureLandID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             TenureLandBO obTenureLand = null;
             while (dr.Read())
             {
@@ -200,18 +200,18 @@ namespace WIS_DataAccess
         //To Obsolete Tenure Land
         public string ObsoleteTenureLand(int TenureLandId, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETE_LANDTENURE", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETE_LANDTENURE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("LandTenureIDIN", TenureLandId);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("LandTenureIDIN", TenureLandId);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

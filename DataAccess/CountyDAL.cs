@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_BusinessObjects;
 
@@ -11,8 +11,8 @@ namespace WIS_DataAccess
    public class CountyDAL
     {
         string connStr = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
        /// <summary>
        /// To fetch details
@@ -21,15 +21,15 @@ namespace WIS_DataAccess
        /// <returns></returns>
        public CountyList GetCounty(string districtID)
        {
-           OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-           OracleCommand cmd;
+           SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+           SqlCommand cmd;
            string proc = "USP_MST_GET_COUNTY";
-           cmd = new OracleCommand(proc, con);
+           cmd = new SqlCommand(proc, con);
            cmd.CommandType = CommandType.StoredProcedure;
-           cmd.Parameters.Add("DISTRICTID_", districtID);
-           cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           cmd.Parameters.AddWithValue("DISTRICTID_", districtID);
+           // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
            cmd.Connection.Open();
-           OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+           SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
            CountyBO objcountBO = null;
            CountyList objcountlist = new CountyList();
 
@@ -53,17 +53,17 @@ namespace WIS_DataAccess
        {
            CountyList objCountyList = null;
 
-           using (cnn = new OracleConnection(connStr))
+           using (cnn = new SqlConnection(connStr))
            {
-               using (cmd = new OracleCommand("USP_MST_GET_COUNTY_ALL", cnn))
+               using (cmd = new SqlCommand("USP_MST_GET_COUNTY_ALL", cnn))
                {
                    cmd.CommandType = CommandType.StoredProcedure;
 
-                   cmd.Parameters.Add("DistrictIDIN", districtID);
-                   cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                   cmd.Parameters.AddWithValue("DistrictIDIN", districtID);
+                   // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
                    cmd.Connection.Open();
 
-                   OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                   SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                    CountyBO objCountyBO = null;
                    objCountyList = new CountyList();
@@ -94,17 +94,17 @@ namespace WIS_DataAccess
        {
            string result = "";
 
-           using (cnn = new OracleConnection(connStr))
+           using (cnn = new SqlConnection(connStr))
            {
-               using (cmd = new OracleCommand("USP_MST_INS_COUNTY", cnn))
+               using (cmd = new SqlCommand("USP_MST_INS_COUNTY", cnn))
                {
                    cmd.CommandType = CommandType.StoredProcedure;
                    cmd.Connection.Open();
 
-                   cmd.Parameters.Add("DISTRICTID_", objCountyBO.DistrictID);
-                   cmd.Parameters.Add("COUNTYNAME_", objCountyBO.CountyName);
-                   cmd.Parameters.Add("CREATEDBY_", objCountyBO.CreatedBy);
-                   cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                   cmd.Parameters.AddWithValue("DISTRICTID_", objCountyBO.DistrictID);
+                   cmd.Parameters.AddWithValue("COUNTYNAME_", objCountyBO.CountyName);
+                   cmd.Parameters.AddWithValue("CREATEDBY_", objCountyBO.CreatedBy);
+                   /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                    cmd.ExecuteNonQuery();
 
                    if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -125,17 +125,17 @@ namespace WIS_DataAccess
        {
            string result = "";
 
-           using (cnn = new OracleConnection(connStr))
+           using (cnn = new SqlConnection(connStr))
            {
-               using (cmd = new OracleCommand("USP_MST_UPD_COUNTY", cnn))
+               using (cmd = new SqlCommand("USP_MST_UPD_COUNTY", cnn))
                {
                    cmd.CommandType = CommandType.StoredProcedure;
                    cmd.Connection.Open();
 
-                   cmd.Parameters.Add("COUNTYID_", objCountyBO.CountyID);
-                   cmd.Parameters.Add("COUNTYNAME_", objCountyBO.CountyName);
-                   cmd.Parameters.Add("UPDATEDBY_", objCountyBO.UpdatedBy);
-                   cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                   cmd.Parameters.AddWithValue("COUNTYID_", objCountyBO.CountyID);
+                   cmd.Parameters.AddWithValue("COUNTYNAME_", objCountyBO.CountyName);
+                   cmd.Parameters.AddWithValue("UPDATEDBY_", objCountyBO.UpdatedBy);
+                   /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                    cmd.ExecuteNonQuery();
 
                    if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -156,15 +156,15 @@ namespace WIS_DataAccess
        {
            string result = "";
 
-           using (cnn = new OracleConnection(connStr))
+           using (cnn = new SqlConnection(connStr))
            {
-               using (cmd = new OracleCommand("USP_MST_DEL_COUNTY", cnn))
+               using (cmd = new SqlCommand("USP_MST_DEL_COUNTY", cnn))
                {
                    cmd.CommandType = CommandType.StoredProcedure;
                    cmd.Connection.Open();
 
-                   cmd.Parameters.Add("COUNTYID_", countyID);
-                   cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                   cmd.Parameters.AddWithValue("COUNTYID_", countyID);
+                   /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                    cmd.ExecuteNonQuery();
 
                    if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -187,18 +187,18 @@ namespace WIS_DataAccess
        {
            string result = "";
 
-           using (cnn = new OracleConnection(connStr))
+           using (cnn = new SqlConnection(connStr))
            {
-               using (cmd = new OracleCommand("USP_MST_OBS_COUNTY", cnn))
+               using (cmd = new SqlCommand("USP_MST_OBS_COUNTY", cnn))
                {
                    cmd.CommandType = CommandType.StoredProcedure;
                    cmd.Connection.Open();
 
-                   cmd.Parameters.Add("COUNTYID_", countyID);
-                   cmd.Parameters.Add("ISDELETED_", isDeleted);
-                   cmd.Parameters.Add("UPDATEDBY_", updatedBy);
+                   cmd.Parameters.AddWithValue("COUNTYID_", countyID);
+                   cmd.Parameters.AddWithValue("ISDELETED_", isDeleted);
+                   cmd.Parameters.AddWithValue("UPDATEDBY_", updatedBy);
                   
-                   cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                   /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                    cmd.ExecuteNonQuery();
 
                    if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -219,18 +219,18 @@ namespace WIS_DataAccess
        {
            proc = "USP_MST_GET_COUNTYBYID";
 
-           cnn = new OracleConnection(connStr);
+           cnn = new SqlConnection(connStr);
            CountyBO CountyBOobj = null;
 
-           cmd = new OracleCommand(proc, cnn);
+           cmd = new SqlCommand(proc, cnn);
            cmd.CommandType = CommandType.StoredProcedure;
 
-           cmd.Parameters.Add("COUNTYID_", countyID);
-           cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           cmd.Parameters.AddWithValue("COUNTYID_", countyID);
+           // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
            try
            {
                cmd.Connection.Open();
-               OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+               SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                while (dr.Read())
                {
                    CountyBOobj = new CountyBO();
@@ -256,15 +256,15 @@ namespace WIS_DataAccess
 
        public CountyList GetCounties(string County)
        {
-           OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-           OracleCommand cmd;
+           SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+           SqlCommand cmd;
            string proc = "USP_MST_SER_COUNTY";
-           cmd = new OracleCommand(proc, con);
+           cmd = new SqlCommand(proc, con);
            cmd.CommandType = CommandType.StoredProcedure;           
-           cmd.Parameters.Add("COUNTYNAME_", County);
-           cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           cmd.Parameters.AddWithValue("COUNTYNAME_", County);
+           // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
            cmd.Connection.Open();
-           OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+           SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
            CountyBO objcountBO = null;
            CountyList objcountlist = new CountyList();
 

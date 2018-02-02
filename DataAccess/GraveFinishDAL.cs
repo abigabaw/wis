@@ -1,5 +1,5 @@
 ﻿using System;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_BusinessObjects;
 
@@ -8,8 +8,8 @@ namespace WIS_DataAccess
     public class GraveFinishDAL
     {
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
         /// <summary>
         /// To fetch all details
@@ -17,14 +17,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public GraveFinishList GetAllGraveFinish()
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_ALLGRAVEFINISH";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             GraveFinishBO objGF = null;
             GraveFinishList objGFList = new GraveFinishList();
 
@@ -46,14 +46,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public GraveFinishList GetGraveFinish()
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_GRAVEFINISH";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             GraveFinishBO objGF = null; 
             GraveFinishList  objGFList = new GraveFinishList();
 
@@ -76,15 +76,15 @@ namespace WIS_DataAccess
         public GraveFinishBO GetGraveByID(int graveID)
         {
 
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_GRAVEFINISHBYID";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("GRV_FINISHID", graveID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("GRV_FINISHID", graveID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             GraveFinishBO objGF = null;
             GraveFinishList objGFList = new GraveFinishList();
 
@@ -109,19 +109,19 @@ namespace WIS_DataAccess
         {
             string returnResult;
 
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_MST_INS_GRAVEFINISH";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("GRV_FINISHTYPE", objGF.GraveFinishType);
+            cmd.Parameters.AddWithValue("GRV_FINISHTYPE", objGF.GraveFinishType);
 
-            cmd.Parameters.Add("ISDELETEDIN", objGF.IsDeleted);
-            cmd.Parameters.Add("CREATEDBY", objGF.CreatedBy);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ISDELETEDIN", objGF.IsDeleted);
+            cmd.Parameters.AddWithValue("CREATEDBY", objGF.CreatedBy);
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
@@ -131,16 +131,16 @@ namespace WIS_DataAccess
                 returnResult = string.Empty;
 
             return returnResult;
-            //OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            //SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             //int result = 0;
             //{
-            //    OracleCommand myCommand;
-            //    myCommand = new OracleCommand("USP_MST_INS_GRAVEFINISH", con);
+            //    SqlCommand myCommand;
+            //    myCommand = new SqlCommand("USP_MST_INS_GRAVEFINISH", con);
             //    myCommand.Connection = con;
             //    myCommand.CommandType = CommandType.StoredProcedure;
-            //    myCommand.Parameters.Add("@GRV_FINISHTYPE", OracleDbType.Varchar2, 25).Value = objGF.GraveFinishType;
-            //    myCommand.Parameters.Add("@ISDELETEDIN", OracleDbType.Varchar2, 5).Value = "False";
-            //    myCommand.Parameters.Add("@CREATEDBY", OracleDbType.Int64, 5).Value = 1;
+            //    myCommand.Parameters.AddWithValue("@GRV_FINISHTYPE", SqlDbType.NVarChar).Value = objGF.GraveFinishType;
+            //    myCommand.Parameters.AddWithValue("@ISDELETEDIN", SqlDbType.NVarChar).Value = "False";
+            //    myCommand.Parameters.AddWithValue("@CREATEDBY", SqlDbType.BigInt, 5).Value = 1;
             //    con.Open();
             //    result = myCommand.ExecuteNonQuery();
             //    con.Close();
@@ -155,16 +155,16 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteGrave(int graveID)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             string retrunResult = string.Empty;
             int result = 0;
             {
-                OracleCommand myCommand;
-                myCommand = new OracleCommand("USP_MST_DEL_GRAVEFINISH", con);
+                SqlCommand myCommand;
+                myCommand = new SqlCommand("USP_MST_DEL_GRAVEFINISH", con);
                 myCommand.Connection = con;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("GRV_FINISHID", graveID);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("GRV_FINISHID", graveID);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 con.Open();
                 myCommand.ExecuteNonQuery();
 
@@ -183,19 +183,19 @@ namespace WIS_DataAccess
         public string UpdateGrave(GraveFinishBO objGF)
         {
             string returnResult;
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_MST_UPD_GRAVEFINISH";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            cmd.Parameters.Add("GRV_FINISHID", objGF.GraveFinishID);
-            cmd.Parameters.Add("GRV_FINISHTYPE", objGF.GraveFinishType);
+            cmd.Parameters.AddWithValue("GRV_FINISHID", objGF.GraveFinishID);
+            cmd.Parameters.AddWithValue("GRV_FINISHTYPE", objGF.GraveFinishType);
 
-            cmd.Parameters.Add("UPDATEDBY", objGF.CreatedBy);
+            cmd.Parameters.AddWithValue("UPDATEDBY", objGF.CreatedBy);
 
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
@@ -205,24 +205,24 @@ namespace WIS_DataAccess
                 returnResult = string.Empty;
 
             return returnResult;
-            //OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            //SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             //int result = 0;
             //{
-            //    OracleCommand myCommand;
-            //    myCommand = new OracleCommand("USP_MST_UPD_GRAVEFINISH", con);
+            //    SqlCommand myCommand;
+            //    myCommand = new SqlCommand("USP_MST_UPD_GRAVEFINISH", con);
             //    myCommand.Connection = con;
             //    myCommand.CommandType = CommandType.StoredProcedure;
-            //    myCommand.Parameters.Add("GRV_FINISHID", objGF.GraveFinishID);
+            //    myCommand.Parameters.AddWithValue("GRV_FINISHID", objGF.GraveFinishID);
             //    if (string.IsNullOrEmpty(objGF.GraveFinishType) == true)
             //    {
-            //        myCommand.Parameters.Add("GRV_FINISHTYPE", OracleDbType.Varchar2, 250).Value = " ";
+            //        myCommand.Parameters.AddWithValue("GRV_FINISHTYPE", SqlDbType.NVarChar).Value = " ";
             //    }
             //    else
             //    {
-            //        myCommand.Parameters.Add("GRV_FINISHTYPE", OracleDbType.Varchar2, 250).Value = objGF.GraveFinishType;
+            //        myCommand.Parameters.AddWithValue("GRV_FINISHTYPE", SqlDbType.NVarChar).Value = objGF.GraveFinishType;
                     
             //    }
-            //    myCommand.Parameters.Add("UPDATEDBY", OracleDbType.Int64, 5).Value = 1;              
+            //    myCommand.Parameters.AddWithValue("UPDATEDBY", SqlDbType.BigInt, 5).Value = 1;              
             //    con.Open();
             //    result = myCommand.ExecuteNonQuery();
             //    con.Close();
@@ -238,19 +238,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteGraveFinish(int FloorTypeID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETE_GRAVEFINISH", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETE_GRAVEFINISH", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
 
-                myCommand.Parameters.Add("grv_finishid_", FloorTypeID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("grv_finishid_", FloorTypeID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();

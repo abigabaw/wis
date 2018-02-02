@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -14,21 +14,21 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ProjectPersonalList GetUsers()
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GET_USERSPROJECT";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ProjectPersonalBO ObjPP = null;
             ProjectPersonalList ObjPPList = new ProjectPersonalList();
 
             while (dr.Read())
             {
                 ObjPP = new ProjectPersonalBO();
-                ObjPP.UserID = (Convert.ToInt32(dr.GetValue(dr.GetOrdinal("USERID"))));
+                ObjPP.UserID = (int)dr.GetDecimal(dr.GetOrdinal("USERID"));
                 ObjPP.Username = dr.GetValue(dr.GetOrdinal("USERNAME")).ToString();
                 
                 ObjPPList.Add(ObjPP);
@@ -45,19 +45,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string CheckUser(int UserID, int ProjectId)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_CHECKUSER", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_CHECKUSER", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("UserId_", UserID);
-                myCommand.Parameters.Add("PROJECTID_", ProjectId);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("UserId_", UserID);
+                myCommand.Parameters.AddWithValue("PROJECTID_", ProjectId);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -84,24 +84,24 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ProjectPersonalList GetProjectPersonnel(int projectID)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_PROJECT_PERSONAL";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("PROJECTID_", projectID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PROJECTID_", projectID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ProjectPersonalBO objPP = null;
             ProjectPersonalList objPPList = new ProjectPersonalList();
 
             while (dr.Read())
             {
                 objPP = new ProjectPersonalBO();
-                objPP.UserID = dr.GetInt32(dr.GetOrdinal("USERID"));
+                objPP.UserID = (int)dr.GetDecimal(dr.GetOrdinal("USERID"));
                 objPP.Username = dr.GetValue(dr.GetOrdinal("USERNAME")).ToString();
                 objPPList.Add(objPP);
             }
@@ -117,16 +117,16 @@ namespace WIS_DataAccess
         /// <param name="objPPList"></param>
         public void AddPersonal(int projectID, ProjectPersonalList objPPList)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
 
-            OracleCommand myCommand; 
-            myCommand = new OracleCommand("USP_TRN_DEL_PROJECT_PERSONAL", con);
+            SqlCommand myCommand; 
+            myCommand = new SqlCommand("USP_TRN_DEL_PROJECT_PERSONAL", con);
             myCommand.Connection = con;
             myCommand.CommandType = CommandType.StoredProcedure;
 
             con.Open();
 
-            myCommand.Parameters.Add("PROJECTID_", projectID);
+            myCommand.Parameters.AddWithValue("PROJECTID_", projectID);
             myCommand.ExecuteNonQuery();
 
             if (objPPList.Count > 0)
@@ -134,9 +134,9 @@ namespace WIS_DataAccess
                 myCommand.Parameters.Clear();
                 myCommand.CommandText = "USP_TRN_INS_PROJECT_PERSONAL";
 
-                myCommand.Parameters.Add("@PROJECTID", "");
-                myCommand.Parameters.Add("@USERID", "");
-                myCommand.Parameters.Add("@CREATEDBY", "");
+                myCommand.Parameters.AddWithValue("@PROJECTID", "");
+                myCommand.Parameters.AddWithValue("@USERID", "");
+                myCommand.Parameters.AddWithValue("@CREATEDBY", "");
             
                 foreach (ProjectPersonalBO objPP in objPPList)
                 {
@@ -157,25 +157,25 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ProjectPersonalList GetProjectOtherPersonnel(int projectID,int UserId)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_PROJ_OTH_PERSONAL";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("PROJECTID_", projectID);
-            cmd.Parameters.Add("UserId_", UserId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PROJECTID_", projectID);
+            cmd.Parameters.AddWithValue("UserId_", UserId);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ProjectPersonalBO objPP = null;
             ProjectPersonalList objPPList = new ProjectPersonalList();
 
             while (dr.Read())
             {
                 objPP = new ProjectPersonalBO();
-                objPP.UserID = dr.GetInt32(dr.GetOrdinal("USERID"));
+                objPP.UserID = (int)dr.GetDecimal(dr.GetOrdinal("USERID"));
                 objPP.Username = dr.GetValue(dr.GetOrdinal("USERNAME")).ToString();
                 objPPList.Add(objPP);
             }
@@ -187,24 +187,24 @@ namespace WIS_DataAccess
         //Edwin 30MAY2016 - Added to retrieve all users in the system for disclosure information update
         public ProjectPersonalList GetAllPersonnel(int projectID)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_PROJ_ALL_PERSONAL";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            // cmd.Parameters.Add("PROJECTID_", projectID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // cmd.Parameters.AddWithValue("PROJECTID_", projectID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ProjectPersonalBO objPP = null;
             ProjectPersonalList objPPList = new ProjectPersonalList();
 
             while (dr.Read())
             {
                 objPP = new ProjectPersonalBO();
-                objPP.UserID = dr.GetInt32(dr.GetOrdinal("USERID"));
+                objPP.UserID = (int)dr.GetDecimal(dr.GetOrdinal("USERID"));
                 objPP.Username = dr.GetValue(dr.GetOrdinal("USERNAME")).ToString();
                 objPPList.Add(objPP);
             }

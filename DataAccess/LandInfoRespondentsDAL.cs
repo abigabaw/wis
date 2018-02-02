@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_DataAccess;
 using WIS_BusinessObjects;
@@ -20,15 +20,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public LandInfoRespondentsList GetLandInfoRespondents(int HHID)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GET_LND_RESP_HOLDNG";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("HHID_", HHID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", HHID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             LandInfoRespondentsBO objLIRBLL = null;
             LandInfoRespondentsList objLIRLIST = new LandInfoRespondentsList();
 
@@ -64,15 +64,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public LandInfoRespondentsBO GetLandInfoRespondentsByID(int holdingID)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GET_LND_RESP_HOLDGBYID";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("LND_HOLDINGID", holdingID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("LND_HOLDINGID", holdingID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             LandInfoRespondentsBO objLIRBLL = null;
             LandInfoRespondentsList objLIRLIST = new LandInfoRespondentsList();
 
@@ -187,48 +187,48 @@ namespace WIS_DataAccess
         /// <param name="objLIRBO"></param>
         public void AddLandInfoRespondents(LandInfoRespondentsBO objLIRBO)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             int result = 0;
             {
-                OracleCommand myCommand;
-                myCommand = new OracleCommand("USP_TRN_INS_LND_RESP_HOLDNG", con);
+                SqlCommand myCommand;
+                myCommand = new SqlCommand("USP_TRN_INS_LND_RESP_HOLDNG", con);
                 myCommand.Connection = con;
                 myCommand.CommandType = CommandType.StoredProcedure;
 
-                myCommand.Parameters.Add("LND_HOLDINGID_", objLIRBO.HOLDINGID);
-                myCommand.Parameters.Add("HHID_", objLIRBO.HID);
+                myCommand.Parameters.AddWithValue("LND_HOLDINGID_", objLIRBO.HOLDINGID);
+                myCommand.Parameters.AddWithValue("HHID_", objLIRBO.HID);
 
                 if (objLIRBO.LND_TYPEID == 0)
-                    myCommand.Parameters.Add("LND_TYPEID_", DBNull.Value);
+                    myCommand.Parameters.AddWithValue("LND_TYPEID_", DBNull.Value);
                 else
-                    myCommand.Parameters.Add("LND_TYPEID_", objLIRBO.LND_TYPEID);
+                    myCommand.Parameters.AddWithValue("LND_TYPEID_", objLIRBO.LND_TYPEID);
 
                 if (objLIRBO.LND_USEID == 0)
-                    myCommand.Parameters.Add("LND_USEID_", DBNull.Value);
+                    myCommand.Parameters.AddWithValue("LND_USEID_", DBNull.Value);
                 else
-                    myCommand.Parameters.Add("LND_USEID_", objLIRBO.LND_USEID);
+                    myCommand.Parameters.AddWithValue("LND_USEID_", objLIRBO.LND_USEID);
 
-                myCommand.Parameters.Add("DISTRICT_", objLIRBO.DISTRICT);
-                myCommand.Parameters.Add("COUNTY_", objLIRBO.COUNTY);
-                myCommand.Parameters.Add("SUBCOUNTY_", objLIRBO.SUBCOUNTY);
-                myCommand.Parameters.Add("VILLAGE_", objLIRBO.VILLAGE);
+                myCommand.Parameters.AddWithValue("DISTRICT_", objLIRBO.DISTRICT);
+                myCommand.Parameters.AddWithValue("COUNTY_", objLIRBO.COUNTY);
+                myCommand.Parameters.AddWithValue("SUBCOUNTY_", objLIRBO.SUBCOUNTY);
+                myCommand.Parameters.AddWithValue("VILLAGE_", objLIRBO.VILLAGE);
 
                 if (objLIRBO.TenureId == 0)
-                    myCommand.Parameters.Add("STR_TENUREID_", DBNull.Value);
+                    myCommand.Parameters.AddWithValue("STR_TENUREID_", DBNull.Value);
                 else
-                    myCommand.Parameters.Add("STR_TENUREID_", objLIRBO.TenureId);
+                    myCommand.Parameters.AddWithValue("STR_TENUREID_", objLIRBO.TenureId);
 
-                myCommand.Parameters.Add("TENURE_", objLIRBO.TENURE);
+                myCommand.Parameters.AddWithValue("TENURE_", objLIRBO.TENURE);
 
                 if (objLIRBO.TOTALSIZE == -1)
-                    myCommand.Parameters.Add("TOTALSIZE_", DBNull.Value);
+                    myCommand.Parameters.AddWithValue("TOTALSIZE_", DBNull.Value);
                 else
-                    myCommand.Parameters.Add("TOTALSIZE_", objLIRBO.TOTALSIZE);
+                    myCommand.Parameters.AddWithValue("TOTALSIZE_", objLIRBO.TOTALSIZE);
 
-                myCommand.Parameters.Add("ISPRIMARYRESIDENCE_", objLIRBO.ISPRIMARYRESIDENCE);
-                myCommand.Parameters.Add("ISAFFECTED_", objLIRBO.ISAFFECTED);
-                myCommand.Parameters.Add("ISDELETEDIN", OracleDbType.Varchar2, 5).Value = "False";
-                myCommand.Parameters.Add("CREATEDBY", objLIRBO.UpdatedBy);
+                myCommand.Parameters.AddWithValue("ISPRIMARYRESIDENCE_", objLIRBO.ISPRIMARYRESIDENCE);
+                myCommand.Parameters.AddWithValue("ISAFFECTED_", objLIRBO.ISAFFECTED);
+                myCommand.Parameters.AddWithValue("ISDELETEDIN", SqlDbType.NVarChar).Value = "False";
+                myCommand.Parameters.AddWithValue("CREATEDBY", objLIRBO.UpdatedBy);
                 con.Open();
                 result = myCommand.ExecuteNonQuery();
                 con.Close();
@@ -244,14 +244,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int DeleteLandInfoRespondents(int holdingID)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             int result = 0;
             {
-                OracleCommand myCommand;
-                myCommand = new OracleCommand("USP_TRN_DEL_LND_RESP_HOLDNG", con);
+                SqlCommand myCommand;
+                myCommand = new SqlCommand("USP_TRN_DEL_LND_RESP_HOLDNG", con);
                 myCommand.Connection = con;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("LND_HOLDINGID", OracleDbType.Int64, 5).Value = holdingID;
+                myCommand.Parameters.AddWithValue("LND_HOLDINGID", SqlDbType.BigInt).Value = holdingID;
                 con.Open();
                 result = myCommand.ExecuteNonQuery();
                 con.Close();
@@ -266,65 +266,65 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int UpdateLandInfoRespondents(LandInfoRespondentsBO objLIRBO)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             int result = 0;
             {
-                OracleCommand myCommand;
-                myCommand = new OracleCommand("USP_TRN_UPD_LND_RESP_HOLDNG", con);
+                SqlCommand myCommand;
+                myCommand = new SqlCommand("USP_TRN_UPD_LND_RESP_HOLDNG", con);
                 myCommand.Connection = con;
                 myCommand.CommandType = CommandType.StoredProcedure;
 
-                myCommand.Parameters.Add("LND_HOLDINGID_", objLIRBO.HOLDINGID);
-                myCommand.Parameters.Add("HHID_", objLIRBO.HID);
+                myCommand.Parameters.AddWithValue("LND_HOLDINGID_", objLIRBO.HOLDINGID);
+                myCommand.Parameters.AddWithValue("HHID_", objLIRBO.HID);
 
                 if (objLIRBO.LND_TYPEID == 0)
-                    myCommand.Parameters.Add("LND_TYPEID_", DBNull.Value);
+                    myCommand.Parameters.AddWithValue("LND_TYPEID_", DBNull.Value);
                 else
-                    myCommand.Parameters.Add("LND_TYPEID_", objLIRBO.LND_TYPEID);
+                    myCommand.Parameters.AddWithValue("LND_TYPEID_", objLIRBO.LND_TYPEID);
 
                 if (objLIRBO.LND_USEID == 0)
-                    myCommand.Parameters.Add("LND_USEID_", DBNull.Value);
+                    myCommand.Parameters.AddWithValue("LND_USEID_", DBNull.Value);
                 else
-                    myCommand.Parameters.Add("LND_USEID_", objLIRBO.LND_USEID);
+                    myCommand.Parameters.AddWithValue("LND_USEID_", objLIRBO.LND_USEID);
 
-                myCommand.Parameters.Add("DISTRICT_", objLIRBO.DISTRICT);
-                myCommand.Parameters.Add("COUNTY_", objLIRBO.COUNTY);
-                myCommand.Parameters.Add("SUBCOUNTY_", objLIRBO.SUBCOUNTY);
-                myCommand.Parameters.Add("VILLAGE_", objLIRBO.VILLAGE);
+                myCommand.Parameters.AddWithValue("DISTRICT_", objLIRBO.DISTRICT);
+                myCommand.Parameters.AddWithValue("COUNTY_", objLIRBO.COUNTY);
+                myCommand.Parameters.AddWithValue("SUBCOUNTY_", objLIRBO.SUBCOUNTY);
+                myCommand.Parameters.AddWithValue("VILLAGE_", objLIRBO.VILLAGE);
 
                 if (objLIRBO.TenureId == 0)
-                    myCommand.Parameters.Add("STR_TENUREID_", DBNull.Value);
+                    myCommand.Parameters.AddWithValue("STR_TENUREID_", DBNull.Value);
                 else
-                    myCommand.Parameters.Add("STR_TENUREID_", objLIRBO.TenureId);
+                    myCommand.Parameters.AddWithValue("STR_TENUREID_", objLIRBO.TenureId);
                 
-                myCommand.Parameters.Add("TENURE_", objLIRBO.TENURE);
+                myCommand.Parameters.AddWithValue("TENURE_", objLIRBO.TENURE);
 
                 if (objLIRBO.TOTALSIZE == -1)
-                    myCommand.Parameters.Add("TOTALSIZE_", DBNull.Value);
+                    myCommand.Parameters.AddWithValue("TOTALSIZE_", DBNull.Value);
                 else
-                    myCommand.Parameters.Add("TOTALSIZE_", objLIRBO.TOTALSIZE);
+                    myCommand.Parameters.AddWithValue("TOTALSIZE_", objLIRBO.TOTALSIZE);
 
-                myCommand.Parameters.Add("ISPRIMARYRESIDENCE_", objLIRBO.ISPRIMARYRESIDENCE);
-                myCommand.Parameters.Add("ISAFFECTED_", objLIRBO.ISAFFECTED);
-                //myCommand.Parameters.Add("ISAFFECTED_", OracleDbType.Varchar2, 5).Value = "False";
-                myCommand.Parameters.Add("UPDATEDBYIN", objLIRBO.UpdatedBy);
+                myCommand.Parameters.AddWithValue("ISPRIMARYRESIDENCE_", objLIRBO.ISPRIMARYRESIDENCE);
+                myCommand.Parameters.AddWithValue("ISAFFECTED_", objLIRBO.ISAFFECTED);
+                //myCommand.Parameters.AddWithValue("ISAFFECTED_", SqlDbType.NVarChar).Value = "False";
+                myCommand.Parameters.AddWithValue("UPDATEDBYIN", objLIRBO.UpdatedBy);
 
 
 
-                //myCommand.Parameters.Add("LND_HOLDINGID_", objLIRBLL.HOLDINGID);
-                //myCommand.Parameters.Add("HHID_", objLIRBLL.HID);
-                //myCommand.Parameters.Add("LND_TYPEID_", objLIRBLL.LND_TYPEID);
-                //myCommand.Parameters.Add("LND_USEID_", objLIRBLL.LND_USEID);
-                //myCommand.Parameters.Add("DISTRICT_", objLIRBLL.DISTRICT);
-                //myCommand.Parameters.Add("COUNTY_", objLIRBLL.COUNTY);
-                //myCommand.Parameters.Add("SUBCOUNTY_", objLIRBLL.SUBCOUNTY);
-                //myCommand.Parameters.Add("VILLAGE_", objLIRBLL.VILLAGE);
-                //myCommand.Parameters.Add("TENURE_", objLIRBLL.TENURE);
-                //myCommand.Parameters.Add("TOTALSIZE_", objLIRBLL.TOTALSIZE);
-                //myCommand.Parameters.Add("ISPRIMARYRESIDENCE_", objLIRBLL.ISPRIMARYRESIDENCE);
-                //myCommand.Parameters.Add("ISAFFECTED_", objLIRBLL.ISAFFECTED);
+                //myCommand.Parameters.AddWithValue("LND_HOLDINGID_", objLIRBLL.HOLDINGID);
+                //myCommand.Parameters.AddWithValue("HHID_", objLIRBLL.HID);
+                //myCommand.Parameters.AddWithValue("LND_TYPEID_", objLIRBLL.LND_TYPEID);
+                //myCommand.Parameters.AddWithValue("LND_USEID_", objLIRBLL.LND_USEID);
+                //myCommand.Parameters.AddWithValue("DISTRICT_", objLIRBLL.DISTRICT);
+                //myCommand.Parameters.AddWithValue("COUNTY_", objLIRBLL.COUNTY);
+                //myCommand.Parameters.AddWithValue("SUBCOUNTY_", objLIRBLL.SUBCOUNTY);
+                //myCommand.Parameters.AddWithValue("VILLAGE_", objLIRBLL.VILLAGE);
+                //myCommand.Parameters.AddWithValue("TENURE_", objLIRBLL.TENURE);
+                //myCommand.Parameters.AddWithValue("TOTALSIZE_", objLIRBLL.TOTALSIZE);
+                //myCommand.Parameters.AddWithValue("ISPRIMARYRESIDENCE_", objLIRBLL.ISPRIMARYRESIDENCE);
+                //myCommand.Parameters.AddWithValue("ISAFFECTED_", objLIRBLL.ISAFFECTED);
 
-                //myCommand.Parameters.Add("UPDATEDBY", objLIRBLL.Userid);
+                //myCommand.Parameters.AddWithValue("UPDATEDBY", objLIRBLL.Userid);
                 //}
 
                 con.Open();

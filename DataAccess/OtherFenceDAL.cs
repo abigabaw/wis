@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_DataAccess;
 using WIS_BusinessObjects;
 
@@ -15,25 +15,25 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int EditFence(OtherFenceBO FenceBOobj)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_UPD_OTHERFENCE", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_UPD_OTHERFENCE", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("PAP_FIXTUREID_", FenceBOobj.Pap_otherfenceid);
-                dcmd.Parameters.Add("HHID", FenceBOobj.HouseholdID);
-                dcmd.Parameters.Add("FIXTURETYPE_", FenceBOobj.Otherfencedescription);
-                dcmd.Parameters.Add("DIMEN_LENGTH_", FenceBOobj.DIMEN_LENGTH);
-                dcmd.Parameters.Add("DIMEN_WIDTH_", FenceBOobj.DIMEN_WIDTH);
-                dcmd.Parameters.Add("DEPRECIATEDVALUE_", FenceBOobj.Depreciatedvalue);
-                dcmd.Parameters.Add("UPDATEDBY_", FenceBOobj.CreatedBy);
+                dcmd.Parameters.AddWithValue("PAP_FIXTUREID_", FenceBOobj.Pap_otherfenceid);
+                dcmd.Parameters.AddWithValue("HHID", FenceBOobj.HouseholdID);
+                dcmd.Parameters.AddWithValue("FIXTURETYPE_", FenceBOobj.Otherfencedescription);
+                dcmd.Parameters.AddWithValue("DIMEN_LENGTH_", FenceBOobj.DIMEN_LENGTH);
+                dcmd.Parameters.AddWithValue("DIMEN_WIDTH_", FenceBOobj.DIMEN_WIDTH);
+                dcmd.Parameters.AddWithValue("DEPRECIATEDVALUE_", FenceBOobj.Depreciatedvalue);
+                dcmd.Parameters.AddWithValue("UPDATEDBY_", FenceBOobj.CreatedBy);
                 //if (FenceBOobj.Photo != null)
-                //    dcmd.Parameters.Add("FENCEPHOTO_", OracleDbType.Blob).Value = FenceBOobj.Photo;
+                //    dcmd.Parameters.AddWithValue("FENCEPHOTO_", SqlDbType.Image).Value = FenceBOobj.Photo;
                 //else
-                //    dcmd.Parameters.Add("FENCEPHOTO_", Oracle.DataAccess.Types.OracleBlob.Null);
+                //    dcmd.Parameters.AddWithValue("FENCEPHOTO_", DBNull.Value);
                 return dcmd.ExecuteNonQuery();
             }
             catch
@@ -56,20 +56,20 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int Insert(OtherFenceBO FenceBOobj)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_INS_OTHERFENCE", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_INS_OTHERFENCE", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("HHID", FenceBOobj.HouseholdID);
-                dcmd.Parameters.Add("FIXTURETYPE_", FenceBOobj.Otherfencedescription);
-                dcmd.Parameters.Add("DIMEN_LENGTH_", FenceBOobj.DIMEN_LENGTH);
-                dcmd.Parameters.Add("DIMEN_WIDTH_", FenceBOobj.DIMEN_WIDTH);
-                dcmd.Parameters.Add("DEPRECIATEDVALUE_", FenceBOobj.Depreciatedvalue);
-                dcmd.Parameters.Add("CREATEDBY_", FenceBOobj.CreatedBy);
+                dcmd.Parameters.AddWithValue("HHID", FenceBOobj.HouseholdID);
+                dcmd.Parameters.AddWithValue("FIXTURETYPE_", FenceBOobj.Otherfencedescription);
+                dcmd.Parameters.AddWithValue("DIMEN_LENGTH_", FenceBOobj.DIMEN_LENGTH);
+                dcmd.Parameters.AddWithValue("DIMEN_WIDTH_", FenceBOobj.DIMEN_WIDTH);
+                dcmd.Parameters.AddWithValue("DEPRECIATEDVALUE_", FenceBOobj.Depreciatedvalue);
+                dcmd.Parameters.AddWithValue("CREATEDBY_", FenceBOobj.CreatedBy);
               
 
                 return dcmd.ExecuteNonQuery();
@@ -95,20 +95,20 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public OtherFenceList GetFencedata(int householdID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_PAP_OTHERFIXTURES";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HHID_", householdID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", householdID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             OtherFenceBO FenceBOobj = null;
             OtherFenceList FenceListobj = new OtherFenceList();
@@ -138,13 +138,13 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int Delete(int Pap_fenceid)
         {
-            OracleConnection conn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection conn = new SqlConnection(AppConfiguration.ConnectionString);
             conn.Open();
-            OracleCommand dCmd = new OracleCommand("USP_TRN_DEL_OTHERFENCE", conn);
+            SqlCommand dCmd = new SqlCommand("USP_TRN_DEL_OTHERFENCE", conn);
             dCmd.CommandType = CommandType.StoredProcedure;
             try
             {
-                dCmd.Parameters.Add("PAP_FIXTUREID_", Pap_fenceid);
+                dCmd.Parameters.AddWithValue("PAP_FIXTUREID_", Pap_fenceid);
                 return dCmd.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -168,19 +168,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public OtherFenceBO Getfencedatarow(int Pap_fenceid)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_OTHERFENCE";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("PAP_FIXTUREID_", Pap_fenceid);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PAP_FIXTUREID_", Pap_fenceid);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             OtherFenceBO FenceBOobj = null;
 
             FenceBOobj = new OtherFenceBO();
@@ -202,15 +202,15 @@ namespace WIS_DataAccess
         // to get Image File for DataBase
         public OtherFenceBO ShowPAPOHFIXImage(int householdID, int PermanentStructureID)
         {
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_TRN_GETOTHERFENCEPHOTO", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_TRN_GETOTHERFENCEPHOTO", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("HHID_", householdID);
-            myCommand.Parameters.Add("PermanentStructureID_", PermanentStructureID);
-            myCommand.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("HHID_", householdID);
+            myCommand.Parameters.AddWithValue("PermanentStructureID_", PermanentStructureID);
+            // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             myCommand.Connection.Open();
             object img = myCommand.ExecuteScalar();

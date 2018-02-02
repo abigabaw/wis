@@ -2,7 +2,7 @@
 using WIS_BusinessObjects;
 using WIS_BusinessLogic;
 using System.DirectoryServices;
-
+using System.Security.Cryptography;
 
 namespace WIS
 {
@@ -127,11 +127,19 @@ namespace WIS
         /// </summary>
         private bool IsLDAPAuthenticated(string domainName, string usrID, string pwd)
         {
-            if (domainName == "UETCL")
+            //Edwin: Old Logic ... if (domainName == "UETCL") { return true; }
+            
+            //Edwin: 22/01/2018 - Global Password Things
+            LoginBLL objLoginBLL = null;
+            objLoginBLL = new LoginBLL();
+            LoginBO objLogin = objLoginBLL.DBAuth(usrID, pwd);
+
+            if (GetMD5(pwd) == objLogin.PASSWORD)
             {
                 Boolean found = false;
                 return found = true;
             }
+            //End: Edwin
             else
             {
                 // return WIS_Utility.Utility.IsValidUser(domainName, usrID, pwd);
@@ -159,15 +167,38 @@ namespace WIS
                 }
             }
 
-            /*** 
-            if (domainName == "UETCL")
-                return true;
-            else
-                return WIS_Utility.Utility.IsValidUser(domainName, usrID, pwd);
-
-    ***/
-
 
         }
+
+        //Edwin: 22/01/2018 - Encrypt User Provide Pass for Comparison
+        private string GetMD5(string input)
+
+        {
+
+            // step 1, calculate MD5 hash from input
+
+            MD5 md5 = System.Security.Cryptography.MD5.Create();
+
+            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+
+            byte[] hash = md5.ComputeHash(inputBytes);
+
+
+            // step 2, convert byte array to hex string
+
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+            for (int i = 0; i < hash.Length; i++)
+
+            {
+
+                
+                sb.Append(hash[i].ToString("x2"));
+
+            }
+
+            return sb.ToString();
+
+        } //End: Edwin
     }
 }

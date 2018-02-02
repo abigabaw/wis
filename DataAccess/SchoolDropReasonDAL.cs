@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -15,17 +15,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string Insert(SchoolDropReasonBO SchoolDropReasonBOobj)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             con.Open();
-            OracleCommand dcmd = new OracleCommand("usp_MST_INSERTSCHOOLDROP", con);
+            SqlCommand dcmd = new SqlCommand("usp_MST_INSERTSCHOOLDROP", con);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
             try
             {
-                dcmd.Parameters.Add("p_SCH_DRP_REASON", SchoolDropReasonBOobj.Schooldropreason);
-                dcmd.Parameters.Add("p_DESCRIPTION", SchoolDropReasonBOobj.Description);
-                dcmd.Parameters.Add("p_CREATEDBY", SchoolDropReasonBOobj.Createdby);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 100).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("p_SCH_DRP_REASON", SchoolDropReasonBOobj.Schooldropreason);
+                dcmd.Parameters.AddWithValue("p_DESCRIPTION", SchoolDropReasonBOobj.Description);
+                dcmd.Parameters.AddWithValue("p_CREATEDBY", SchoolDropReasonBOobj.Createdby);
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 //return dcmd.ExecuteNonQuery();
 
                 dcmd.ExecuteNonQuery();
@@ -55,17 +55,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public SchoolDropReasonList GetschoolDropReason()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
-            string proc = " USP_MST_GETSCHOOLDROPREASON";
+            string proc = "USP_MST_GETSCHOOLDROPREASON";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             SchoolDropReasonBO objUser = null;
             SchoolDropReasonList ReasonList = new SchoolDropReasonList();
 
@@ -91,17 +91,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public SchoolDropReasonList GetAllSchoolDropReason()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
-            string proc = " USP_MST_GETSCHOOLDROPREASONALL";
+            string proc = "USP_MST_GETSCHOOLDROPREASONALL";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             SchoolDropReasonBO objUser = null;
             SchoolDropReasonList ReasonList = new SchoolDropReasonList();
 
@@ -132,19 +132,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public SchoolDropReasonBO GetschoolDropReasonbyID(int SchooldropreasonID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_SCHOOLDROPBYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("p_SCH_DRP_REASONID", SchooldropreasonID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("p_SCH_DRP_REASONID", SchooldropreasonID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             SchoolDropReasonBO SchoolDropReasonBOobj = null;
             SchoolDropReasonList Users = new SchoolDropReasonList();
 
@@ -185,13 +185,13 @@ namespace WIS_DataAccess
         }
         //public int Delete(int reasonid)
         //{
-        //    OracleConnection conn = new OracleConnection(AppConfiguration.ConnectionString);
+        //    SqlConnection conn = new SqlConnection(AppConfiguration.ConnectionString);
         //    conn.Open();
-        //    OracleCommand dCmd = new OracleCommand("USP_MST_DELETESCHOOLDROP", conn);
+        //    SqlCommand dCmd = new SqlCommand("USP_MST_DELETESCHOOLDROP", conn);
         //    dCmd.CommandType = CommandType.StoredProcedure;
         //    try
         //    {
-        //        dCmd.Parameters.Add("p_SCH_DRP_REASONID", reasonid);
+        //        dCmd.Parameters.AddWithValue("p_SCH_DRP_REASONID", reasonid);
         //        return dCmd.ExecuteNonQuery();
         //    }
         //    catch (Exception ex)
@@ -215,18 +215,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string Delete(int reasonid)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DELETESCHOOLDROP", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DELETESCHOOLDROP", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("p_SCH_DRP_REASONID", reasonid);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("p_SCH_DRP_REASONID", reasonid);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -262,17 +262,17 @@ namespace WIS_DataAccess
         public string Update(SchoolDropReasonBO SchoolDropReasonBOobj, int reasonid)
         {
             string returnResult = string.Empty;
-            OracleConnection conn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection conn = new SqlConnection(AppConfiguration.ConnectionString);
             conn.Open();
-            OracleCommand dCmd = new OracleCommand("USP_MST_UPDATESCHOOLDROP", conn);
+            SqlCommand dCmd = new SqlCommand("USP_MST_UPDATESCHOOLDROP", conn);
             dCmd.CommandType = CommandType.StoredProcedure;
             try
             {
-                dCmd.Parameters.Add("p_SCH_DRP_REASONID", reasonid);
-                dCmd.Parameters.Add("p_SCH_DRP_REASON", SchoolDropReasonBOobj.Schooldropreason);
-                dCmd.Parameters.Add("p_description", SchoolDropReasonBOobj.Description);
-                dCmd.Parameters.Add("p_CREATEDBY", SchoolDropReasonBOobj.Createdby);
-                dCmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 100).Direction = ParameterDirection.Output;
+                dCmd.Parameters.AddWithValue("p_SCH_DRP_REASONID", reasonid);
+                dCmd.Parameters.AddWithValue("p_SCH_DRP_REASON", SchoolDropReasonBOobj.Schooldropreason);
+                dCmd.Parameters.AddWithValue("p_description", SchoolDropReasonBOobj.Description);
+                dCmd.Parameters.AddWithValue("p_CREATEDBY", SchoolDropReasonBOobj.Createdby);
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 //return dCmd.ExecuteNonQuery();
 
                 dCmd.ExecuteNonQuery();
@@ -305,18 +305,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteSchoolDrop(int reasonid, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETESCHOOLDROP", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETESCHOOLDROP", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("p_SCH_DRP_REASONID", reasonid);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("p_SCH_DRP_REASONID", reasonid);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

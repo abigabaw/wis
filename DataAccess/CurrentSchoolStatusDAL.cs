@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -15,19 +15,19 @@ namespace WIS_DataAccess
         public string InsertSchoolStatusDetails(CurrentSchoolStatusBO CurrentSchoolStatusBOObj)
         {
             string returnResult = string.Empty;
-            OracleConnection Con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection Con = new SqlConnection(AppConfiguration.ConnectionString);
             Con.Open();
-            OracleCommand cmd = new OracleCommand("USP_MST_INSERTSCHOOLSTATUS", Con);
+            SqlCommand cmd = new SqlCommand("USP_MST_INSERTSCHOOLSTATUS", Con);
             cmd.CommandType = CommandType.StoredProcedure;
             int Count = Convert.ToInt32(cmd.CommandType);
 
             try
             {              
-                cmd.Parameters.Add("S_CUR_SCH_STATUS", CurrentSchoolStatusBOObj.CurrentSchoolStatus);
-                cmd.Parameters.Add("S_DESCRIPTION", CurrentSchoolStatusBOObj.Description);
-                cmd.Parameters.Add("S_CREATEDBY", CurrentSchoolStatusBOObj.Createdby);
+                cmd.Parameters.AddWithValue("S_CUR_SCH_STATUS", CurrentSchoolStatusBOObj.CurrentSchoolStatus);
+                cmd.Parameters.AddWithValue("S_DESCRIPTION", CurrentSchoolStatusBOObj.Description);
+                cmd.Parameters.AddWithValue("S_CREATEDBY", CurrentSchoolStatusBOObj.Createdby);
 
-                cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 cmd.ExecuteNonQuery();
 
                 if (cmd.Parameters["errorMessage_"].Value != null)
@@ -53,16 +53,16 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public SchoolStatusList GetAllSchoolDetails()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETSCHOOLSTATUSALL";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             CurrentSchoolStatusBO CurSchStatusObj = null;
             SchoolStatusList CurSchStatusListObj = new SchoolStatusList();
@@ -91,16 +91,16 @@ namespace WIS_DataAccess
         /// </summary>
         public SchoolStatusList GetSchoolDetails()
         {  
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETSCHOOLSTATUS";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             CurrentSchoolStatusBO CurSchStatusObj = null;
             SchoolStatusList CurSchStatusListObj = new SchoolStatusList();
@@ -130,18 +130,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CurrentSchoolStatusBO GetCurSchlStatusById(int CurrentSchoolStatusID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_SELECTCURSCHSTATUS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("S_CUR_SCH_STATUSID", CurrentSchoolStatusID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("S_CUR_SCH_STATUSID", CurrentSchoolStatusID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CurrentSchoolStatusBO CurSchStatusObj = null;
             SchoolStatusList CurSchStatusListObj = new SchoolStatusList();
             CurSchStatusObj = new CurrentSchoolStatusBO();
@@ -182,14 +182,14 @@ namespace WIS_DataAccess
 
         //public int DeleteCurSchlStatus(int CurrentSchoolStatusID)
         //{
-        //    OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-        //    OracleCommand cmd;
+        //    SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+        //    SqlCommand cmd;
 
         //    string proc = "USP_MST_DELETESCHOOLSTATUS";
 
-        //    cmd = new OracleCommand(proc, cnn);
+        //    cmd = new SqlCommand(proc, cnn);
         //    cmd.CommandType = CommandType.StoredProcedure;
-        //    cmd.Parameters.Add("S_CUR_SCH_STATUSID", CurrentSchoolStatusID);
+        //    cmd.Parameters.AddWithValue("S_CUR_SCH_STATUSID", CurrentSchoolStatusID);
         //    cmd.Connection.Open();
 
         //    int result = cmd.ExecuteNonQuery();
@@ -202,18 +202,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteCurSchlStatus(int CurrentSchoolStatusID)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DELETESCHOOLSTATUS", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DELETESCHOOLSTATUS", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("S_CUR_SCH_STATUSID", CurrentSchoolStatusID);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("S_CUR_SCH_STATUSID", CurrentSchoolStatusID);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -248,20 +248,20 @@ namespace WIS_DataAccess
         public string EditCurSchStatus(CurrentSchoolStatusBO CurrentSchoolStatusBOObj, int EditCurSchStatusID)
         {
             string returnResult = string.Empty;
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_UPDATESCHOOLSTATUS", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_UPDATESCHOOLSTATUS", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("S_CUR_SCH_STATUSID", EditCurSchStatusID);
-                dcmd.Parameters.Add("S_CUR_SCH_STATUS", CurrentSchoolStatusBOObj.CurrentSchoolStatus);
-                dcmd.Parameters.Add("S_DESCRIPTION", CurrentSchoolStatusBOObj.Description);
-                dcmd.Parameters.Add("S_UPDATEDBY", CurrentSchoolStatusBOObj.Createdby);
+                dcmd.Parameters.AddWithValue("S_CUR_SCH_STATUSID", EditCurSchStatusID);
+                dcmd.Parameters.AddWithValue("S_CUR_SCH_STATUS", CurrentSchoolStatusBOObj.CurrentSchoolStatus);
+                dcmd.Parameters.AddWithValue("S_DESCRIPTION", CurrentSchoolStatusBOObj.Description);
+                dcmd.Parameters.AddWithValue("S_UPDATEDBY", CurrentSchoolStatusBOObj.Createdby);
 
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
 
                 if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -288,15 +288,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public object SearchSchoolStatus(string CurSchoolStatus)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_UPDATESCHOOLSTATUS", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_UPDATESCHOOLSTATUS", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("CUR_SCH_STATUS", CurSchoolStatus);
+                dcmd.Parameters.AddWithValue("CUR_SCH_STATUS", CurSchoolStatus);
 
                 return dcmd.ExecuteNonQuery();
             }
@@ -320,33 +320,39 @@ namespace WIS_DataAccess
        /// <returns></returns>
         public string ObsoleteSchoolStatus(int CurrentSchoolStatusID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
-            try
-            {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETECHOOLSTATUS", myConnection);
+          //  try
+          //  {
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETECHOOLSTATUS", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("S_CUR_SCH_STATUSID", CurrentSchoolStatusID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
-                myConnection.Open();
+                myCommand.Parameters.AddWithValue("S_CUR_SCH_STATUSID", CurrentSchoolStatusID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+            // myCommand.Parameters.AddWithValue("errorMessage_"). .Direction = ParameterDirection.InputOutput;
+            SqlParameter parmOUT = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar);
+            parmOUT.Size=200;
+            parmOUT.Direction = ParameterDirection.Output;
+           // myCommand.Parameters.AddWithValue("errorMessage_", parmOUT);
+           // cmd.ExecuteNonQuery();
+           // int returnVALUE = (int)cmd.Parameters["@return"].Value;
+            myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
                     result = myCommand.Parameters["errorMessage_"].Value.ToString();
-            }
+          /*  }
             catch (Exception ex)
             {
                 throw ex;
             }
             finally
-            {
+            {*/
                 myCommand.Dispose();
                 myConnection.Close();
                 myConnection.Dispose();
-            }
+          //  }
 
             return result;
         }

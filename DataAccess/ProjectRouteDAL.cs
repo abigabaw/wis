@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -14,23 +14,23 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int AddProjectRoutes(ProjectRouteBO objProjectRoute)
         {
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_TRN_INS_PROJECTROUTE", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_TRN_INS_PROJECTROUTE", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("ROUTEID_", objProjectRoute.Route_ID);
-            myCommand.Parameters.Add("PROJECTID_", objProjectRoute.Project_Id);
-            myCommand.Parameters.Add("ROUTENAME_", objProjectRoute.Route_Name);
+            myCommand.Parameters.AddWithValue("ROUTEID_", objProjectRoute.Route_ID);
+            myCommand.Parameters.AddWithValue("PROJECTID_", objProjectRoute.Project_Id);
+            myCommand.Parameters.AddWithValue("ROUTENAME_", objProjectRoute.Route_Name);
 
             if (objProjectRoute.Route_Details.Length > 1000)
-                myCommand.Parameters.Add("ROUTEDETAIL_", objProjectRoute.Route_Details.Substring(0,1000));
+                myCommand.Parameters.AddWithValue("ROUTEDETAIL_", objProjectRoute.Route_Details.Substring(0,1000));
             else
-                myCommand.Parameters.Add("ROUTEDETAIL_", objProjectRoute.Route_Details.Trim());
+                myCommand.Parameters.AddWithValue("ROUTEDETAIL_", objProjectRoute.Route_Details.Trim());
 
-            myCommand.Parameters.Add("CREATEDBY_", objProjectRoute.CreatedBy);
-            OracleParameter param = new OracleParameter("NEW_ROUTE_ID_", OracleDbType.Int32, ParameterDirection.Output);
+            myCommand.Parameters.AddWithValue("CREATEDBY_", objProjectRoute.CreatedBy);
+            SqlParameter param = new SqlParameter("NEW_ROUTE_ID_", SqlDbType.Int);
             myCommand.Parameters.Add(param);
             myConnection.Open();
             myCommand.ExecuteNonQuery();
@@ -45,15 +45,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ProjectRouteList GetProjectRoutebyId(int ProjectId)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GETPROJECTROUTEBYID";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@ProjectIdIN", ProjectId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("@ProjectIdIN", ProjectId);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ProjectRouteBO objProjectRoute = null;
             ProjectRouteList ProjectRoute = new ProjectRouteList();
             while (dr.Read())
@@ -81,22 +81,22 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ProjectRouteBO getWOrkFlowApprovalID(ProjectRouteBO objProjectRoute)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_WORKFLOWAPPREID";
 
             //string APPROVERLEVEL = "1";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ProjectId_", objProjectRoute.Project_Id);
-            cmd.Parameters.Add("WorkFlowApprover_", objProjectRoute.WorkFlowApprover);
-            //cmd.Parameters.Add("APPROVERLEVEL_", APPROVERLEVEL);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ProjectId_", objProjectRoute.Project_Id);
+            cmd.Parameters.AddWithValue("WorkFlowApprover_", objProjectRoute.WorkFlowApprover);
+            //cmd.Parameters.AddWithValue("APPROVERLEVEL_", APPROVERLEVEL);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ProjectRouteBO ProjectRouteBOobj = null;
             ProjectRouteList ProjectRouteList = new ProjectRouteList();
 
@@ -165,61 +165,61 @@ namespace WIS_DataAccess
         {
             string result = string.Empty;
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_INS_PRJ_ROUTEAPPROVER", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_INS_PRJ_ROUTEAPPROVER", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
 
             try
             {
 
-                dcmd.Parameters.Add("WorkFlowApproverID_", objApprovalHeaderSave.WorkFlowApproverID);
-                dcmd.Parameters.Add("StatusID_", objApprovalHeaderSave.StatusID);
-                dcmd.Parameters.Add("CreatedBy_", objApprovalHeaderSave.CreatedBy);
+                dcmd.Parameters.AddWithValue("WorkFlowApproverID_", objApprovalHeaderSave.WorkFlowApproverID);
+                dcmd.Parameters.AddWithValue("StatusID_", objApprovalHeaderSave.StatusID);
+                dcmd.Parameters.AddWithValue("CreatedBy_", objApprovalHeaderSave.CreatedBy);
 
-                dcmd.Parameters.Add("ApproverUserID_", objApprovalHeaderSave.ApproverUserID);
-                dcmd.Parameters.Add("WorkFlowDefinitionID_", objApprovalHeaderSave.WorkFlowDefinitionID);
+                dcmd.Parameters.AddWithValue("ApproverUserID_", objApprovalHeaderSave.ApproverUserID);
+                dcmd.Parameters.AddWithValue("WorkFlowDefinitionID_", objApprovalHeaderSave.WorkFlowDefinitionID);
                 if (objApprovalHeaderSave.HHID != 0)
                 {
-                    dcmd.Parameters.Add("HHID_", objApprovalHeaderSave.HHID);
+                    dcmd.Parameters.AddWithValue("HHID_", objApprovalHeaderSave.HHID);
                 }
                 else
                 {
-                    dcmd.Parameters.Add("HHID_", "0");
+                    dcmd.Parameters.AddWithValue("HHID_", "0");
                 }
                 if (objApprovalHeaderSave.PageCode != "0")
                 {
-                    dcmd.Parameters.Add("PageCode_", objApprovalHeaderSave.PageCode);
+                    dcmd.Parameters.AddWithValue("PageCode_", objApprovalHeaderSave.PageCode);
                 }
                 else
                 {
-                    dcmd.Parameters.Add("PageCode_", "0");
+                    dcmd.Parameters.AddWithValue("PageCode_", "0");
                 }
                 if (objApprovalHeaderSave.EmailSubject != "0")
                 {
-                    dcmd.Parameters.Add("EmailSubject_", objApprovalHeaderSave.EmailSubject);
+                    dcmd.Parameters.AddWithValue("EmailSubject_", objApprovalHeaderSave.EmailSubject);
                 }
                 else
                 {
-                    dcmd.Parameters.Add("EmailSubject_", "0");
+                    dcmd.Parameters.AddWithValue("EmailSubject_", "0");
                 }
                 if (objApprovalHeaderSave.EmailBody != "0")
                 {
-                    dcmd.Parameters.Add("EmailBody_", objApprovalHeaderSave.EmailBody);
+                    dcmd.Parameters.AddWithValue("EmailBody_", objApprovalHeaderSave.EmailBody);
                 }
                 else
                 {
-                    dcmd.Parameters.Add("EmailBody_", "0");
+                    dcmd.Parameters.AddWithValue("EmailBody_", "0");
                 }
                 if (objApprovalHeaderSave.ElementID != 0)
                 {
-                    dcmd.Parameters.Add("ElementID_", objApprovalHeaderSave.ElementID);
+                    dcmd.Parameters.AddWithValue("ElementID_", objApprovalHeaderSave.ElementID);
                 }
                 else
                 {
-                    dcmd.Parameters.Add("ElementID_", "0");
+                    dcmd.Parameters.AddWithValue("ElementID_", "0");
                 }
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
                 if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -246,15 +246,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ProjectRouteList getFinalRouteApprovalDetial(ProjectRouteBO objProjectRoute)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GETAPPROVEDROUTE";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ProjectIdIN_", objProjectRoute.Project_Id);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ProjectIdIN_", objProjectRoute.Project_Id);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ProjectRouteBO objProjectApprovedRoute = null;
             ProjectRouteList ProjectRoute = new ProjectRouteList();
             while (dr.Read())
@@ -281,15 +281,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ProjectRouteBO findRouteStatusafterSave(ProjectRouteBO objProjectRoute)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_APPAFTERSAVEROUTE";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ProjectedId_", objProjectRoute.Project_Id);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ProjectedId_", objProjectRoute.Project_Id);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ProjectRouteBO objProjectApprovedRoute = null;
             ProjectRouteList ProjectRoute = new ProjectRouteList();
             while (dr.Read())
@@ -308,15 +308,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ProjectRouteList GetApprovedComments(int ProjectID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_RTAAPPROVALCOMMENTS";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ProjectIdIN_", ProjectID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ProjectIdIN_", ProjectID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ProjectRouteBO objProjectBO = null;
             ProjectRouteList ProjectList = new ProjectRouteList();
             while (dr.Read())

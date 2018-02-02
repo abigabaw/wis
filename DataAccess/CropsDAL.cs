@@ -1,5 +1,5 @@
 ﻿using System;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_BusinessObjects;
 
@@ -15,33 +15,33 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int Insert(CropsBO Cropsobj)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_INS_CROP", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_INS_CROP", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("HHID", Cropsobj.HHID);
-                dcmd.Parameters.Add("CROPID", Cropsobj.CROPID);
-                dcmd.Parameters.Add("CROPTYPEID", Cropsobj.CROPTYPEID);
-                dcmd.Parameters.Add("CROPDESCRIPTIONID", Cropsobj.CROPDESCRIPTIONID);
-                dcmd.Parameters.Add("UNITOFMEASURE", DBNull.Value);             
-                dcmd.Parameters.Add("QUANTITY", Cropsobj.QUANTITY);
-                dcmd.Parameters.Add("CROPRATE", Cropsobj.CROPRATE);
+                dcmd.Parameters.AddWithValue("HHID", Cropsobj.HHID);
+                dcmd.Parameters.AddWithValue("CROPID", Cropsobj.CROPID);
+                dcmd.Parameters.AddWithValue("CROPTYPEID", Cropsobj.CROPTYPEID);
+                dcmd.Parameters.AddWithValue("CROPDESCRIPTIONID", Cropsobj.CROPDESCRIPTIONID);
+                dcmd.Parameters.AddWithValue("UNITOFMEASURE", DBNull.Value);             
+                dcmd.Parameters.AddWithValue("QUANTITY", Cropsobj.QUANTITY);
+                dcmd.Parameters.AddWithValue("CROPRATE", Cropsobj.CROPRATE);
 
                 if (Cropsobj.COMMENTS.Length > 1500)
-                    dcmd.Parameters.Add("COMMENTS", Cropsobj.COMMENTS.Substring(0,1500));
+                    dcmd.Parameters.AddWithValue("COMMENTS", Cropsobj.COMMENTS.Substring(0,1500));
                 else
-                    dcmd.Parameters.Add("COMMENTS", Cropsobj.COMMENTS);
+                    dcmd.Parameters.AddWithValue("COMMENTS", Cropsobj.COMMENTS);
 
-                dcmd.Parameters.Add("ISDELETED", Cropsobj.ISDELETED);
-                dcmd.Parameters.Add("CREATEDBY", Cropsobj.CREATEDBY);
+                dcmd.Parameters.AddWithValue("ISDELETED", Cropsobj.ISDELETED);
+                dcmd.Parameters.AddWithValue("CREATEDBY", Cropsobj.CREATEDBY);
                 if (Cropsobj.Photo != null)
-                    dcmd.Parameters.Add("CROPPHOTO_", OracleDbType.Blob).Value = Cropsobj.Photo;
+                    dcmd.Parameters.AddWithValue("CROPPHOTO_", SqlDbType.Image).Value = Cropsobj.Photo;
                 else
-                    dcmd.Parameters.Add("CROPPHOTO_", Oracle.DataAccess.Types.OracleBlob.Null);   
+                    dcmd.Parameters.AddWithValue("CROPPHOTO_", DBNull.Value);   
 
                 return dcmd.ExecuteNonQuery();
             }
@@ -64,19 +64,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CropsList GetCrops(int householdID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_SEL_CROPS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HHID_", householdID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", householdID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CropsBO Cropsobj = null;
             CropsList Listobj = new CropsList();
 
@@ -108,19 +108,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CropsBO GetData(int CropId)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_CROPS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("c_pap_cropid", CropId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("c_pap_cropid", CropId);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CropsBO Cropsobj = null;
             CropsList Listobj = new CropsList();
 
@@ -167,34 +167,34 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int Update(CropsBO Cropsobj)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_UPD_CROPS", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_UPD_CROPS", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("HHID_", Cropsobj.HHID);
-                dcmd.Parameters.Add("c_PAP_CROPID", Cropsobj.PAP_CROPID);
-                dcmd.Parameters.Add("c_CROPID", Cropsobj.CROPID);
-                dcmd.Parameters.Add("c_CROPTYPEID", Cropsobj.CROPTYPEID);
-                dcmd.Parameters.Add("c_CROPDESCRIPTIONID", Cropsobj.CROPDESCRIPTIONID);
-                dcmd.Parameters.Add("c_UNITOFMEASURE", DBNull.Value);
-                dcmd.Parameters.Add("c_QUANTITY", Cropsobj.QUANTITY);
-                dcmd.Parameters.Add("c_CROPRATE", Cropsobj.CROPRATE);
+                dcmd.Parameters.AddWithValue("HHID_", Cropsobj.HHID);
+                dcmd.Parameters.AddWithValue("c_PAP_CROPID", Cropsobj.PAP_CROPID);
+                dcmd.Parameters.AddWithValue("c_CROPID", Cropsobj.CROPID);
+                dcmd.Parameters.AddWithValue("c_CROPTYPEID", Cropsobj.CROPTYPEID);
+                dcmd.Parameters.AddWithValue("c_CROPDESCRIPTIONID", Cropsobj.CROPDESCRIPTIONID);
+                dcmd.Parameters.AddWithValue("c_UNITOFMEASURE", DBNull.Value);
+                dcmd.Parameters.AddWithValue("c_QUANTITY", Cropsobj.QUANTITY);
+                dcmd.Parameters.AddWithValue("c_CROPRATE", Cropsobj.CROPRATE);
 
                 if (Cropsobj.COMMENTS.Length > 1500)
-                    dcmd.Parameters.Add("c_COMMENTS", Cropsobj.COMMENTS.Substring(0, 1500));
+                    dcmd.Parameters.AddWithValue("c_COMMENTS", Cropsobj.COMMENTS.Substring(0, 1500));
                 else
-                    dcmd.Parameters.Add("c_COMMENTS", Cropsobj.COMMENTS);
+                    dcmd.Parameters.AddWithValue("c_COMMENTS", Cropsobj.COMMENTS);
                 
-                dcmd.Parameters.Add("c_UPDATEDBY", Cropsobj.CREATEDBY);
+                dcmd.Parameters.AddWithValue("c_UPDATEDBY", Cropsobj.CREATEDBY);
 
                 if (Cropsobj.Photo != null)
-                    dcmd.Parameters.Add("CROPPHOTO_", OracleDbType.Blob).Value = Cropsobj.Photo;
+                    dcmd.Parameters.AddWithValue("CROPPHOTO_", SqlDbType.Image).Value = Cropsobj.Photo;
                 else
-                    dcmd.Parameters.Add("CROPPHOTO_", Oracle.DataAccess.Types.OracleBlob.Null);
+                    dcmd.Parameters.AddWithValue("CROPPHOTO_", DBNull.Value);
 
                 return dcmd.ExecuteNonQuery();
             }
@@ -217,14 +217,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int DeleteData(string cropid)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_DEL_CROPS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("c_PAP_CROPID", cropid);
+            cmd.Parameters.AddWithValue("c_PAP_CROPID", cropid);
             cmd.Connection.Open();
 
             int result = cmd.ExecuteNonQuery();
@@ -240,15 +240,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CropsBO ShowPAPCROPImage(int householdID, int PermanentStructureID)
         {
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_TRN_GET_PAPCROP_PHOTO", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_TRN_GET_PAPCROP_PHOTO", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("HHID_", householdID);
-            myCommand.Parameters.Add("PermanentStructureID_", PermanentStructureID);
-            myCommand.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("HHID_", householdID);
+            myCommand.Parameters.AddWithValue("PermanentStructureID_", PermanentStructureID);
+            // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             myCommand.Connection.Open();
             object img = myCommand.ExecuteScalar();

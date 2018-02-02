@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_DataAccess;
 using WIS_BusinessObjects;
 
@@ -15,19 +15,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public GrievancesBO getscreenIntialization(int hhid)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_GRIEVANCEIDDATA";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("hhid_", hhid);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("hhid_", hhid);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             GrievancesBO GrievancesBOObj = null;
             GrievanceList GrievanceListObj = new GrievanceList();
@@ -87,14 +87,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public GrievanceList Getcategory()
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GET_GRIEV_CATEGORY";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             GrievancesBO BOobj = null;
             GrievanceList Listobj = new GrievanceList();
 
@@ -118,16 +118,16 @@ namespace WIS_DataAccess
         //{
         //    String SqlQuery;
 
-        //    OracleConnection OraConnection = new OracleConnection(AppConfiguration.ConnectionString);
-        //    //  OracleCommand OraCommand;
+        //    SqlConnection OraConnection = new SqlConnection(AppConfiguration.ConnectionString);
+        //    //  SqlCommand OraCommand;
 
 
 
         //    SqlQuery = "select grievancecategid,grievancecategory from MST_GRIEVANCE_CATEG";
         //    //where  isdeleted = 'False'
 
-        //    OracleCommand OracleCommand = new OracleCommand(SqlQuery, OraConnection);
-        //    OracleDataAdapter dAd = new OracleDataAdapter(OracleCommand);
+        //    SqlCommand SqlCommand = new SqlCommand(SqlQuery, OraConnection);
+        //    SqlDataAdapter dAd = new SqlDataAdapter(SqlCommand);
         //    dAd.SelectCommand.CommandType = CommandType.Text;
         //    DataSet Ds = new DataSet();
 
@@ -154,44 +154,44 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int Insert(GrievancesBO GrievancesBOobj)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_INS_GRIEVANCE", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_INS_GRIEVANCE", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("HHID", GrievancesBOobj.Hhid);
-                dcmd.Parameters.Add("GRIEVANCECATEGID", GrievancesBOobj.GrievCategoryID);
-                dcmd.Parameters.Add("GREVDESCRIPTION", GrievancesBOobj.Description);
-                dcmd.Parameters.Add("ACTIONTAKEN", GrievancesBOobj.ActionTaken);
+                dcmd.Parameters.AddWithValue("HHID", GrievancesBOobj.Hhid);
+                dcmd.Parameters.AddWithValue("GRIEVANCECATEGID", GrievancesBOobj.GrievCategoryID);
+                dcmd.Parameters.AddWithValue("GREVDESCRIPTION", GrievancesBOobj.Description);
+                dcmd.Parameters.AddWithValue("ACTIONTAKEN", GrievancesBOobj.ActionTaken);
 
                 if (GrievancesBOobj.ActionTakenDate != DateTime.MinValue)
-                    dcmd.Parameters.Add("ACTIONTAKENDATE", GrievancesBOobj.ActionTakenDate);
+                    dcmd.Parameters.AddWithValue("ACTIONTAKENDATE", GrievancesBOobj.ActionTakenDate);
                 else
-                    dcmd.Parameters.Add("ACTIONTAKENDATE", DBNull.Value);                
+                    dcmd.Parameters.AddWithValue("ACTIONTAKENDATE", DBNull.Value);                
 
                 if (GrievancesBOobj.ActionTakenBy > 0)
-                    dcmd.Parameters.Add("ACTIONTAKENBY", GrievancesBOobj.ActionTakenBy);
+                    dcmd.Parameters.AddWithValue("ACTIONTAKENBY", GrievancesBOobj.ActionTakenBy);
                 else
-                    dcmd.Parameters.Add("ACTIONTAKENBY", DBNull.Value);
+                    dcmd.Parameters.AddWithValue("ACTIONTAKENBY", DBNull.Value);
 
-                dcmd.Parameters.Add("BASICFACTS", GrievancesBOobj.BasicFacts);
-                dcmd.Parameters.Add("RESOLUTION", GrievancesBOobj.Resolution);
+                dcmd.Parameters.AddWithValue("BASICFACTS", GrievancesBOobj.BasicFacts);
+                dcmd.Parameters.AddWithValue("RESOLUTION", GrievancesBOobj.Resolution);
 
                 if (GrievancesBOobj.ResolutionDate != DateTime.MinValue)
-                    dcmd.Parameters.Add("RESOLUTIONDATE", GrievancesBOobj.ResolutionDate);
+                    dcmd.Parameters.AddWithValue("RESOLUTIONDATE", GrievancesBOobj.ResolutionDate);
                 else
-                    dcmd.Parameters.Add("RESOLUTIONDATE", DBNull.Value);
+                    dcmd.Parameters.AddWithValue("RESOLUTIONDATE", DBNull.Value);
 
                 if (GrievancesBOobj.ResolvedBy > 0)
-                    dcmd.Parameters.Add("RESOLVEDBY", GrievancesBOobj.ResolvedBy);
+                    dcmd.Parameters.AddWithValue("RESOLVEDBY", GrievancesBOobj.ResolvedBy);
                 else
-                    dcmd.Parameters.Add("RESOLVEDBY", DBNull.Value);
+                    dcmd.Parameters.AddWithValue("RESOLVEDBY", DBNull.Value);
 
-                dcmd.Parameters.Add("CREATEDBY", GrievancesBOobj.CreatedBy);
-                dcmd.Parameters.Add("ResolutionStatus_", GrievancesBOobj.ResolutionStatus);
+                dcmd.Parameters.AddWithValue("CREATEDBY", GrievancesBOobj.CreatedBy);
+                dcmd.Parameters.AddWithValue("ResolutionStatus_", GrievancesBOobj.ResolutionStatus);
 
                 return dcmd.ExecuteNonQuery();
 
@@ -215,19 +215,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public GrievanceList Getgrievancedata(int householdID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_SEL_GRIEVANCE";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HHID_", householdID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", householdID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             GrievancesBO GrievancesBOObj = null;
             GrievanceList GrievanceListObj = new GrievanceList();          
@@ -256,19 +256,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public GrievancesBO GetGrievancedatarow(int GrievanceID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_GRIEVANCE";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("R_GRIEVANCEID", GrievanceID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("R_GRIEVANCEID", GrievanceID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             GrievancesBO GrievancesBOObj = null;
             GrievanceList GrievanceListObj = new GrievanceList();
 
@@ -319,13 +319,13 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int  Delete(int GrievanceID)
         {
-            OracleConnection conn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection conn = new SqlConnection(AppConfiguration.ConnectionString);
             conn.Open();
-            OracleCommand dCmd = new OracleCommand("USP_TRN_DEL_GRIEVANCE", conn);
+            SqlCommand dCmd = new SqlCommand("USP_TRN_DEL_GRIEVANCE", conn);
             dCmd.CommandType = CommandType.StoredProcedure;
             try
             {
-                dCmd.Parameters.Add("GRIEVANCEID_", GrievanceID);
+                dCmd.Parameters.AddWithValue("GRIEVANCEID_", GrievanceID);
                 return dCmd.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -348,44 +348,44 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int EditGRIEVANCE(GrievancesBO GrievancesBOobj)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_UPD_GRIEVANCE", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_UPD_GRIEVANCE", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("R_GRIEVANCEID", GrievancesBOobj.GrievanceID);
-                dcmd.Parameters.Add("R_GRIEVANCECATEGID", GrievancesBOobj.GrievCategoryID);
-                dcmd.Parameters.Add("R_GREVDESCRIPTION", GrievancesBOobj.Description);
-                dcmd.Parameters.Add("R_ACTIONTAKEN", GrievancesBOobj.ActionTaken);
+                dcmd.Parameters.AddWithValue("R_GRIEVANCEID", GrievancesBOobj.GrievanceID);
+                dcmd.Parameters.AddWithValue("R_GRIEVANCECATEGID", GrievancesBOobj.GrievCategoryID);
+                dcmd.Parameters.AddWithValue("R_GREVDESCRIPTION", GrievancesBOobj.Description);
+                dcmd.Parameters.AddWithValue("R_ACTIONTAKEN", GrievancesBOobj.ActionTaken);
 
                 if (GrievancesBOobj.ActionTakenDate != DateTime.MinValue)
-                    dcmd.Parameters.Add("R_ACTIONTAKENDATE", GrievancesBOobj.ActionTakenDate);
+                    dcmd.Parameters.AddWithValue("R_ACTIONTAKENDATE", GrievancesBOobj.ActionTakenDate);
                 else
-                    dcmd.Parameters.Add("R_ACTIONTAKENDATE", DBNull.Value);               
+                    dcmd.Parameters.AddWithValue("R_ACTIONTAKENDATE", DBNull.Value);               
 
                 if (GrievancesBOobj.ActionTakenBy > 0)
-                    dcmd.Parameters.Add("ACTIONTAKENBY", GrievancesBOobj.ActionTakenBy);
+                    dcmd.Parameters.AddWithValue("ACTIONTAKENBY", GrievancesBOobj.ActionTakenBy);
                 else
-                    dcmd.Parameters.Add("ACTIONTAKENBY", DBNull.Value);
+                    dcmd.Parameters.AddWithValue("ACTIONTAKENBY", DBNull.Value);
 
-                dcmd.Parameters.Add("R_BASICFACTS", GrievancesBOobj.BasicFacts);
-                dcmd.Parameters.Add("R_RESOLUTION", GrievancesBOobj.Resolution);
+                dcmd.Parameters.AddWithValue("R_BASICFACTS", GrievancesBOobj.BasicFacts);
+                dcmd.Parameters.AddWithValue("R_RESOLUTION", GrievancesBOobj.Resolution);
 
                 if (GrievancesBOobj.ResolutionDate != DateTime.MinValue)
-                    dcmd.Parameters.Add("R_RESOLUTIONDATE", GrievancesBOobj.ResolutionDate);
+                    dcmd.Parameters.AddWithValue("R_RESOLUTIONDATE", GrievancesBOobj.ResolutionDate);
                 else
-                    dcmd.Parameters.Add("R_RESOLUTIONDATE", DBNull.Value);
+                    dcmd.Parameters.AddWithValue("R_RESOLUTIONDATE", DBNull.Value);
 
                 if (GrievancesBOobj.ResolvedBy > 0)
-                    dcmd.Parameters.Add("R_RESOLVEDBY", GrievancesBOobj.ResolvedBy);
+                    dcmd.Parameters.AddWithValue("R_RESOLVEDBY", GrievancesBOobj.ResolvedBy);
                 else
-                    dcmd.Parameters.Add("R_RESOLVEDBY", DBNull.Value);
+                    dcmd.Parameters.AddWithValue("R_RESOLVEDBY", DBNull.Value);
 
-                dcmd.Parameters.Add("R_UPDATEDBY", GrievancesBOobj.CreatedBy);
-                dcmd.Parameters.Add("ResolutionStatus_", GrievancesBOobj.ResolutionStatus);
+                dcmd.Parameters.AddWithValue("R_UPDATEDBY", GrievancesBOobj.CreatedBy);
+                dcmd.Parameters.AddWithValue("ResolutionStatus_", GrievancesBOobj.ResolutionStatus);
 
                 return dcmd.ExecuteNonQuery();
             }
@@ -407,19 +407,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public GrievancesBO GetGrievanceClosure(int GrievanceID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_CLOSURE";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("R_GRIEVANCEID", GrievanceID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("R_GRIEVANCEID", GrievanceID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             GrievancesBO GrievancesBOObj = null;
             GrievanceList GrievanceListObj = new GrievanceList();
 
@@ -445,19 +445,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public GrievancesBO getGrievanceOverAllStatus(int HHID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_HASOPENGRIEVANCES";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("HHID_", HHID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", HHID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             GrievancesBO GrievancesBOObj = null;
             GrievanceList GrievanceListObj = new GrievanceList();
 

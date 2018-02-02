@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 
@@ -16,19 +16,19 @@ namespace WIS_DataAccess
       public string Insert(ReasonforFinancingBO BOobj)
         {
             string returnResult = string.Empty;
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_INS_REASON_FIN", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_INS_REASON_FIN", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("F_FINANCEREASON", BOobj.FINANCEREASON);
-                dcmd.Parameters.Add("CREATEDBY", BOobj.CREATEDBY);
+                dcmd.Parameters.AddWithValue("F_FINANCEREASON", BOobj.FINANCEREASON);
+                dcmd.Parameters.AddWithValue("CREATEDBY", BOobj.CREATEDBY);
                 //return dcmd.ExecuteNonQuery();
 
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -58,19 +58,19 @@ namespace WIS_DataAccess
       /// <returns></returns>
       public string ObsoleteReasonForFin(int ReasonForFinanceId, string ISDELETED)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_OBSOLETE_REASON_FIN", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_OBSOLETE_REASON_FIN", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("@F_FINANCEREASONID", ReasonForFinanceId);
-                myCommand.Parameters.Add("@isdeleted_", ISDELETED);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("@F_FINANCEREASONID", ReasonForFinanceId);
+                myCommand.Parameters.AddWithValue("@isdeleted_", ISDELETED);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -97,25 +97,25 @@ namespace WIS_DataAccess
       /// <returns></returns>
       public ReasonforFinancingList GetAllReasonForFinance(string financereason)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
-            string proc = "  USP_MST_GET_ALL_FIN_REASON ";
+            string proc = "USP_MST_GET_ALL_FIN_REASON ";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             if (financereason.ToString() == "")
             {
-                cmd.Parameters.Add("@FINANCEREASON_", DBNull.Value);
+                cmd.Parameters.AddWithValue("@FINANCEREASON_", DBNull.Value);
             }
             else
             {
-                cmd.Parameters.Add("@FINANCEREASON_", financereason.ToString());
+                cmd.Parameters.AddWithValue("@FINANCEREASON_", financereason.ToString());
             }
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ReasonforFinancingBO Boobj = null;
             ReasonforFinancingList Listobj = new ReasonforFinancingList();
 
@@ -143,17 +143,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
       public ReasonforFinancingList GetReasonForFinance()
       {
-          OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-          OracleCommand cmd;
+          SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+          SqlCommand cmd;
 
-          string proc = " USP_MST_GET_REASON_FIN";
+          string proc = "USP_MST_GET_REASON_FIN";
 
-          cmd = new OracleCommand(proc, cnn);
+          cmd = new SqlCommand(proc, cnn);
           cmd.CommandType = CommandType.StoredProcedure;
-          cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+          // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
           cmd.Connection.Open();
-          OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+          SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
           ReasonforFinancingBO Boobj = null;
           ReasonforFinancingList Listobj = new ReasonforFinancingList();
 
@@ -182,19 +182,19 @@ namespace WIS_DataAccess
       /// <returns></returns>
       public ReasonforFinancingBO GetReasonForFinanceID(int ReasonForFinanceID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETDETAIL_REASN_FIN";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("F_FINANCEREASONID", ReasonForFinanceID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("F_FINANCEREASONID", ReasonForFinanceID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ReasonforFinancingBO Boobj = null;
             ReasonforFinancingList Listobj = new ReasonforFinancingList();
 
@@ -220,19 +220,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
       public string ReasonForFinanceID(int ReasonForFinanceID)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DEL_REASON_FIN", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DEL_REASON_FIN", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("@F_FINANCEREASONID", ReasonForFinanceID);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("@F_FINANCEREASONID", ReasonForFinanceID);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -267,19 +267,19 @@ namespace WIS_DataAccess
       public string Update(ReasonforFinancingBO BOobj)
         {
             string returnResult = string.Empty;
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_UPD_REASON_FIN", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_UPD_REASON_FIN", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("F_FINANCEREASONID", BOobj.FINANCEREASONID);
-                dcmd.Parameters.Add("F_FINANCEREASON", BOobj.FINANCEREASON);
-                dcmd.Parameters.Add("F_UPDATEDBY", BOobj.CREATEDBY);
+                dcmd.Parameters.AddWithValue("F_FINANCEREASONID", BOobj.FINANCEREASONID);
+                dcmd.Parameters.AddWithValue("F_FINANCEREASON", BOobj.FINANCEREASON);
+                dcmd.Parameters.AddWithValue("F_UPDATEDBY", BOobj.CREATEDBY);
                 //return dcmd.ExecuteNonQuery();
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 using System.Data;
 
@@ -18,17 +18,17 @@ namespace WIS_DataAccess
         public string InsertOptionGroups(OptionGroupBO objOptionGroupBO)
         {
             string result = "";
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_INSERTOPTION_GROUPS", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_INSERTOPTION_GROUPS", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("OPTIONGROUP_", objOptionGroupBO.OptionGroupName);
-                dcmd.Parameters.Add("CREATEDBY_", objOptionGroupBO.UserID);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("OPTIONGROUP_", objOptionGroupBO.OptionGroupName);
+                dcmd.Parameters.AddWithValue("CREATEDBY_", objOptionGroupBO.UserID);
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
 
                 if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -74,17 +74,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public OptionGroupList GetOptionGroup()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETOPTION_GROUPS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             OptionGroupBO objOptionGroupBO = null;
             OptionGroupList OptionGroup = new OptionGroupList();
 
@@ -111,18 +111,18 @@ namespace WIS_DataAccess
         public string UpdateOptionGroups(OptionGroupBO objOptionGroupBO)
         {
             string result = "";
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_UPDATEOPTION_GROUPS", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_UPDATEOPTION_GROUPS", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("OPTIONGROUPID_", objOptionGroupBO.OptionGroupID);
-                dcmd.Parameters.Add("OPTIONGROUP_", objOptionGroupBO.OptionGroupName);
-                dcmd.Parameters.Add("UPDATEDBY_", objOptionGroupBO.UserID);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("OPTIONGROUPID_", objOptionGroupBO.OptionGroupID);
+                dcmd.Parameters.AddWithValue("OPTIONGROUP_", objOptionGroupBO.OptionGroupName);
+                dcmd.Parameters.AddWithValue("UPDATEDBY_", objOptionGroupBO.UserID);
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -151,19 +151,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public OptionGroupBO GetOptionGroupById(int OptionGroupID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETOPTION_GROUPSBYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("OPTIONGROUPID_", OptionGroupID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("OPTIONGROUPID_", OptionGroupID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             OptionGroupBO objOptionGroupBO = null;
             OptionGroupList OptionGroup = new OptionGroupList();
 
@@ -189,18 +189,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteOptionGroup(int OptionGroupID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string result = string.Empty;
 
             try
             {
                 string proc = "USP_MST_DELETEOPTION_GROUPS";
 
-                cmd = new OracleCommand(proc, cnn);
+                cmd = new SqlCommand(proc, cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("OPTIONGROUPID_", OptionGroupID);
-                cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("OPTIONGROUPID_", OptionGroupID);
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 cmd.Connection.Open();
 
                 cmd.ExecuteNonQuery();
@@ -231,19 +231,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteOptionGroup(int OptionGroupID, string IsDeleted)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string result = string.Empty;
 
             try
             {
                 string proc = "USP_MST_OBSOLETEOPTION_GROUPS";
 
-                cmd = new OracleCommand(proc, cnn);
+                cmd = new SqlCommand(proc, cnn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("OPTIONGROUPID_", OptionGroupID);
-                cmd.Parameters.Add("ISDELETED_", IsDeleted);
-                cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("OPTIONGROUPID_", OptionGroupID);
+                cmd.Parameters.AddWithValue("ISDELETED_", IsDeleted);
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 cmd.Connection.Open();
 
                 cmd.ExecuteNonQuery();

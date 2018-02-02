@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WIS_BusinessObjects;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 
 namespace WIS_DataAccess
@@ -18,16 +18,16 @@ namespace WIS_DataAccess
         public string InsertMNEGoalElementDetails(MNEGoalElementBOL GoalElementBOObj)
         {
             string result = "";
-            OracleConnection Con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection Con = new SqlConnection(AppConfiguration.ConnectionString);
             Con.Open();
-            OracleCommand cmd = new OracleCommand("USP_MST_MNE_INSERT_GOALELEMENT", Con);
+            SqlCommand cmd = new SqlCommand("USP_MST_MNE_INSERT_GOALELEMENT", Con);
             cmd.CommandType = CommandType.StoredProcedure;
             int Count = Convert.ToInt32(cmd.CommandType);
             try
             {
-                cmd.Parameters.Add(" GOAL_ELEMENTNAME", GoalElementBOObj.GoalElement);
-                cmd.Parameters.Add("CREATEDBY", GoalElementBOObj.CreatedBy);
-                cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue(" GOAL_ELEMENTNAME", GoalElementBOObj.GoalElement);
+                cmd.Parameters.AddWithValue("CREATEDBY", GoalElementBOObj.CreatedBy);
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 cmd.ExecuteNonQuery();
                 if (cmd.Parameters["errorMessage_"].Value != null)
@@ -54,18 +54,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string UpdateMNEGoalElementDetails(MNEGoalElementBOL GoalElementBOObj)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_MNE_UPDATE_GOALELEMENT ", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_MNE_UPDATE_GOALELEMENT ", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             string result = "";
 
             try
             {
-                dcmd.Parameters.Add("GOAL_ELEMENTNAME_", GoalElementBOObj.GoalElement);
-                dcmd.Parameters.Add("UPDATEDBY_", GoalElementBOObj.CreatedBy);
-                dcmd.Parameters.Add("GOAL_ELEMENTID_", GoalElementBOObj.GoalElementID);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("GOAL_ELEMENTNAME_", GoalElementBOObj.GoalElement);
+                dcmd.Parameters.AddWithValue("UPDATEDBY_", GoalElementBOObj.CreatedBy);
+                dcmd.Parameters.AddWithValue("GOAL_ELEMENTID_", GoalElementBOObj.GoalElementID);
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 dcmd.ExecuteNonQuery();
 
                 if (dcmd.Parameters["errorMessage_"].Value != null)
@@ -92,17 +92,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public MNEGoalElementList GetAllMNEGoalElementDetails()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
-            string proc = " USP_MST_MNE_GET_ALLELEMENTS ";
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
+            string proc = "USP_MST_MNE_GET_ALLELEMENTS ";
 
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             MNEGoalElementBOL MNEGoalElementBOLObj = null;
             MNEGoalElementList MNEGoalElementListObj = new MNEGoalElementList();
@@ -127,18 +127,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public MNEGoalElementBOL GetMNEGoalElementDetailsbyID(int GOALElementID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_MNE_GETGOALELEMENT";
 
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("GoalElementID_", GOALElementID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("GoalElementID_", GOALElementID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             MNEGoalElementBOL MNEGoalElementBOLObj = new MNEGoalElementBOL();
 
@@ -162,18 +162,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteGoalElement(int GoalElementID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string result = "";
             try
             {
 
                 string proc = "USP_MST_MNE_DEL_GOALELEMENT";
-                cmd = new OracleCommand(proc, cnn);
+                cmd = new SqlCommand(proc, cnn);
                 int Count = Convert.ToInt32(cmd.CommandType);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("C_GoalElementID ", GoalElementID);
-                cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("C_GoalElementID ", GoalElementID);
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 cmd.Connection.Open();
 
                 cmd.ExecuteNonQuery();
@@ -202,18 +202,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteGoalElement(int goalID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_MNE_OBSOLUTEELEMENT", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_MNE_OBSOLUTEELEMENT", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("GoalElementID_", goalID);
-                myCommand.Parameters.Add("Isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("GoalElementID_", goalID);
+                myCommand.Parameters.AddWithValue("Isdeleted_", IsDeleted);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -240,16 +240,16 @@ namespace WIS_DataAccess
         public MNEGoalElementList LoadMNEGoalElement()
         {
             string con = AppConfiguration.ConnectionString;
-            OracleConnection cnn;
-            OracleCommand cmd;
+            SqlConnection cnn;
+            SqlCommand cmd;
             string proc = string.Empty;
-            cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            cnn = new SqlConnection(AppConfiguration.ConnectionString);
             proc = "USP_LOAD_MNEGOALELEMENTS";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             MNEGoalElementBOL objMNEGoalElementBOL = null;
             MNEGoalElementList MNEGoalEvalElements = new MNEGoalElementList();
             while (dr.Read())

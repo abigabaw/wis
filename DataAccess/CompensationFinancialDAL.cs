@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -8,8 +8,8 @@ namespace WIS_DataAccess
     public class CompensationFinancialDAL
     {
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
 
         #region Add/Save
@@ -20,60 +20,60 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string AddCompensationFinancial(CompensationFinancialBO oCompensationFinancial)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnResult = string.Empty;
             proc = "USP_TRN_INS_CMP_FINANCIALS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("HHID_", oCompensationFinancial.HHID);
+            cmd.Parameters.AddWithValue("HHID_", oCompensationFinancial.HHID);
 
             //LAND SECTION
-            cmd.Parameters.Add("LandValuation_", oCompensationFinancial.LandValuation);
-            cmd.Parameters.Add("LandDA_", oCompensationFinancial.LandDA);
-            cmd.Parameters.Add("landtotalvaluation_", oCompensationFinancial.LandTotalValuation);
-            cmd.Parameters.Add("LandDiffPayment_", oCompensationFinancial.LandDiffPayment);
-            cmd.Parameters.Add("LandValComments_", oCompensationFinancial.LandValComments);
+            cmd.Parameters.AddWithValue("LandValuation_", oCompensationFinancial.LandValuation);
+            cmd.Parameters.AddWithValue("LandDA_", oCompensationFinancial.LandDA);
+            cmd.Parameters.AddWithValue("landtotalvaluation_", oCompensationFinancial.LandTotalValuation);
+            cmd.Parameters.AddWithValue("LandDiffPayment_", oCompensationFinancial.LandDiffPayment);
+            cmd.Parameters.AddWithValue("LandValComments_", oCompensationFinancial.LandValComments);
 
             //RESIDENTIAL STRUCTURE SECTION
-            cmd.Parameters.Add("ResDepreciatedValue_", oCompensationFinancial.ResDepreciatedValue);
-            cmd.Parameters.Add("ResReplacementValue_", oCompensationFinancial.ResReplacementValue);
-            cmd.Parameters.Add("ResDA_", oCompensationFinancial.ResDA);
-            cmd.Parameters.Add("ResMovingAllowance_", oCompensationFinancial.ResMovingAllowance);
-            cmd.Parameters.Add("ResLabourCost_", oCompensationFinancial.ResLabourCost);
-            cmd.Parameters.Add("ResPayment_", oCompensationFinancial.ResPayment);
-            cmd.Parameters.Add("rescomments_", oCompensationFinancial.ResComments);
-            cmd.Parameters.Add("restotalvaluation_", oCompensationFinancial.ResTotalValuation);
+            cmd.Parameters.AddWithValue("ResDepreciatedValue_", oCompensationFinancial.ResDepreciatedValue);
+            cmd.Parameters.AddWithValue("ResReplacementValue_", oCompensationFinancial.ResReplacementValue);
+            cmd.Parameters.AddWithValue("ResDA_", oCompensationFinancial.ResDA);
+            cmd.Parameters.AddWithValue("ResMovingAllowance_", oCompensationFinancial.ResMovingAllowance);
+            cmd.Parameters.AddWithValue("ResLabourCost_", oCompensationFinancial.ResLabourCost);
+            cmd.Parameters.AddWithValue("ResPayment_", oCompensationFinancial.ResPayment);
+            cmd.Parameters.AddWithValue("rescomments_", oCompensationFinancial.ResComments);
+            cmd.Parameters.AddWithValue("restotalvaluation_", oCompensationFinancial.ResTotalValuation);
 
             //FIXTURES SECTION
-            cmd.Parameters.Add("FixtureValuation_", oCompensationFinancial.FixtureValuation);
-            cmd.Parameters.Add("FixtureDA_", oCompensationFinancial.FixtureDA);
-            cmd.Parameters.Add("FixtureTotalValuation_", oCompensationFinancial.FixtureTotalValuation);
-            cmd.Parameters.Add("FixtureComments_", oCompensationFinancial.FixtureComments);
+            cmd.Parameters.AddWithValue("FixtureValuation_", oCompensationFinancial.FixtureValuation);
+            cmd.Parameters.AddWithValue("FixtureDA_", oCompensationFinancial.FixtureDA);
+            cmd.Parameters.AddWithValue("FixtureTotalValuation_", oCompensationFinancial.FixtureTotalValuation);
+            cmd.Parameters.AddWithValue("FixtureComments_", oCompensationFinancial.FixtureComments);
 
             //CROP SECTION
-            cmd.Parameters.Add("CropValuation_", oCompensationFinancial.CropValuation);
-            cmd.Parameters.Add("CropMaxCapCase_", oCompensationFinancial.CropMaxCapCase);
-            cmd.Parameters.Add("CropValAftMaxCap_", oCompensationFinancial.CropValAftMaxCap);
-            cmd.Parameters.Add("CropDA_", oCompensationFinancial.CropDA);
-            cmd.Parameters.Add("croptotalvaluation_", oCompensationFinancial.CropTotalValuation);
-            cmd.Parameters.Add("CropComments_", oCompensationFinancial.CropComments);
+            cmd.Parameters.AddWithValue("CropValuation_", oCompensationFinancial.CropValuation);
+            cmd.Parameters.AddWithValue("CropMaxCapCase_", oCompensationFinancial.CropMaxCapCase);
+            cmd.Parameters.AddWithValue("CropValAftMaxCap_", oCompensationFinancial.CropValAftMaxCap);
+            cmd.Parameters.AddWithValue("CropDA_", oCompensationFinancial.CropDA);
+            cmd.Parameters.AddWithValue("croptotalvaluation_", oCompensationFinancial.CropTotalValuation);
+            cmd.Parameters.AddWithValue("CropComments_", oCompensationFinancial.CropComments);
 
             //SUMMERY SECTION
-            cmd.Parameters.Add("CulturePropValuation_", oCompensationFinancial.CulturePropValuation);
-            cmd.Parameters.Add("DamagedCropValuation_", oCompensationFinancial.DamagedCropValuation);
-            cmd.Parameters.Add("totalothervaluation_", oCompensationFinancial.TotalOtherValuation);
-            cmd.Parameters.Add("NegotiatedAmount_", oCompensationFinancial.NegotiatedAmount);
-            cmd.Parameters.Add("LandInKindCompensation_", oCompensationFinancial.LandInKindCompensation);
-            cmd.Parameters.Add("resinkindcompensation_", oCompensationFinancial.ResInKindCompensation);
-            cmd.Parameters.Add("FacilitationAllowance_", oCompensationFinancial.FacilitationAllowance);
+            cmd.Parameters.AddWithValue("CulturePropValuation_", oCompensationFinancial.CulturePropValuation);
+            cmd.Parameters.AddWithValue("DamagedCropValuation_", oCompensationFinancial.DamagedCropValuation);
+            cmd.Parameters.AddWithValue("totalothervaluation_", oCompensationFinancial.TotalOtherValuation);
+            cmd.Parameters.AddWithValue("NegotiatedAmount_", oCompensationFinancial.NegotiatedAmount);
+            cmd.Parameters.AddWithValue("LandInKindCompensation_", oCompensationFinancial.LandInKindCompensation);
+            cmd.Parameters.AddWithValue("resinkindcompensation_", oCompensationFinancial.ResInKindCompensation);
+            cmd.Parameters.AddWithValue("FacilitationAllowance_", oCompensationFinancial.FacilitationAllowance);
 
             //COMMON SECTION
-            cmd.Parameters.Add("isdeleted_", oCompensationFinancial.IsDeleted);
-            cmd.Parameters.Add("createdby_", oCompensationFinancial.CreatedBy);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("isdeleted_", oCompensationFinancial.IsDeleted);
+            cmd.Parameters.AddWithValue("createdby_", oCompensationFinancial.CreatedBy);
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             cmd.ExecuteNonQuery();
 
             if (cmd.Parameters["errorMessage_"].Value != null)
@@ -92,35 +92,35 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string AddPackageDeliveryInfo(CompensationFinancialBO oCompensationFinancial)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnResult = string.Empty;
             proc = "USP_TRN_CMP_INS_DELIVERY";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("HHID_", oCompensationFinancial.HHID);
+            cmd.Parameters.AddWithValue("HHID_", oCompensationFinancial.HHID);
             if (oCompensationFinancial.DeliveredBy != 0)
-                cmd.Parameters.Add("deliveredby_", oCompensationFinancial.DeliveredBy);
+                cmd.Parameters.AddWithValue("deliveredby_", oCompensationFinancial.DeliveredBy);
             else
-                cmd.Parameters.Add("deliveredby_", DBNull.Value);
+                cmd.Parameters.AddWithValue("deliveredby_", DBNull.Value);
 
-            cmd.Parameters.Add("PAPAction_", oCompensationFinancial.PAPAction);
+            cmd.Parameters.AddWithValue("PAPAction_", oCompensationFinancial.PAPAction);
 
             if (!string.IsNullOrEmpty(oCompensationFinancial.DeliveryComments))
-                cmd.Parameters.Add("deliverycomments_", oCompensationFinancial.DeliveryComments);
+                cmd.Parameters.AddWithValue("deliverycomments_", oCompensationFinancial.DeliveryComments);
             else
-                cmd.Parameters.Add("deliverycomments_", DBNull.Value);
+                cmd.Parameters.AddWithValue("deliverycomments_", DBNull.Value);
 
             string dt=oCompensationFinancial.DeliveryDate.ToString().Substring(0, 8);
             if (dt == "1/1/0001")
-                cmd.Parameters.Add("deliverydate_", DBNull.Value);
+                cmd.Parameters.AddWithValue("deliverydate_", DBNull.Value);
             else
-                cmd.Parameters.Add("deliverydate_", oCompensationFinancial.DeliveryDate);
+                cmd.Parameters.AddWithValue("deliverydate_", oCompensationFinancial.DeliveryDate);
 
-            cmd.Parameters.Add("createdby_", oCompensationFinancial.CreatedBy);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("createdby_", oCompensationFinancial.CreatedBy);
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             cmd.ExecuteNonQuery();
 
@@ -159,23 +159,23 @@ namespace WIS_DataAccess
         public CompensationFinancialList GetCompensationFinancialList(int HHID)
         {
             proc = "USP_TRN_GET_CMP_FINANCIALS";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             CompensationFinancialBO oCompensationFinancial = null;
 
             CompensationFinancialList lstCompensationFinancial = new CompensationFinancialList();
 
             CompensationFinancialBO OCompensationFinancial = new CompensationFinancialBO();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("hhid_", HHID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("hhid_", HHID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -203,23 +203,23 @@ namespace WIS_DataAccess
         public CompensationFinancialBO GetCompensationFinancial(int HHID)
         {
             proc = "USP_TRN_GET_CMP_FINANCIALS";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             CompensationFinancialBO oCompensationFinancial = null;
 
             CompensationFinancialList lstCompensationFinancial = new CompensationFinancialList();
 
             CompensationFinancialBO OCompensationFinancial = new CompensationFinancialBO();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("hhid_", HHID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("hhid_", HHID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -247,20 +247,20 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string UpdateCompFinancial_ClosingInfo(CompensationFinancialBO objCompensationFinancial)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnResult = string.Empty;
 
             proc = "USP_TRN_CMP_UPD_FINCLOSINGINFO";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("hhid_", objCompensationFinancial.HHID);
-            cmd.Parameters.Add("resinkindcompensation_", objCompensationFinancial.ResInKindCompensation);
+            cmd.Parameters.AddWithValue("hhid_", objCompensationFinancial.HHID);
+            cmd.Parameters.AddWithValue("resinkindcompensation_", objCompensationFinancial.ResInKindCompensation);
 
-            cmd.Parameters.Add("updatedby", objCompensationFinancial.UpdatedBy);
-            cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("updatedby", objCompensationFinancial.UpdatedBy);
+            /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             try
             {
                 cmd.ExecuteNonQuery();
@@ -492,20 +492,20 @@ namespace WIS_DataAccess
         public CompensationFinancialBO GetCompensationFinancialByID(int CompensationFinancialID)
         {
             proc = "USP_MST_GET_CompensationFinancialBYID";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             CompensationFinancialBO objCompensationFinancial = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("CompensationFinancialID_", CompensationFinancialID);
+            cmd.Parameters.AddWithValue("CompensationFinancialID_", CompensationFinancialID);
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -531,20 +531,20 @@ namespace WIS_DataAccess
         public CompensationFinancialBO getPackageDeliveryInfo(int HHID)
         {
             proc = "USP_TRN_CMP_GET_DELIVERY";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             CompensationFinancialBO objCompensationFinancial = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("hhid_", HHID);
+            cmd.Parameters.AddWithValue("hhid_", HHID);
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -588,25 +588,25 @@ namespace WIS_DataAccess
         /// <param name="objCompensationFinancialBO"></param>
         public void UpdateCompensationFinancialPayment(CompensationFinancialBO objCompensationFinancialBO)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             string returnResult = string.Empty;
 
             proc = "USP_TRN_UPD_CMP_FIN_PAYMENT";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
 
-            cmd.Parameters.Add("HHID_", objCompensationFinancialBO.HHID);
-            cmd.Parameters.Add("CMP_PAYMENTID_", objCompensationFinancialBO.CompPaymentId);
-            cmd.Parameters.Add("LANDVALUATIONPAID_", objCompensationFinancialBO.LandPaidValuation);
-            cmd.Parameters.Add("RESVALUATIONPAID_", objCompensationFinancialBO.ResPaidValuation);
-            cmd.Parameters.Add("FIXTUREVALUATIONPAID_", objCompensationFinancialBO.FixturePaidValuation);
-            cmd.Parameters.Add("CROPVALUATIONPAID_", objCompensationFinancialBO.CropPaidValuation);
-            cmd.Parameters.Add("CULTUREVALUATIONPAID_", objCompensationFinancialBO.CulturePropPaidValuation);
-            cmd.Parameters.Add("DAMAGEDCROPVALUATIONPAID_", objCompensationFinancialBO.DamagedCropPaidValuation);
-            cmd.Parameters.Add("FACILITATIONALLOWANCEPAID_", objCompensationFinancialBO.FacilitationAllowancePaid);
-            cmd.Parameters.Add("NEGOTIATEDAMOUNTPAID_", objCompensationFinancialBO.NegotiatedAmountPaid);
+            cmd.Parameters.AddWithValue("HHID_", objCompensationFinancialBO.HHID);
+            cmd.Parameters.AddWithValue("CMP_PAYMENTID_", objCompensationFinancialBO.CompPaymentId);
+            cmd.Parameters.AddWithValue("LANDVALUATIONPAID_", objCompensationFinancialBO.LandPaidValuation);
+            cmd.Parameters.AddWithValue("RESVALUATIONPAID_", objCompensationFinancialBO.ResPaidValuation);
+            cmd.Parameters.AddWithValue("FIXTUREVALUATIONPAID_", objCompensationFinancialBO.FixturePaidValuation);
+            cmd.Parameters.AddWithValue("CROPVALUATIONPAID_", objCompensationFinancialBO.CropPaidValuation);
+            cmd.Parameters.AddWithValue("CULTUREVALUATIONPAID_", objCompensationFinancialBO.CulturePropPaidValuation);
+            cmd.Parameters.AddWithValue("DAMAGEDCROPVALUATIONPAID_", objCompensationFinancialBO.DamagedCropPaidValuation);
+            cmd.Parameters.AddWithValue("FACILITATIONALLOWANCEPAID_", objCompensationFinancialBO.FacilitationAllowancePaid);
+            cmd.Parameters.AddWithValue("NEGOTIATEDAMOUNTPAID_", objCompensationFinancialBO.NegotiatedAmountPaid);
             cmd.ExecuteNonQuery();
         }
 
@@ -619,20 +619,20 @@ namespace WIS_DataAccess
         public CompensationFinancialBO GetCompensationFinancialById(int CompPaymentId, int HHID)
         {
             proc = "USP_TRN_GET_CMP_FIN_PAYBYID";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             CompensationFinancialBO objCompensationFinancial = null;
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HHID_", HHID);
-            cmd.Parameters.Add("CMP_PAYMENTID_", CompPaymentId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", HHID);
+            cmd.Parameters.AddWithValue("CMP_PAYMENTID_", CompPaymentId);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {

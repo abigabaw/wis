@@ -1,5 +1,5 @@
 ﻿using System;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_BusinessObjects;
 
@@ -8,31 +8,31 @@ namespace WIS_DataAccess
     public class FinalValuationDAL
     {
         string con = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
 
         #region GET DATA
         public FinalValuationBO getFinalValuation(int HHID)
         {
             proc = "USP_TRN_GET_FINALVALUATION";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
           
             FinalValuationBO objFinalValuation = null;
 
             FinalValuationList lstFinalValuation = new FinalValuationList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HHID_", HHID);
+            cmd.Parameters.AddWithValue("HHID_", HHID);
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -55,23 +55,23 @@ namespace WIS_DataAccess
         public FinalValuationList getFinalValuationById(int HHID)
         {
             proc = "USP_TRN_GET_FINALVALUATION";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             FinalValuationBO objFinalValuation = null;
 
             FinalValuationList lstFinalValuation = new FinalValuationList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("hhid_", HHID);
+            cmd.Parameters.AddWithValue("hhid_", HHID);
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -194,32 +194,32 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int Insert(FinalValuationBO Finalvaluationobj)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_INS_FINALVALUATION", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_INS_FINALVALUATION", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("VAL_SUMMARYID", Finalvaluationobj.Val_SummaryID);
-                dcmd.Parameters.Add("HHID", Finalvaluationobj.HouseholdID);
-                dcmd.Parameters.Add("CROPVALUE", Finalvaluationobj.CropValue);
+                dcmd.Parameters.AddWithValue("VAL_SUMMARYID", Finalvaluationobj.Val_SummaryID);
+                dcmd.Parameters.AddWithValue("HHID", Finalvaluationobj.HouseholdID);
+                dcmd.Parameters.AddWithValue("CROPVALUE", Finalvaluationobj.CropValue);
                 //Max Cap Value
-                dcmd.Parameters.Add("CROPMAXCAPCASE_", Finalvaluationobj.Crop_Max_Cap_Case);
-                dcmd.Parameters.Add("CROPVALAFTMAXCAP_", Finalvaluationobj.Crop_Val_Aft_Max_Cap);
+                dcmd.Parameters.AddWithValue("CROPMAXCAPCASE_", Finalvaluationobj.Crop_Max_Cap_Case);
+                dcmd.Parameters.AddWithValue("CROPVALAFTMAXCAP_", Finalvaluationobj.Crop_Val_Aft_Max_Cap);
                 //End Max Cap Value
-                dcmd.Parameters.Add("LANDVALUE", Finalvaluationobj.LandValue);
-                dcmd.Parameters.Add("FIXTUREVALUE", Finalvaluationobj.FixtureValue);
-              //  dcmd.Parameters.Add("HOUSEVALUE", Finalvaluationobj.HouseValue);
-                dcmd.Parameters.Add("REPLACEMENTVALUE", Finalvaluationobj.ReplacementValue);
-                dcmd.Parameters.Add("DAMAGEDCROPVALUE", Finalvaluationobj.DamagedcropValue);
-                dcmd.Parameters.Add("CULTURALPROPVALUE", Finalvaluationobj.CulturalpropertyValue);
-                dcmd.Parameters.Add("GRANDTOTAL", Finalvaluationobj.GrandtotalValue);
-                dcmd.Parameters.Add("NEGOTIATEDAMOUNT", Finalvaluationobj.NegotiatedAmount);
-                dcmd.Parameters.Add("VALSUMMARYCOMMENTS", Finalvaluationobj.ValsummaryComments);
-                dcmd.Parameters.Add("CREATEDBY", Finalvaluationobj.CreatedBy);
-              dcmd.Parameters.Add("UPDATEDBY", Finalvaluationobj.CreatedBy);
+                dcmd.Parameters.AddWithValue("LANDVALUE", Finalvaluationobj.LandValue);
+                dcmd.Parameters.AddWithValue("FIXTUREVALUE", Finalvaluationobj.FixtureValue);
+              //  dcmd.Parameters.AddWithValue("HOUSEVALUE", Finalvaluationobj.HouseValue);
+                dcmd.Parameters.AddWithValue("REPLACEMENTVALUE", Finalvaluationobj.ReplacementValue);
+                dcmd.Parameters.AddWithValue("DAMAGEDCROPVALUE", Finalvaluationobj.DamagedcropValue);
+                dcmd.Parameters.AddWithValue("CULTURALPROPVALUE", Finalvaluationobj.CulturalpropertyValue);
+                dcmd.Parameters.AddWithValue("GRANDTOTAL", Finalvaluationobj.GrandtotalValue);
+                dcmd.Parameters.AddWithValue("NEGOTIATEDAMOUNT", Finalvaluationobj.NegotiatedAmount);
+                dcmd.Parameters.AddWithValue("VALSUMMARYCOMMENTS", Finalvaluationobj.ValsummaryComments);
+                dcmd.Parameters.AddWithValue("CREATEDBY", Finalvaluationobj.CreatedBy);
+              dcmd.Parameters.AddWithValue("UPDATEDBY", Finalvaluationobj.CreatedBy);
 
                 return dcmd.ExecuteNonQuery();
 
@@ -243,18 +243,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public FinalValuationBO ApprovalChangerequestStatus(FinalValuationBO objFinalValuationBO)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_APPROVALVALUEPENDING"; //USP_TRN_APPROVALSTATUSPENDING
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ProjectedId_", objFinalValuationBO.ProjectedId);
-            cmd.Parameters.Add("Workflowcode_", objFinalValuationBO.Workflowcode);
-            cmd.Parameters.Add("HHID_", objFinalValuationBO.HhId);
-            cmd.Parameters.Add("PageCode_", objFinalValuationBO.PageCode);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ProjectedId_", objFinalValuationBO.ProjectedId);
+            cmd.Parameters.AddWithValue("Workflowcode_", objFinalValuationBO.Workflowcode);
+            cmd.Parameters.AddWithValue("HHID_", objFinalValuationBO.HhId);
+            cmd.Parameters.AddWithValue("PageCode_", objFinalValuationBO.PageCode);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             FinalValuationBO objTrn_Pap_FinalValuation = null;
             while (dr.Read())
             {
@@ -273,16 +273,16 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int SaveNogotiatedAmount(FinalValuationBO objFinalValuationBO)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_UPD_FINVALNOGAMOUNT", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_UPD_FINVALNOGAMOUNT", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("HOUSEHOLDID_", objFinalValuationBO.HhId);
-                dcmd.Parameters.Add("NEGOTIATEDAMOUNT_", objFinalValuationBO.NegotiatedAmount);
+                dcmd.Parameters.AddWithValue("HOUSEHOLDID_", objFinalValuationBO.HhId);
+                dcmd.Parameters.AddWithValue("NEGOTIATEDAMOUNT_", objFinalValuationBO.NegotiatedAmount);
                 return dcmd.ExecuteNonQuery();
             }
             catch
@@ -306,17 +306,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int SaveNogotiatedAmountIndividual(int HHID, decimal NegotiatedAmount, string NegType)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_UPD_FINVALNOGAMTIND", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_UPD_FINVALNOGAMTIND", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("HOUSEHOLDID_", HHID);
-                dcmd.Parameters.Add("NEGOTIATEDAMOUNT_", NegotiatedAmount);
-                dcmd.Parameters.Add("NEGAMTTYPE_", NegType);
+                dcmd.Parameters.AddWithValue("HOUSEHOLDID_", HHID);
+                dcmd.Parameters.AddWithValue("NEGOTIATEDAMOUNT_", NegotiatedAmount);
+                dcmd.Parameters.AddWithValue("NEGAMTTYPE_", NegType);
                 return dcmd.ExecuteNonQuery();
             }
             catch
@@ -339,23 +339,23 @@ namespace WIS_DataAccess
         public FinalValuationBO getNegIndValuation(int HHID)
         {
             proc = "USP_TRN_GET_FINVALIND";
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             FinalValuationBO objFinalValuation = null;
 
             FinalValuationList lstFinalValuation = new FinalValuationList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HHID_", HHID);
+            cmd.Parameters.AddWithValue("HHID_", HHID);
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {

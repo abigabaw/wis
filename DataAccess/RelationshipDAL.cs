@@ -1,5 +1,5 @@
 ﻿using System;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_BusinessObjects;
 
@@ -13,16 +13,16 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public RELATIONSHIPLIST GetALLRelationship()
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETALL_RELATIONSHIP";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             RelationshipBO objRelr = null; ;
             RELATIONSHIPLIST Rels = new RELATIONSHIPLIST();
 
@@ -45,16 +45,16 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public RELATIONSHIPLIST GetRelationship()
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_RELATIONSHIP";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             RelationshipBO objRelr = null; ;
             RELATIONSHIPLIST Rels = new RELATIONSHIPLIST();
 
@@ -79,17 +79,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public RelationshipBO GetRelationshipByID(int relationshipID)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_RELATIONSHIPBYID";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("RELATIONSHIPID", relationshipID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("RELATIONSHIPID", relationshipID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             RelationshipBO objRelr = null;
 
             while (dr.Read())
@@ -111,21 +111,21 @@ namespace WIS_DataAccess
         public string AddRelation(RelationshipBO objRelr)
         {
 
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             string returnResult = string.Empty;
             {
-                OracleCommand myCommand;
-                myCommand = new OracleCommand("USP_MST_INS_RELATIONSHIP", con);
+                SqlCommand myCommand;
+                myCommand = new SqlCommand("USP_MST_INS_RELATIONSHIP", con);
                 myCommand.Connection = con;
                 myCommand.CommandType = CommandType.StoredProcedure;
                 //Relationship objrel = new Relationship();
-                myCommand.Parameters.Add("@RELATION_", objRelr.RELATIONSHIP);
-                myCommand.Parameters.Add("@ISDELETEDIN",  "False");
-                myCommand.Parameters.Add("@CREATEDBY",objRelr.UserID);
+                myCommand.Parameters.AddWithValue("@RELATION_", objRelr.RELATIONSHIP);
+                myCommand.Parameters.AddWithValue("@ISDELETEDIN",  "False");
+                myCommand.Parameters.AddWithValue("@CREATEDBY",objRelr.UserID);
                 con.Open();
                 //result = myCommand.ExecuteNonQuery();
 
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 myCommand.ExecuteNonQuery();
 
@@ -148,19 +148,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteRelation(int RELATIONSHIPID)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DEL_RELATIONSHIP", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DEL_RELATIONSHIP", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("RELATIONSHIPID_", RELATIONSHIPID);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("RELATIONSHIPID_", RELATIONSHIPID);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -194,29 +194,29 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string UpdateRelation(RelationshipBO objRel)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             string returnResult = string.Empty;
             {
-                OracleCommand myCommand;
-                myCommand = new OracleCommand("USP_MST_UPD_RELATIONSHIP", con);
+                SqlCommand myCommand;
+                myCommand = new SqlCommand("USP_MST_UPD_RELATIONSHIP", con);
                 myCommand.Connection = con;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("RELATIONSHIPID", objRel.RELATIONSHIPID);
+                myCommand.Parameters.AddWithValue("RELATIONSHIPID", objRel.RELATIONSHIPID);
                 if (string.IsNullOrEmpty(objRel.RELATIONSHIP) == true)
                 {
-                    myCommand.Parameters.Add("RELATION", objRel.RELATIONSHIP);
+                    myCommand.Parameters.AddWithValue("RELATION", objRel.RELATIONSHIP);
                 }
                 else
                 {
-                    myCommand.Parameters.Add("RELATION", objRel.RELATIONSHIP);
-                    //myCommand.Parameters.Add("RELATION", objRel.RELATIONSHIP);
+                    myCommand.Parameters.AddWithValue("RELATION", objRel.RELATIONSHIP);
+                    //myCommand.Parameters.AddWithValue("RELATION", objRel.RELATIONSHIP);
                 }
-                myCommand.Parameters.Add("UPDATEDBY", objRel.UserID);
-                //myCommand.Parameters.Add("UPDATEDBY", UPDATEDBY);
+                myCommand.Parameters.AddWithValue("UPDATEDBY", objRel.UserID);
+                //myCommand.Parameters.AddWithValue("UPDATEDBY", UPDATEDBY);
                 con.Open();
                 //result = myCommand.ExecuteNonQuery();
 
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 myCommand.ExecuteNonQuery();
 
@@ -240,19 +240,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteRelationship (int RELATIONSHIPID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETE_RELATIONSHIP", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETE_RELATIONSHIP", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("RELATIONSHIPID_",RELATIONSHIPID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("RELATIONSHIPID_",RELATIONSHIPID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

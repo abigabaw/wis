@@ -255,6 +255,67 @@
                                 Value="PROJECT_EXPENSE_RPT" />
                         </asp:MenuItem>
                         <asp:MenuItem Selectable="false" NavigateUrl="#" Text="&nbsp; Reports &nbsp;" Value="REPORTS">
+                            <asp:MenuItem Selectable="false" NavigateUrl="#" Text="Project" Value="PROJECT_REPORTS" Enabled="False">
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/ProjectReport.aspx" Text="Project List"
+                                    Value="PROJECT_LIST" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/AuditTrail.aspx" Text="Audit Trails" Value="AUDIT_TRAIL" Enabled="False" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/Approvals.aspx" Text="Approval" Value="APPROVAL" Enabled="False" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/ApprovalsDue.aspx" Text="Approvals Due" Value="APPROVAL_DUE" Enabled="False" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/DailyProjectsStatus.aspx" Text="Daily project status"
+                                    Value="DAILY_PROJ_STATUS" Enabled="False" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/PAPStatus_Chart.aspx" Text="PAP Status Chart"
+                                    Value="PAP_STATUS_CHART" Enabled="False" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/ProjectStatus_PieChart.aspx" Text="Project Status PieChart"
+                                    Value="PROJECT_STATUS_PIECHART" Enabled="False" />
+                            </asp:MenuItem>
+                            <asp:MenuItem Selectable="false" NavigateUrl="#" Text="Compensation" Value="COMPENSATION_REPORTS">
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/PublicConsultation.aspx" Text="Public consultation progress"
+                                    Value="PUBLIC_CONSULTATION_PROGRESS" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/Valuation.aspx" Text="Valuation" Value="RPT_VALUATION" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/Survey.aspx" Text="Survey" Value="RPT_SURVEY" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/Compensation.aspx" Text="Compensation" Value="RPT_COMPENSATION" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/ProCompensation.aspx" Text="Propotionated Compensation" Value="RPT_PROCOMPENSATION" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/Statistics.aspx" Text="Statistics" Value="STATISTICS" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/ACCEPTANCECOUNT.aspx" Text="Package Acceptance"
+                                    Value="Package_Acceptance" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/FundProgress.aspx" Text="Fund Progress Request"
+                                    Value="FUND" />
+                                     <asp:MenuItem NavigateUrl="~/UI/REPORTUI/FundRequestChange.aspx" Text="Fund Request Change"
+                                    Value="FUNDREQCHNG" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/GeneralPapCategory.aspx" Text="General PAP Category"
+                                    Value="PAP_CATEGORY" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/CompensationBeneficiary.aspx" Text="Compensation Beneficiary"
+                                    Value="COMPENSATION_BENEFICIARY" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/CulturalProperty.aspx" Text="Cultural Property Management"
+                                    Value="CULTURAL_PROP_MGMT" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/ComparisionDataReports.aspx" Text="Change Reports"
+                                    Value="CHANGE_REPORTS" />
+                            </asp:MenuItem>
+                            <asp:MenuItem Selectable="false" NavigateUrl="#" Text="Expense" Value="EXPENSE_REPORTS">
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/BudgtEstimation.aspx" Text="Budget v/s Expenditure"
+                                    Value="BUDGET_EXPENDITURE" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/MonthlyProjectExpenditure.aspx" Text="Monthly Project Expenditure"
+                                    Value="MONTHLY_PROJ_EXP" />
+                            </asp:MenuItem>
+                            <asp:MenuItem Selectable="false" NavigateUrl="#" Text="Grievance" Value="GRIEVANCE_REPORTS">
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/LegalCaseTracking.aspx" Text="Legal Case Tracking"
+                                    Value="LEGAL_CASE_TRACKING" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/DisputeRsolutionTracking.aspx" Text="Dispute Resolution Tracking"
+                                    Value="DISPUTE_RES_TRACKING" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/Grievancerpt.aspx" Text="Grievance"
+                                    Value="GRIEVANCE_RPT" />
+                            </asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/UI/REPORTUI/LivelihoodSupport.aspx" Text="Community Development<br/>and Livelihood Support"
+                                Value="CDAP_LIV_SUPPORT" />
+                            <asp:MenuItem NavigateUrl="~/UI/REPORTUI/MonitoringResultEvaluation.aspx" Text="M & E"
+                                Value="M_E" />
+                                 <asp:MenuItem NavigateUrl="~/UI/REPORTUI/PAPChildCount.aspx" Text="PAP Child Count"
+                                Value="PAP_Child_dCount" />
+                                <asp:MenuItem NavigateUrl="~/UI/REPORTUI/PersonalIdentification.aspx" Text="Personal Identification"
+                                Value="Personal_Identification" />
+                            <asp:MenuItem NavigateUrl="~/UI/REPORTUI/OptionSummary.aspx" Text="Legacy Reports"
+                                Value="OPTION_SUMMARY" />
+                            <asp:MenuItem NavigateUrl="~/UI/REPORTUI/LiveliHoodAfter.aspx" Text="Livelihood Restoration Assessment" Value="LRA_AFTERRPT" />
                             <asp:MenuItem NavigateUrl="#" Text="Data Management" Value="DATA_MGT_RPT" />
                             <asp:MenuItem NavigateUrl="#" Text="Consultations & Disclosures" Value="CONSULT_DISC_RPT" />
                             <asp:MenuItem NavigateUrl="#" Text="Compensation" Value="COMPENSATION_RPT" />

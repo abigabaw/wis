@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Data;
 using System.Configuration;
+using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Data.SqlClient;
-using Oracle.DataAccess.Client;
+//using Oracle.DataAccess.Client;
+
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -20,7 +21,7 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public DSH_RecentPAPSList GetRecentPAPSByUser(int userID)
         {
-            SqlConnection cnn = new SqlConnection(ConfigurationManager.ConnectionStrings["UETCL_WIS_SQL"].ToString());
+            SqlConnection cnn = new SqlConnection(con);
             DSH_RecentPAPSBO objRecentPAPS = null;
 
             DSH_RecentPAPSList RecentPAPS = new DSH_RecentPAPSList();
@@ -29,7 +30,6 @@ namespace WIS_DataAccess
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("USERID_", userID);
-            //cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
 
             try
             {
@@ -64,16 +64,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public DSH_PAPStatusList GetProjects(int userID)
         {
-            SqlConnection cnn = new SqlConnection(ConfigurationManager.ConnectionStrings["UETCL_WIS_SQL"].ToString());
+            SqlConnection cnn = new SqlConnection(con);
             DSH_PAPStatusBO objPAPStatus = null;
 
             DSH_PAPStatusList PAPStatusList = new DSH_PAPStatusList();
 
             SqlCommand cmd = new SqlCommand("USP_DSH_GET_PROJECTSFORHOME", cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-
             cmd.Parameters.AddWithValue("USERID_", userID);
-            // cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
 
             try
             {
@@ -106,7 +104,7 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public DSH_PAPStatusList GetRecentProject(int userID)
         {
-            SqlConnection cnn = new SqlConnection(ConfigurationManager.ConnectionStrings["UETCL_WIS_SQL"].ToString());
+            SqlConnection cnn = new SqlConnection(con);
             DSH_PAPStatusBO objPAPStatus = null;
 
             DSH_PAPStatusList PAPStatusList = new DSH_PAPStatusList();
@@ -114,7 +112,7 @@ namespace WIS_DataAccess
             SqlCommand cmd = new SqlCommand("USP_DSH_GET_RECENTPROJECT", cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.AddWithValue("USERID_", userID);
+            cmd.Parameters.AddWithValue("USERID_", Convert.ToDecimal(userID));
             // cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
 
             try
@@ -148,7 +146,7 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public DSH_PAPStatusList GetProjectwisePAPStatus(int PROJECTID)
         {
-            SqlConnection cnn = new SqlConnection(ConfigurationManager.ConnectionStrings["UETCL_WIS_SQL"].ToString());
+            SqlConnection cnn = new SqlConnection(con);
             DSH_PAPStatusBO objPAPStatus = null;
 
             DSH_PAPStatusList PAPStatusList = new DSH_PAPStatusList();
@@ -192,7 +190,7 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public DSH_PAPStatusList GetProjectwisePAPStatusForPie()
         {
-            SqlConnection cnn = new SqlConnection(ConfigurationManager.ConnectionStrings["UETCL_WIS_SQL"].ToString());
+            SqlConnection cnn = new SqlConnection(con);
             DSH_PAPStatusBO objPAPStatus = null;
 
             DSH_PAPStatusList PAPStatusList = new DSH_PAPStatusList();
@@ -233,7 +231,7 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public DSH_PAPStatusList GetProjectwisePAPBudgetForSpline(int PROJECTID)
         {
-            SqlConnection cnn = new SqlConnection(ConfigurationManager.ConnectionStrings["UETCL_WIS_SQL"].ToString());
+            SqlConnection cnn = new SqlConnection(con);
             DSH_PAPStatusBO objPAPStatus = null;
 
             DSH_PAPStatusList PAPStatusList = new DSH_PAPStatusList();

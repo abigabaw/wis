@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -16,28 +16,28 @@ namespace WIS_DataAccess
         public string AddLandLivingOn(LandLivingOnBO objSurvey)
         {
             string result = string.Empty;
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_TRN_UPD_LANDLIVINGON", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_TRN_UPD_LANDLIVINGON", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("HHID_", objSurvey.HouseholdID);
-            myCommand.Parameters.Add("WHERELIVEDBEFORE_", objSurvey.WhereLivedBefore);
-            myCommand.Parameters.Add("PREFERREDVILLAGE_", objSurvey.PreferredVillege);
-            myCommand.Parameters.Add("ISOTHERLANDHOLDING_", objSurvey.IsOtherLandHold);
-            myCommand.Parameters.Add("WHICHLANDHOLDING_", objSurvey.WhichLandHold);
-            myCommand.Parameters.Add("REQUIRETRANSPORT_", objSurvey.RequireTransport);
-            myCommand.Parameters.Add("MOVENEARRELATIVES_", objSurvey.MovenearRelatives);
-            myCommand.Parameters.Add("BURIEDFAMILYMEMONLAND_", objSurvey.BuriedFamilyMemonLand);
-            myCommand.Parameters.Add("HOWMANYBURIED_", objSurvey.HowmanyBuried);
-            myCommand.Parameters.Add("RELOCATEANCESTORS_", objSurvey.RelocateAncestors);
-            myCommand.Parameters.Add("DISTRICT_", objSurvey.District);
-            myCommand.Parameters.Add("COUNTY_", objSurvey.County);
-            myCommand.Parameters.Add("SUBCOUNTY_", objSurvey.Subcounty);
-            myCommand.Parameters.Add("VILLAGE_", objSurvey.Village);
-            myCommand.Parameters.Add("UPDATEDBY_", objSurvey.UpdatedBy);
-            myCommand.Parameters.Add("errormessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("HHID_", objSurvey.HouseholdID);
+            myCommand.Parameters.AddWithValue("WHERELIVEDBEFORE_", objSurvey.WhereLivedBefore);
+            myCommand.Parameters.AddWithValue("PREFERREDVILLAGE_", objSurvey.PreferredVillege);
+            myCommand.Parameters.AddWithValue("ISOTHERLANDHOLDING_", objSurvey.IsOtherLandHold);
+            myCommand.Parameters.AddWithValue("WHICHLANDHOLDING_", objSurvey.WhichLandHold);
+            myCommand.Parameters.AddWithValue("REQUIRETRANSPORT_", objSurvey.RequireTransport);
+            myCommand.Parameters.AddWithValue("MOVENEARRELATIVES_", objSurvey.MovenearRelatives);
+            myCommand.Parameters.AddWithValue("BURIEDFAMILYMEMONLAND_", objSurvey.BuriedFamilyMemonLand);
+            myCommand.Parameters.AddWithValue("HOWMANYBURIED_", objSurvey.HowmanyBuried);
+            myCommand.Parameters.AddWithValue("RELOCATEANCESTORS_", objSurvey.RelocateAncestors);
+            myCommand.Parameters.AddWithValue("DISTRICT_", objSurvey.District);
+            myCommand.Parameters.AddWithValue("COUNTY_", objSurvey.County);
+            myCommand.Parameters.AddWithValue("SUBCOUNTY_", objSurvey.Subcounty);
+            myCommand.Parameters.AddWithValue("VILLAGE_", objSurvey.Village);
+            myCommand.Parameters.AddWithValue("UPDATEDBY_", objSurvey.UpdatedBy);
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             myConnection.Open();
             myCommand.ExecuteNonQuery();
             if (myCommand.Parameters["errormessage_"].Value != null)
@@ -53,15 +53,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public LandLivingOnBO GetLandLivingOnByHHID(int HHID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GET_LANDLIVINGON";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("HHID_", HHID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", HHID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             LandLivingOnBO obSurvey = null;
             while (dr.Read())
             {
@@ -106,43 +106,43 @@ namespace WIS_DataAccess
         public int AddLandLivingOFF(LandLivingOffBO objSurveyLandLivingOff)
         {
             int result = 0;
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_TRN_UPD_LANDLIVINGOFF", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_TRN_UPD_LANDLIVINGOFF", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("LIVINGOFFID_", objSurveyLandLivingOff.LivingOffID);
-            myCommand.Parameters.Add("HHID_", objSurveyLandLivingOff.HouseholdID);
-            myCommand.Parameters.Add("DWELLINGID_", objSurveyLandLivingOff.DwellingID);
-            myCommand.Parameters.Add("NOOFROOMS_", objSurveyLandLivingOff.NoofRooms);
+            myCommand.Parameters.AddWithValue("LIVINGOFFID_", objSurveyLandLivingOff.LivingOffID);
+            myCommand.Parameters.AddWithValue("HHID_", objSurveyLandLivingOff.HouseholdID);
+            myCommand.Parameters.AddWithValue("DWELLINGID_", objSurveyLandLivingOff.DwellingID);
+            myCommand.Parameters.AddWithValue("NOOFROOMS_", objSurveyLandLivingOff.NoofRooms);
 
             if (objSurveyLandLivingOff.Str_TenureID > 0)
-                myCommand.Parameters.Add("STR_TENUREID_", objSurveyLandLivingOff.Str_TenureID);
+                myCommand.Parameters.AddWithValue("STR_TENUREID_", objSurveyLandLivingOff.Str_TenureID);
             else
-                myCommand.Parameters.Add("STR_TENUREID_", DBNull.Value);
+                myCommand.Parameters.AddWithValue("STR_TENUREID_", DBNull.Value);
 
             if (objSurveyLandLivingOff.Tenure > 0)
-                myCommand.Parameters.Add("TENURE_", objSurveyLandLivingOff.Tenure);
+                myCommand.Parameters.AddWithValue("TENURE_", objSurveyLandLivingOff.Tenure);
             else
-                myCommand.Parameters.Add("TENURE_", DBNull.Value);
+                myCommand.Parameters.AddWithValue("TENURE_", DBNull.Value);
 
             if (objSurveyLandLivingOff.RoofID > 0)
-                myCommand.Parameters.Add("ROOFID_", objSurveyLandLivingOff.RoofID);
+                myCommand.Parameters.AddWithValue("ROOFID_", objSurveyLandLivingOff.RoofID);
             else
-                myCommand.Parameters.Add("ROOFID_", DBNull.Value);
+                myCommand.Parameters.AddWithValue("ROOFID_", DBNull.Value);
 
             if (objSurveyLandLivingOff.WallID > 0)
-                myCommand.Parameters.Add("WALLID_", objSurveyLandLivingOff.WallID);
+                myCommand.Parameters.AddWithValue("WALLID_", objSurveyLandLivingOff.WallID);
             else
-                myCommand.Parameters.Add("WALLID_", DBNull.Value);
+                myCommand.Parameters.AddWithValue("WALLID_", DBNull.Value);
 
             if (objSurveyLandLivingOff.FloorID > 0)
-                myCommand.Parameters.Add("FLOORID_", objSurveyLandLivingOff.FloorID);
+                myCommand.Parameters.AddWithValue("FLOORID_", objSurveyLandLivingOff.FloorID);
             else
-                myCommand.Parameters.Add("FLOORID_", DBNull.Value);
+                myCommand.Parameters.AddWithValue("FLOORID_", DBNull.Value);
 
-            myCommand.Parameters.Add("UPDATEDBY_", objSurveyLandLivingOff.UpdatedBy);
+            myCommand.Parameters.AddWithValue("UPDATEDBY_", objSurveyLandLivingOff.UpdatedBy);
             myConnection.Open();
             result = myCommand.ExecuteNonQuery();
             myConnection.Close();
@@ -156,21 +156,21 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public LandLivingOffList GetLivingOFF(int HHID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GET_LANDLIVINGOFF";
 
             LandLivingOffBO objLivingOff = null;
             LandLivingOffList LandLivingOffLst = new LandLivingOffList();
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("HHID_", HHID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", HHID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 while (dr.Read())
                 {
                     objLivingOff = new LandLivingOffBO();
@@ -201,24 +201,24 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public LandLivingOffBO GetLivingOFFByID(int LivingOffID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GET_LANDLIVINGONBYID";
 
             LandLivingOffBO objLivingOff = null;
 
             //SurveyList.LandLivingOffList LandLivingOffLst = new SurveyList.LandLivingOffList();
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("LIVINGOFFID_", LivingOffID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("LIVINGOFFID_", LivingOffID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -250,13 +250,13 @@ namespace WIS_DataAccess
         /// <param name="LivingOffID"></param>
         public void DeleteLandLivingOff(int LivingOffID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_DEL_LANDLIVINGOFF";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            cmd.Parameters.Add("LIVINGOFFID_", LivingOffID);
+            cmd.Parameters.AddWithValue("LIVINGOFFID_", LivingOffID);
             cmd.ExecuteNonQuery();
             cmd.Connection.Close();
         }
@@ -273,35 +273,35 @@ namespace WIS_DataAccess
         public string AddAffectedAcreageValuation(AffectedAcreageValuationBO objAffectedAcreageValuation)
         {
             string result = "";
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_TRN_PAP_LND_VALUATION", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_TRN_PAP_LND_VALUATION", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("HHID_", objAffectedAcreageValuation.HouseholdID);
-            myCommand.Parameters.Add("LANDOWNER_", objAffectedAcreageValuation.Landowner);
-            myCommand.Parameters.Add("LANDBLOCK_", objAffectedAcreageValuation.Landblock);
-            myCommand.Parameters.Add("LANDPLOT_", objAffectedAcreageValuation.Landplot);
+            myCommand.Parameters.AddWithValue("HHID_", objAffectedAcreageValuation.HouseholdID);
+            myCommand.Parameters.AddWithValue("LANDOWNER_", objAffectedAcreageValuation.Landowner);
+            myCommand.Parameters.AddWithValue("LANDBLOCK_", objAffectedAcreageValuation.Landblock);
+            myCommand.Parameters.AddWithValue("LANDPLOT_", objAffectedAcreageValuation.Landplot);
 
             if (objAffectedAcreageValuation.Proprietorid > 0)
-                myCommand.Parameters.Add("PROPRIETORID_", objAffectedAcreageValuation.Proprietorid);
+                myCommand.Parameters.AddWithValue("PROPRIETORID_", objAffectedAcreageValuation.Proprietorid);
             else
-                myCommand.Parameters.Add("PROPRIETORID_", DBNull.Value);
+                myCommand.Parameters.AddWithValue("PROPRIETORID_", DBNull.Value);
 
-            myCommand.Parameters.Add("WHOLEACREAGEACRES_", objAffectedAcreageValuation.Wholeacreageacres);
-            myCommand.Parameters.Add("ROWACRES_", objAffectedAcreageValuation.Rowacres);
-            myCommand.Parameters.Add("ROWLANDVALUESHARE_", objAffectedAcreageValuation.Rowlandvalueshare);
-            myCommand.Parameters.Add("ROWRATEPERACRE_", objAffectedAcreageValuation.Rowrateperacre);
-            myCommand.Parameters.Add("ROWLANDVALUE_", objAffectedAcreageValuation.Rowlandvalue);
-            myCommand.Parameters.Add("WLACRES_", objAffectedAcreageValuation.Wlacres);
-            myCommand.Parameters.Add("DIMUNITIONLEVEL_", objAffectedAcreageValuation.Dimunitionlevel);
-            myCommand.Parameters.Add("WLRATEPERACRE_", objAffectedAcreageValuation.Wlrateperacre);
-            myCommand.Parameters.Add("WLLANDVALUESHARE_", objAffectedAcreageValuation.Wllandvalueshare);
-            myCommand.Parameters.Add("WLLANDVALUE_", objAffectedAcreageValuation.Wllandvalue);
-            myCommand.Parameters.Add("UPDATEDBY_", objAffectedAcreageValuation.UpdatedBy);
-            myCommand.Parameters.Add("Class_", objAffectedAcreageValuation.LocClassification);
-            myCommand.Parameters.Add("errormessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("WHOLEACREAGEACRES_", objAffectedAcreageValuation.Wholeacreageacres);
+            myCommand.Parameters.AddWithValue("ROWACRES_", objAffectedAcreageValuation.Rowacres);
+            myCommand.Parameters.AddWithValue("ROWLANDVALUESHARE_", objAffectedAcreageValuation.Rowlandvalueshare);
+            myCommand.Parameters.AddWithValue("ROWRATEPERACRE_", objAffectedAcreageValuation.Rowrateperacre);
+            myCommand.Parameters.AddWithValue("ROWLANDVALUE_", objAffectedAcreageValuation.Rowlandvalue);
+            myCommand.Parameters.AddWithValue("WLACRES_", objAffectedAcreageValuation.Wlacres);
+            myCommand.Parameters.AddWithValue("DIMUNITIONLEVEL_", objAffectedAcreageValuation.Dimunitionlevel);
+            myCommand.Parameters.AddWithValue("WLRATEPERACRE_", objAffectedAcreageValuation.Wlrateperacre);
+            myCommand.Parameters.AddWithValue("WLLANDVALUESHARE_", objAffectedAcreageValuation.Wllandvalueshare);
+            myCommand.Parameters.AddWithValue("WLLANDVALUE_", objAffectedAcreageValuation.Wllandvalue);
+            myCommand.Parameters.AddWithValue("UPDATEDBY_", objAffectedAcreageValuation.UpdatedBy);
+            myCommand.Parameters.AddWithValue("Class_", objAffectedAcreageValuation.LocClassification);
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             myConnection.Open();
             myCommand.ExecuteNonQuery();
             if (myCommand.Parameters["errormessage_"].Value != null)
@@ -317,15 +317,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public AffectedAcreageValuationBO GetAffectedAcreageValuation(int HHID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_GET_TRN_PAP_LND_VALUATION";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("HHID_", HHID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", HHID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             AffectedAcreageValuationBO obSurvey = null;
             while (dr.Read())
             {

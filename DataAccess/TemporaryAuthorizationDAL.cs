@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WIS_BusinessObjects;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 
 namespace WIS_DataAccess
 {
     public class TemporaryAuthorizationDAL
     {
-        OracleConnection cnn = null;
-        OracleCommand cmd = null;
+        SqlConnection cnn = null;
+        SqlCommand cmd = null;
 
         /// <summary>
         /// To Add Temporary Authorization
@@ -22,21 +22,21 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            using (cnn = new OracleConnection(AppConfiguration.ConnectionString))
+            using (cnn = new SqlConnection(AppConfiguration.ConnectionString))
             {
-                using (cmd = new OracleCommand("USP_INS_APPROVALTEMPAUTHORISER", cnn))
+                using (cmd = new SqlCommand("USP_INS_APPROVALTEMPAUTHORISER", cnn))
                 {
                     cmd.Connection = cnn;
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add("APPROVALTEMPAUTHORISERID_", objAuth.Approvaltempauthoriserid);
-                    cmd.Parameters.Add("AUTHORISERID_", objAuth.Authoriserid);
-                    cmd.Parameters.Add("ASSIGNTOID_", objAuth.Assigntoid);
-                    cmd.Parameters.Add("FROMDATE_", objAuth.Fromdate);
-                    cmd.Parameters.Add("TODATE_", objAuth.Todate);
-                    cmd.Parameters.Add("REMARKS_", objAuth.Remarks);
-                    cmd.Parameters.Add("PROJECTID_", objAuth.ProjectID);
-                    cmd.Parameters.Add("CREATEDBY_", objAuth.Createdby);
-                    cmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("APPROVALTEMPAUTHORISERID_", objAuth.Approvaltempauthoriserid);
+                    cmd.Parameters.AddWithValue("AUTHORISERID_", objAuth.Authoriserid);
+                    cmd.Parameters.AddWithValue("ASSIGNTOID_", objAuth.Assigntoid);
+                    cmd.Parameters.AddWithValue("FROMDATE_", objAuth.Fromdate);
+                    cmd.Parameters.AddWithValue("TODATE_", objAuth.Todate);
+                    cmd.Parameters.AddWithValue("REMARKS_", objAuth.Remarks);
+                    cmd.Parameters.AddWithValue("PROJECTID_", objAuth.ProjectID);
+                    cmd.Parameters.AddWithValue("CREATEDBY_", objAuth.Createdby);
+                    /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                     
                     cnn.Open();
                     cmd.ExecuteNonQuery();
@@ -61,19 +61,19 @@ namespace WIS_DataAccess
             TemporaryAuthorizationBO objAuth = null;
             TemporaryAuthorizationList AuthList = null;
 
-            using (cnn = new OracleConnection(AppConfiguration.ConnectionString))
+            using (cnn = new SqlConnection(AppConfiguration.ConnectionString))
             {
-                using (cmd = new OracleCommand("USP_TRN_GET_TEMPAUTHBYUSERID", cnn))
+                using (cmd = new SqlCommand("USP_TRN_GET_TEMPAUTHBYUSERID", cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add("CREATEDBY_", userID);
-                    cmd.Parameters.Add("PROJECTID_", ProjectID);
-                    cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("CREATEDBY_", userID);
+                    cmd.Parameters.AddWithValue("PROJECTID_", ProjectID);
+                    // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
                     AuthList = new TemporaryAuthorizationList();
                     try
                     {
                         cmd.Connection.Open();
-                        using (OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                        using (SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
                         {
                             while (dr.Read())
                             {
@@ -114,18 +114,18 @@ namespace WIS_DataAccess
             TemporaryAuthorizationBO objAuth = null;
             TemporaryAuthorizationList AuthList = null;
 
-            using (cnn = new OracleConnection(AppConfiguration.ConnectionString))
+            using (cnn = new SqlConnection(AppConfiguration.ConnectionString))
             {
-                using (cmd = new OracleCommand("USP_TRN_GET_TEMPAUTHBYID", cnn))
+                using (cmd = new SqlCommand("USP_TRN_GET_TEMPAUTHBYID", cnn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add("APPROVALTEMPAUTHORISERID_", APPROVALTEMPAUTHORISERID);
-                    cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("APPROVALTEMPAUTHORISERID_", APPROVALTEMPAUTHORISERID);
+                    // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
                     AuthList = new TemporaryAuthorizationList();
                     try
                     {
                         cmd.Connection.Open();
-                        using (OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                        using (SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
                         {
                             while (dr.Read())
                             {
@@ -159,17 +159,17 @@ namespace WIS_DataAccess
         /// <param name="APPROVALTEMPAUTHORISERID"></param>
         public void DeleteTempAuthorizationsByID(int APPROVALTEMPAUTHORISERID)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_TRN_DEL_TEMPAUTHBYID", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_TRN_DEL_TEMPAUTHBYID", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("APPROVALTEMPAUTHORISERID_", APPROVALTEMPAUTHORISERID);
+                myCommand.Parameters.AddWithValue("APPROVALTEMPAUTHORISERID_", APPROVALTEMPAUTHORISERID);
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
             }
@@ -192,18 +192,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteTempAuthorizationsByID(int APPROVALTEMPAUTHORISERID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBS_TEMPAUTHBYID", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBS_TEMPAUTHBYID", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("APPROVALTEMPAUTHORISERID_", APPROVALTEMPAUTHORISERID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("APPROVALTEMPAUTHORISERID_", APPROVALTEMPAUTHORISERID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

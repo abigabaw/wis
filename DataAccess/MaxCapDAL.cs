@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_BusinessObjects;
 
@@ -11,8 +11,8 @@ namespace WIS_DataAccess
   public  class MaxCapDAL
   {
       string connStr = AppConfiguration.ConnectionString;
-      OracleConnection cnn;
-      OracleCommand cmd;
+      SqlConnection cnn;
+      SqlCommand cmd;
       string proc = string.Empty;
       /// <summary>
       /// To fetch details
@@ -21,15 +21,15 @@ namespace WIS_DataAccess
       /// <returns></returns>
       public MaxCapList GetMaxCapByDist(string districtID)
       {
-          OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-          OracleCommand cmd;
+          SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+          SqlCommand cmd;
           string proc = "USP_MST_GET_MAXCAP";
-          cmd = new OracleCommand(proc, con);
+          cmd = new SqlCommand(proc, con);
           cmd.CommandType = CommandType.StoredProcedure;
-          cmd.Parameters.Add("DistrictIDIN", districtID);
-          cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+          cmd.Parameters.AddWithValue("DistrictIDIN", districtID);
+          // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
           cmd.Connection.Open();
-          OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+          SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
           MaxCapBO objcountBO = null;
           MaxCapList objcountlist = new MaxCapList();
 
@@ -53,17 +53,17 @@ namespace WIS_DataAccess
       {
           MaxCapList objCountyList = null;
 
-          using (cnn = new OracleConnection(connStr))
+          using (cnn = new SqlConnection(connStr))
           {
-              using (cmd = new OracleCommand("USP_MST_GET_MAXCAP_ALL", cnn))
+              using (cmd = new SqlCommand("USP_MST_GET_MAXCAP_ALL", cnn))
               {
                   cmd.CommandType = CommandType.StoredProcedure;
 
-                  cmd.Parameters.Add("PROJECTID_", ProjectId);
-                  cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                  cmd.Parameters.AddWithValue("PROJECTID_", ProjectId);
+                  // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
                   cmd.Connection.Open();
 
-                  OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                  SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                   MaxCapBO objMaxCapBO = null;
                   objCountyList = new MaxCapList();
@@ -94,19 +94,19 @@ namespace WIS_DataAccess
       {
           string result = "";
 
-          using (cnn = new OracleConnection(connStr))
+          using (cnn = new SqlConnection(connStr))
           {
-              using (cmd = new OracleCommand("USP_MST_INS_MAXCAP", cnn))
+              using (cmd = new SqlCommand("USP_MST_INS_MAXCAP", cnn))
               {
                   cmd.CommandType = CommandType.StoredProcedure;
                   cmd.Connection.Open();
 
-                  cmd.Parameters.Add("DISTRICTID_", objMaxCapBO.DistrictID);
-                  cmd.Parameters.Add("MAXCAPVAL_", objMaxCapBO.MaxCapVal);
-                  cmd.Parameters.Add("PROJECTID_", objMaxCapBO.ProjectID);                   
-                  //cmd.Parameters.Add("MAXCAPID_", objMaxCapBO.MaxCapID);
-                  cmd.Parameters.Add("CREATEDBY_", objMaxCapBO.CreatedBy);
-                  cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                  cmd.Parameters.AddWithValue("DISTRICTID_", objMaxCapBO.DistrictID);
+                  cmd.Parameters.AddWithValue("MAXCAPVAL_", objMaxCapBO.MaxCapVal);
+                  cmd.Parameters.AddWithValue("PROJECTID_", objMaxCapBO.ProjectID);                   
+                  //cmd.Parameters.AddWithValue("MAXCAPID_", objMaxCapBO.MaxCapID);
+                  cmd.Parameters.AddWithValue("CREATEDBY_", objMaxCapBO.CreatedBy);
+                  /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                   cmd.ExecuteNonQuery();
 
                   if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -127,19 +127,19 @@ namespace WIS_DataAccess
       {
           string result = "";
 
-          using (cnn = new OracleConnection(connStr))
+          using (cnn = new SqlConnection(connStr))
           {
-              using (cmd = new OracleCommand("USP_MST_UPD_MAXCAP", cnn))
+              using (cmd = new SqlCommand("USP_MST_UPD_MAXCAP", cnn))
               {
                   cmd.CommandType = CommandType.StoredProcedure;
                   cmd.Connection.Open();
 
-                  cmd.Parameters.Add("MAXCAPID_", objMaxCapBO.MaxCapID);
-                  cmd.Parameters.Add("DISTRICTID_", objMaxCapBO.DistrictID);
-                  cmd.Parameters.Add("MAXCAPVAL_", objMaxCapBO.MaxCapVal);
-                  cmd.Parameters.Add("PROJECTID_", objMaxCapBO.ProjectID);
-                  cmd.Parameters.Add("UPDATEDBY_", objMaxCapBO.UpdatedBy);
-                  cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                  cmd.Parameters.AddWithValue("MAXCAPID_", objMaxCapBO.MaxCapID);
+                  cmd.Parameters.AddWithValue("DISTRICTID_", objMaxCapBO.DistrictID);
+                  cmd.Parameters.AddWithValue("MAXCAPVAL_", objMaxCapBO.MaxCapVal);
+                  cmd.Parameters.AddWithValue("PROJECTID_", objMaxCapBO.ProjectID);
+                  cmd.Parameters.AddWithValue("UPDATEDBY_", objMaxCapBO.UpdatedBy);
+                  /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                   cmd.ExecuteNonQuery();
 
                   if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -160,15 +160,15 @@ namespace WIS_DataAccess
       {
           string result = "";
 
-          using (cnn = new OracleConnection(connStr))
+          using (cnn = new SqlConnection(connStr))
           {
-              using (cmd = new OracleCommand("USP_MST_DEL_MAXCAP", cnn))
+              using (cmd = new SqlCommand("USP_MST_DEL_MAXCAP", cnn))
               {
                   cmd.CommandType = CommandType.StoredProcedure;
                   cmd.Connection.Open();
 
-                  cmd.Parameters.Add("MAXCAPID_", maxCapID);
-                  cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                  cmd.Parameters.AddWithValue("MAXCAPID_", maxCapID);
+                  /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                   cmd.ExecuteNonQuery();
 
                   if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -191,18 +191,18 @@ namespace WIS_DataAccess
       {
           string result = "";
 
-          using (cnn = new OracleConnection(connStr))
+          using (cnn = new SqlConnection(connStr))
           {
-              using (cmd = new OracleCommand("USP_MST_OBS_MAXCAP", cnn))
+              using (cmd = new SqlCommand("USP_MST_OBS_MAXCAP", cnn))
               {
                   cmd.CommandType = CommandType.StoredProcedure;
                   cmd.Connection.Open();
 
-                  cmd.Parameters.Add("MAXCAPID_", maxCapID);
-                  cmd.Parameters.Add("ISDELETED_", isDeleted);
-                  cmd.Parameters.Add("UPDATEDBY_", updatedBy);
+                  cmd.Parameters.AddWithValue("MAXCAPID_", maxCapID);
+                  cmd.Parameters.AddWithValue("ISDELETED_", isDeleted);
+                  cmd.Parameters.AddWithValue("UPDATEDBY_", updatedBy);
 
-                  cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                  /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                   cmd.ExecuteNonQuery();
 
                   if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -223,18 +223,18 @@ namespace WIS_DataAccess
       {
           proc = "USP_MST_GET_MAXCAPBYID";
 
-          cnn = new OracleConnection(connStr);
+          cnn = new SqlConnection(connStr);
           MaxCapBO CountyBOobj = null;
 
-          cmd = new OracleCommand(proc, cnn);
+          cmd = new SqlCommand(proc, cnn);
           cmd.CommandType = CommandType.StoredProcedure;
 
-          cmd.Parameters.Add("MAXCAPID_", maxCapID);
-          cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+          cmd.Parameters.AddWithValue("MAXCAPID_", maxCapID);
+          // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
           try
           {
               cmd.Connection.Open();
-              OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+              SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
               while (dr.Read())
               {
                   CountyBOobj = new MaxCapBO();
@@ -260,15 +260,15 @@ namespace WIS_DataAccess
 
       public MaxCapList GetMaxCap(string MaxCap)
       {
-          OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-          OracleCommand cmd;
+          SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+          SqlCommand cmd;
           string proc = "USP_MST_SER_MAXCAP";
-          cmd = new OracleCommand(proc, con);
+          cmd = new SqlCommand(proc, con);
           cmd.CommandType = CommandType.StoredProcedure;
-          cmd.Parameters.Add("MAXCAPVAL_", MaxCap);
-          cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+          cmd.Parameters.AddWithValue("MAXCAPVAL_", MaxCap);
+          // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
           cmd.Connection.Open();
-          OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+          SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
           MaxCapBO objcountBO = null;
           MaxCapList objcountlist = new MaxCapList();
 

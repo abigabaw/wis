@@ -1,5 +1,5 @@
 ﻿using System;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_BusinessObjects;
 
@@ -14,15 +14,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CropRateList GetCropRate(int cropid)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_CROPRATE";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("cropid_", cropid);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("cropid_", cropid);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CropRateBO objCRBO = null;
             CropRateList objCRList = new CropRateList();
 
@@ -50,19 +50,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CropRateBO GetCropRateByDistrict(int cropID,int CropDesID, int householdID)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_CROPRATEBYDISTRICT";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("CROPID", cropID);
-            cmd.Parameters.Add("CROPDESCRIPTIONID_", CropDesID);
-            cmd.Parameters.Add("HHID", householdID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CROPID", cropID);
+            cmd.Parameters.AddWithValue("CROPDESCRIPTIONID_", CropDesID);
+            cmd.Parameters.AddWithValue("HHID", householdID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CropRateBO objCRBO = null;
 
             while (dr.Read())
@@ -82,19 +82,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string AddCropRate(CropRateBO objCRBO)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             string result = "";
 
-            OracleCommand myCommand;
-            myCommand = new OracleCommand("USP_MST_INS_CROPRATE", con);
+            SqlCommand myCommand;
+            myCommand = new SqlCommand("USP_MST_INS_CROPRATE", con);
             myCommand.Connection = con;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("CROPID_", objCRBO.CropID);
-            myCommand.Parameters.Add("DISTRICTID_", objCRBO.DistrictID);
-            myCommand.Parameters.Add("CROPDESCRIPTIONID_", objCRBO.CropDescriptionID);
-            myCommand.Parameters.Add("CROPRATE_", objCRBO.CropRate);
-            myCommand.Parameters.Add("CREATEDBY_", objCRBO.CreatedBy);
-            myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("CROPID_", objCRBO.CropID);
+            myCommand.Parameters.AddWithValue("DISTRICTID_", objCRBO.DistrictID);
+            myCommand.Parameters.AddWithValue("CROPDESCRIPTIONID_", objCRBO.CropDescriptionID);
+            myCommand.Parameters.AddWithValue("CROPRATE_", objCRBO.CropRate);
+            myCommand.Parameters.AddWithValue("CREATEDBY_", objCRBO.CreatedBy);
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             con.Open();
             myCommand.ExecuteNonQuery();
@@ -113,17 +113,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteCropRate(int cropRateID)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             string message = string.Empty;            
-            OracleCommand myCommand=null;
+            SqlCommand myCommand=null;
 
             try
             {
-                myCommand = new OracleCommand("USP_MST_DEL_CROPRATE", con);
+                myCommand = new SqlCommand("USP_MST_DEL_CROPRATE", con);
                 myCommand.Connection = con;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("CROPRATEID", cropRateID);                              
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("CROPRATEID", cropRateID);                              
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 con.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -157,18 +157,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteCropRate(int cropRateID, string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETECROPRATE", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETECROPRATE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("CROPRATEID_", cropRateID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("CROPRATEID_", cropRateID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -194,19 +194,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string UpdateCropRate(CropRateBO objCRBO)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             string result = "";
-            OracleCommand myCommand;
-            myCommand = new OracleCommand("USP_MST_UPD_CROPRATE", con);
+            SqlCommand myCommand;
+            myCommand = new SqlCommand("USP_MST_UPD_CROPRATE", con);
             myCommand.Connection = con;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("CROPRATEID", objCRBO.CropRateID);
-            myCommand.Parameters.Add("CROPID", objCRBO.CropID);
-            myCommand.Parameters.Add("DISTRICTID", objCRBO.DistrictID);
-            myCommand.Parameters.Add("CROPDESCRIPTIONID_", objCRBO.CropDescriptionID);
-            myCommand.Parameters.Add("CROPRATE", objCRBO.CropRate);
-            myCommand.Parameters.Add("UPDATEDBY", objCRBO.UpdatedBy);
-            myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("CROPRATEID", objCRBO.CropRateID);
+            myCommand.Parameters.AddWithValue("CROPID", objCRBO.CropID);
+            myCommand.Parameters.AddWithValue("DISTRICTID", objCRBO.DistrictID);
+            myCommand.Parameters.AddWithValue("CROPDESCRIPTIONID_", objCRBO.CropDescriptionID);
+            myCommand.Parameters.AddWithValue("CROPRATE", objCRBO.CropRate);
+            myCommand.Parameters.AddWithValue("UPDATEDBY", objCRBO.UpdatedBy);
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             con.Open();
             myCommand.ExecuteNonQuery();
 
@@ -224,15 +224,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CropRateBO GetCropRateByID(int cropID)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_CROPRATEBYID";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("CROPRATEID", cropID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("CROPRATEID", cropID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CropRateBO objCRBO = null;
             CropRateList objCRList = new CropRateList();
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -15,19 +15,19 @@ namespace WIS_DataAccess
         public string InsertSocioConcern(SocioConcernBO objSocioConcern)
         {
             string result = string.Empty;
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_INS_TRN_CONCERN", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_INS_TRN_CONCERN", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("ConcernID_", objSocioConcern.ConcernID);
-                dcmd.Parameters.Add("OtherConcern_", objSocioConcern.OtherConcern);
-                dcmd.Parameters.Add("CREATEDBY", objSocioConcern.UserID);
-                dcmd.Parameters.Add("HHID_", objSocioConcern.HHID);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("ConcernID_", objSocioConcern.ConcernID);
+                dcmd.Parameters.AddWithValue("OtherConcern_", objSocioConcern.OtherConcern);
+                dcmd.Parameters.AddWithValue("CREATEDBY", objSocioConcern.UserID);
+                dcmd.Parameters.AddWithValue("HHID_", objSocioConcern.HHID);
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -56,18 +56,18 @@ namespace WIS_DataAccess
         public SocioConcernList getSocioConcern(int HHID)
         {
             // used in Master page
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
-            string proc = " USP_TRN_GETSOCIALCONCERNS";
+            string proc = "USP_TRN_GETSOCIALCONCERNS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("HHID_", HHID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", HHID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             SocioConcernBO objSocioConcern = null;
             SocioConcernList SocioConcernList = new SocioConcernList();
 
@@ -97,20 +97,20 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public SocioConcernBO GetSocioConcernById(int PapConcernID, int HHID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_SOC_CONCERN_ID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("PapConcernID_", PapConcernID);
-            cmd.Parameters.Add("HHID_", HHID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PapConcernID_", PapConcernID);
+            cmd.Parameters.AddWithValue("HHID_", HHID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             SocioConcernBO SocioConcernObj = null;
             SocioConcernList SocioConcernList = new SocioConcernList();
 
@@ -152,21 +152,21 @@ namespace WIS_DataAccess
         {
             string returnResult = string.Empty;
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_UPDATE_SOCIAL_CONCER", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_UPDATE_SOCIAL_CONCER", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("PapConcernID_", objSocioConcern.PapConcernID);
-                dcmd.Parameters.Add("HHID_", objSocioConcern.HHID);
-                dcmd.Parameters.Add("ConcernID_", objSocioConcern.ConcernID);
-                dcmd.Parameters.Add("OtherConcern_", objSocioConcern.OtherConcern);
-                dcmd.Parameters.Add("UpdatedBY", objSocioConcern.UserID);
+                dcmd.Parameters.AddWithValue("PapConcernID_", objSocioConcern.PapConcernID);
+                dcmd.Parameters.AddWithValue("HHID_", objSocioConcern.HHID);
+                dcmd.Parameters.AddWithValue("ConcernID_", objSocioConcern.ConcernID);
+                dcmd.Parameters.AddWithValue("OtherConcern_", objSocioConcern.OtherConcern);
+                dcmd.Parameters.AddWithValue("UpdatedBY", objSocioConcern.UserID);
                
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -193,21 +193,21 @@ namespace WIS_DataAccess
         public string DeleteSocialConcern(int PapConcernID, int HHID)
         {
 
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_TRN_DELETESOCIALCONCERN", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_TRN_DELETESOCIALCONCERN", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("PapConcernID_", PapConcernID);
-                myCommand.Parameters.Add("HHID_", HHID);
-                //myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("PapConcernID_", PapConcernID);
+                myCommand.Parameters.AddWithValue("HHID_", HHID);
+                ///* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

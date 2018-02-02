@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -12,17 +12,17 @@ namespace WIS_DataAccess
         //get all data in mst_LivPlanItem table using USP_MST_SELECTLivPlanItem-SP
         public LivPlanItemList GetLivPlanItem()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_SELECTLPITEM";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             LivPlanItemBO objLivPlanItem = null;
             LivPlanItemList LivPlanItem = new LivPlanItemList();
 
@@ -51,19 +51,19 @@ namespace WIS_DataAccess
         {
             string returnResult = string.Empty;
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_INSERTLPITEM", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_INSERTLPITEM", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("LivPlanItem_", objLivPlanItem.LivPlanItemName);
-                dcmd.Parameters.Add("CREATEDBY", objLivPlanItem.UserID);
+                dcmd.Parameters.AddWithValue("LivPlanItem_", objLivPlanItem.LivPlanItemName);
+                dcmd.Parameters.AddWithValue("CREATEDBY", objLivPlanItem.UserID);
                 //return dcmd.ExecuteNonQuery();
 
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -93,17 +93,17 @@ namespace WIS_DataAccess
         public LivPlanItemList GETALLLivPlanItem()
         {
             // used in Master page
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
-            string proc = " USP_MST_GETALLLivPlanItem";
+            string proc = "USP_MST_GETALLLivPlanItem";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             LivPlanItemBO objLivPlanItem = null;
             LivPlanItemList LivPlanItem = new LivPlanItemList();
 
@@ -130,19 +130,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public LivPlanItemBO GetLivPlanItemById(int LivPlanItemID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETSELECTLivPlanItem";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("LivPlanItemID_", LivPlanItemID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("LivPlanItemID_", LivPlanItemID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             LivPlanItemBO LivPlanItemObj = null;
             LivPlanItemList Users = new LivPlanItemList();
 
@@ -188,20 +188,20 @@ namespace WIS_DataAccess
         {
             string returnResult = string.Empty;
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_UPDATECLivPlanItem", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_UPDATECLivPlanItem", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("LivPlanItem_", objLivPlanItem.LivPlanItemName);
-                dcmd.Parameters.Add("LivPlanItemID_", objLivPlanItem.LivPlanItemID);
-                dcmd.Parameters.Add("UpdatedBY", objLivPlanItem.UserID);
+                dcmd.Parameters.AddWithValue("LivPlanItem_", objLivPlanItem.LivPlanItemName);
+                dcmd.Parameters.AddWithValue("LivPlanItemID_", objLivPlanItem.LivPlanItemID);
+                dcmd.Parameters.AddWithValue("UpdatedBY", objLivPlanItem.UserID);
                 //return dcmd.ExecuteNonQuery();
 
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -231,20 +231,20 @@ namespace WIS_DataAccess
         public string DeleteLivPlanItem(int LivPlanItemID)
         {
 
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DELETELivPlanItem", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DELETELivPlanItem", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("LivPlanItemID_", LivPlanItemID);
-                //myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("LivPlanItemID_", LivPlanItemID);
+                ///* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -270,19 +270,19 @@ namespace WIS_DataAccess
 
             return result;
 
-            //OracleConnection myConnection = null;
-            //OracleCommand myCommand = null;
+            //SqlConnection myConnection = null;
+            //SqlCommand myCommand = null;
 
             //string result = string.Empty;
             //try
             //{
 
-            //    myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            //    myCommand = new OracleCommand("USP_MST_DELETELivPlanItem", myConnection);
+            //    myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            //    myCommand = new SqlCommand("USP_MST_DELETELivPlanItem", myConnection);
             //    myCommand.Connection = myConnection;
             //    myCommand.CommandType = CommandType.StoredProcedure;
-            //    myCommand.Parameters.Add("@LivPlanItemID_", LivPlanItemID);
-            //    myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            //    myCommand.Parameters.AddWithValue("@LivPlanItemID_", LivPlanItemID);
+            //    /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             //    myConnection.Open();
             //    myCommand.ExecuteNonQuery();
             //    if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -307,15 +307,15 @@ namespace WIS_DataAccess
             //}
 
             //return result;  
-            //OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            //OracleCommand cmd;
+            //SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            //SqlCommand cmd;
 
 
             //string proc = "USP_MST_DELETELivPlanItem";
 
-            //cmd = new OracleCommand(proc, cnn);
+            //cmd = new SqlCommand(proc, cnn);
             //cmd.CommandType = CommandType.StoredProcedure;
-            //cmd.Parameters.Add("LivPlanItemID_", LivPlanItemID);
+            //cmd.Parameters.AddWithValue("LivPlanItemID_", LivPlanItemID);
             //cmd.Connection.Open();
 
             //int result = cmd.ExecuteNonQuery();
@@ -331,19 +331,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteLivPlanItem(int LivPlanItemID, string Isdeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETE_LivPlanItem", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETE_LivPlanItem", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("LivPlanItemId_", LivPlanItemID);
-                myCommand.Parameters.Add("isdeleted_", Isdeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("LivPlanItemId_", LivPlanItemID);
+                myCommand.Parameters.AddWithValue("isdeleted_", Isdeleted);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Web;
 using System.Data;
 //using System.Configuration;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 
@@ -17,8 +17,8 @@ namespace WIS_DataAccess
         // string ccon= WIS_DataAccess.AppConfiguration.ConnectionString;
         string con = WIS_DataAccess.AppConfiguration.ConnectionString;
 
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
         #endregion
 
@@ -31,18 +31,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public PaymentList GetModeOfPayment(string TypeOfPayment)
         {
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_MODEOFPAYMENT";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("TypeOfPayment_", TypeOfPayment);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("TypeOfPayment_", TypeOfPayment);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             PaymentBO objPaymentBO = null;
             PaymentList oPaymentList = new PaymentList();
 
@@ -102,26 +102,26 @@ namespace WIS_DataAccess
         //public CompensationFinancialList GetCompensationFinancialList(int HHID)
         //{
         //    proc = "USP_TRN_GET_CMP_FINANCIALS";
-        //    cnn = new OracleConnection(con);
+        //    cnn = new SqlConnection(con);
         //    CompensationFinancialBO oCompensationFinancial = null;
 
         //    CompensationFinancialList lstCompensationFinancial = new CompensationFinancialList();
 
         //    CompensationFinancialBO OCompensationFinancial = new CompensationFinancialBO();
 
-        //    cmd = new OracleCommand(proc, cnn);
+        //    cmd = new SqlCommand(proc, cnn);
         //    cmd.CommandType = CommandType.StoredProcedure;
 
-        //    //cmd.Parameters.Add("CompensationFinancialName_", CompensationFinancialName);
-        //    //cmd.Parameters.Add("city_", city);
-        //    cmd.Parameters.Add("hhid_", HHID);
+        //    //cmd.Parameters.AddWithValue("CompensationFinancialName_", CompensationFinancialName);
+        //    //cmd.Parameters.AddWithValue("city_", city);
+        //    cmd.Parameters.AddWithValue("hhid_", HHID);
 
-        //    cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+        //    // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
         //    try
         //    {
         //        cmd.Connection.Open();
-        //        OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+        //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
         //        while (dr.Read())
         //        {
@@ -278,18 +278,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public CompensationPayementList getCompensationPayment(int HHID)
         {
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_CMP_PAYMENT";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("hhid_", HHID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("hhid_", HHID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             PaymentBO.CompensationPayementBO objCompensationPayementBO = null;
             lstCompensationPayement = new CompensationPayementList();
 
@@ -314,18 +314,18 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public PaymentBO.CompensationPayementBO getCompensationPaymentById(int CompensationPaymentID)
         {
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_CMP_PAYMENTBYID";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("cmp_paymentid_", CompensationPaymentID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("cmp_paymentid_", CompensationPaymentID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             PaymentBO.CompensationPayementBO objCompensationPayementBO = null;
             lstCompensationPayement = new CompensationPayementList();
 
@@ -354,41 +354,41 @@ namespace WIS_DataAccess
             string[] returnResult = new string[2];
             PaymentBO ooPaymentBO = new PaymentBO();//For Storing & Returning Result as Object
 
-            OracleConnection OCon = new OracleConnection(con);
+            SqlConnection OCon = new SqlConnection(con);
             OCon.Open();
-            OracleCommand oCmd = new OracleCommand("USP_TRN_INS_CMP_PAYMENT", OCon);
+            SqlCommand oCmd = new SqlCommand("USP_TRN_INS_CMP_PAYMENT", OCon);
             oCmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(oCmd.CommandType);
 
             try
             {
-                oCmd.Parameters.Add("hhid_", oCompPayementBO.HHID);
-                oCmd.Parameters.Add("compensationtype_", oCompPayementBO.CompensationType);
-                oCmd.Parameters.Add("modeofpaymentid_", oCompPayementBO.ModeOfPaymentId);
-                oCmd.Parameters.Add("compensationamount_", oCompPayementBO.CompensationAmount);
-                oCmd.Parameters.Add("deliveredtostakeholder_", oCompPayementBO.DeliveredToStakeHolder);
+                oCmd.Parameters.AddWithValue("hhid_", oCompPayementBO.HHID);
+                oCmd.Parameters.AddWithValue("compensationtype_", oCompPayementBO.CompensationType);
+                oCmd.Parameters.AddWithValue("modeofpaymentid_", oCompPayementBO.ModeOfPaymentId);
+                oCmd.Parameters.AddWithValue("compensationamount_", oCompPayementBO.CompensationAmount);
+                oCmd.Parameters.AddWithValue("deliveredtostakeholder_", oCompPayementBO.DeliveredToStakeHolder);
 
                 if (!string.IsNullOrEmpty(oCompPayementBO.DeliveredDate))
-                    oCmd.Parameters.Add("delivereddate_", oCompPayementBO.DeliveredDate);
+                    oCmd.Parameters.AddWithValue("delivereddate_", oCompPayementBO.DeliveredDate);
                 else
-                    oCmd.Parameters.Add("delivereddate_", DBNull.Value);
-                //oCmd.Parameters.Add("delivereddate_", oCompPayementBO.DeliveredDate);
+                    oCmd.Parameters.AddWithValue("delivereddate_", DBNull.Value);
+                //oCmd.Parameters.AddWithValue("delivereddate_", oCompPayementBO.DeliveredDate);
 
-                oCmd.Parameters.Add("BANKID_", oCompPayementBO.BankID);
-                oCmd.Parameters.Add("BRANCHID_", oCompPayementBO.BranchID);
-                oCmd.Parameters.Add("BANKREFERENCE_", oCompPayementBO.BankReference);
-                //oCmd.Parameters.Add("FIXEDCOSTCENTREID_", oCompPayementBO.FixedCostCentreID);
+                oCmd.Parameters.AddWithValue("BANKID_", oCompPayementBO.BankID);
+                oCmd.Parameters.AddWithValue("BRANCHID_", oCompPayementBO.BranchID);
+                oCmd.Parameters.AddWithValue("BANKREFERENCE_", oCompPayementBO.BankReference);
+                //oCmd.Parameters.AddWithValue("FIXEDCOSTCENTREID_", oCompPayementBO.FixedCostCentreID);
 
                 if (oCompPayementBO.FixedCostCentreID > 0)
-                    oCmd.Parameters.Add("FIXEDCOSTCENTREID_", oCompPayementBO.FixedCostCentreID);
+                    oCmd.Parameters.AddWithValue("FIXEDCOSTCENTREID_", oCompPayementBO.FixedCostCentreID);
                 else
-                    oCmd.Parameters.Add("FIXEDCOSTCENTREID_", DBNull.Value);
+                    oCmd.Parameters.AddWithValue("FIXEDCOSTCENTREID_", DBNull.Value);
 
-                oCmd.Parameters.Add("isdeleted_", oCompPayementBO.IsDeleted);
-                oCmd.Parameters.Add("createdby_", oCompPayementBO.CreatedBy);
+                oCmd.Parameters.AddWithValue("isdeleted_", oCompPayementBO.IsDeleted);
+                oCmd.Parameters.AddWithValue("createdby_", oCompPayementBO.CreatedBy);
 
-                oCmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
-                oCmd.Parameters.Add("cmp_paymentidout_", OracleDbType.Decimal, 20).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = oCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
+                oCmd.Parameters.AddWithValue("cmp_paymentidout_", SqlDbType.Decimal).Direction = ParameterDirection.Output;
 
                 oCmd.ExecuteNonQuery();
 
@@ -425,40 +425,40 @@ namespace WIS_DataAccess
             string returnResult = string.Empty;
             PaymentBO ooPaymentBO = new PaymentBO();//For Storing & Returning Result as Object
 
-            OracleConnection OCon = new OracleConnection(con);
+            SqlConnection OCon = new SqlConnection(con);
             OCon.Open();
-            OracleCommand oCmd = new OracleCommand("USP_TRN_UPD_CMP_PAYMENT", OCon);
+            SqlCommand oCmd = new SqlCommand("USP_TRN_UPD_CMP_PAYMENT", OCon);
             oCmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(oCmd.CommandType);
 
             try
             {
-                oCmd.Parameters.Add("cmp_paymentid_", oCompPayementBO.CompPaymentId);
-                oCmd.Parameters.Add("hhid_", oCompPayementBO.HHID);
-                oCmd.Parameters.Add("compensationtype_", oCompPayementBO.CompensationType);
-                oCmd.Parameters.Add("modeofpaymentid_", oCompPayementBO.ModeOfPaymentId);
-                oCmd.Parameters.Add("compensationamount_", oCompPayementBO.CompensationAmount);
+                oCmd.Parameters.AddWithValue("cmp_paymentid_", oCompPayementBO.CompPaymentId);
+                oCmd.Parameters.AddWithValue("hhid_", oCompPayementBO.HHID);
+                oCmd.Parameters.AddWithValue("compensationtype_", oCompPayementBO.CompensationType);
+                oCmd.Parameters.AddWithValue("modeofpaymentid_", oCompPayementBO.ModeOfPaymentId);
+                oCmd.Parameters.AddWithValue("compensationamount_", oCompPayementBO.CompensationAmount);
 
-                oCmd.Parameters.Add("BANKID_", oCompPayementBO.BankID);
-                oCmd.Parameters.Add("BRANCHID_", oCompPayementBO.BranchID);
-                oCmd.Parameters.Add("BANKREFERENCE_", oCompPayementBO.BankReference);
-                //oCmd.Parameters.Add("FIXEDCOSTCENTREID_", oCompPayementBO.FixedCostCentreID);
+                oCmd.Parameters.AddWithValue("BANKID_", oCompPayementBO.BankID);
+                oCmd.Parameters.AddWithValue("BRANCHID_", oCompPayementBO.BranchID);
+                oCmd.Parameters.AddWithValue("BANKREFERENCE_", oCompPayementBO.BankReference);
+                //oCmd.Parameters.AddWithValue("FIXEDCOSTCENTREID_", oCompPayementBO.FixedCostCentreID);
 
                 if (oCompPayementBO.FixedCostCentreID > 0)
-                    oCmd.Parameters.Add("FIXEDCOSTCENTREID_", oCompPayementBO.FixedCostCentreID);
+                    oCmd.Parameters.AddWithValue("FIXEDCOSTCENTREID_", oCompPayementBO.FixedCostCentreID);
                 else
-                    oCmd.Parameters.Add("FIXEDCOSTCENTREID_", DBNull.Value);
+                    oCmd.Parameters.AddWithValue("FIXEDCOSTCENTREID_", DBNull.Value);
 
-                oCmd.Parameters.Add("deliveredtostakeholder_", oCompPayementBO.DeliveredToStakeHolder);
+                oCmd.Parameters.AddWithValue("deliveredtostakeholder_", oCompPayementBO.DeliveredToStakeHolder);
                 if (!string.IsNullOrEmpty(oCompPayementBO.DeliveredDate))// (oCompPayementBO.DeliveredDate != "" || oCompPayementBO.DeliveredDate != null)
-                    oCmd.Parameters.Add("delivereddate_", oCompPayementBO.DeliveredDate);
+                    oCmd.Parameters.AddWithValue("delivereddate_", oCompPayementBO.DeliveredDate);
                 else
-                    oCmd.Parameters.Add("delivereddate_", DBNull.Value);
+                    oCmd.Parameters.AddWithValue("delivereddate_", DBNull.Value);
 
-                oCmd.Parameters.Add("isdeleted_", oCompPayementBO.IsDeleted);
-                oCmd.Parameters.Add("updatedby_", oCompPayementBO.UpdatedBy);
+                oCmd.Parameters.AddWithValue("isdeleted_", oCompPayementBO.IsDeleted);
+                oCmd.Parameters.AddWithValue("updatedby_", oCompPayementBO.UpdatedBy);
 
-                oCmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = oCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 oCmd.ExecuteNonQuery();
 
@@ -485,29 +485,29 @@ namespace WIS_DataAccess
         {
             string returnResult = string.Empty;
 
-            OracleConnection OCon = new OracleConnection(con);
+            SqlConnection OCon = new SqlConnection(con);
             OCon.Open();
-            OracleCommand oCmd = new OracleCommand("USP_TRN_UPD_CMP_PAYMENTSUMMERY", OCon);
+            SqlCommand oCmd = new SqlCommand("USP_TRN_UPD_CMP_PAYMENTSUMMERY", OCon);
             oCmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(oCmd.CommandType);
 
             try
             {
-                oCmd.Parameters.Add("hhid_", oCompensationFinancialBO.HHID);
-                oCmd.Parameters.Add("facilitationallowance_", oCompensationFinancialBO.FacilitationAllowance);
+                oCmd.Parameters.AddWithValue("hhid_", oCompensationFinancialBO.HHID);
+                oCmd.Parameters.AddWithValue("facilitationallowance_", oCompensationFinancialBO.FacilitationAllowance);
 
                 if (oCompensationFinancialBO.LandInKindCompensation == 0 || oCompensationFinancialBO.LandInKindCompensation == -1)
-                    oCmd.Parameters.Add("resinkindcompensation_", DBNull.Value);
+                    oCmd.Parameters.AddWithValue("resinkindcompensation_", DBNull.Value);
                 else
-                    oCmd.Parameters.Add("resinkindcompensation_", oCompensationFinancialBO.LandInKindCompensation);
+                    oCmd.Parameters.AddWithValue("resinkindcompensation_", oCompensationFinancialBO.LandInKindCompensation);
 
                 if (oCompensationFinancialBO.ResInKindCompensation == "0" || oCompensationFinancialBO.ResInKindCompensation == "-1")
-                    oCmd.Parameters.Add("resinkindcompensation_", DBNull.Value);
+                    oCmd.Parameters.AddWithValue("resinkindcompensation_", DBNull.Value);
                 else
-                    oCmd.Parameters.Add("resinkindcompensation_", oCompensationFinancialBO.ResInKindCompensation);
-                oCmd.Parameters.Add("updatedby_", oCompensationFinancialBO.UpdatedBy);
+                    oCmd.Parameters.AddWithValue("resinkindcompensation_", oCompensationFinancialBO.ResInKindCompensation);
+                oCmd.Parameters.AddWithValue("updatedby_", oCompensationFinancialBO.UpdatedBy);
 
-                oCmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = oCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 oCmd.ExecuteNonQuery(); //Executing Query
 
@@ -531,18 +531,18 @@ namespace WIS_DataAccess
 
         public CompensationFinancialBO getCompnesationFinancial(int HHID)
         {
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_CMP_PAYMENTSUMMERY";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("hhid_", HHID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("hhid_", HHID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             CompensationFinancialBO oCompensationFinancialBO = null;
             //CompensationFinancialList lstCompensationFinancial = new CompensationFinancialList();
 
@@ -586,14 +586,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int DeleteCompositionPayment(int ComPaymentId)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
 
             proc = "USP_TRN_DEL_CMP_PAYMENT";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("cmp_paymentid_", ComPaymentId);
-            //cmd.Parameters.Add("Sp_recordset", OracleDbType.Int32).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("cmp_paymentid_", ComPaymentId);
+            //cmd.Parameters.AddWithValue("Sp_recordset", SqlDbType.Int).Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
             int result = cmd.ExecuteNonQuery();
@@ -615,25 +615,25 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public PaymentExportList getCompensationPaymentExport(int projectID, string papName, string plotReference, string district, string county, string subCounty, string parish, string village)
         {
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_CMP_PAYMENTALL";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("PROJECTID_", projectID);
-            cmd.Parameters.Add("PAPNAME_", papName);
-            cmd.Parameters.Add("PLOTREFERENCE_", plotReference);
-            cmd.Parameters.Add("DISTRICT_", district);
-            cmd.Parameters.Add("COUNTY_", county);
-            cmd.Parameters.Add("SUBCOUNTY_", subCounty);
-            cmd.Parameters.Add("PARISH_", parish);
-            cmd.Parameters.Add("VILLAGE_", village);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PROJECTID_", projectID);
+            cmd.Parameters.AddWithValue("PAPNAME_", papName);
+            cmd.Parameters.AddWithValue("PLOTREFERENCE_", plotReference);
+            cmd.Parameters.AddWithValue("DISTRICT_", district);
+            cmd.Parameters.AddWithValue("COUNTY_", county);
+            cmd.Parameters.AddWithValue("SUBCOUNTY_", subCounty);
+            cmd.Parameters.AddWithValue("PARISH_", parish);
+            cmd.Parameters.AddWithValue("VILLAGE_", village);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             PaymentExportBO objPaymentExportBO = null;
             PaymentExportList lstPaymentExportList = new PaymentExportList();
 
@@ -777,13 +777,13 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int SendforApproval(int HHID)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             int returnResult;
             proc = "USP_TRN_UPD_PAYAPPRSTATUS";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            cmd.Parameters.Add("HHID_", HHID);
+            cmd.Parameters.AddWithValue("HHID_", HHID);
             returnResult = cmd.ExecuteNonQuery();
             cmd.Connection.Close();
             return returnResult;
@@ -797,14 +797,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int UpdateStatus(int HHID, string FUNDREQSTATUS)
         {
-            cnn = new OracleConnection(con);
+            cnn = new SqlConnection(con);
             int returnResult;
             proc = "USP_TRN_UPD_PAYSTATUS";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection.Open();
-            cmd.Parameters.Add("HHID_", HHID);
-            cmd.Parameters.Add("FUNDREQSTATUS_", FUNDREQSTATUS);
+            cmd.Parameters.AddWithValue("HHID_", HHID);
+            cmd.Parameters.AddWithValue("FUNDREQSTATUS_", FUNDREQSTATUS);
             returnResult = cmd.ExecuteNonQuery();
             cmd.Connection.Close();
             return returnResult;
@@ -822,18 +822,18 @@ namespace WIS_DataAccess
         {
             //Reading Payement Status from the TRN_PAP_VALUATION_SUMMERY table
             PaymentBO oPaymentBO = null;// = new PaymentBO();
-            OracleConnection cnn = new OracleConnection(con);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(con);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_PAP_VAL_SUMMARY";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("hhid_", HHID);
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("hhid_", HHID);
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             while (dr.Read())
             {
@@ -868,19 +868,19 @@ namespace WIS_DataAccess
             string returnResult = string.Empty;
             // PaymentBO ooPaymentBO = new PaymentBO();//For Storing & Returning Result as Object
 
-            OracleConnection OCon = new OracleConnection(con);
+            SqlConnection OCon = new SqlConnection(con);
             OCon.Open();
-            OracleCommand oCmd = new OracleCommand("USP_TRN_UPD_PAP_VAL_SUMMARY", OCon);
+            SqlCommand oCmd = new SqlCommand("USP_TRN_UPD_PAP_VAL_SUMMARY", OCon);
             oCmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(oCmd.CommandType);
 
             try
             {
-                oCmd.Parameters.Add("hhid_", HHID);
-                oCmd.Parameters.Add("compensationtype_", PaymentStatus);
-                //oCmd.Parameters.Add("modeofpaymentid_", oCompPayementBO.ModeOfPaymentId);
+                oCmd.Parameters.AddWithValue("hhid_", HHID);
+                oCmd.Parameters.AddWithValue("compensationtype_", PaymentStatus);
+                //oCmd.Parameters.AddWithValue("modeofpaymentid_", oCompPayementBO.ModeOfPaymentId);
 
-                oCmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = oCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 oCmd.ExecuteNonQuery();
 
@@ -910,20 +910,20 @@ namespace WIS_DataAccess
         public PaymentBO GetFileclosingComments(int HHID)
         {
             string proc = "USP_TRN_GET_FILECLOCOMMENTS";
-            OracleConnection cnn = new OracleConnection(con);
+            SqlConnection cnn = new SqlConnection(con);
             PaymentBO oPaymentBO = null;
 
-            OracleCommand cmd = new OracleCommand(proc, cnn);
+            SqlCommand cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HHID_", HHID);
+            cmd.Parameters.AddWithValue("HHID_", HHID);
 
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dr.Read())
                 {
@@ -960,17 +960,17 @@ namespace WIS_DataAccess
             string returnResult = string.Empty;
             // PaymentBO ooPaymentBO = new PaymentBO();//For Storing & Returning Result as Object
 
-            OracleConnection OCon = new OracleConnection(con);
+            SqlConnection OCon = new SqlConnection(con);
             OCon.Open();
-            OracleCommand oCmd = new OracleCommand("USP_TRN_UPD_FILECLOCOMMENTS", OCon);
+            SqlCommand oCmd = new SqlCommand("USP_TRN_UPD_FILECLOCOMMENTS", OCon);
             oCmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(oCmd.CommandType);
 
             try
             {
-                oCmd.Parameters.Add("hhid_", HHID);
-                oCmd.Parameters.Add("FILECLOSINGCOMMENTS_", comments);
-                oCmd.Parameters.Add("GRIEVOVERRIDE_", Status.ToString());
+                oCmd.Parameters.AddWithValue("hhid_", HHID);
+                oCmd.Parameters.AddWithValue("FILECLOSINGCOMMENTS_", comments);
+                oCmd.Parameters.AddWithValue("GRIEVOVERRIDE_", Status.ToString());
                 oCmd.ExecuteNonQuery();
             }
             catch (Exception ex)

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_BusinessObjects;
 
@@ -11,8 +11,8 @@ namespace WIS_DataAccess
   public  class VillageDAL
     {
         string connStr = AppConfiguration.ConnectionString;
-        OracleConnection cnn;
-        OracleCommand cmd;
+        SqlConnection cnn;
+        SqlCommand cmd;
         string proc = string.Empty;
 
       /// <summary>
@@ -22,15 +22,15 @@ namespace WIS_DataAccess
       /// <returns></returns>
       public VillageList GetVillage(string subcountyID)
       {
-          OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-          OracleCommand cmd;
+          SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+          SqlCommand cmd;
           string proc = "USP_MST_GET_VILLAGE";
-          cmd = new OracleCommand(proc, con);
+          cmd = new SqlCommand(proc, con);
           cmd.CommandType = CommandType.StoredProcedure;
-          cmd.Parameters.Add("@SubcountyIDIN", subcountyID);
-          cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+          cmd.Parameters.AddWithValue("@SubcountyIDIN", subcountyID);
+          // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
           cmd.Connection.Open();
-          OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+          SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
           VillageBO objvBO = null;
           VillageList objvlist = new VillageList();
 
@@ -55,17 +55,17 @@ namespace WIS_DataAccess
       {
            VillageList objVillageList = null;
 
-          using (cnn = new OracleConnection(connStr))
+          using (cnn = new SqlConnection(connStr))
           {
-              using (cmd = new OracleCommand("USP_MST_SEARCH_VILLAGE", cnn))
+              using (cmd = new SqlCommand("USP_MST_SEARCH_VILLAGE", cnn))
               {
                   cmd.CommandType = CommandType.StoredProcedure;
 
-                  cmd.Parameters.Add("VillageName_", val);
-                  cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                  cmd.Parameters.AddWithValue("VillageName_", val);
+                  // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
                   cmd.Connection.Open();
 
-                  OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                  SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                   VillageBO objVillageBO = null;
                   objVillageList = new VillageList();
@@ -102,17 +102,17 @@ namespace WIS_DataAccess
       {
           VillageList objVillageList = null;
 
-          using (cnn = new OracleConnection(connStr))
+          using (cnn = new SqlConnection(connStr))
           {
-              using (cmd = new OracleCommand("USP_MST_GET_VILLAGE_ALL", cnn))
+              using (cmd = new SqlCommand("USP_MST_GET_VILLAGE_ALL", cnn))
               {
                   cmd.CommandType = CommandType.StoredProcedure;
 
-                  cmd.Parameters.Add("SubcountyIDIN", SUBCOUNTYID);
-                  cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                  cmd.Parameters.AddWithValue("SubcountyIDIN", SUBCOUNTYID);
+                  // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
                   cmd.Connection.Open();
 
-                  OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                  SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                   VillageBO objVillageBO = null;
                   objVillageList = new VillageList();
@@ -145,17 +145,17 @@ namespace WIS_DataAccess
       {
           string result = "";
 
-          using (cnn = new OracleConnection(connStr))
+          using (cnn = new SqlConnection(connStr))
           {
-              using (cmd = new OracleCommand("USP_MST_INS_VILLAGE", cnn))
+              using (cmd = new SqlCommand("USP_MST_INS_VILLAGE", cnn))
               {
                   cmd.CommandType = CommandType.StoredProcedure;
                   cmd.Connection.Open();
 
-                  cmd.Parameters.Add("SUBCOUNTYID_", objVillageBO.SubCountyID);
-                  cmd.Parameters.Add("VILLAGENAME_", objVillageBO.VillageName);
-                  cmd.Parameters.Add("CREATEDBY_", objVillageBO.CreatedBy);
-                  cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                  cmd.Parameters.AddWithValue("SUBCOUNTYID_", objVillageBO.SubCountyID);
+                  cmd.Parameters.AddWithValue("VILLAGENAME_", objVillageBO.VillageName);
+                  cmd.Parameters.AddWithValue("CREATEDBY_", objVillageBO.CreatedBy);
+                  /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                   cmd.ExecuteNonQuery();
 
                   if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -177,18 +177,18 @@ namespace WIS_DataAccess
       {
           string result = "";
 
-          using (cnn = new OracleConnection(connStr))
+          using (cnn = new SqlConnection(connStr))
           {
-              using (cmd = new OracleCommand("USP_MST_UPD_VILLAGE", cnn))
+              using (cmd = new SqlCommand("USP_MST_UPD_VILLAGE", cnn))
               {
                   cmd.CommandType = CommandType.StoredProcedure;
                   cmd.Connection.Open();
 
-                  cmd.Parameters.Add("VILLAGEID_", objVillageBO.VillageID);
-                  cmd.Parameters.Add("SUBCOUNTYID_", objVillageBO.SubCountyID);
-                  cmd.Parameters.Add("VILLAGENAME_", objVillageBO.VillageName);
-                  cmd.Parameters.Add("UPDATEDBY_", objVillageBO.CreatedBy);
-                  cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                  cmd.Parameters.AddWithValue("VILLAGEID_", objVillageBO.VillageID);
+                  cmd.Parameters.AddWithValue("SUBCOUNTYID_", objVillageBO.SubCountyID);
+                  cmd.Parameters.AddWithValue("VILLAGENAME_", objVillageBO.VillageName);
+                  cmd.Parameters.AddWithValue("UPDATEDBY_", objVillageBO.CreatedBy);
+                  /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                   cmd.ExecuteNonQuery();
 
                   if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -210,15 +210,15 @@ namespace WIS_DataAccess
       {
           string result = "";
 
-          using (cnn = new OracleConnection(connStr))
+          using (cnn = new SqlConnection(connStr))
           {
-              using (cmd = new OracleCommand("USP_MST_DEL_VILLAGE", cnn))
+              using (cmd = new SqlCommand("USP_MST_DEL_VILLAGE", cnn))
               {
                   cmd.CommandType = CommandType.StoredProcedure;
                   cmd.Connection.Open();
 
-                  cmd.Parameters.Add("VILLAGEID_", VILLAGEID);
-                  cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                  cmd.Parameters.AddWithValue("VILLAGEID_", VILLAGEID);
+                  /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                   cmd.ExecuteNonQuery();
 
                   if (cmd.Parameters["ERRORMESSAGE_"].Value != null)
@@ -240,18 +240,18 @@ namespace WIS_DataAccess
       {
           proc = "USP_MST_GET_VILLAGEBYID";
 
-          cnn = new OracleConnection(connStr);
+          cnn = new SqlConnection(connStr);
           VillageBO VillageBOobj = null;
 
-          cmd = new OracleCommand(proc, cnn);
+          cmd = new SqlCommand(proc, cnn);
           cmd.CommandType = CommandType.StoredProcedure;
 
-          cmd.Parameters.Add("VILLAGEID_", VILLAGEID);
-          cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+          cmd.Parameters.AddWithValue("VILLAGEID_", VILLAGEID);
+          // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
           try
           {
               cmd.Connection.Open();
-              OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+              SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
               while (dr.Read())
               {
                   VillageBOobj = new VillageBO();
@@ -285,18 +285,18 @@ namespace WIS_DataAccess
       {
           string result = "";
 
-          using (cnn = new OracleConnection(connStr))
+          using (cnn = new SqlConnection(connStr))
           {
-              using (cmd = new OracleCommand("USP_MST_OBS_VILLAGE", cnn))
+              using (cmd = new SqlCommand("USP_MST_OBS_VILLAGE", cnn))
               {
                   cmd.CommandType = CommandType.StoredProcedure;
                   cmd.Connection.Open();
 
-                  cmd.Parameters.Add("VILLAGEID_", VILLAGEID);
-                  cmd.Parameters.Add("ISDELETED_", ISDELETED);
-                  cmd.Parameters.Add("UPDATEDBY_", UPDATEDBY);
+                  cmd.Parameters.AddWithValue("VILLAGEID_", VILLAGEID);
+                  cmd.Parameters.AddWithValue("ISDELETED_", ISDELETED);
+                  cmd.Parameters.AddWithValue("UPDATEDBY_", UPDATEDBY);
 
-                  cmd.Parameters.Add("ERRORMESSAGE_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                  /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = cmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                   cmd.ExecuteNonQuery();
 
                   if (cmd.Parameters["ERRORMESSAGE_"].Value != null)

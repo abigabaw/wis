@@ -1,5 +1,5 @@
 ﻿using System;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_BusinessObjects;
 
@@ -17,18 +17,18 @@ namespace WIS_DataAccess
         public string Insert(TypeOfLineBO TypeOfLineBOobj)
         {
             string returnResult = "";
-            OracleConnection con = new OracleConnection(connStr);
+            SqlConnection con = new SqlConnection(connStr);
             con.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_INST_LINETYPE", con);
+            SqlCommand dcmd = new SqlCommand("USP_MST_INST_LINETYPE", con);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
             try
             {
-                dcmd.Parameters.Add("p_TYPEOFLINE", TypeOfLineBOobj.TypeOfLine);
-                dcmd.Parameters.Add("p_WAYLEAVEMEASUREMENT", TypeOfLineBOobj.Wayleavemeasurement);
-                dcmd.Parameters.Add("p_RIGHTOFWAYMEASUREMENT", TypeOfLineBOobj.Rightofwaymeasurement);
-                dcmd.Parameters.Add("p_CREATEDBY", TypeOfLineBOobj.Createdby);
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("p_TYPEOFLINE", TypeOfLineBOobj.TypeOfLine);
+                dcmd.Parameters.AddWithValue("p_WAYLEAVEMEASUREMENT", TypeOfLineBOobj.Wayleavemeasurement);
+                dcmd.Parameters.AddWithValue("p_RIGHTOFWAYMEASUREMENT", TypeOfLineBOobj.Rightofwaymeasurement);
+                dcmd.Parameters.AddWithValue("p_CREATEDBY", TypeOfLineBOobj.Createdby);
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -57,17 +57,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public TypeOfLineLists GetLineType()
         {
-            OracleConnection conn = new OracleConnection(connStr);
-            OracleCommand cmd;
+            SqlConnection conn = new SqlConnection(connStr);
+            SqlCommand cmd;
 
-            string proc = " USP_MST_GET_LINETYPE";
+            string proc = "USP_MST_GET_LINETYPE";
 
-            cmd = new OracleCommand(proc, conn);
+            cmd = new SqlCommand(proc, conn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             TypeOfLineLists TypeOfLines = new TypeOfLineLists();
             TypeOfLineBO TypeOfLineBOobj = null;
 
@@ -96,14 +96,14 @@ namespace WIS_DataAccess
         {
             string result = "";
 
-            OracleConnection conn = new OracleConnection(connStr);
+            SqlConnection conn = new SqlConnection(connStr);
             conn.Open();
-            OracleCommand dCmd = new OracleCommand("USP_MST_DEL_LINETYPE", conn);
+            SqlCommand dCmd = new SqlCommand("USP_MST_DEL_LINETYPE", conn);
             dCmd.CommandType = CommandType.StoredProcedure;
             try
             {
-                dCmd.Parameters.Add("p_linetypeid", LineTypeID);
-                dCmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dCmd.Parameters.AddWithValue("p_linetypeid", LineTypeID);
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dCmd.ExecuteNonQuery();
                 if (dCmd.Parameters["errorMessage_"].Value != null)
@@ -132,19 +132,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public TypeOfLineBO GetLineTypebyID(int LineTypeID)
         {
-            OracleConnection conn = new OracleConnection(connStr);
-            OracleCommand cmd;
+            SqlConnection conn = new SqlConnection(connStr);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_LINETYPEID";
 
-            cmd = new OracleCommand(proc, conn);
+            cmd = new SqlCommand(proc, conn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("p_LINETYPEID", LineTypeID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("p_LINETYPEID", LineTypeID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             TypeOfLineBO TypeOfLineBOobj = null;
             TypeOfLineLists Users = new TypeOfLineLists();
 
@@ -194,19 +194,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string Update(TypeOfLineBO TypeOfLineBOobj, int LineTypeID)
         {
-            OracleConnection conn = new OracleConnection(connStr);
+            SqlConnection conn = new SqlConnection(connStr);
             conn.Open();
-            OracleCommand dCmd = new OracleCommand("USP_MST_UPD_LINE_TYPE", conn);
+            SqlCommand dCmd = new SqlCommand("USP_MST_UPD_LINE_TYPE", conn);
             dCmd.CommandType = CommandType.StoredProcedure;
             string result = "";
             try
             {
-                dCmd.Parameters.Add("p_LINETYPEID", LineTypeID);
-                dCmd.Parameters.Add("p_TYPEOFLINE", TypeOfLineBOobj.TypeOfLine);
-                dCmd.Parameters.Add("p_WAYLEAVEMEASUREMENT", TypeOfLineBOobj.Wayleavemeasurement);
-                dCmd.Parameters.Add("p_RIGHTOFWAYMEASUREMENT", TypeOfLineBOobj.Rightofwaymeasurement);
-                dCmd.Parameters.Add("p_UPDATEDBY", TypeOfLineBOobj.Createdby);
-                dCmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dCmd.Parameters.AddWithValue("p_LINETYPEID", LineTypeID);
+                dCmd.Parameters.AddWithValue("p_TYPEOFLINE", TypeOfLineBOobj.TypeOfLine);
+                dCmd.Parameters.AddWithValue("p_WAYLEAVEMEASUREMENT", TypeOfLineBOobj.Wayleavemeasurement);
+                dCmd.Parameters.AddWithValue("p_RIGHTOFWAYMEASUREMENT", TypeOfLineBOobj.Rightofwaymeasurement);
+                dCmd.Parameters.AddWithValue("p_UPDATEDBY", TypeOfLineBOobj.Createdby);
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dCmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 dCmd.ExecuteNonQuery();
 
                 if (dCmd.Parameters["errorMessage_"].Value != null)
@@ -235,19 +235,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteLineType(int lineTypeID, string IsDeleted, int updatedBy)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = "";
             try
             {
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETE_LINETYPE", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETE_LINETYPE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("p_LINETYPEID", lineTypeID);
-                myCommand.Parameters.Add("isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("updatedBy_", updatedBy);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("p_LINETYPEID", lineTypeID);
+                myCommand.Parameters.AddWithValue("isdeleted_", IsDeleted);
+                myCommand.Parameters.AddWithValue("updatedBy_", updatedBy);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -273,17 +273,17 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public TypeOfLineLists GetAllLineTypes()
         {
-            OracleConnection conn = new OracleConnection(connStr);
-            OracleCommand cmd;
+            SqlConnection conn = new SqlConnection(connStr);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GET_ALLLINETYPE";
 
-            cmd = new OracleCommand(proc, conn);
+            cmd = new SqlCommand(proc, conn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             TypeOfLineLists TypeOfLines = new TypeOfLineLists();
             TypeOfLineBO TypeOfLineBOobj = null;
 

@@ -1,5 +1,5 @@
 ﻿using System;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using System.Data;
 using WIS_BusinessObjects;
 
@@ -14,16 +14,16 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public PublicLandInfoBO GetLandInfo(int householdID)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GET_PAP_LND_PUBLIC";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HHID_", householdID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", householdID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             PublicLandInfoBO objLF = null;
 
             while (dr.Read())
@@ -54,33 +54,33 @@ namespace WIS_DataAccess
         /// <param name="objLF"></param>
         public void AddLandInfo(PublicLandInfoBO objLF)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             int result = 0;
             {
-                OracleCommand myCommand;
-                myCommand = new OracleCommand("USP_TRN_UPD_PAP_LND_PUBLIC", con);
+                SqlCommand myCommand;
+                myCommand = new SqlCommand("USP_TRN_UPD_PAP_LND_PUBLIC", con);
                 myCommand.Connection = con;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("HOUSEHOLDID_", objLF.HID);
-                myCommand.Parameters.Add("LND_TENUREID_", objLF.LND_TENUREID);
-                myCommand.Parameters.Add("HASTITLEDETAILS_", objLF.HASTITLEDETAILS);
-                myCommand.Parameters.Add("YEAROFACQUISITION_", objLF.YEAROFACQUISITION);
-                myCommand.Parameters.Add("FROMWHOM_", objLF.FROMWHOM); 
-                myCommand.Parameters.Add("COMMENTS_", objLF.COMMENTS);
-                myCommand.Parameters.Add("WHOCLAIMSLAND_", objLF.WHOCLAIMSLAND);
-                myCommand.Parameters.Add("LIVEDSINCEBIRTH_", objLF.LIVEDSINCEBIRTH);
-                myCommand.Parameters.Add("MOVEDYEAR_", objLF.MOVEDYEAR);
-                myCommand.Parameters.Add("WHERELIVEDBEFORE_", objLF.WHERELIVEDBEFORE);
-                myCommand.Parameters.Add("ISMORTGAGED_", objLF.ISMORTGAGED);
-                myCommand.Parameters.Add("MORTGAGEDETAILS_", objLF.MORTGAGEDETAILS);
-                myCommand.Parameters.Add("ISDELETEDIN", objLF.IsDeleted);
+                myCommand.Parameters.AddWithValue("HOUSEHOLDID_", objLF.HID);
+                myCommand.Parameters.AddWithValue("LND_TENUREID_", objLF.LND_TENUREID);
+                myCommand.Parameters.AddWithValue("HASTITLEDETAILS_", objLF.HASTITLEDETAILS);
+                myCommand.Parameters.AddWithValue("YEAROFACQUISITION_", objLF.YEAROFACQUISITION);
+                myCommand.Parameters.AddWithValue("FROMWHOM_", objLF.FROMWHOM); 
+                myCommand.Parameters.AddWithValue("COMMENTS_", objLF.COMMENTS);
+                myCommand.Parameters.AddWithValue("WHOCLAIMSLAND_", objLF.WHOCLAIMSLAND);
+                myCommand.Parameters.AddWithValue("LIVEDSINCEBIRTH_", objLF.LIVEDSINCEBIRTH);
+                myCommand.Parameters.AddWithValue("MOVEDYEAR_", objLF.MOVEDYEAR);
+                myCommand.Parameters.AddWithValue("WHERELIVEDBEFORE_", objLF.WHERELIVEDBEFORE);
+                myCommand.Parameters.AddWithValue("ISMORTGAGED_", objLF.ISMORTGAGED);
+                myCommand.Parameters.AddWithValue("MORTGAGEDETAILS_", objLF.MORTGAGEDETAILS);
+                myCommand.Parameters.AddWithValue("ISDELETEDIN", objLF.IsDeleted);
 
                 if (objLF.LandRecivedfromid > 0)
-                    myCommand.Parameters.Add("LANDRECDFROMID_", objLF.LandRecivedfromid);
+                    myCommand.Parameters.AddWithValue("LANDRECDFROMID_", objLF.LandRecivedfromid);
                 else
-                    myCommand.Parameters.Add("LANDRECDFROMID_", DBNull.Value);
+                    myCommand.Parameters.AddWithValue("LANDRECDFROMID_", DBNull.Value);
 
-                myCommand.Parameters.Add("CREATEDBY_", objLF.CreatedBy);
+                myCommand.Parameters.AddWithValue("CREATEDBY_", objLF.CreatedBy);
                 con.Open();
                 result = myCommand.ExecuteNonQuery();
                 con.Close();
@@ -94,32 +94,32 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public int UpdateLandInfo(PublicLandInfoBO objLF)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
             int result = 0;
             {
-                OracleCommand myCommand;
-                myCommand = new OracleCommand("USP_TRN_UPD_PAP_LND_PUBLIC", con);
+                SqlCommand myCommand;
+                myCommand = new SqlCommand("USP_TRN_UPD_PAP_LND_PUBLIC", con);
                 myCommand.Connection = con;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("HOUSEHOLDID_", objLF.HID);
-                myCommand.Parameters.Add("LND_TENUREID_", objLF.LND_TENUREID);
-                myCommand.Parameters.Add("HASTITLEDETAILS_", objLF.HASTITLEDETAILS);
-                myCommand.Parameters.Add("YEAROFACQUISITION_", objLF.YEAROFACQUISITION);                    
-                myCommand.Parameters.Add("FROMWHOM_", objLF.FROMWHOM); 
-                myCommand.Parameters.Add("COMMENTS_", objLF.COMMENTS);
-                myCommand.Parameters.Add("WHOCLAIMSLAND_", objLF.WHOCLAIMSLAND);
-                myCommand.Parameters.Add("LIVEDSINCEBIRTH_", objLF.LIVEDSINCEBIRTH);
-                myCommand.Parameters.Add("MOVEDYEAR_", objLF.MOVEDYEAR);
-                myCommand.Parameters.Add("WHERELIVEDBEFORE_", objLF.WHERELIVEDBEFORE);
-                myCommand.Parameters.Add("ISMORTGAGED_", objLF.ISMORTGAGED);
-                myCommand.Parameters.Add("MORTGAGEDETAILS_", objLF.MORTGAGEDETAILS);
+                myCommand.Parameters.AddWithValue("HOUSEHOLDID_", objLF.HID);
+                myCommand.Parameters.AddWithValue("LND_TENUREID_", objLF.LND_TENUREID);
+                myCommand.Parameters.AddWithValue("HASTITLEDETAILS_", objLF.HASTITLEDETAILS);
+                myCommand.Parameters.AddWithValue("YEAROFACQUISITION_", objLF.YEAROFACQUISITION);                    
+                myCommand.Parameters.AddWithValue("FROMWHOM_", objLF.FROMWHOM); 
+                myCommand.Parameters.AddWithValue("COMMENTS_", objLF.COMMENTS);
+                myCommand.Parameters.AddWithValue("WHOCLAIMSLAND_", objLF.WHOCLAIMSLAND);
+                myCommand.Parameters.AddWithValue("LIVEDSINCEBIRTH_", objLF.LIVEDSINCEBIRTH);
+                myCommand.Parameters.AddWithValue("MOVEDYEAR_", objLF.MOVEDYEAR);
+                myCommand.Parameters.AddWithValue("WHERELIVEDBEFORE_", objLF.WHERELIVEDBEFORE);
+                myCommand.Parameters.AddWithValue("ISMORTGAGED_", objLF.ISMORTGAGED);
+                myCommand.Parameters.AddWithValue("MORTGAGEDETAILS_", objLF.MORTGAGEDETAILS);
 
                 if (objLF.LandRecivedfromid > 0)
-                    myCommand.Parameters.Add("LANDRECDFROMID_", objLF.LandRecivedfromid);
+                    myCommand.Parameters.AddWithValue("LANDRECDFROMID_", objLF.LandRecivedfromid);
                 else
-                    myCommand.Parameters.Add("LANDRECDFROMID_", DBNull.Value);
+                    myCommand.Parameters.AddWithValue("LANDRECDFROMID_", DBNull.Value);
 
-                myCommand.Parameters.Add("CREATEDBY_", objLF.Userid);
+                myCommand.Parameters.AddWithValue("CREATEDBY_", objLF.Userid);
                 con.Open();
                 result = myCommand.ExecuteNonQuery();
                 con.Close();

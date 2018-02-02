@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
 using WIS_BusinessObjects;
-using System.Data.Sql;
+using System.Data.SqlClient;
 
 namespace WIS_DataAccess
 {
@@ -15,28 +14,28 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public RoleList  GetRole(string RoleName)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GETROLES";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             if (RoleName.ToString() == "")
             {
-                cmd.Parameters.Add("@RoleNameIN", DBNull.Value);
+                cmd.Parameters.AddWithValue("@RoleNameIN", DBNull.Value);
             }
             else
             {
-                cmd.Parameters.Add("@RoleNameIN", RoleName.ToString());
+                cmd.Parameters.AddWithValue("@RoleNameIN", RoleName.ToString());
             }             
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+           // // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             RoleBO objRole = null;            
             RoleList Roles = new RoleList();
             while (dr.Read())
             {
                 objRole = new RoleBO();
-                objRole.RoleID  = dr.GetInt16(dr.GetOrdinal("RoleId"));
+                objRole.RoleID  = Convert.ToInt32(dr.GetDecimal(dr.GetOrdinal("RoleId")));
                 objRole.RoleName  = dr.GetString(dr.GetOrdinal("RoleName"));
                 objRole.RoleDescription = dr.GetString(dr.GetOrdinal("RoleDescription"));
                 objRole.IsDeleted = dr.GetString(dr.GetOrdinal("ISDELETED"));                
@@ -53,28 +52,28 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public RoleList GetAllRole(string RoleName)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_MST_GET_ALL_ROLES";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
             if (RoleName.ToString() == "")
             {
-                cmd.Parameters.Add("@RoleNameIN", DBNull.Value);
+                cmd.Parameters.AddWithValue("@RoleNameIN", DBNull.Value);
             }
             else
             {
-                cmd.Parameters.Add("@RoleNameIN", RoleName.ToString());
+                cmd.Parameters.AddWithValue("@RoleNameIN", RoleName.ToString());
             }
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+          //  // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             RoleBO objRole = null;
             RoleList Roles = new RoleList();
             while (dr.Read())
             {
                 objRole = new RoleBO();
-                objRole.RoleID = dr.GetInt16(dr.GetOrdinal("RoleId"));
+                objRole.RoleID = Convert.ToInt32(dr.GetDecimal(dr.GetOrdinal("RoleId")));
                 objRole.RoleName = dr.GetString(dr.GetOrdinal("RoleName"));
                 objRole.RoleDescription = dr.GetString(dr.GetOrdinal("RoleDescription"));
                 objRole.IsDeleted = dr.GetString(dr.GetOrdinal("ISDELETED"));
@@ -93,24 +92,24 @@ namespace WIS_DataAccess
         {            
             string result = string.Empty;
             {
-                OracleConnection myConnection;
-                OracleCommand myCommand;
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_INSERTROLE", myConnection);
+                SqlConnection myConnection;
+                SqlCommand myCommand;
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_INSERTROLE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;                       
-                myCommand.Parameters.Add("@ROLENAMEIN",  objRole.RoleName);
+                myCommand.Parameters.AddWithValue("@ROLENAMEIN",  objRole.RoleName);
                 if (string.IsNullOrEmpty(objRole.RoleDescription) == true)
                 {
-                    myCommand.Parameters.Add("@RoleDescription",  " ");                                          
+                    myCommand.Parameters.AddWithValue("@RoleDescriptionIN",  " ");                                          
                 }
                 else
                 {
-                    myCommand.Parameters.Add("@RoleDescription", objRole.RoleDescription);
+                    myCommand.Parameters.AddWithValue("@RoleDescriptionIN", objRole.RoleDescription);
                 }
-                myCommand.Parameters.Add("@ISDELETEDIN", "False");
-                myCommand.Parameters.Add("@USERIDIN", objRole.CreatedBy);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("@ISDELETEDIN", "False");
+                myCommand.Parameters.AddWithValue("@USERIDIN", objRole.CreatedBy);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
 
@@ -131,19 +130,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string DeleteRole(int roleId)
         {
-            OracleConnection myConnection=null;
-            OracleCommand myCommand=null;
+            SqlConnection myConnection=null;
+            SqlCommand myCommand=null;
             
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DELETEROLE", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DELETEROLE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("@RoleId_", roleId);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("@RoleId_", (float)roleId);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -178,34 +177,34 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteRole(int roleId,string IsDeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
-            try
-            {
+          //  try
+           // {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETEROLE", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETEROLE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("@RoleId_", roleId);
-                myCommand.Parameters.Add("@isdeleted_", IsDeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("@RoleId_", roleId);
+                myCommand.Parameters.AddWithValue("@isdeleted_", IsDeleted);
+               // /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
-                if (myCommand.Parameters["errorMessage_"].Value != null)
-                    result = myCommand.Parameters["errorMessage_"].Value.ToString();
-            }
+               // if (myCommand.Parameters["errorMessage_"].Value != null)
+               //     result = myCommand.Parameters["errorMessage_"].Value.ToString();
+          /*  }
             catch (Exception ex)
             {
                 throw ex;
             }
             finally
-            {
+            {*/
                 myCommand.Dispose();
                 myConnection.Close();
                 myConnection.Dispose();
-            }
+           // }
 
             return result;
         }
@@ -219,25 +218,25 @@ namespace WIS_DataAccess
         {
             string result = string.Empty;
             {
-                OracleConnection myConnection;
-                OracleCommand myCommand;
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_UPDATEROLE", myConnection);
+                SqlConnection myConnection;
+                SqlCommand myCommand;
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_UPDATEROLE", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;                               
-               myCommand.Parameters.Add("@ROLEIDIN", objRole.RoleID);                
-                myCommand.Parameters.Add("@ROLENAMEIN",objRole.RoleName);
+               myCommand.Parameters.AddWithValue("@ROLEIDIN", objRole.RoleID);                
+                myCommand.Parameters.AddWithValue("@ROLENAMEIN",objRole.RoleName);
                 if (string.IsNullOrEmpty(objRole.RoleDescription) == true)
                 {
-                    myCommand.Parameters.Add("@RoleDescription", " ");
+                    myCommand.Parameters.AddWithValue("@RoleDescription", " ");
                 }
                 else
                 {
-                    myCommand.Parameters.Add("@RoleDescription", objRole.RoleDescription);
+                    myCommand.Parameters.AddWithValue("@RoleDescription", objRole.RoleDescription);
                 }                                      
-                myCommand.Parameters.Add("@ISDELETEDIN", "False");
-                myCommand.Parameters.Add("@USERIDIN", objRole.UpdatedBy);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("@ISDELETEDIN", "False");
+                myCommand.Parameters.AddWithValue("@USERIDIN", objRole.UpdatedBy);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 
                 myCommand.ExecuteNonQuery();
@@ -259,16 +258,16 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public RoleBO GetRoleByRoleID(int roleID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETROLEBYROLEID";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@RoleIdIN", roleID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("@RoleIdIN", roleID);
+          //  // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             RoleBO obRole = null;                        
             while (dr.Read())
             {

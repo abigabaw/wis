@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -13,17 +13,17 @@ namespace WIS_DataAccess
         //get all data in mst_Concern table using USP_MST_SELECTCONCERN-SP
         public ConcernList GetConcern()
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_SELECTCONCERN";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", Oracle.DataAccess.Client.OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            //// Cmd.Parameters.AddWithValue"Sp_recordset", Sql.DataAccess.Client.SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ConcernBO objConcern = null;
             ConcernList Concern = new ConcernList();
 
@@ -52,19 +52,19 @@ namespace WIS_DataAccess
         {
             string returnResult = string.Empty;
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_INSERTCONCERN", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_INSERTCONCERN", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("CONCERN", objConcern.ConcernName);
-                dcmd.Parameters.Add("CREATEDBY", objConcern.UserID);
+                dcmd.Parameters.AddWithValue("CONCERN", objConcern.ConcernName);
+                dcmd.Parameters.AddWithValue("CREATEDBY", objConcern.UserID);
                 //return dcmd.ExecuteNonQuery();
 
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -94,17 +94,17 @@ namespace WIS_DataAccess
         public ConcernList GETALLCONCERN()
         {
             // used in Master page
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
-            string proc = " USP_MST_GETALLCONCERN";
+            string proc = "USP_MST_GETALLCONCERN";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ConcernBO objConcern = null;
             ConcernList Concern = new ConcernList();
 
@@ -131,19 +131,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public ConcernBO GetConcernById(int ConcernID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_MST_GETSELECTCONCERN";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ConcernID_", ConcernID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ConcernID_", ConcernID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
 
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             ConcernBO ConcernObj = null;
             ConcernList Users = new ConcernList();
 
@@ -189,20 +189,20 @@ namespace WIS_DataAccess
         {
             string returnResult = string.Empty;
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_MST_UPDATECCONCERN", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_MST_UPDATECCONCERN", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("Concern_", objConcern.ConcernName);
-                dcmd.Parameters.Add("ConcernID_", objConcern.ConcernID);
-                dcmd.Parameters.Add("UpdatedBY", objConcern.UserID);
+                dcmd.Parameters.AddWithValue("Concern_", objConcern.ConcernName);
+                dcmd.Parameters.AddWithValue("ConcernID_", objConcern.ConcernID);
+                dcmd.Parameters.AddWithValue("UpdatedBY", objConcern.UserID);
                 //return dcmd.ExecuteNonQuery();
 
-                dcmd.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                /* cmdd.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = dcmd.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -232,20 +232,20 @@ namespace WIS_DataAccess
         public string DeleteConcern(int ConcernID)
         {
 
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
 
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_DELETECONCERN", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_DELETECONCERN", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("ConcernID_", ConcernID);
-                //myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("ConcernID_", ConcernID);
+                ///* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -271,19 +271,19 @@ namespace WIS_DataAccess
 
             return result;  
 
-            //OracleConnection myConnection = null;
-            //OracleCommand myCommand = null;
+            //SqlConnection myConnection = null;
+            //SqlCommand myCommand = null;
 
             //string result = string.Empty;
             //try
             //{
 
-            //    myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            //    myCommand = new OracleCommand("USP_MST_DELETECONCERN", myConnection);
+            //    myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            //    myCommand = new SqlCommand("USP_MST_DELETECONCERN", myConnection);
             //    myCommand.Connection = myConnection;
             //    myCommand.CommandType = CommandType.StoredProcedure;
-            //    myCommand.Parameters.Add("@ConcernID_", ConcernID);
-            //    myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            //    myCommand.Parameters.AddWithValue("@ConcernID_", ConcernID);
+            //    /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             //    myConnection.Open();
             //    myCommand.ExecuteNonQuery();
             //    if (myCommand.Parameters["errorMessage_"].Value != null)
@@ -308,15 +308,15 @@ namespace WIS_DataAccess
             //}
 
             //return result;  
-            //OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            //OracleCommand cmd;
+            //SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            //SqlCommand cmd;
 
 
             //string proc = "USP_MST_DELETECONCERN";
 
-            //cmd = new OracleCommand(proc, cnn);
+            //cmd = new SqlCommand(proc, cnn);
             //cmd.CommandType = CommandType.StoredProcedure;
-            //cmd.Parameters.Add("ConcernID_", ConcernID);
+            //cmd.Parameters.AddWithValue("ConcernID_", ConcernID);
             //cmd.Connection.Open();
 
             //int result = cmd.ExecuteNonQuery();
@@ -332,19 +332,19 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public string ObsoleteConcern(int ConcernID, string Isdeleted)
         {
-            OracleConnection myConnection = null;
-            OracleCommand myCommand = null;
+            SqlConnection myConnection = null;
+            SqlCommand myCommand = null;
             string result = string.Empty;
             try
             {
 
-                myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-                myCommand = new OracleCommand("USP_MST_OBSOLETE_CONCERN", myConnection);
+                myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+                myCommand = new SqlCommand("USP_MST_OBSOLETE_CONCERN", myConnection);
                 myCommand.Connection = myConnection;
                 myCommand.CommandType = CommandType.StoredProcedure;
-                myCommand.Parameters.Add("ConcernId_", ConcernID);
-                myCommand.Parameters.Add("isdeleted_", Isdeleted);
-                myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                myCommand.Parameters.AddWithValue("ConcernId_", ConcernID);
+                myCommand.Parameters.AddWithValue("isdeleted_", Isdeleted);
+                /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
                 myConnection.Open();
                 myCommand.ExecuteNonQuery();
                 if (myCommand.Parameters["errorMessage_"].Value != null)

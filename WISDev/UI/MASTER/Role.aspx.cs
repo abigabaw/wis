@@ -219,8 +219,8 @@ namespace WIS
                 BindGrid(false, true);
                 if (message != "")
                     ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Added", "alert('" + message + "');", true);
-            }
-            catch (Exception ex)
+             }
+           catch (Exception ex)
             {
                 throw ex;
             }

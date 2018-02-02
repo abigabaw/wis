@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using Oracle.DataAccess.Client;
+using System.Data.SqlClient;
 using WIS_BusinessObjects;
 
 namespace WIS_DataAccess
@@ -14,34 +14,34 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public PAP_HouseholdBO GetHouseHoldData(int ID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GET_HOUSEHOLDDETAILS";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("HHID_", ID);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", ID);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             PAP_HouseholdBO objTrn_Pap_HouseHold = null;
             while (dr.Read())
             {
                 objTrn_Pap_HouseHold = new PAP_HouseholdBO();
-                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objTrn_Pap_HouseHold.HhId = dr.GetInt32(dr.GetOrdinal("HHID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objTrn_Pap_HouseHold.HhId = (int)dr.GetDecimal(dr.GetOrdinal("HHID"));
                 if (!dr.IsDBNull(dr.GetOrdinal("PAP_UID"))) objTrn_Pap_HouseHold.Pap_UId = dr.GetString(dr.GetOrdinal("PAP_UID"));
-                if (!dr.IsDBNull(dr.GetOrdinal("PROJECTID"))) objTrn_Pap_HouseHold.ProjectedId = dr.GetInt32(dr.GetOrdinal("PROJECTID"));
-                if (!dr.IsDBNull(dr.GetOrdinal("OPTIONGROUPID"))) objTrn_Pap_HouseHold.OptiongroupId = dr.GetInt32(dr.GetOrdinal("OPTIONGROUPID"));
-                if (!dr.IsDBNull(dr.GetOrdinal("RELIGIONID"))) objTrn_Pap_HouseHold.ReligionId = dr.GetInt32(dr.GetOrdinal("RELIGIONID"));
-                if (!dr.IsDBNull(dr.GetOrdinal("OCCUPATIONID"))) objTrn_Pap_HouseHold.OccupationId = dr.GetInt32(dr.GetOrdinal("OCCUPATIONID"));
-                if (!dr.IsDBNull(dr.GetOrdinal("PAPSTATUSID"))) objTrn_Pap_HouseHold.PapstatusId = dr.GetInt32(dr.GetOrdinal("PAPSTATUSID"));
-                if (!dr.IsDBNull(dr.GetOrdinal("LITERACYLEVELID"))) objTrn_Pap_HouseHold.LiteracyCycleId = dr.GetInt32(dr.GetOrdinal("LITERACYLEVELID"));
-                if (!dr.IsDBNull(dr.GetOrdinal("UPDATEDBY"))) objTrn_Pap_HouseHold.UpdatedBy = dr.GetInt32(dr.GetOrdinal("UPDATEDBY"));
+                if (!dr.IsDBNull(dr.GetOrdinal("PROJECTID"))) objTrn_Pap_HouseHold.ProjectedId = (int)dr.GetDecimal(dr.GetOrdinal("PROJECTID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("OPTIONGROUPID"))) objTrn_Pap_HouseHold.OptiongroupId = (int)dr.GetDecimal(dr.GetOrdinal("OPTIONGROUPID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("RELIGIONID"))) objTrn_Pap_HouseHold.ReligionId = (int)dr.GetDecimal(dr.GetOrdinal("RELIGIONID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("OCCUPATIONID"))) objTrn_Pap_HouseHold.OccupationId = (int)dr.GetDecimal(dr.GetOrdinal("OCCUPATIONID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("PAPSTATUSID"))) objTrn_Pap_HouseHold.PapstatusId = (int)dr.GetDecimal(dr.GetOrdinal("PAPSTATUSID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("LITERACYLEVELID"))) objTrn_Pap_HouseHold.LiteracyCycleId = (int)dr.GetDecimal(dr.GetOrdinal("LITERACYLEVELID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("UPDATEDBY"))) objTrn_Pap_HouseHold.UpdatedBy = (int)dr.GetDecimal(dr.GetOrdinal("UPDATEDBY"));
                 if (!dr.IsDBNull(dr.GetOrdinal("INSTITUTIONNAME"))) objTrn_Pap_HouseHold.InstitutionName = dr.GetString(dr.GetOrdinal("INSTITUTIONNAME"));
-                if (!dr.IsDBNull(dr.GetOrdinal("NOOFPLOTS"))) objTrn_Pap_HouseHold.Noofplots = dr.GetInt32(dr.GetOrdinal("NOOFPLOTS"));
+                if (!dr.IsDBNull(dr.GetOrdinal("NOOFPLOTS"))) objTrn_Pap_HouseHold.Noofplots = (int)dr.GetDecimal(dr.GetOrdinal("NOOFPLOTS"));
                 if (!dr.IsDBNull(dr.GetOrdinal("SURNAME"))) objTrn_Pap_HouseHold.Surname = dr.GetString(dr.GetOrdinal("SURNAME"));
                 if (!dr.IsDBNull(dr.GetOrdinal("FIRSTNAME"))) objTrn_Pap_HouseHold.Firstname = dr.GetString(dr.GetOrdinal("FIRSTNAME"));
                 if (!dr.IsDBNull(dr.GetOrdinal("OTHERNAME"))) objTrn_Pap_HouseHold.Othername = dr.GetString(dr.GetOrdinal("OTHERNAME"));
-                if (!dr.IsDBNull(dr.GetOrdinal("POSITIONID"))) objTrn_Pap_HouseHold.PositionId = dr.GetInt32(dr.GetOrdinal("POSITIONID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("POSITIONID"))) objTrn_Pap_HouseHold.PositionId = (int)dr.GetDecimal(dr.GetOrdinal("POSITIONID"));
                 if (!dr.IsDBNull(dr.GetOrdinal("CONTACTPHONE1"))) objTrn_Pap_HouseHold.Contactphone1 = dr.GetString(dr.GetOrdinal("CONTACTPHONE1"));
                 if (!dr.IsDBNull(dr.GetOrdinal("CONTACTPHONE2"))) objTrn_Pap_HouseHold.Contactphone2 = dr.GetString(dr.GetOrdinal("CONTACTPHONE2"));
                 if (!dr.IsDBNull(dr.GetOrdinal("PAPTYPE"))) objTrn_Pap_HouseHold.Paptype = dr.GetString(dr.GetOrdinal("PAPTYPE"));
@@ -66,12 +66,12 @@ namespace WIS_DataAccess
                 if (!dr.IsDBNull(dr.GetOrdinal("WHICHPARENTALIVE"))) objTrn_Pap_HouseHold.Whichparentalive = dr.GetString(dr.GetOrdinal("WHICHPARENTALIVE"));
                 if (!dr.IsDBNull(dr.GetOrdinal("WHEREPARENTSLIVE"))) objTrn_Pap_HouseHold.Whereparentslive = dr.GetString(dr.GetOrdinal("WHEREPARENTSLIVE"));
                 if (!dr.IsDBNull(dr.GetOrdinal("HASIDENTIFICATIONCARD"))) objTrn_Pap_HouseHold.Isidentificationcard = dr.GetString(dr.GetOrdinal("HASIDENTIFICATIONCARD"));
-                if (!dr.IsDBNull(dr.GetOrdinal("CARDTYPE"))) objTrn_Pap_HouseHold.Cardtype = Convert.ToString(dr.GetInt32(dr.GetOrdinal("CARDTYPE")));
+                if (!dr.IsDBNull(dr.GetOrdinal("CARDTYPE"))) objTrn_Pap_HouseHold.Cardtype = Convert.ToString((int)dr.GetDecimal(dr.GetOrdinal("CARDTYPE")));
                 if (!dr.IsDBNull(dr.GetOrdinal("CARDNUMBER"))) objTrn_Pap_HouseHold.CardNo = dr.GetString(dr.GetOrdinal("CARDNUMBER"));
                 if (!dr.IsDBNull(dr.GetOrdinal("NAMEONCARD"))) objTrn_Pap_HouseHold.NameonCard = dr.GetString(dr.GetOrdinal("NAMEONCARD"));
                 if (!dr.IsDBNull(dr.GetOrdinal("ADDRESSONCARD"))) objTrn_Pap_HouseHold.AddressonCard = dr.GetString(dr.GetOrdinal("ADDRESSONCARD"));
                 if (!dr.IsDBNull(dr.GetOrdinal("MARITALSTATUS"))) objTrn_Pap_HouseHold.MaritalStatus = dr.GetString(dr.GetOrdinal("MARITALSTATUS"));
-                if (!dr.IsDBNull(dr.GetOrdinal("NOOFSPOUSES"))) objTrn_Pap_HouseHold.NoofSpouse = dr.GetInt32(dr.GetOrdinal("NOOFSPOUSES"));
+                if (!dr.IsDBNull(dr.GetOrdinal("NOOFSPOUSES"))) objTrn_Pap_HouseHold.NoofSpouse = (int)dr.GetDecimal(dr.GetOrdinal("NOOFSPOUSES"));
                 if (!dr.IsDBNull(dr.GetOrdinal("TRIBE"))) objTrn_Pap_HouseHold.Tribe = dr.GetString(dr.GetOrdinal("TRIBE"));
                 if (!dr.IsDBNull(dr.GetOrdinal("CLAN"))) objTrn_Pap_HouseHold.Clan = dr.GetString(dr.GetOrdinal("CLAN"));
                 if (!dr.IsDBNull(dr.GetOrdinal("ISDELETED"))) objTrn_Pap_HouseHold.Isdeleted = dr.GetString(dr.GetOrdinal("ISDELETED"));
@@ -100,24 +100,24 @@ namespace WIS_DataAccess
         public int GetHousaeHold(PAP_HouseholdBO objTrn_Pap_HouseHold,string landStatus)
         {
             int res=0;
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_GET_OPT_HOUSEHOLD";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("HHID_", objTrn_Pap_HouseHold.HhId);
-            cmd.Parameters.Add("LNDCOMP_", objTrn_Pap_HouseHold.LandCompensation);
-            cmd.Parameters.Add("HOUSECOMP_", objTrn_Pap_HouseHold.HouseCompensation);
-            cmd.Parameters.Add("LNDSTATUS_", landStatus);
-            cmd.Parameters.Add("RESIDENT_", objTrn_Pap_HouseHold.Isresident);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", objTrn_Pap_HouseHold.HhId);
+            cmd.Parameters.AddWithValue("LNDCOMP_", objTrn_Pap_HouseHold.LandCompensation);
+            cmd.Parameters.AddWithValue("HOUSECOMP_", objTrn_Pap_HouseHold.HouseCompensation);
+            cmd.Parameters.AddWithValue("LNDSTATUS_", landStatus);
+            cmd.Parameters.AddWithValue("RESIDENT_", objTrn_Pap_HouseHold.Isresident);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
            // PAP_HouseholdBO objTrn_Pap_HouseHold = null;
             while (dr.Read())
             {
                 objTrn_Pap_HouseHold = new PAP_HouseholdBO();
-                if (!dr.IsDBNull(dr.GetOrdinal("OPTIONGROUPID"))) objTrn_Pap_HouseHold.OptiongroupId = dr.GetInt32(dr.GetOrdinal("OPTIONGROUPID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("OPTIONGROUPID"))) objTrn_Pap_HouseHold.OptiongroupId = (int)dr.GetDecimal(dr.GetOrdinal("OPTIONGROUPID"));
                 res = objTrn_Pap_HouseHold.OptiongroupId;
             }
             dr.Close();
@@ -125,22 +125,22 @@ namespace WIS_DataAccess
         }
         public PAP_HouseholdBO getCommentsData(int id)
         {
-           OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+           SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_GETCOMMENTS_DATABY_HHID";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("HHID_", id);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", id);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             PAP_HouseholdBO objTrn_Pap_HouseHold = null;
             while (dr.Read())
             {
                 objTrn_Pap_HouseHold = new PAP_HouseholdBO();
                 //if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objTrn_Pap_HouseHold.HhId = dr.GetInt32(dr.GetOrdinal("HHID"));
                 if (!dr.IsDBNull(dr.GetOrdinal("COMMENTS"))) objTrn_Pap_HouseHold.Comments = dr.GetString(dr.GetOrdinal("COMMENTS"));
-                if (!dr.IsDBNull(dr.GetOrdinal("OPTIONGROUPID"))) objTrn_Pap_HouseHold.OptiongroupId = dr.GetInt32(dr.GetOrdinal("OPTIONGROUPID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("OPTIONGROUPID"))) objTrn_Pap_HouseHold.OptiongroupId = (int)dr.GetDecimal(dr.GetOrdinal("OPTIONGROUPID"));
             }
             return objTrn_Pap_HouseHold;
         }
@@ -154,109 +154,109 @@ namespace WIS_DataAccess
         {
             string result = "";
             string cnn = AppConfiguration.ConnectionString;
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(cnn);
-            myCommand = new OracleCommand("USP_TRN_UPD_HOUSEHOLD", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(cnn);
+            myCommand = new SqlCommand("USP_TRN_UPD_HOUSEHOLD", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("@Hh_IDIN", objHouseHold.HhId);
-            myCommand.Parameters.Add("@Pap_UIDIN", objHouseHold.Papuid);
-            myCommand.Parameters.Add("@Project_IdIN", objHouseHold.ProjectedId);
-            myCommand.Parameters.Add("@PapNameIN", objHouseHold.PapName);
-            myCommand.Parameters.Add("@PlotReferenceIN", objHouseHold.PlotReference);
-            myCommand.Parameters.Add("@DistrictIN", objHouseHold.District);
-            myCommand.Parameters.Add("@CountyIN", objHouseHold.County);
-            myCommand.Parameters.Add("@SubCountyIN", objHouseHold.SubCounty);
+            myCommand.Parameters.AddWithValue("@Hh_IDIN", objHouseHold.HhId);
+            myCommand.Parameters.AddWithValue("@Pap_UIDIN", objHouseHold.Papuid);
+            myCommand.Parameters.AddWithValue("@Project_IdIN", objHouseHold.ProjectedId);
+            myCommand.Parameters.AddWithValue("@PapNameIN", objHouseHold.PapName);
+            myCommand.Parameters.AddWithValue("@PlotReferenceIN", objHouseHold.PlotReference);
+            myCommand.Parameters.AddWithValue("@DistrictIN", objHouseHold.District);
+            myCommand.Parameters.AddWithValue("@CountyIN", objHouseHold.County);
+            myCommand.Parameters.AddWithValue("@SubCountyIN", objHouseHold.SubCounty);
             if (objHouseHold.Parish == "0")
             {
-                myCommand.Parameters.Add("@ParishIN", DBNull.Value);
+                myCommand.Parameters.AddWithValue("@ParishIN", DBNull.Value);
             }
             else
             {
-                myCommand.Parameters.Add("@ParishIN", objHouseHold.Parish);
+                myCommand.Parameters.AddWithValue("@ParishIN", objHouseHold.Parish);
             }
-            myCommand.Parameters.Add("@VillageIN", objHouseHold.Village);
-            myCommand.Parameters.Add("@RightofwayIN", objHouseHold.Rightofway);
-            myCommand.Parameters.Add("@WayLeavesIN", objHouseHold.Wayleaves);
-            myCommand.Parameters.Add("@OptionGroupIdIN", objHouseHold.OptiongroupId);
-            myCommand.Parameters.Add("@IsResidentIN", objHouseHold.Isresident);
-            myCommand.Parameters.Add("@SexIN", objHouseHold.Sex);
+            myCommand.Parameters.AddWithValue("@VillageIN", objHouseHold.Village);
+            myCommand.Parameters.AddWithValue("@RightofwayIN", objHouseHold.Rightofway);
+            myCommand.Parameters.AddWithValue("@WayLeavesIN", objHouseHold.Wayleaves);
+            myCommand.Parameters.AddWithValue("@OptionGroupIdIN", objHouseHold.OptiongroupId);
+            myCommand.Parameters.AddWithValue("@IsResidentIN", objHouseHold.Isresident);
+            myCommand.Parameters.AddWithValue("@SexIN", objHouseHold.Sex);
 
             if (objHouseHold.DateofBirth.Trim() != "")
-                myCommand.Parameters.Add("@DateofBirthIN", Convert.ToDateTime(objHouseHold.DateofBirth).ToString(UtilBO.DateFormatDB));
+                myCommand.Parameters.AddWithValue("@DateofBirthIN", Convert.ToDateTime(objHouseHold.DateofBirth).ToString(UtilBO.DateFormatDB));
             else
-                myCommand.Parameters.Add("@DateofBirthIN", DBNull.Value);
+                myCommand.Parameters.AddWithValue("@DateofBirthIN", DBNull.Value);
 
-            myCommand.Parameters.Add("@PlaceofBirthIN", objHouseHold.PlaceofBirth);
-            myCommand.Parameters.Add("@YearofMoveonIN", objHouseHold.Yearmoveon);
-            myCommand.Parameters.Add("@ParentsaliveIN", objHouseHold.Parentslive);
-            myCommand.Parameters.Add("@whichparentaliveIN", objHouseHold.Whichparentalive);
-            myCommand.Parameters.Add("@WhereParentsLiveIN", objHouseHold.Whereparentslive);
-            myCommand.Parameters.Add("@HasIdentificationCardIN", objHouseHold.Isidentificationcard);
+            myCommand.Parameters.AddWithValue("@PlaceofBirthIN", objHouseHold.PlaceofBirth);
+            myCommand.Parameters.AddWithValue("@YearofMoveonIN", objHouseHold.Yearmoveon);
+            myCommand.Parameters.AddWithValue("@ParentsaliveIN", objHouseHold.Parentslive);
+            myCommand.Parameters.AddWithValue("@whichparentaliveIN", objHouseHold.Whichparentalive);
+            myCommand.Parameters.AddWithValue("@WhereParentsLiveIN", objHouseHold.Whereparentslive);
+            myCommand.Parameters.AddWithValue("@HasIdentificationCardIN", objHouseHold.Isidentificationcard);
 
             if (!string.IsNullOrEmpty(objHouseHold.Cardtype))
-                myCommand.Parameters.Add("@CardTypeIN", objHouseHold.Cardtype);
+                myCommand.Parameters.AddWithValue("@CardTypeIN", objHouseHold.Cardtype);
             else
-                myCommand.Parameters.Add("@CardTypeIN", DBNull.Value);
+                myCommand.Parameters.AddWithValue("@CardTypeIN", DBNull.Value);
 
-            myCommand.Parameters.Add("@CardNumberIN", objHouseHold.CardNo);
-            myCommand.Parameters.Add("@NameonCardIN", objHouseHold.NameonCard);
-            myCommand.Parameters.Add("@AddressonCardIN", objHouseHold.AddressonCard);
+            myCommand.Parameters.AddWithValue("@CardNumberIN", objHouseHold.CardNo);
+            myCommand.Parameters.AddWithValue("@NameonCardIN", objHouseHold.NameonCard);
+            myCommand.Parameters.AddWithValue("@AddressonCardIN", objHouseHold.AddressonCard);
             if (objHouseHold.MaritalStatus == "0" || objHouseHold.MaritalStatus == "--Select--")
             {
-                myCommand.Parameters.Add("@MaritalStatusIN", DBNull.Value);
+                myCommand.Parameters.AddWithValue("@MaritalStatusIN", DBNull.Value);
             }
             else
             {
-                myCommand.Parameters.Add("@MaritalStatusIN", objHouseHold.MaritalStatus);
+                myCommand.Parameters.AddWithValue("@MaritalStatusIN", objHouseHold.MaritalStatus);
             }
 
-            myCommand.Parameters.Add("@NoofSpousesIN", objHouseHold.NoofSpouse);
+            myCommand.Parameters.AddWithValue("@NoofSpousesIN", objHouseHold.NoofSpouse);
 
-            myCommand.Parameters.Add("@TribeIN", objHouseHold.Tribe);
-            myCommand.Parameters.Add("@ClanIN", objHouseHold.Clan);
+            myCommand.Parameters.AddWithValue("@TribeIN", objHouseHold.Tribe);
+            myCommand.Parameters.AddWithValue("@ClanIN", objHouseHold.Clan);
 
             if (objHouseHold.ReligionId == 0)
-                myCommand.Parameters.Add("@ReligionIDIN", DBNull.Value);
+                myCommand.Parameters.AddWithValue("@ReligionIDIN", DBNull.Value);
             else
-                myCommand.Parameters.Add("@ReligionIDIN", objHouseHold.ReligionId);
+                myCommand.Parameters.AddWithValue("@ReligionIDIN", objHouseHold.ReligionId);
 
-            myCommand.Parameters.Add("religionname_", objHouseHold.Otherreligion);
+            myCommand.Parameters.AddWithValue("religionname_", objHouseHold.Otherreligion);
 
             if (objHouseHold.OccupationId > 0)
-                myCommand.Parameters.Add("@OccupationIDIN", objHouseHold.OccupationId);
+                myCommand.Parameters.AddWithValue("@OccupationIDIN", objHouseHold.OccupationId);
             else
-                myCommand.Parameters.Add("@OccupationIDIN", DBNull.Value);
+                myCommand.Parameters.AddWithValue("@OccupationIDIN", DBNull.Value);
 
             if (objHouseHold.PapstatusId > 0)
-                myCommand.Parameters.Add("@PapaStatusIDIN", objHouseHold.PapstatusId);
+                myCommand.Parameters.AddWithValue("@PapaStatusIDIN", objHouseHold.PapstatusId);
             else
-                myCommand.Parameters.Add("@PapaStatusIDIN", DBNull.Value);
+                myCommand.Parameters.AddWithValue("@PapaStatusIDIN", DBNull.Value);
 
             if (objHouseHold.LiteracyCycleId > 0)
-                myCommand.Parameters.Add("@LiteracyCyclelevelId", objHouseHold.LiteracyCycleId);
+                myCommand.Parameters.AddWithValue("@LiteracyCyclelevelId", objHouseHold.LiteracyCycleId);
             else
-                myCommand.Parameters.Add("@LiteracyCyclelevelId", DBNull.Value);
+                myCommand.Parameters.AddWithValue("@LiteracyCyclelevelId", DBNull.Value);
 
-            myCommand.Parameters.Add("@IsdeletedIN", objHouseHold.Isdeleted);
-            myCommand.Parameters.Add("@UpdatedbyIN", objHouseHold.UpdatedBy);
+            myCommand.Parameters.AddWithValue("@IsdeletedIN", objHouseHold.Isdeleted);
+            myCommand.Parameters.AddWithValue("@UpdatedbyIN", objHouseHold.UpdatedBy);
 
-            myCommand.Parameters.Add("@DESIGNATIONIN", objHouseHold.Designation);
-            myCommand.Parameters.Add("@DETAILSCAPTUREDBYIN", objHouseHold.CapturedBy);
+            myCommand.Parameters.AddWithValue("@DESIGNATIONIN", objHouseHold.Designation);
+            myCommand.Parameters.AddWithValue("@DETAILSCAPTUREDBYIN", objHouseHold.CapturedBy);
             if (objHouseHold.CapturedDate.Trim() != "")
-                myCommand.Parameters.Add("@DETAILSCAPTUREDDATEIN", Convert.ToDateTime(objHouseHold.CapturedDate).ToString(UtilBO.DateFormatDB));
+                myCommand.Parameters.AddWithValue("@DETAILSCAPTUREDDATEIN", Convert.ToDateTime(objHouseHold.CapturedDate).ToString(UtilBO.DateFormatDB));
             else
-                myCommand.Parameters.Add("@DETAILSCAPTUREDDATEIN", DBNull.Value);
+                myCommand.Parameters.AddWithValue("@DETAILSCAPTUREDDATEIN", DBNull.Value);
 
-            //myCommand.Parameters.Add("@CLASS_", objHouseHold.LocClassification);
-            myCommand.Parameters.Add("@GOUSTATUS_", objHouseHold.GouStatus);
-            myCommand.Parameters.Add("@UNDERTAKINGPERIOD_", objHouseHold.UnderTakingPeriod);
-            myCommand.Parameters.Add("@OVERRIDEOPT_", objHouseHold.Overrideopt);
-            myCommand.Parameters.Add("@LANDCOMPENSATION_", objHouseHold.LandCompensation);
-            myCommand.Parameters.Add("@HOUSECOMPENSATION_", objHouseHold.HouseCompensation);
-            myCommand.Parameters.Add("@LANDPER_", objHouseHold.PercentageOccupied);
-            myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            //myCommand.Parameters.AddWithValue("@CLASS_", objHouseHold.LocClassification);
+            myCommand.Parameters.AddWithValue("@GOUSTATUS_", objHouseHold.GouStatus);
+            myCommand.Parameters.AddWithValue("@UNDERTAKINGPERIOD_", objHouseHold.UnderTakingPeriod);
+            myCommand.Parameters.AddWithValue("@OVERRIDEOPT_", objHouseHold.Overrideopt);
+            myCommand.Parameters.AddWithValue("@LANDCOMPENSATION_", objHouseHold.LandCompensation);
+            myCommand.Parameters.AddWithValue("@HOUSECOMPENSATION_", objHouseHold.HouseCompensation);
+            myCommand.Parameters.AddWithValue("@LANDPER_", objHouseHold.PercentageOccupied);
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
 
             myConnection.Open();
             myCommand.ExecuteNonQuery();
@@ -279,17 +279,17 @@ namespace WIS_DataAccess
         {
             string result = "";
             string cnn = AppConfiguration.ConnectionString;
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(cnn);
-            myCommand = new OracleCommand("USP_INS_MST_COMMENTS", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(cnn);
+            myCommand = new SqlCommand("USP_INS_MST_COMMENTS", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("@Comments_", objHouseHold.Comments);
-            myCommand.Parameters.Add("@OPTIONGROUPID_", objHouseHold.OptiongroupId);
-            myCommand.Parameters.Add("@HHID_", objHouseHold.HhId);
-            myCommand.Parameters.Add("@CREATEDBY_", objHouseHold.CreatedBy);
-            myCommand.Parameters.Add("errorMessage_", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("@Comments_", objHouseHold.Comments);
+            myCommand.Parameters.AddWithValue("@OPTIONGROUPID_", objHouseHold.OptiongroupId);
+            myCommand.Parameters.AddWithValue("@HHID_", objHouseHold.HhId);
+            myCommand.Parameters.AddWithValue("@CREATEDBY_", objHouseHold.CreatedBy);
+            /* myCommand.Parameters.AddWithValue("errorMessage_", SqlDbType.NVarChar).Direction = ParameterDirection.Output;*/ SqlParameter outputValue = myCommand.Parameters.Add("errorMessage_", SqlDbType.VarChar); outputValue.Size=200; outputValue.Direction = ParameterDirection.Output;
             myConnection.Open();
             myCommand.ExecuteNonQuery();
 
@@ -309,14 +309,14 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public PAP_HouseholdBO GetPAPPhoto(int householdID)
         {
-            OracleConnection myConnection;
-            OracleCommand myCommand;
-            myConnection = new OracleConnection(AppConfiguration.ConnectionString);
-            myCommand = new OracleCommand("USP_TRN_GET_PAP_PHOTO", myConnection);
+            SqlConnection myConnection;
+            SqlCommand myCommand;
+            myConnection = new SqlConnection(AppConfiguration.ConnectionString);
+            myCommand = new SqlCommand("USP_TRN_GET_PAP_PHOTO", myConnection);
             myCommand.Connection = myConnection;
             myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.Parameters.Add("HHID_", householdID);
-            myCommand.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            myCommand.Parameters.AddWithValue("HHID_", householdID);
+            // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             myCommand.Connection.Open();
             object img = myCommand.ExecuteScalar();
@@ -356,30 +356,30 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public Trn_Pap_HouseHoldList GlobalSearchPAP(int HHID, string PAPUID, string papName, string plotReference, string district, string county, string subCounty, string parish, string village, int UserId)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GLOBAL_PAP";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("HHID_", HHID);
+            cmd.Parameters.AddWithValue("HHID_", HHID);
             if (PAPUID.Trim() == string.Empty)
-                cmd.Parameters.Add("pap_uid_", DBNull.Value);
+                cmd.Parameters.AddWithValue("pap_uid_", DBNull.Value);
             else
-                cmd.Parameters.Add("pap_uid_", PAPUID);
-            cmd.Parameters.Add("PAPNAME_", papName);
-            cmd.Parameters.Add("PLOTREFERENCE_", plotReference);
-            cmd.Parameters.Add("DISTRICT_", district);
-            cmd.Parameters.Add("COUNTY_", county);
-            cmd.Parameters.Add("SUBCOUNTY_", subCounty);
-            cmd.Parameters.Add("PARISH_", parish);
-            cmd.Parameters.Add("VILLAGE_", village);
-            cmd.Parameters.Add("userID_", UserId);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("pap_uid_", PAPUID);
+            cmd.Parameters.AddWithValue("PAPNAME_", papName);
+            cmd.Parameters.AddWithValue("PLOTREFERENCE_", plotReference);
+            cmd.Parameters.AddWithValue("DISTRICT_", district);
+            cmd.Parameters.AddWithValue("COUNTY_", county);
+            cmd.Parameters.AddWithValue("SUBCOUNTY_", subCounty);
+            cmd.Parameters.AddWithValue("PARISH_", parish);
+            cmd.Parameters.AddWithValue("VILLAGE_", village);
+            cmd.Parameters.AddWithValue("userID_", UserId);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             Trn_Pap_HouseHoldList PAPList = new Trn_Pap_HouseHoldList();
             Trn_Pap_HouseHoldBO objPAP = null;
@@ -387,12 +387,12 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 objPAP = new Trn_Pap_HouseHoldBO();
-                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objPAP.HhId = dr.GetInt32(dr.GetOrdinal("HHID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objPAP.HhId = (int)dr.GetDecimal(dr.GetOrdinal("HHID"));
                 if (!dr.IsDBNull(dr.GetOrdinal("PAP_UID"))) objPAP.Papuid = dr.GetString(dr.GetOrdinal("PAP_UID"));
                 //id
                 //code
                 //name 
-                if (!dr.IsDBNull(dr.GetOrdinal("ProjectID"))) objPAP.ProjectedId = dr.GetInt32(dr.GetOrdinal("ProjectID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("ProjectID"))) objPAP.ProjectedId = (int)dr.GetDecimal(dr.GetOrdinal("ProjectID"));
                 if (!dr.IsDBNull(dr.GetOrdinal("ProjectCode"))) objPAP.ProjectCode = dr.GetString(dr.GetOrdinal("ProjectCode"));
                 if (!dr.IsDBNull(dr.GetOrdinal("ProjectName"))) objPAP.ProjectName = dr.GetString(dr.GetOrdinal("ProjectName"));
                 if (!dr.IsDBNull(dr.GetOrdinal("PAPNAME"))) objPAP.PapName = dr.GetString(dr.GetOrdinal("PAPNAME"));
@@ -436,35 +436,35 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public Trn_Pap_HouseHoldList SearchPAP(bool recentRecords, int projectID, int HHID, string PAPUID, string papName, string plotReference, string district, string county, string subCounty, string parish, string village)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_SEARCH_PAPS";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
             if (recentRecords)
-                cmd.Parameters.Add("RECENTRECORDS_", "Y");
+                cmd.Parameters.AddWithValue("RECENTRECORDS_", "Y");
             else
-                cmd.Parameters.Add("RECENTRECORDS_", "N");
+                cmd.Parameters.AddWithValue("RECENTRECORDS_", "N");
 
-            cmd.Parameters.Add("PROJECTID_", projectID);
-            cmd.Parameters.Add("HHID_", HHID);
+            cmd.Parameters.AddWithValue("PROJECTID_", projectID);
+            cmd.Parameters.AddWithValue("HHID_", HHID);
             if (PAPUID.Trim() == string.Empty)
-                cmd.Parameters.Add("pap_uid_", DBNull.Value);
+                cmd.Parameters.AddWithValue("pap_uid_", DBNull.Value);
             else
-                cmd.Parameters.Add("pap_uid_", PAPUID);
-            cmd.Parameters.Add("PAPNAME_", papName);
-            cmd.Parameters.Add("PLOTREFERENCE_", plotReference);
-            cmd.Parameters.Add("DISTRICT_", district);
-            cmd.Parameters.Add("COUNTY_", county);
-            cmd.Parameters.Add("SUBCOUNTY_", subCounty);
-            cmd.Parameters.Add("PARISH_", parish);
-            cmd.Parameters.Add("VILLAGE_", village);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("pap_uid_", PAPUID);
+            cmd.Parameters.AddWithValue("PAPNAME_", papName);
+            cmd.Parameters.AddWithValue("PLOTREFERENCE_", plotReference);
+            cmd.Parameters.AddWithValue("DISTRICT_", district);
+            cmd.Parameters.AddWithValue("COUNTY_", county);
+            cmd.Parameters.AddWithValue("SUBCOUNTY_", subCounty);
+            cmd.Parameters.AddWithValue("PARISH_", parish);
+            cmd.Parameters.AddWithValue("VILLAGE_", village);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             Trn_Pap_HouseHoldList PAPList = new Trn_Pap_HouseHoldList();
             Trn_Pap_HouseHoldBO objPAP = null;
@@ -472,7 +472,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 objPAP = new Trn_Pap_HouseHoldBO();
-                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objPAP.HhId = dr.GetInt32(dr.GetOrdinal("HHID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objPAP.HhId = (int)dr.GetDecimal(dr.GetOrdinal("HHID"));
                 if (!dr.IsDBNull(dr.GetOrdinal("PAP_UID"))) objPAP.Papuid = dr.GetString(dr.GetOrdinal("PAP_UID"));
 
                 if (!dr.IsDBNull(dr.GetOrdinal("PAPNAME"))) objPAP.PapName = dr.GetString(dr.GetOrdinal("PAPNAME"));
@@ -512,30 +512,30 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public Trn_Pap_HouseHoldList SearchPAPForPapExport(bool recentRecords, int projectID, string papName, string plotReference, string district, string county, string subCounty, string parish, string village)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_SEARCH_PAPS_EXPORT";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
             if (recentRecords)
-                cmd.Parameters.Add("RECENTRECORDS_", "Y");
+                cmd.Parameters.AddWithValue("RECENTRECORDS_", "Y");
             else
-                cmd.Parameters.Add("RECENTRECORDS_", "N");
+                cmd.Parameters.AddWithValue("RECENTRECORDS_", "N");
 
-            cmd.Parameters.Add("PROJECTID_", projectID);
-            cmd.Parameters.Add("PAPNAME_", papName);
-            cmd.Parameters.Add("PLOTREFERENCE_", plotReference);
-            cmd.Parameters.Add("DISTRICT_", district);
-            cmd.Parameters.Add("COUNTY_", county);
-            cmd.Parameters.Add("SUBCOUNTY_", subCounty);
-            cmd.Parameters.Add("PARISH_", parish);
-            cmd.Parameters.Add("VILLAGE_", village);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("PROJECTID_", projectID);
+            cmd.Parameters.AddWithValue("PAPNAME_", papName);
+            cmd.Parameters.AddWithValue("PLOTREFERENCE_", plotReference);
+            cmd.Parameters.AddWithValue("DISTRICT_", district);
+            cmd.Parameters.AddWithValue("COUNTY_", county);
+            cmd.Parameters.AddWithValue("SUBCOUNTY_", subCounty);
+            cmd.Parameters.AddWithValue("PARISH_", parish);
+            cmd.Parameters.AddWithValue("VILLAGE_", village);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             Trn_Pap_HouseHoldList PAPList = new Trn_Pap_HouseHoldList();
             Trn_Pap_HouseHoldBO objPAP = null;
@@ -543,7 +543,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 objPAP = new Trn_Pap_HouseHoldBO();
-                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objPAP.HhId = dr.GetInt32(dr.GetOrdinal("HHID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objPAP.HhId = (int)dr.GetDecimal(dr.GetOrdinal("HHID"));
 
                 if (!dr.IsDBNull(dr.GetOrdinal("PAPNAME"))) objPAP.PapName = dr.GetString(dr.GetOrdinal("PAPNAME"));
                 if (!dr.IsDBNull(dr.GetOrdinal("PAPTYPE"))) objPAP.PapType = dr.GetString(dr.GetOrdinal("PAPTYPE"));
@@ -592,35 +592,35 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public Trn_Pap_HouseHoldList SearchPAPForALL(bool recentRecords, int projectID, int HHID, string PAPUID, string papName, string plotReference, string district, string county, string subCounty, string parish, string village)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_SEARCH_PAPSALL";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
             if (recentRecords)
-                cmd.Parameters.Add("RECENTRECORDS_", "Y");
+                cmd.Parameters.AddWithValue("RECENTRECORDS_", "Y");
             else
-                cmd.Parameters.Add("RECENTRECORDS_", "N");
+                cmd.Parameters.AddWithValue("RECENTRECORDS_", "N");
 
-            cmd.Parameters.Add("PROJECTID_", projectID);
-            cmd.Parameters.Add("HHID_", HHID);
+            cmd.Parameters.AddWithValue("PROJECTID_", projectID);
+            cmd.Parameters.AddWithValue("HHID_", HHID);
             if (PAPUID.Trim() == string.Empty)
-                cmd.Parameters.Add("pap_uid_", DBNull.Value);
+                cmd.Parameters.AddWithValue("pap_uid_", DBNull.Value);
             else
-                cmd.Parameters.Add("pap_uid_", PAPUID);
-            cmd.Parameters.Add("PAPNAME_", papName);
-            cmd.Parameters.Add("PLOTREFERENCE_", plotReference);
-            cmd.Parameters.Add("DISTRICT_", district);
-            cmd.Parameters.Add("COUNTY_", county);
-            cmd.Parameters.Add("SUBCOUNTY_", subCounty);
-            cmd.Parameters.Add("PARISH_", parish);
-            cmd.Parameters.Add("VILLAGE_", village);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("pap_uid_", PAPUID);
+            cmd.Parameters.AddWithValue("PAPNAME_", papName);
+            cmd.Parameters.AddWithValue("PLOTREFERENCE_", plotReference);
+            cmd.Parameters.AddWithValue("DISTRICT_", district);
+            cmd.Parameters.AddWithValue("COUNTY_", county);
+            cmd.Parameters.AddWithValue("SUBCOUNTY_", subCounty);
+            cmd.Parameters.AddWithValue("PARISH_", parish);
+            cmd.Parameters.AddWithValue("VILLAGE_", village);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             Trn_Pap_HouseHoldList PAPList = new Trn_Pap_HouseHoldList();
             Trn_Pap_HouseHoldBO objPAP = null;
@@ -628,7 +628,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 objPAP = new Trn_Pap_HouseHoldBO();
-                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objPAP.HhId = dr.GetInt32(dr.GetOrdinal("HHID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objPAP.HhId = (int)dr.GetDecimal(dr.GetOrdinal("HHID"));
 
                 if (!dr.IsDBNull(dr.GetOrdinal("surname"))) objPAP.Surname = dr.GetString(dr.GetOrdinal("surname"));
                 if (!dr.IsDBNull(dr.GetOrdinal("firstname"))) objPAP.Firstname = dr.GetString(dr.GetOrdinal("firstname"));
@@ -677,15 +677,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public Trn_Pap_HouseHoldList GetPAPNameByVillage(string villages)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_GET_PAPSBYVILLAGE";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("VILLAGES_", OracleDbType.Varchar2, 50).Value = villages;
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("VILLAGES_", SqlDbType.NVarChar).Value = villages;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             Trn_Pap_HouseHoldBO objTrn_Pap_HouseHoldBO = null;
             Trn_Pap_HouseHoldList Trn_Pap_HouseHold = new Trn_Pap_HouseHoldList();
             while (dr.Read())
@@ -707,25 +707,25 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public PAP_HouseholdBO ApprovalChangerequestStatus(PAP_HouseholdBO objHouseHold)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_APPROVALSTATUSPENDING"; //USP_TRN_APPROVALSTATUSPENDING
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("ProjectedId_", objHouseHold.ProjectedId);
-            cmd.Parameters.Add("Workflowcode_", objHouseHold.Workflowcode);
-            cmd.Parameters.Add("HHID_", objHouseHold.HhId);
-            cmd.Parameters.Add("PageCode_", objHouseHold.PageCode);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("ProjectedId_", objHouseHold.ProjectedId);
+            cmd.Parameters.AddWithValue("Workflowcode_", objHouseHold.Workflowcode);
+            cmd.Parameters.AddWithValue("HHID_", objHouseHold.HhId);
+            cmd.Parameters.AddWithValue("PageCode_", objHouseHold.PageCode);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             PAP_HouseholdBO objTrn_Pap_HouseHold = null;
             if (objHouseHold.PageCode == "DISC")
             {
                 while (dr.Read())
                 {
                     objTrn_Pap_HouseHold = new PAP_HouseholdBO();
-                    if (!dr.IsDBNull(dr.GetOrdinal("STATUSID"))) objTrn_Pap_HouseHold.DisclosureStatus = dr.GetInt32(dr.GetOrdinal("STATUSID"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("STATUSID"))) objTrn_Pap_HouseHold.DisclosureStatus = (int)dr.GetDecimal(dr.GetOrdinal("STATUSID"));
                 }
             }
             else if (objHouseHold.PageCode == "CRGRA")
@@ -733,7 +733,7 @@ namespace WIS_DataAccess
                 while (dr.Read())
                 {
                     objTrn_Pap_HouseHold = new PAP_HouseholdBO();
-                    if (!dr.IsDBNull(dr.GetOrdinal("STATUSID"))) objTrn_Pap_HouseHold.GrievanceStatus = dr.GetInt32(dr.GetOrdinal("STATUSID"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("STATUSID"))) objTrn_Pap_HouseHold.GrievanceStatus = (int)dr.GetDecimal(dr.GetOrdinal("STATUSID"));
                 }
             }
             else if (objHouseHold.PageCode == "CRFND")
@@ -741,7 +741,7 @@ namespace WIS_DataAccess
                 while (dr.Read())
                 {
                     objTrn_Pap_HouseHold = new PAP_HouseholdBO();
-                    if (!dr.IsDBNull(dr.GetOrdinal("STATUSID"))) objTrn_Pap_HouseHold.PaymentStatus = dr.GetInt32(dr.GetOrdinal("STATUSID"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("STATUSID"))) objTrn_Pap_HouseHold.PaymentStatus = (int)dr.GetDecimal(dr.GetOrdinal("STATUSID"));
                 }
             }
             else
@@ -749,7 +749,7 @@ namespace WIS_DataAccess
                 while (dr.Read())
                 {
                     objTrn_Pap_HouseHold = new PAP_HouseholdBO();
-                    if (!dr.IsDBNull(dr.GetOrdinal("STATUSID"))) objTrn_Pap_HouseHold.ApproverStatus = dr.GetInt32(dr.GetOrdinal("STATUSID"));
+                    if (!dr.IsDBNull(dr.GetOrdinal("STATUSID"))) objTrn_Pap_HouseHold.ApproverStatus = (int)dr.GetDecimal(dr.GetOrdinal("STATUSID"));
                 }
             }
                     
@@ -769,16 +769,16 @@ namespace WIS_DataAccess
         public int ChangeRequestStatus(PAP_HouseholdBO objHouseHold)
         {
             int returnResult;
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_UPD_CHANGEREQUEST", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_UPD_CHANGEREQUEST", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("HHID_", objHouseHold.HhId);
-                dcmd.Parameters.Add("PageCode_", objHouseHold.PageCode);
+                dcmd.Parameters.AddWithValue("HHID_", objHouseHold.HhId);
+                dcmd.Parameters.AddWithValue("PageCode_", objHouseHold.PageCode);
 
                 returnResult = dcmd.ExecuteNonQuery();
 
@@ -806,19 +806,19 @@ namespace WIS_DataAccess
         {
             string returnResult = string.Empty;
 
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
             cnn.Open();
-            OracleCommand dcmd = new OracleCommand("USP_TRN_PAP_PDP", cnn);
+            SqlCommand dcmd = new SqlCommand("USP_TRN_PAP_PDP", cnn);
             dcmd.CommandType = CommandType.StoredProcedure;
             int count = Convert.ToInt32(dcmd.CommandType);
 
             try
             {
-                dcmd.Parameters.Add("HHID_", householdID);
+                dcmd.Parameters.AddWithValue("HHID_", householdID);
                
                 //return dcmd.ExecuteNonQuery();
 
-                dcmd.Parameters.Add("isPDP", OracleDbType.Varchar2, 500).Direction = ParameterDirection.Output;
+                dcmd.Parameters.AddWithValue("isPDP", SqlDbType.NVarChar).Direction = ParameterDirection.Output;
 
                 dcmd.ExecuteNonQuery();
 
@@ -846,15 +846,15 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public Trn_Pap_HouseHoldList GetPlotDependents(int HHID_)
         {
-            OracleConnection con = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection con = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
             string proc = "USP_TRN_GET_PLOTDEPENDENTS";
-            cmd = new OracleCommand(proc, con);
+            cmd = new SqlCommand(proc, con);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("HHID_", HHID_);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", HHID_);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             Trn_Pap_HouseHoldBO objTrn_Pap_HouseHold = null;
             Trn_Pap_HouseHoldList Trn_Pap_HouseHold = new Trn_Pap_HouseHoldList();
             while (dr.Read())
@@ -882,23 +882,23 @@ namespace WIS_DataAccess
         /// <returns></returns>
         public Trn_Pap_HouseHoldList SearchPAPONHHID(int projectID, string HHID, string PAPUID)
         {
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_SEARCH_HHIDRUID";
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
 
             
 
-            cmd.Parameters.Add("PROJECTID_", projectID);
-            cmd.Parameters.Add("HHID_", HHID);
-            cmd.Parameters.Add("PAPUID_", PAPUID);
+            cmd.Parameters.AddWithValue("PROJECTID_", projectID);
+            cmd.Parameters.AddWithValue("HHID_", HHID);
+            cmd.Parameters.AddWithValue("PAPUID_", PAPUID);
             
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
 
             cmd.Connection.Open();
-            OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             Trn_Pap_HouseHoldList PAPList = new Trn_Pap_HouseHoldList();
             Trn_Pap_HouseHoldBO objPAP = null;
@@ -906,7 +906,7 @@ namespace WIS_DataAccess
             while (dr.Read())
             {
                 objPAP = new Trn_Pap_HouseHoldBO();
-                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objPAP.HhId = dr.GetInt32(dr.GetOrdinal("HHID"));
+                if (!dr.IsDBNull(dr.GetOrdinal("HHID"))) objPAP.HhId = (int)dr.GetDecimal(dr.GetOrdinal("HHID"));
 
                 if (!dr.IsDBNull(dr.GetOrdinal("surname"))) objPAP.Surname = dr.GetString(dr.GetOrdinal("surname"));
                 if (!dr.IsDBNull(dr.GetOrdinal("firstname"))) objPAP.Firstname = dr.GetString(dr.GetOrdinal("firstname"));
@@ -952,19 +952,19 @@ namespace WIS_DataAccess
         public CompensationPackagesList getprintComments(int Hhid)
         {
             CompensationPackagesList COMPACKList = new CompensationPackagesList();
-            OracleConnection cnn = new OracleConnection(AppConfiguration.ConnectionString);
-            OracleCommand cmd;
+            SqlConnection cnn = new SqlConnection(AppConfiguration.ConnectionString);
+            SqlCommand cmd;
 
             string proc = "USP_TRN_GET_OPTIONGRPCOMMENTS";
 
-            cmd = new OracleCommand(proc, cnn);
+            cmd = new SqlCommand(proc, cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("HHID_", Hhid);
-            cmd.Parameters.Add("Sp_recordset", OracleDbType.RefCursor).Direction = ParameterDirection.Output;
+            cmd.Parameters.AddWithValue("HHID_", Hhid);
+            // // cmd.Parameters.AddWithValue"SP_RECORDSET", SqlDbType.RefCursor.Direction = ParameterDirection.Output;
             try
             {
                 cmd.Connection.Open();
-                OracleDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 CompensationPackagesBO cmppkgBo;
                 while (dr.Read())
                 {
